@@ -11,3 +11,13 @@
 *.lai
 *.la
 *.a
+
+# Codelocks files
+bin/
+obj/
+*.depend
+*.cbp
+
+# backup files
+*~
+
