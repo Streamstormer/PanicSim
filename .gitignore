@@ -17,6 +17,7 @@ bin/
 obj/
 *.depend
 *.cbp
+*.layout
 
 # backup files
 *~
