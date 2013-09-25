@@ -18,12 +18,14 @@ public:
 private:
 
     void updateCenter();
-    const sf::Vector2f calculateLineFunc(const sf::Vector2f & p1, const sf::Vector2f & p2);
+    const sf::Vector3f calculateLineFunc(const sf::Vector2f & p1, const sf::Vector2f & p2);
     const sf::Vector3f solveQuadrEquation(const sf::Vector3f & incoming);
+    void calculateIntersectionPoints( const sf::Vector3f & Outline, const sf::Vector2f & massPoint, float radius );
 
-    sf::RectangleShape Rect;
-    sf::Vector2f Center;
-    int id;
+
+        sf::RectangleShape Rect;
+        sf::Vector2f Center;
+        int id;
     float rectRadius;
     sf::Vector2f helpVec[8]; // represents the 8 possible intersection points
 };

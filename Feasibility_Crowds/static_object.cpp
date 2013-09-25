@@ -3,7 +3,7 @@ c_static_object::c_static_object(const sf::RectangleShape& Rectconst, sf::Vector
 {
     sf::RectangleShape rectangle;
     rectangle.setSize(sf::Vector2f(100, 100));
-    rectangle.setPosition(100, 100);
+    rectangle.setPosition(500, 500);
     Rect = rectangle;
     rectRadius = 50;
     updateCenter();
@@ -72,102 +72,37 @@ float c_static_object::intersection_circle(const sf::Vector2f & massPoint, float
     //calculate intersection points
     //calculate intersection area
 
+    for (int n=0; n<8; n++)
+    {
+        helpVec[n].x = -1;
+    }
+
     //1.
 
     sf::FloatRect borders = Rect.getGlobalBounds();
     sf::Vector2f topLeft (borders.top, borders.left);
-    sf::Vector2f topRight (borders.top,  borders.left + borders.width);
-    sf::Vector2f downLeft (borders.top + borders.height, borders.left);
-    sf::Vector2f downRight (borders.top + borders.height, borders.left + borders.width);
+    sf::Vector2f topRight (borders.top + borders.width,  borders.left );
+    sf::Vector2f downLeft (borders.top, borders.left + borders.height);
+    sf::Vector2f downRight (borders.top + borders.width, borders.left + borders.height);
 
     //2. + 3.
 
     // top line intersection points
-    sf::Vector2f Outline(this->calculateLineFunc(topLeft,topRight));
-    sf::Vector3f intersEq(Outline.x * Outline.x + 1, -2*massPoint.x+2*Outline.x*(Outline.y-massPoint.y),(Outline.y-massPoint.y)*(Outline.y-massPoint.y) -(radius * radius) + (massPoint.x*massPoint.x));
-    intersEq = this->solveQuadrEquation(intersEq);
-    helpVec[0].x = helpVec[1].x = -1;
-    if ( intersEq.z > 0)
-    {
-        helpVec[0].x = intersEq.x;
-        helpVec[0].y = intersEq.x * Outline.x + Outline.y;
-        if ( intersEq.z > 1)
-        {
-            helpVec[1].x = intersEq.y;
-            helpVec[1].y = intersEq.y * Outline.x + Outline.y;
-        }
-    }
+    sf::Vector3f Outline(this->calculateLineFunc(topLeft,topRight));
+    calculateIntersectionPoints( Outline, massPoint, radius );
+
     // bottom line intersection points
     Outline = this->calculateLineFunc(downLeft,downRight);
-    intersEq.x =(Outline.x * Outline.x + 1);
-    intersEq.y = -2*massPoint.x+2*Outline.x*(Outline.y-massPoint.y);
-    intersEq.z =(Outline.y-massPoint.y)*(Outline.y-massPoint.y) -(radius * radius) + (massPoint.x*massPoint.x);
-    intersEq = this->solveQuadrEquation(intersEq);
-    helpVec[2].x = helpVec[3].x = -1;
-    if ( intersEq.z > 0)
-    {
-        helpVec[2].x = intersEq.x;
-        helpVec[2].y = intersEq.x * Outline.x + Outline.y;
-        if ( intersEq.z > 1)
-        {
-            helpVec[3].x = intersEq.y;
-            helpVec[3].y = intersEq.y * Outline.x + Outline.y;
-        }
-    }
+    calculateIntersectionPoints( Outline, massPoint, radius );
 
     // left line intersection points
 
     Outline = this->calculateLineFunc(topLeft,downLeft);
-    intersEq.x =(Outline.x * Outline.x) + 1;
-    intersEq.y = -2*massPoint.x+2*Outline.x*(Outline.y-massPoint.y);
-    intersEq.z =(Outline.y-massPoint.y)*(Outline.y-massPoint.y) -(radius * radius) + (massPoint.x*massPoint.x);
-    intersEq = this->solveQuadrEquation(intersEq);
+    calculateIntersectionPoints( Outline, massPoint, radius );
 
-    helpVec[4].x = helpVec[5].x = -1;
-    if ( intersEq.z > 0)
-    {
-        helpVec[4].x = intersEq.x;
-        helpVec[4].y = intersEq.x * Outline.x + Outline.y;
-        if ( intersEq.z > 1)
-        {
-            helpVec[5].x = intersEq.y;
-            helpVec[5].y = intersEq.y * Outline.x + Outline.y;
-        }
-    }
     // right line intersection points
     Outline = (this->calculateLineFunc(downRight,topRight));
-    intersEq.x =(Outline.x * Outline.x) + 1;
-    intersEq.y = -2*massPoint.x+2*Outline.x*(Outline.y-massPoint.y);
-    intersEq.z =(Outline.y-massPoint.y)*(Outline.y-massPoint.y) -(radius * radius) + (massPoint.x*massPoint.x);
-    intersEq = this->solveQuadrEquation(intersEq);
-
-    helpVec[6].x = helpVec[7].x = -1;
-    if ( intersEq.z > 0)
-    {
-
-        helpVec[6].x = intersEq.x;
-        helpVec[6].y = intersEq.x * Outline.x + Outline.y;
-        if ( intersEq.z > 1)
-        {
-            helpVec[7].x = intersEq.y;
-            helpVec[7].y = intersEq.y * Outline.x + Outline.y;
-        }
-    }
-
-    /*
-            //Objects can not be rotated!
-            //Borders are described with just a single value horizontal or vertical
-            float border_x_function_top = borders.top;
-            float border_x_function_down = (borders.top + borders.height);
-
-            float border_y_function_left = borders.left;
-            float border_y_function_right = (borders.left + borders.width);
-
-            sf::Vector2f intersectionPoint1 (borders.top , -1);
-            //check if the intersectionPoints are on the Borders
-            //    intersectionPoint1_x_function_top.y = (sqrt(radius*radius - (abs(intersectionPoint1.x - massPoint.x) * (abs(intersectionPoint1.x - massPoint.x)))) - massPoint.y)) ;
-            //    intersectionPoint2_x_function_top.y = (sqrt(radius*radius - (abs(intersectionPoint1.x - massPoint.x) * (abs(intersectionPoint1.x - massPoint.x)))) + massPoint.y) ;
-    */
+    calculateIntersectionPoints( Outline, massPoint, radius );
 
     return -1;
 
@@ -181,25 +116,33 @@ void c_static_object::updateCenter()
     Center.y += Size.y / 2;
 }
 
-const sf::Vector2f c_static_object::calculateLineFunc(const sf::Vector2f & p1, const sf::Vector2f & p2)
+const sf::Vector3f c_static_object::calculateLineFunc(const sf::Vector2f & p1, const sf::Vector2f & p2)
 {
     // gives back a line function of the form y = mx+c
     // m = LineFunc.x
     // c = LineFunc.y
 
-    sf::Vector2f LineFunc; // represents function
-    // Calculate m
+    sf::Vector3f LineFunc; // represents function
 
-    if (p1.x != p2.x)
-    {
-        LineFunc.x = (p1.y-p2.y) / (p1.x-p2.x);
-    }
-    else
+    // Special cases
+    if (p1.y == p2.y)
     {
         LineFunc.x = 0;
+        LineFunc.y = p1.y;
+        LineFunc.z = -1;
+        return LineFunc;
     }
+    else if (p1.x == p2.x)
+    {
+        LineFunc.x = LineFunc.y = 0;
+        LineFunc.z = p1.x;
+        return LineFunc;
+    }
+    // Calculate m
+    LineFunc.x = (p1.y-p2.y) / (p1.x-p2.x);
     //Calculate c
     LineFunc.y = -1* LineFunc.x * p1.x + p1.y;
+    LineFunc.z = -1;
     return LineFunc;
 }
 const sf::Vector3f c_static_object::solveQuadrEquation(const sf::Vector3f & incoming)
@@ -236,4 +179,54 @@ const sf::Vector3f c_static_object::solveQuadrEquation(const sf::Vector3f & inco
         }
     }
     return solution;
+}
+
+void c_static_object::calculateIntersectionPoints( const sf::Vector3f & Outline, const sf::Vector2f & massPoint, float radius )
+{
+        sf::Vector3f intersEq;
+        int n = 0;
+
+        while(helpVec[n].x != -1 && n < 8)
+        {
+            n++;
+        }
+
+        if (Outline.z != -1)
+        {
+            float savex = Outline.z;
+            intersEq.x = 1;
+            intersEq.y = -2*massPoint.y;
+            intersEq.z = Outline.z * Outline.z - 2 * Outline.z * massPoint.x + massPoint.x * massPoint.x + massPoint.y * massPoint.y - radius * radius;
+            intersEq = this->solveQuadrEquation(intersEq);
+
+            if ( intersEq.z > 0)
+            {
+                helpVec[n].x = savex;
+                helpVec[n].y = intersEq.x;
+
+                if ( intersEq.z > 1)
+                {
+                    helpVec[n+1].y = intersEq.y;
+                    helpVec[n+1].x = savex;
+                }
+            }
+        }
+        else
+        {
+            intersEq.x =(Outline.x * Outline.x) + 1;
+            intersEq.y = -2*massPoint.x+2*Outline.x*(Outline.y-massPoint.y);
+            intersEq.z =(Outline.y-massPoint.y)*(Outline.y-massPoint.y) -(radius * radius) + (massPoint.x*massPoint.x);
+            intersEq = this->solveQuadrEquation(intersEq);
+
+            if ( intersEq.z > 0)
+            {
+                helpVec[n].x = intersEq.x;
+                helpVec[n].y = intersEq.x * Outline.x + Outline.y;
+                if ( intersEq.z > 1)
+                {
+                    helpVec[n+1].x = intersEq.y;
+                    helpVec[n+1].y = intersEq.y * Outline.x + Outline.y;
+                }
+            }
+        }
 }
