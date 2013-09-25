@@ -6,6 +6,8 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
+*.dll
+
 
 # Compiled Static libraries
 *.lai
@@ -17,6 +19,7 @@ bin/
 obj/
 *.depend
 *.cbp
+*.layout
 
 # backup files
 *~
