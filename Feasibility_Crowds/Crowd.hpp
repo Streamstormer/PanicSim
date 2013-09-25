@@ -10,10 +10,10 @@ public:
     ~c_crowd();
 
     void update(sf::Vector2i Position);
-
     void draw(sf::RenderWindow& window);
 
     const sf::Vector2f getMasspoint();
+
     float getRadius() {return radius;}
 private:
     sf::Vector2f Position;
