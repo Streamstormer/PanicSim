@@ -26,7 +26,7 @@ public:
         window.draw(Circle);
     }
 
-    const sf::Vector2f & getMasspoint()
+    const sf::Vector2f getMasspoint()
     {
         sf::Vector2f masspoint(Position);
         masspoint.x += radius;

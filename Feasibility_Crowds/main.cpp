@@ -31,6 +31,7 @@ int main()
         Crowd.update(sf::Mouse::getPosition());
         if(stObj.isInRange(Crowd.getMasspoint(),Crowd.getRadius()))
         {
+            stObj.intersection_circle(Crowd.getMasspoint(),Crowd.getRadius());
             stObj.update(true);
         }
         else
