@@ -1,11 +1,14 @@
 #include "static_object.hpp"
-c_static_object::c_static_object(const sf::RectangleShape& Rectconst, sf::Vector2<float>& Position)
+c_static_object::c_static_object(const sf::RectangleShape Rectconst,const sf::Vector2<float>& Position)
 {
-    sf::RectangleShape rectangle;
-    rectangle.setSize(sf::Vector2f(100, 100));
-    rectangle.setPosition(500, 500);
-    Rect = rectangle;
-    rectRadius = 50;
+    sf::Vector2f RectSize = Rectconst.getSize();
+
+    if (RectSize.x > RectSize.y)
+        rectRadius = RectSize.x /2;
+    else
+        rectRadius= RectSize.y /2;
+
+    Rect = Rectconst;
     updateCenter();
 
 }
@@ -27,42 +30,28 @@ void c_static_object::draw(sf::RenderWindow& window)
         }
     }
 }
-void c_static_object::update( bool rotation )
+void c_static_object::update( )
 {
     Rect.setFillColor(sf::Color::Red);
-    if (rotation)
+    if (highlight)
     {
         Rect.setFillColor(sf::Color::Green);
     }
+    highlight = false;
 }
 
 bool c_static_object::isInRange( const sf::Vector2f & massPoint, float radius)
 {
-    sf::Vector2f delta(massPoint);
-    int a = abs(massPoint.x-Center.x);
-    int b = abs(massPoint.y-Center.y);
-    int c = (int)sqrt((a*a)+(b*b));
+    float a = abs(massPoint.x-Center.x);
+    float b = abs(massPoint.y-Center.y);
+    float c = (float)sqrt((a*a)+(b*b));
 
-    int c_rec = (int)sqrt((5000));
-
-    if(c<(c_rec+radius))
+    if(c<(rectRadius+radius))
     {
+        highlightRect();
         return true;
     }
     return false;
-    /*
-            delta.x -= Center.x;
-            delta.y -= Center.y;
-
-            delta.x *= delta.x;
-            delta.y *= delta.y;
-
-            if ((delta.x + delta.y) <= (rectRadius*rectRadius)+(radius*radius))
-            {
-                return true;
-            }
-            return false;
-    */
 }
 
 //if a circle meets a rectangle
@@ -79,11 +68,12 @@ float c_static_object::intersection_circle(const sf::Vector2f & massPoint, float
 
     //1.
 
+
     sf::FloatRect borders = Rect.getGlobalBounds();
-    sf::Vector2f topLeft (borders.top, borders.left);
-    sf::Vector2f topRight (borders.top + borders.width,  borders.left );
-    sf::Vector2f downLeft (borders.top, borders.left + borders.height);
-    sf::Vector2f downRight (borders.top + borders.width, borders.left + borders.height);
+    sf::Vector2f topLeft    (borders.left                   , borders.top );
+    sf::Vector2f topRight   (borders.left + borders.width   , borders.top );
+    sf::Vector2f downLeft   (borders.left                   , borders.top + borders.height);
+    sf::Vector2f downRight  (borders.left + borders.width   , borders.top + borders.height);
 
     //2. + 3.
 
@@ -104,6 +94,8 @@ float c_static_object::intersection_circle(const sf::Vector2f & massPoint, float
     Outline = (this->calculateLineFunc(downRight,topRight));
     calculateIntersectionPoints( Outline, massPoint, radius );
 
+    // 4. To Do Calculate Intersection Area
+
     return -1;
 
 }
@@ -121,20 +113,22 @@ const sf::Vector3f c_static_object::calculateLineFunc(const sf::Vector2f & p1, c
     // gives back a line function of the form y = mx+c
     // m = LineFunc.x
     // c = LineFunc.y
+    // LineFunc.z is used to describe functions like x = 15
+
 
     sf::Vector3f LineFunc; // represents function
 
     // Special cases
-    if (p1.y == p2.y)
+    if (p1.y == p2.y) // y = c
     {
         LineFunc.x = 0;
         LineFunc.y = p1.y;
         LineFunc.z = -1;
         return LineFunc;
     }
-    else if (p1.x == p2.x)
+    else if (p1.x == p2.x) // x = p1.x
     {
-        LineFunc.x = LineFunc.y = 0;
+        LineFunc.x = LineFunc.y = -1;
         LineFunc.z = p1.x;
         return LineFunc;
     }
@@ -191,7 +185,7 @@ void c_static_object::calculateIntersectionPoints( const sf::Vector3f & Outline,
             n++;
         }
 
-        if (Outline.z != -1)
+        if (Outline.z != -1 )
         {
             float savex = Outline.z;
             intersEq.x = 1;

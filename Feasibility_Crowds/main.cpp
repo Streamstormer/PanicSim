@@ -1,6 +1,6 @@
 #include <iostream>
-#include "static_object.hpp"
 #include "Crowd.hpp"
+#include "Area.hpp"
 
 int main()
 {
@@ -8,15 +8,15 @@ int main()
     sf::Vector2f Position;
     Position.x = 1000.0f;
     Position.y = 1000.0f;
-    sf::RectangleShape Rect(Position);
 
     c_crowd Crowd(50);
 
-    Rect.setPosition(Position);
+    C_Area Area;
+    Area.insertStObj(sf::Vector2f(50,100), sf::Vector2f(250,120));
+    Area.insertStObj(sf::Vector2f(120,350), sf::Vector2f(500,200));
+    Area.insertStObj(sf::Vector2f(150,80), sf::Vector2f(40,400));
 
-    c_static_object stObj(Rect, Position);
 
-    stObj.isInRange(sf::Vector2f (0,0),0.f);
 
     while (window.isOpen())
     {
@@ -29,21 +29,14 @@ int main()
         }
 
         Crowd.update(sf::Mouse::getPosition());
-        if(stObj.isInRange(Crowd.getMasspoint(),Crowd.getRadius()))
-        {
-            stObj.intersection_circle(Crowd.getMasspoint(),Crowd.getRadius());
-            stObj.update(true);
-        }
-        else
-        {
 
-            stObj.update(false);
-        }
+        Area.checkIntersection(Crowd.getMasspoint(),Crowd.getRadius());
+        Area.update();
 
         ///Render
         window.clear();
         Crowd.draw(window);
-        stObj.draw(window);
+        Area.draw(window);
         window.display();
     }
     return 0;

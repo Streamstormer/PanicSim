@@ -8,13 +8,16 @@
 class c_static_object
 {
 public:
-    c_static_object(const sf::RectangleShape& Rectconst, sf::Vector2<float>& Position);
+    c_static_object(const sf::RectangleShape Rectconst, const sf::Vector2<float>& Position);
     void draw(sf::RenderWindow& window);
-    void update( bool rotation );
+    void update(  );
     bool isInRange( const sf::Vector2f & massPoint, float radius);
     //if a circle meets a rectangle
     float intersection_circle(const sf::Vector2f & massPoint, float radius);
-
+    void highlightRect() /// delete this function
+    {
+        highlight = true;
+    }
 private:
 
     void updateCenter();
@@ -22,12 +25,12 @@ private:
     const sf::Vector3f solveQuadrEquation(const sf::Vector3f & incoming);
     void calculateIntersectionPoints( const sf::Vector3f & Outline, const sf::Vector2f & massPoint, float radius );
 
-
-        sf::RectangleShape Rect;
-        sf::Vector2f Center;
-        int id;
+    sf::RectangleShape Rect;
+    sf::Vector2f Center;
+    int id;
     float rectRadius;
     sf::Vector2f helpVec[8]; // represents the 8 possible intersection points
+    bool highlight;
 };
 
 #endif // C_STATIC_OBJECT_INCLUDE
