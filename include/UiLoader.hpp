@@ -13,17 +13,19 @@ class UiLoader : public Gtk::Window
 {
 private:
    Glib::RefPtr<Gtk::Builder> builder;
-   Gtk::Button* pButSave;
-   Gtk::Button* pButLoad;
-   Gtk::Button* pButStart;
-   Gtk::Window* pWinEditor;
    string UiPath;
+   bool isOpen;
 
 
-public:
-    UiLoader(string UiPath, Glib::RefPtr<Gtk::Application> app);
-    bool reloadUi(string UiPath);
-
+protected:
+    Gtk::Window *pWindow;
+    Gtk::Button *pLoadFile;
+    Gtk::Button *pSaveFile;
+    Gtk::Button *pStartSim;
+    UiLoader(string UiPath);
+    void loadFile();
+    void SaveFile();
+    void StartSim();
 
 };
 #endif // UILOADER_HPP_INCLUDED
