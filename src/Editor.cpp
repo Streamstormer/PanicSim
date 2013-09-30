@@ -10,5 +10,5 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 
 void Editor::on_example_clicked()
 {
-    SFMLArea->setObject(rectangle, 100, 20);
+    SFMLArea->setObject(rectangle, 10, 20);
 }

@@ -3,7 +3,7 @@
 
 #include "SFML_Widget.hpp"
 #include <gtkmm.h>
-#include <stack>
+#include <iostream>
 
 using namespace std;
 
@@ -13,6 +13,7 @@ class SimulationArea : public SFML_Widget
 {
 private:
     sf::CircleShape *example;
+    sf::Event mouseEvent;
     void animate();
     void draw();
     void resize();
