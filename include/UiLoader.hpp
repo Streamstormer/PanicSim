@@ -22,6 +22,9 @@ protected:
     Gtk::Button *pLoadFile;
     Gtk::Button *pSaveFile;
     Gtk::Button *pStartSim;
+
+    Gtk::Button *pexample;
+
     Gtk::Box *pBox;
     UiLoader(string UiPath);
     void loadFile();

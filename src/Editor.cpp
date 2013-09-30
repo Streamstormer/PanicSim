@@ -3,6 +3,12 @@
 Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     UiLoader(UiPath)
 {
-    SimulationArea SFML_Area(*pBox);
+    SFMLArea = new SimulationArea(*pBox);
+    pexample->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_example_clicked));
     app->run(*pWindow);
+}
+
+void Editor::on_example_clicked()
+{
+    SFMLArea->setObject(rectangle, 100, 20);
 }

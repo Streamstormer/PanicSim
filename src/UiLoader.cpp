@@ -15,6 +15,8 @@ UiLoader::UiLoader(string UiPath) {
     builder->get_widget("SaveFile", pSaveFile);
     builder->get_widget("StartSim", pStartSim);
 
+    builder->get_widget("example", pexample);
+
     pLoadFile->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::loadFile));
     pSaveFile->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::SaveFile));
     pStartSim->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::StartSim));

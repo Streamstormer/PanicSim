@@ -7,8 +7,11 @@
 class Editor : public UiLoader
 {
 private:
+    void on_example_clicked();
+    SimulationArea *SFMLArea;
 public:
     Editor(string UiPath, Glib::RefPtr<Gtk::Application> app);
+
 
 };
 
