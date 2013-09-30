@@ -10,6 +10,7 @@ UiLoader::UiLoader(string UiPath) {
     }
 
     builder->get_widget("EditorWin", pWindow);
+    builder->get_widget("masterBox", pBox);
     builder->get_widget("LoadFile", pLoadFile);
     builder->get_widget("SaveFile", pSaveFile);
     builder->get_widget("StartSim", pStartSim);

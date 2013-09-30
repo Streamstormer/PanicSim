@@ -2,6 +2,7 @@
 #define EDITOR_HPP_INCLUDED
 
 #include "UiLoader.hpp"
+#include "SimulationArea.hpp"
 
 class Editor : public UiLoader
 {
