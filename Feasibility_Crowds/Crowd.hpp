@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+
+
 class c_crowd
 {
 public:
@@ -16,6 +18,7 @@ public:
 
     float getRadius() {return radius;}
 private:
+
     sf::Vector2f Position;
     float radius;
     sf::CircleShape Circle;

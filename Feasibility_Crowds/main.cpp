@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Crowd.hpp"
 #include "Area.hpp"
+#include "Crowd_2.hpp"
 
 int main()
 {
@@ -9,17 +10,19 @@ int main()
     Position.x = 1000.0f;
     Position.y = 1000.0f;
 
-    c_crowd Crowd(50);
+    //c_crowd Crowd(50);
+    ClCrowd Crowd2(50);
 
     C_Area Area;
     Area.insertStObj(sf::Vector2f(50,100), sf::Vector2f(250,120));
     Area.insertStObj(sf::Vector2f(120,350), sf::Vector2f(500,200));
     Area.insertStObj(sf::Vector2f(150,80), sf::Vector2f(40,400));
 
-
-
+    sf::Clock clock;
     while (window.isOpen())
     {
+        sf::Time elapsed = clock.restart();
+
         /// Update
         sf::Event event;
         while (window.pollEvent(event))
@@ -28,15 +31,14 @@ int main()
                 window.close();
         }
 
-        Crowd.update(sf::Mouse::getPosition());
+        Crowd2.update(sf::Mouse::getPosition(), elapsed.asMilliseconds());
 
-        Area.checkIntersection(Crowd.getMasspoint(),Crowd.getRadius());
-        Area.update();
+
 
         ///Render
         window.clear();
-        Crowd.draw(window);
-        Area.draw(window);
+        Crowd2.draw(window);
+      //  Area.draw(window);
         window.display();
     }
     return 0;
