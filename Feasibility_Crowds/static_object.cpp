@@ -42,16 +42,15 @@ void c_static_object::update( )
 
 bool c_static_object::isInRange( const sf::Vector2f & massPoint, float radius)
 {
-    float a = abs(massPoint.x-Center.x);
-    float b = abs(massPoint.y-Center.y);
-    float c = (float)sqrt((a*a)+(b*b));
+    sf::Rect<float> kreis_rect;
+    kreis_rect.top = massPoint.y-radius;
+    kreis_rect.left = massPoint.x-radius;
+    kreis_rect.width = 2*radius;
+    kreis_rect.height = 2*radius;
 
-    if(c<(rectRadius+radius))
-    {
-        highlightRect();
-        return true;
-    }
-    return false;
+    highlight = kreis_rect.intersects(Rect.getGlobalBounds());
+    return highlight;
+
 }
 
 //if a circle meets a rectangle

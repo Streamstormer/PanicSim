@@ -5,18 +5,19 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 640), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(800, 640), "Panic Sim!");
     sf::Vector2f Position;
     Position.x = 1000.0f;
     Position.y = 1000.0f;
 
-    //c_crowd Crowd(50);
-    ClCrowd Crowd2(50);
-
-    C_Area Area;
+    ClArea Area;
     Area.insertStObj(sf::Vector2f(50,100), sf::Vector2f(250,120));
     Area.insertStObj(sf::Vector2f(120,350), sf::Vector2f(500,200));
     Area.insertStObj(sf::Vector2f(150,80), sf::Vector2f(40,400));
+
+    //c_crowd Crowd(50);
+    ClCrowd Crowd2(50, &Area);
+
 
     sf::Clock clock;
     while (window.isOpen())
@@ -34,11 +35,10 @@ int main()
         Crowd2.update(sf::Mouse::getPosition(), elapsed.asMilliseconds());
 
 
-
         ///Render
         window.clear();
         Crowd2.draw(window);
-      //  Area.draw(window);
+        Area.draw(window);
         window.display();
     }
     return 0;

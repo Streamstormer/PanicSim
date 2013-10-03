@@ -18,6 +18,10 @@ public:
     {
         highlight = true;
     }
+    bool Intersects( const sf::Vector2f  &Position)
+    {
+        return Rect.getGlobalBounds().contains(Position);
+    }
 private:
 
     void updateCenter();
