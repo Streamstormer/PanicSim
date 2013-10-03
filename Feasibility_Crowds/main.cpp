@@ -1,11 +1,12 @@
 #include <iostream>
 #include "Crowd.hpp"
 #include "Area.hpp"
-#include "Crowd_2.hpp"
+#include "CrowdManager.hpp"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 640), "Panic Sim!");
+  //  sf::VideoMode Mode = sf::VideoMode::getFullscreenModes();
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Panic Sim!");
     sf::Vector2f Position;
     Position.x = 1000.0f;
     Position.y = 1000.0f;
@@ -15,9 +16,10 @@ int main()
     Area.insertStObj(sf::Vector2f(120,350), sf::Vector2f(500,200));
     Area.insertStObj(sf::Vector2f(150,80), sf::Vector2f(40,400));
 
-    //c_crowd Crowd(50);
-    ClCrowd Crowd2(50, &Area);
-
+    ClCrowdManager CrowdManager(&Area);
+    CrowdManager.CreateCrowd(sf::Vector2f(300,250),150,1);
+    CrowdManager.CreateCrowd(sf::Vector2f(550,350),150,2);
+    CrowdManager.CreateCrowd(sf::Vector2f(250,523),150,0);
 
     sf::Clock clock;
     while (window.isOpen())
@@ -32,12 +34,12 @@ int main()
                 window.close();
         }
 
-        Crowd2.update(sf::Mouse::getPosition(), elapsed.asMilliseconds());
+        CrowdManager.Update(elapsed.asMilliseconds());
 
 
         ///Render
         window.clear();
-        Crowd2.draw(window);
+        CrowdManager.Draw(window);
         Area.draw(window);
         window.display();
     }

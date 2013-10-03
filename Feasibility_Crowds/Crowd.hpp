@@ -1,9 +1,9 @@
 
 #ifndef CROWD_HPP_INCLUDED
 #define CROWD_HPP_INCLUDED
+
 #include "Area.hpp"
 #include <SFML/Graphics.hpp>
-#include <cstdlib>
 #include <math.h>
 #define MAXPPL 500
 #define MAXSPEED 0.1f
@@ -17,18 +17,17 @@ struct StrPeople
 class ClCrowd
 {
 public:
-    ClCrowd(float radius, ClArea * area);
+    ClCrowd(float radius, ClArea * area, sf::Color Color, sf::Vector2f position);
     ~ClCrowd();
 
-    void update(sf::Vector2i position,float frameTime);
-
-    void draw(sf::RenderWindow& window);
+    void Update(sf::Vector2i position,float frameTime);
+    void Update(float frameTime);
+    void Draw(sf::RenderWindow& window);
 
     const sf::Vector2f  getMassPoint();
     float getRadius();
 private:
-
-
+    int j;
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );
     sf::Vector2f Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destination, const sf::Vector2f & CurVelocity);
     float invert(float Max, float Current);
@@ -39,6 +38,10 @@ private:
     struct StrPeople peoples[MAXPPL];
     sf::Vector2f position;
     float radius;
+
+    // for debugging puposes : each Crowd does have a unique color
+
+    sf::Color Color;
 
 
 };
