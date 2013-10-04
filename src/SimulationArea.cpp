@@ -1,9 +1,11 @@
 #include "../include/SimulationArea.hpp"
 
-SimulationArea::SimulationArea(Gtk::Box& edBox): SFML_Widget(sf::VideoMode(640, 480))
+SimulationArea::SimulationArea(Gtk::Frame& AreaFrame): SFML_Widget(sf::VideoMode(640, 480))
 {
-    // add to window Box
-    edBox.pack_end(*this, Gtk::PACK_EXPAND_WIDGET);
+    // add this widget to window Box..
+    Gtk::Container *inFrame = (Gtk::Container*) AreaFrame.get_child();
+    inFrame->add(*this);
+    // .. and show it
     show();
 
     example = 0;
@@ -40,6 +42,7 @@ void SimulationArea::animate()
             std::cout<<example->getPosition().x<<std::endl;
 
         }
+    // make sfmlWidget invalide so that it will be redrawn
     invalidate();
 }
 

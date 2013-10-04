@@ -19,11 +19,31 @@ private:
 
 protected:
     Gtk::Window *pWindow;
+    Gtk::Frame *pSFMLFrame;
+
     Gtk::Button *pLoadFile;
     Gtk::Button *pSaveFile;
+    Gtk::Button *pSaveTo;
     Gtk::Button *pStartSim;
+    Gtk::Button *pClear;
 
-    Gtk::Button *pexample;
+    Gtk::Button *pBar;
+    Gtk::Button *pWC;
+    Gtk::Button *pFence;
+    Gtk::Button *pWall;
+
+    Gtk::Frame *pObjFrame;
+    Gtk::Label *pObjLabel;
+
+    Gtk::SpinButton *pSizeX;
+    Gtk::SpinButton *pSizeY;
+    Gtk::SpinButton *pRotX;
+    Gtk::SpinButton *pRotY;
+    Gtk::SpinButton *pAreaX;
+    Gtk::SpinButton *pAreaY;
+
+    Gtk::ComboBoxText *pAreaTex;
+
 
     Gtk::Box *pBox;
     UiLoader(string UiPath);

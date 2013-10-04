@@ -7,7 +7,7 @@
 class Editor : public UiLoader
 {
 private:
-    void on_example_clicked();
+    void on_Button_Bar_clicked();
     SimulationArea *SFMLArea;
 public:
     Editor(string UiPath, Glib::RefPtr<Gtk::Application> app);

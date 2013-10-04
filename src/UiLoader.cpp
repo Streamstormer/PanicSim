@@ -4,18 +4,56 @@ UiLoader::UiLoader(string UiPath) {
     this->UiPath = UiPath;
     this->isOpen = false;
 
-    if ((this->builder = Gtk::Builder::create_from_file(UiPath)) == 0) {
-        cerr<<"Could not open UI File:"<<UiPath;
+    try{
+        this->builder = Gtk::Builder::create_from_file(UiPath);
+    }
+    catch(const Glib::FileError& ex){
+        std::cerr << "FileError: " << ex.what() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    catch(const Glib::MarkupError& ex){
+        std::cerr << "MarkupError: " << ex.what() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    catch(const Gtk::BuilderError& ex){
+        std::cerr << "BuilderError: " << ex.what() << std::endl;
         exit(EXIT_FAILURE);
     }
 
+    // Main Window
     builder->get_widget("EditorWin", pWindow);
-    builder->get_widget("masterBox", pBox);
+
+    // SFML Frame
+    builder->get_widget("SFML_Frame", pSFMLFrame);
+
+    // Main Buttons
     builder->get_widget("LoadFile", pLoadFile);
     builder->get_widget("SaveFile", pSaveFile);
+    builder->get_widget("SaveTo", pSaveTo);
+    builder->get_widget("Clear", pClear);
     builder->get_widget("StartSim", pStartSim);
 
-    builder->get_widget("example", pexample);
+    // New static Objects
+    builder->get_widget("bar", pBar);
+    builder->get_widget("WC", pWC);
+    builder->get_widget("Fence", pFence);
+    builder->get_widget("Wall", pWall);
+
+    // Label for selected Objects
+    builder->get_widget("ObjectLabel", pObjLabel);
+    // object Attributes
+    builder->get_widget("size_x", pSizeX);
+    builder->get_widget("size_y", pSizeY);
+    builder->get_widget("rotation_x", pRotX);
+    builder->get_widget("rotation_y", pRotX);
+
+    // Frames with existing Objects
+    builder->get_widget("ObjectFrame", pObjFrame);
+    // Texture of the Area
+    builder->get_widget("AreaTextures", pAreaTex);
+
+    builder->get_widget("AreaSize_x", pAreaX);
+    builder->get_widget("AreaSize_y", pAreaY);
 
     pLoadFile->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::loadFile));
     pSaveFile->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::SaveFile));

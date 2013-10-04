@@ -18,7 +18,7 @@ private:
     void draw();
     void resize();
 public:
-    SimulationArea(Gtk::Box& Editor);
+    SimulationArea(Gtk::Frame& AreaFrame);
     // sf::Rect sollte später dann ein object von uns sein wie Bar oder Bühne.
     void setObject(enum staticObjects, int x, int y);
 };
