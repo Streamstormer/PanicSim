@@ -2,7 +2,8 @@
 #define SFML_WIDGET_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include <gtkmm/widget.h>
+#include <gtkmm.h>
+#include <iostream>
 
 class SFML_Widget : public Gtk::Widget
 {

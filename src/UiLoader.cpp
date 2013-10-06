@@ -45,7 +45,7 @@ UiLoader::UiLoader(string UiPath) {
     builder->get_widget("size_x", pSizeX);
     builder->get_widget("size_y", pSizeY);
     builder->get_widget("rotation_x", pRotX);
-    builder->get_widget("rotation_y", pRotX);
+    builder->get_widget("rotation_y", pRotY);
 
     // Frames with existing Objects
     builder->get_widget("ObjectFrame", pObjFrame);

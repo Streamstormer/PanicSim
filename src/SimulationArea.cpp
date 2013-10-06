@@ -66,9 +66,9 @@ void SimulationArea::resize()
     renderWindow.setView(view);
 }
 
-void SimulationArea::setObject(enum staticObjects object, int x, int y)
+void SimulationArea::setObject(enum staticObjects object, sf::Vector2f size, sf::Vector2f rotation)
 {
-    example = new sf::CircleShape(x);
+    example = new sf::CircleShape(size.x);
 
     // set the shape color to green
     example->setFillColor(sf::Color(100, 250, 50));
