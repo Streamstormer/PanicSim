@@ -5,10 +5,10 @@
 #include <iostream>
 #include <math.h>
 
-class c_static_object
+class ClStaticObject
 {
 public:
-    c_static_object(const sf::RectangleShape Rectconst, const sf::Vector2<float>& Position);
+    ClStaticObject(const sf::RectangleShape Rectconst, const sf::Vector2<float>& Position);
     void draw(sf::RenderWindow& window);
     void update(  );
     bool isInRange( const sf::Vector2f & massPoint, float radius);

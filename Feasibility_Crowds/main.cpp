@@ -17,9 +17,9 @@ int main()
     Area.insertStObj(sf::Vector2f(150,80), sf::Vector2f(40,400));
 
     ClCrowdManager CrowdManager(&Area);
-    CrowdManager.CreateCrowd(sf::Vector2f(300,250),150,1);
-    CrowdManager.CreateCrowd(sf::Vector2f(550,350),150,2);
-    CrowdManager.CreateCrowd(sf::Vector2f(250,523),150,0);
+    CrowdManager.CreateCrowd(sf::Vector2f(300,250),150,100);
+    CrowdManager.CreateCrowd(sf::Vector2f(550,350),150,200);
+    CrowdManager.CreateCrowd(sf::Vector2f(250,523),150,1500);
 
     sf::Clock clock;
     while (window.isOpen())

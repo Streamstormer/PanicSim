@@ -5,8 +5,7 @@
 #include "Area.hpp"
 #include <SFML/Graphics.hpp>
 #include <math.h>
-#define MAXPPL 500
-#define MAXSPEED 0.1f
+#include <Vector>
 
 struct StrPeople
 {
@@ -17,7 +16,7 @@ struct StrPeople
 class ClCrowd
 {
 public:
-    ClCrowd(float radius, ClArea * area, sf::Color Color, sf::Vector2f position);
+    ClCrowd(float radius, ClArea * area, sf::Color Color, sf::Vector2f position, int numOfPeoples);
     ~ClCrowd();
 
     void Update(sf::Vector2i position,float frameTime);
@@ -26,16 +25,20 @@ public:
 
     const sf::Vector2f  getMassPoint();
     float getRadius();
+
+    const std::vector<StrPeople *> & getPeoples() {return peoples;}
 private:
-    int j;
+    /// ToDo : Add computer independent force toggeling
+    int toggleForce; // used to calculate different forces each time ClCrowd is called
+
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );
     sf::Vector2f Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destination, const sf::Vector2f & CurVelocity);
     float invert(float Max, float Current);
-    sf::Vector2f DistanceForce(StrPeople* start,  int current);
+    sf::Vector2f DistanceForce(int current);
     //sf::Vector2f Cohesion(StrPeople* start, const sf::Vector2f & massPoint, int current);
 
     ClArea *Area; // used for collision detection
-    struct StrPeople peoples[MAXPPL];
+    std::vector<StrPeople *> peoples;
     sf::Vector2f position;
     float radius;
 

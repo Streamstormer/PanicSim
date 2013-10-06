@@ -1,7 +1,7 @@
 #include "Crowd.hpp"
 
 
-ClCrowd::ClCrowd(float radius, ClArea * area, sf::Color Color, sf::Vector2f position)
+ClCrowd::ClCrowd(float radius, ClArea * area, sf::Color Color, sf::Vector2f position, int numOfPeoples)
 {
     this->position = position;
     this->Color = Color;
@@ -11,49 +11,59 @@ ClCrowd::ClCrowd(float radius, ClArea * area, sf::Color Color, sf::Vector2f posi
     Area = area;
 
     //randomize the position of the people
-    for (int n = 0; n < MAXPPL; n++)
+    for (int n = 0; n < numOfPeoples; n++)
     {
-        peoples[n].position.x = std::rand();
-        peoples[n].position.x = (int)peoples[n].position.x % (int)(2*radius);
-        peoples[n].position.x -= radius;
-        peoples[n].position.y = std::rand();
-        peoples[n].position.y = (int)peoples[n].position.y % (int)(2*radius);
-        peoples[n].position.y -= radius;
+        StrPeople *newPerson = new StrPeople;
 
-        peoples[n].position.x += mP.x;
-        peoples[n].position.y += mP.y;
 
-        peoples[n].forceVec.x = peoples[n].forceVec.y =0;
+        newPerson->position.x = std::rand();
+        newPerson->position.x = (int)newPerson->position.x % (int)(2*radius);
+        newPerson->position.x -= radius;
+        newPerson->position.y = std::rand();
+        newPerson->position.y = (int)newPerson->position.y % (int)(2*radius);
+        newPerson->position.y -= radius;
 
+        newPerson->position.x += mP.x;
+        newPerson->position.y += mP.y;
+
+        newPerson->forceVec.x = newPerson->forceVec.y =0;
+
+        peoples.push_back(newPerson);
 
     }
 
 }
-ClCrowd::~ClCrowd() {}
+ClCrowd::~ClCrowd()
+{
+    for (int n = 0; n < peoples.size(); n++)
+    {
+        delete peoples[n];
+    }
+}
 
 void  ClCrowd::Update(float frameTime)
 {
 
-    j++;
+    toggleForce++;
     float radius = 150;
     sf::Vector2f mP = this->getMassPoint();
 
-    for (int n = 0; n < MAXPPL; n++)
+    for (int n = 0; n < peoples.size(); n++)
     {
-        if(j%2)
+        if(toggleForce%2)
         {
-            peoples[n].forceVec =  Seek( peoples[n].position, this->getMassPoint(), peoples[n].forceVec);
-            peoples[n].forceVec.x *= 2;
-            peoples[n].forceVec.y *= 2;
+            peoples[n]->forceVec =  Seek( peoples[n]->position, this->getMassPoint(), peoples[n]->forceVec);
+            peoples[n]->forceVec.x *= 2;
+            peoples[n]->forceVec.y *= 2;
         }
         else
         {
-            peoples[n].forceVec = DistanceForce(peoples, n);
-            peoples[n].forceVec.x *= 2.5;
-            peoples[n].forceVec.y *= 2.5;
+            peoples[n]->forceVec = DistanceForce(n);
+            peoples[n]->forceVec.x *= 2.5;
+            peoples[n]->forceVec.y *= 2.5;
         }
-        peoples[n].position.x += peoples[n].forceVec.x * frameTime *0.1;
-        peoples[n].position.y += peoples[n].forceVec.y * frameTime *0.1;
+        peoples[n]->position.x += peoples[n]->forceVec.x * frameTime *0.1;
+        peoples[n]->position.y += peoples[n]->forceVec.y * frameTime *0.1;
 
   //      if (radius < sqrt(((peoples[n].position.x - mP.x)*(peoples[n].position.x - mP.x))+
   //                       ((peoples[n].position.y - mP.y)*(peoples[n].position.y - mP.y))))
@@ -62,10 +72,10 @@ void  ClCrowd::Update(float frameTime)
   //          peoples[n].position.y = mP.y;
   //      }
 
-        if(!Area->ValidPoint(peoples[n].position))
+        if(!Area->validPoint(peoples[n]->position))
         {
-        peoples[n].position.x -= peoples[n].forceVec.x * frameTime;
-        peoples[n].position.y -= peoples[n].forceVec.y * frameTime;
+            peoples[n]->position.x -= peoples[n]->forceVec.x * frameTime;
+            peoples[n]->position.y -= peoples[n]->forceVec.y * frameTime;
         }
 
 
@@ -85,9 +95,9 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
 
     personShape.setFillColor(Color);
     personShape.setRadius(1);
-    for(int n = 0; n< MAXPPL; n++)
+    for(int n = 0; n< peoples.size(); n++)
     {
-        personShape.setPosition(peoples[n].position);
+        personShape.setPosition(peoples[n]->position);
         window.draw(personShape);
     }
     personShape.setPosition(getMassPoint());
@@ -130,7 +140,7 @@ float Factor = 1;
     TargetPos.y -= Destination.y;
 
         Factor = TargetPos.x*TargetPos.x + TargetPos.y *TargetPos.y;
-        Factor /= MAXPPL*100;
+        Factor /= peoples.size()*100;
         if (Factor > 1)
         {
             Factor = 1;
@@ -159,7 +169,7 @@ float ClCrowd::invert(float Max, float Current)
     return abs(Current - Max);
 }
 
-sf::Vector2f ClCrowd::DistanceForce(StrPeople* start,  int current)
+sf::Vector2f ClCrowd::DistanceForce(int current)
 {
 
     int n;
@@ -169,18 +179,18 @@ sf::Vector2f ClCrowd::DistanceForce(StrPeople* start,  int current)
     float helpVar;
     int NbCount = 0;
 
-    for ( n = 0; n< MAXPPL; n++)
+    for ( n = 0; n< peoples.size(); n++)
     {
         if ( n != current)
         {
-            delta.x =   (start[current].position.x-start[n].position.x );
-            delta.y =   (start[current].position.y-start[n].position.y );
+            delta.x =   (peoples[current]->position.x-peoples[n]->position.x );
+            delta.y =   (peoples[current]->position.y-peoples[n]->position.y );
 
-            if (((delta.x*delta.x) + (delta.y * delta.y)) < 220)
+            if (((delta.x*delta.x) + (delta.y * delta.y)) < 120)
             {
                 helpVar = sqrt((delta.x*delta.x) + (delta.y * delta.y));
                 Vec2DNormalize(&delta);
-                helpVar = invert(sqrt(220),helpVar);
+                helpVar = invert(sqrt(120),helpVar);
 
                 force.x += delta.x *helpVar;
                 force.y += delta.y *helpVar;

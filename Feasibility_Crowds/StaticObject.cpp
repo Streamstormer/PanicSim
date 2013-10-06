@@ -1,5 +1,5 @@
-#include "static_object.hpp"
-c_static_object::c_static_object(const sf::RectangleShape Rectconst,const sf::Vector2<float>& Position)
+#include "StaticObject.hpp"
+ClStaticObject::ClStaticObject(const sf::RectangleShape Rectconst,const sf::Vector2<float>& Position)
 {
     sf::Vector2f RectSize = Rectconst.getSize();
 
@@ -12,7 +12,7 @@ c_static_object::c_static_object(const sf::RectangleShape Rectconst,const sf::Ve
     updateCenter();
 
 }
-void c_static_object::draw(sf::RenderWindow& window)
+void ClStaticObject::draw(sf::RenderWindow& window)
 {
     sf::CircleShape Shape(1);
     Shape.setFillColor(sf::Color::White);
@@ -30,7 +30,7 @@ void c_static_object::draw(sf::RenderWindow& window)
         }
     }
 }
-void c_static_object::update( )
+void ClStaticObject::update( )
 {
     Rect.setFillColor(sf::Color::Red);
     if (highlight)
@@ -40,7 +40,7 @@ void c_static_object::update( )
     highlight = false;
 }
 
-bool c_static_object::isInRange( const sf::Vector2f & massPoint, float radius)
+bool ClStaticObject::isInRange( const sf::Vector2f & massPoint, float radius)
 {
     sf::Rect<float> kreis_rect;
     kreis_rect.top = massPoint.y-radius;
@@ -54,7 +54,7 @@ bool c_static_object::isInRange( const sf::Vector2f & massPoint, float radius)
 }
 
 //if a circle meets a rectangle
-float c_static_object::intersection_circle(const sf::Vector2f & massPoint, float radius)
+float ClStaticObject::intersection_circle(const sf::Vector2f & massPoint, float radius)
 {
     //calculate function to localize the edges of a static object
     //calculate intersection points
@@ -99,7 +99,7 @@ float c_static_object::intersection_circle(const sf::Vector2f & massPoint, float
 
 }
 
-void c_static_object::updateCenter()
+void ClStaticObject::updateCenter()
 {
     Center = Rect.getPosition();
     sf::Vector2f Size = Rect.getSize();
@@ -107,7 +107,7 @@ void c_static_object::updateCenter()
     Center.y += Size.y / 2;
 }
 
-const sf::Vector3f c_static_object::calculateLineFunc(const sf::Vector2f & p1, const sf::Vector2f & p2)
+const sf::Vector3f ClStaticObject::calculateLineFunc(const sf::Vector2f & p1, const sf::Vector2f & p2)
 {
     // gives back a line function of the form y = mx+c
     // m = LineFunc.x
@@ -138,7 +138,7 @@ const sf::Vector3f c_static_object::calculateLineFunc(const sf::Vector2f & p1, c
     LineFunc.z = -1;
     return LineFunc;
 }
-const sf::Vector3f c_static_object::solveQuadrEquation(const sf::Vector3f & incoming)
+const sf::Vector3f ClStaticObject::solveQuadrEquation(const sf::Vector3f & incoming)
 {
     // A x^2 + B x + c = 0
     // A > 0
@@ -174,7 +174,7 @@ const sf::Vector3f c_static_object::solveQuadrEquation(const sf::Vector3f & inco
     return solution;
 }
 
-void c_static_object::calculateIntersectionPoints( const sf::Vector3f & Outline, const sf::Vector2f & massPoint, float radius )
+void ClStaticObject::calculateIntersectionPoints( const sf::Vector3f & Outline, const sf::Vector2f & massPoint, float radius )
 {
         sf::Vector3f intersEq;
         int n = 0;
