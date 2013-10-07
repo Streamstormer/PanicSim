@@ -8,7 +8,7 @@
 class ClStaticObject
 {
 public:
-    ClStaticObject(const sf::RectangleShape Rectconst, const sf::Vector2<float>& Position);
+    ClStaticObject(sf::RectangleShape *Rectconst);
     void draw(sf::RenderWindow& window);
     void update(  );
     bool isInRange( const sf::Vector2f & massPoint, float radius);
@@ -20,7 +20,7 @@ public:
     }
     bool Intersects( const sf::Vector2f  &Position)
     {
-        return Rect.getGlobalBounds().contains(Position);
+        return Rect->getGlobalBounds().contains(Position);
     }
 private:
 
@@ -29,7 +29,7 @@ private:
     const sf::Vector3f solveQuadrEquation(const sf::Vector3f & incoming);
     void calculateIntersectionPoints( const sf::Vector3f & Outline, const sf::Vector2f & massPoint, float radius );
 
-    sf::RectangleShape Rect;
+    sf::RectangleShape *Rect;
     sf::Vector2f Center;
     int id;
     float rectRadius;

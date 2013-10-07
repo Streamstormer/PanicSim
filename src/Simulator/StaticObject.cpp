@@ -1,9 +1,9 @@
 #include "../../include/Simulator/StaticObject.hpp"
 
 
-ClStaticObject::ClStaticObject(const sf::RectangleShape Rectconst,const sf::Vector2<float>& Position)
+ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst)
 {
-    sf::Vector2f RectSize = Rectconst.getSize();
+    sf::Vector2f RectSize = Rectconst->getSize();
 
     if (RectSize.x > RectSize.y)
         rectRadius = RectSize.x /2;
@@ -19,7 +19,7 @@ void ClStaticObject::draw(sf::RenderWindow& window)
     sf::CircleShape Shape(1);
     Shape.setFillColor(sf::Color::White);
     Shape.setPosition(Center);
-    window.draw(Rect);
+    window.draw(*Rect);
     window.draw(Shape);
     Shape.setFillColor(sf::Color::Red);
     for(int n=0; n<8; n++)
@@ -34,10 +34,10 @@ void ClStaticObject::draw(sf::RenderWindow& window)
 }
 void ClStaticObject::update( )
 {
-    Rect.setFillColor(sf::Color::Red);
+    Rect->setFillColor(sf::Color::Red);
     if (highlight)
     {
-        Rect.setFillColor(sf::Color::Green);
+        Rect->setFillColor(sf::Color::Green);
     }
     highlight = false;
 }
@@ -50,7 +50,7 @@ bool ClStaticObject::isInRange( const sf::Vector2f & massPoint, float radius)
     kreis_rect.width = 2*radius;
     kreis_rect.height = 2*radius;
 
-    highlight = kreis_rect.intersects(Rect.getGlobalBounds());
+    highlight = kreis_rect.intersects(Rect->getGlobalBounds());
     return highlight;
 
 }
@@ -70,7 +70,7 @@ float ClStaticObject::intersection_circle(const sf::Vector2f & massPoint, float 
     //1.
 
 
-    sf::FloatRect borders = Rect.getGlobalBounds();
+    sf::FloatRect borders = Rect->getGlobalBounds();
     sf::Vector2f topLeft    (borders.left                   , borders.top );
     sf::Vector2f topRight   (borders.left + borders.width   , borders.top );
     sf::Vector2f downLeft   (borders.left                   , borders.top + borders.height);
@@ -103,8 +103,8 @@ float ClStaticObject::intersection_circle(const sf::Vector2f & massPoint, float 
 
 void ClStaticObject::updateCenter()
 {
-    Center = Rect.getPosition();
-    sf::Vector2f Size = Rect.getSize();
+    Center = Rect->getPosition();
+    sf::Vector2f Size = Rect->getSize();
     Center.x += Size.x / 2;
     Center.y += Size.y / 2;
 }

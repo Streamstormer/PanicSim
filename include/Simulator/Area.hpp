@@ -4,13 +4,15 @@
 #include "StaticObject.hpp"
 #include <vector>
 
+enum staticObjects{Stage, Bar, WC, Wall, Fence };
+
 class ClArea
 {
     public:
     ClArea() {}
     ~ClArea();
 
-    void insertStObj(const sf::Vector2f & sizeOfRectangle,const sf::Vector2f & positionOfRectangle);
+    void insertStObj(enum staticObjects, const sf::Vector2f & sizeOfRectangle,const sf::Vector2f & positionOfRectangle);
     void draw(sf::RenderWindow& window);
     bool validPoint(sf::Vector2f point);
 
