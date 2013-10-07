@@ -1,4 +1,4 @@
-#include "Crowd.hpp"
+#include "../../include/Simulator/Crowd.hpp"
 
 
 ClCrowd::ClCrowd(float radius, ClArea * area, sf::Color Color, sf::Vector2f position, int numOfPeoples)

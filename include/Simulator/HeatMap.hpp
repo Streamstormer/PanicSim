@@ -2,7 +2,7 @@
 #define HEATMAP_HPP_INCLUDED
 
 #include "Crowd.hpp"
-#include <Vector>
+#include <vector>
 
 class ClHeatMap
 {

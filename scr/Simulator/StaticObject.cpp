@@ -1,4 +1,6 @@
-#include "StaticObject.hpp"
+#include "../../include/Simulator/StaticObject.hpp"
+
+
 ClStaticObject::ClStaticObject(const sf::RectangleShape Rectconst,const sf::Vector2<float>& Position)
 {
     sf::Vector2f RectSize = Rectconst.getSize();

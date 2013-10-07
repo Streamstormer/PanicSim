@@ -5,7 +5,7 @@
 #include "Area.hpp"
 #include <SFML/Graphics.hpp>
 #include <math.h>
-#include <Vector>
+#include <vector>
 
 struct StrPeople
 {

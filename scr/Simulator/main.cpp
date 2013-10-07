@@ -1,7 +1,7 @@
 #include <iostream>
-#include "Crowd.hpp"
-#include "Area.hpp"
-#include "CrowdManager.hpp"
+#include "../../include/Simulator/Crowd.hpp"
+#include "../../include/Simulator/Area.hpp"
+#include "../../include/Simulator/CrowdManager.hpp"
 
 int main()
 {
