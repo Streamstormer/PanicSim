@@ -35,6 +35,7 @@ UiLoader::UiLoader(string UiPath)
     // New static Objects
     builder->get_widget("bar", pBar);
     builder->get_widget("WC", pWC);
+    builder->get_widget("Stage", pStage);
     builder->get_widget("Fence", pFence);
     builder->get_widget("Wall", pWall);
 
@@ -52,6 +53,8 @@ UiLoader::UiLoader(string UiPath)
 
     builder->get_widget("AreaSize_x", pAreaX);
     builder->get_widget("AreaSize_y", pAreaY);
+
+    builder->get_widget("ObjectBox", pBox);
 
     pLoadFile->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::loadFile));
     pSaveFile->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::SaveFile));

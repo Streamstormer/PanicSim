@@ -1,6 +1,7 @@
 #include "../../include/Editor/SimulationArea.hpp"
 
-SimulationArea::SimulationArea(Gtk::Frame& AreaFrame): SFML_Widget(sf::VideoMode(640, 480))
+SimulationArea::SimulationArea(Gtk::Frame& AreaFrame, Gtk::Box& ObjectBox)
+                               : SFML_Widget(sf::VideoMode(640, 480))
 {
     // add this widget to Area Frame..
     Gtk::Container *inFrame = (Gtk::Container*) AreaFrame.get_child();
@@ -8,8 +9,9 @@ SimulationArea::SimulationArea(Gtk::Frame& AreaFrame): SFML_Widget(sf::VideoMode
     // .. and show it
     show();
 
-    example = 0;
-
+    Area = new ClArea();
+    this->ObjectBox = &ObjectBox;
+    selectedID = 0;
 
     // Let the animate method be called every 25ms
     // Note: MovingCircle::animate() doesn't return any value, but signal_timeout() expects
@@ -35,14 +37,15 @@ SimulationArea::SimulationArea(Gtk::Frame& AreaFrame): SFML_Widget(sf::VideoMode
 
 void SimulationArea::animate()
 {
-    if(example)
+    if(selectedID){
         if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             sf::Vector2i pos = sf::Mouse::getPosition(renderWindow);
             if(pos.x > 0 && pos.y > 0)
-                example->setPosition(pos.x, pos.y);
-            std::cout<<example->getPosition().x<<std::endl;
-
+                Area->setPosition(selectedID, sf::Vector2<float>(pos.x, pos.y));
+            sf::Vector2f temp = Area->getPosition(selectedID);
+            std::cout<<temp.x<<std::endl;
         }
+    }
     // make sfmlWidget invalide so that it will be redrawn
     invalidate();
 }
@@ -53,8 +56,7 @@ void SimulationArea::draw()
 {
     // clear widget
     renderWindow.clear();
-    if(example)
-        renderWindow.draw(*example);
+    Area->draw(renderWindow);
     display();
 }
 
@@ -69,11 +71,8 @@ void SimulationArea::resize()
     renderWindow.setView(view);
 }
 
-void SimulationArea::setObject(enum staticObjects object, sf::Vector2f size, sf::Vector2f rotation)
+void SimulationArea::setObject(enum staticObjects object, sf::Vector2f position, sf::Vector2f size, float rotation)
 {
-    //example usage
-    example = new sf::CircleShape(size.x);
+    selectedID = Area->insertStObj(object, size, position, rotation);
 
-    // set the shape color to green
-    example->setFillColor(sf::Color(100, 250, 50));
 }

@@ -4,7 +4,7 @@
 #include "StaticObject.hpp"
 #include <vector>
 
-enum staticObjects{Stage, Bar, WC, Wall, Fence };
+enum staticObjects{STAGE, BAR, WC, WALL, FENCE};
 
 class ClArea
 {
@@ -13,7 +13,8 @@ class ClArea
     ClArea() {id = 0;}
     ~ClArea();
 
-    int insertStObj(enum staticObjects, const sf::Vector2f & sizeOfRectangle,const sf::Vector2f & positionOfRectangle);
+    int insertStObj(enum staticObjects, const sf::Vector2f & sizeOfRectangle,
+                    const sf::Vector2f & positionOfRectangle, float rotAngle);
     void draw(sf::RenderWindow& window);
     bool validPoint(sf::Vector2f point);
 
@@ -24,7 +25,7 @@ class ClArea
 
     const sf::Vector2f & getPosition(int id);   // returns position of StaticObject via id
     const sf::Vector2f & getSize(int id);       // returns size of StaticObject via id
-    const float getRotation(int id);            // returns rotation of StaticObject via id
+    float getRotation(int id);            // returns rotation of StaticObject via id
 
     /// Set Methods for StaticObjects attributes via id and new value
     /// for the editor

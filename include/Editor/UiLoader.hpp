@@ -30,6 +30,7 @@ protected:
 
     Gtk::Button *pBar;
     Gtk::Button *pWC;
+    Gtk::Button *pStage;
     Gtk::Button *pFence;
     Gtk::Button *pWall;
 
