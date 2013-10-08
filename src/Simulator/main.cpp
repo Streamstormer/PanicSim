@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     ClCrowdManager CrowdManager(&Area);
     CrowdManager.CreateCrowd(sf::Vector2f(300,250),150,100);
     CrowdManager.CreateCrowd(sf::Vector2f(550,350),150,200);
-    CrowdManager.CreateCrowd(sf::Vector2f(250,523),150,1500);
+    CrowdManager.CreateCrowd(sf::Vector2f(250,523),150,150);
 
     sf::Clock clock;
     while (window.isOpen())
@@ -53,7 +53,9 @@ int main(int argc, char *argv[])
         }
 
         CrowdManager.Update(elapsed.asMilliseconds());
-
+        sf::Vector2f temp = Area.getPosition(1);
+        temp.x += 0.01;
+        Area.setPosition(1,temp);
 
         ///Render
         window.clear();

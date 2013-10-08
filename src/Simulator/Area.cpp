@@ -1,31 +1,31 @@
 #include "../../include/Simulator/Area.hpp"
     ClArea::~ClArea()
     {
-        for(int n=0; n < sobjects.size(); n++)
+        for(unsigned int n=0; n < sobjects.size(); n++)
         {
             delete sobjects[n];
-
         }
     }
 
-    void ClArea::insertStObj(enum staticObjects, const sf::Vector2f & sizeOfRectangle,const sf::Vector2f & positionOfRectangle)
+    int ClArea::insertStObj(enum staticObjects, const sf::Vector2f & sizeOfRectangle,const sf::Vector2f & positionOfRectangle)
     {
+        id++;
         sf::RectangleShape *tempRe = new sf::RectangleShape();
         tempRe->setPosition(positionOfRectangle);
         tempRe->setSize(sizeOfRectangle);
-        ClStaticObject *tempSt = new ClStaticObject(tempRe);
+        ClStaticObject *tempSt = new ClStaticObject(tempRe, id);
         sobjects.push_back(tempSt);
+        return id;
     }
 
 
     void ClArea::draw(sf::RenderWindow& window)
     {
-        for(int n=0; n < sobjects.size(); n++)
+        for(unsigned int n=0; n < sobjects.size(); n++)
         {
             sobjects[n]->draw(window);
 
         }
-
 
     }
     bool ClArea::validPoint(sf::Vector2f point)
@@ -40,3 +40,71 @@
          return true;
     }
 
+/// Get Methods for static Object attributes via the id
+/// for the editor
+
+ const sf::Vector2f & ClArea::getPosition(int id)
+    {
+        for (unsigned int n = 0; n < sobjects.size();n++)
+        {
+            if (sobjects[n]->getID() == id)
+            {
+                return sobjects[n]->getPosition();
+            }
+        }
+    }
+    const sf::Vector2f & ClArea::getSize(int id)
+    {
+        for (unsigned int n = 0; n < sobjects.size();n++)
+        {
+            if (sobjects[n]->getID() == id)
+            {
+                return sobjects[n]->getSize();
+            }
+        }
+    }
+    const float ClArea::getRotation(int id)
+    {
+        for (unsigned int n = 0; n < sobjects.size();n++)
+        {
+            if (sobjects[n]->getID() == id)
+            {
+                return sobjects[n]->getRotation();
+            }
+        }
+    }
+
+
+    /// Set Methods for StaticObjects attributes via id and new value
+    /// for the editor
+
+    void ClArea::setPosition(int id, const sf::Vector2f &position) // sets position of StaticObject via id
+    {
+        for (unsigned int n = 0; n < sobjects.size();n++)
+        {
+            if (sobjects[n]->getID() == id)
+            {
+                sobjects[n]->setPosition(position);
+            }
+        }
+    }
+    void ClArea::setSize(int id, const sf::Vector2f &newSize)         // sets size of StaticObject via id
+    {
+        for (unsigned int n = 0; n < sobjects.size();n++)
+        {
+            if (sobjects[n]->getID() == id)
+            {
+                sobjects[n]->setSize(newSize);
+            }
+        }
+    }
+    void ClArea::setRotation(int id, float rotation)               // sets rotation of StaticObject via id
+    {
+        for (unsigned int n = 0; n < sobjects.size();n++)
+        {
+            if (sobjects[n]->getID() == id)
+            {
+                sobjects[n]->setRotation(rotation);
+            }
+        }
+    }

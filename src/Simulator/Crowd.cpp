@@ -35,7 +35,7 @@ ClCrowd::ClCrowd(float radius, ClArea * area, sf::Color Color, sf::Vector2f posi
 }
 ClCrowd::~ClCrowd()
 {
-    for (int n = 0; n < peoples.size(); n++)
+    for (unsigned int n = 0; n < peoples.size(); n++)
     {
         delete peoples[n];
     }
@@ -48,7 +48,7 @@ void  ClCrowd::Update(float frameTime)
     float radius = 150;
     sf::Vector2f mP = this->getMassPoint();
 
-    for (int n = 0; n < peoples.size(); n++)
+    for (unsigned int n = 0; n < peoples.size(); n++)
     {
         if(toggleForce%2)
         {
@@ -95,7 +95,7 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
 
     personShape.setFillColor(Color);
     personShape.setRadius(1);
-    for(int n = 0; n< peoples.size(); n++)
+    for(unsigned int n = 0; n< peoples.size(); n++)
     {
         personShape.setPosition(peoples[n]->position);
         window.draw(personShape);
