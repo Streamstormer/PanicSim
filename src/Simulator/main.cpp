@@ -32,9 +32,9 @@ int main(int argc, char *argv[])
     Position.y = 1000.0f;
 
     ClArea Area;
-    Area.insertStObj(Stage, sf::Vector2f(50,100), sf::Vector2f(250,120));
-    Area.insertStObj(Bar, sf::Vector2f(120,350), sf::Vector2f(500,200));
-    Area.insertStObj(WC, sf::Vector2f(150,80), sf::Vector2f(40,400));
+    Area.insertStObj(STAGE, sf::Vector2f(50,100), sf::Vector2f(250,120),90);
+    Area.insertStObj(BAR, sf::Vector2f(120,350), sf::Vector2f(500,200),123);
+    Area.insertStObj(WC, sf::Vector2f(150,80), sf::Vector2f(40,400),0);
 
     ClCrowdManager CrowdManager(&Area);
     CrowdManager.CreateCrowd(sf::Vector2f(300,250),150,100);
@@ -57,9 +57,6 @@ int main(int argc, char *argv[])
         }
 
         CrowdManager.Update(elapsed.asMilliseconds());
-        sf::Vector2f temp = Area.getPosition(1);
-        temp.x += 0.01;
-        Area.setPosition(1,temp);
         GUI.update(window);
 
         ///Render
