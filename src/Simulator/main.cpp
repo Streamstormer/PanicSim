@@ -4,6 +4,7 @@
 #include "../../include/Simulator/Crowd.hpp"
 #include "../../include/Simulator/Area.hpp"
 #include "../../include/Simulator/CrowdManager.hpp"
+#include "../../include/Simulator/SimpleGUI.hpp"
 
 using namespace std;
 
@@ -24,7 +25,8 @@ int main(int argc, char *argv[])
     }
 
   //  sf::VideoMode Mode = sf::VideoMode::getFullscreenModes();
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Panic Sim!");
+    sf::VideoMode Mode = sf::VideoMode::getDesktopMode();
+    sf::RenderWindow window(Mode, "Panic Sim!");
     sf::Vector2f Position;
     Position.x = 1000.0f;
     Position.y = 1000.0f;
@@ -38,6 +40,8 @@ int main(int argc, char *argv[])
     CrowdManager.CreateCrowd(sf::Vector2f(300,250),150,100);
     CrowdManager.CreateCrowd(sf::Vector2f(550,350),150,200);
     CrowdManager.CreateCrowd(sf::Vector2f(250,523),150,150);
+
+    ClSimpleGUI GUI(sf::Vector2f(Mode.width, Mode.height));
 
     sf::Clock clock;
     while (window.isOpen())
@@ -56,11 +60,14 @@ int main(int argc, char *argv[])
         sf::Vector2f temp = Area.getPosition(1);
         temp.x += 0.01;
         Area.setPosition(1,temp);
+        GUI.update(window);
 
         ///Render
         window.clear();
         CrowdManager.Draw(window);
         Area.draw(window);
+        GUI.draw(window);
+
         window.display();
     }
     return 0;

@@ -30,16 +30,11 @@ class ClCrowdManager
 
         void Update(float frameTime)
         {
-            /// Delete this section
-            if (drawClock.getElapsedTime().asSeconds() > 5 && temp == false)
-            {
-                temp = true;
-                for (int n = 0; n < Crowds.size(); n++)
-                pHeatMap->registerCrowd(Crowds[n]);
-            }
+            // Update HeatMap
 
-            /// End Delete
+            pHeatMap->update();
 
+            // Update Crowds
 
             int n;
             for(n=0;n<Crowds.size();n++)
@@ -73,24 +68,25 @@ class ClCrowdManager
             j++;
 
             // for debugging puposes: each crowd gets a different color
-            if(people==0)
+            if(j==0)
             {
             ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::White,position, people);
+            pHeatMap->registerCrowd(Crowd);
             Crowds.push_back(Crowd);
             }
-            else if (people==1)
+            else if (j==1)
             {
 
             ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Red,position, people);
+            pHeatMap->registerCrowd(Crowd);
             Crowds.push_back(Crowd);
 
             }
             else
             {
-
             ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Green,position, people);
+            pHeatMap->registerCrowd(Crowd);
             Crowds.push_back(Crowd);
-
             }
 
         }

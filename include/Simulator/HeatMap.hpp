@@ -41,6 +41,8 @@ public:
 
     void draw(sf::RenderWindow& window)
     {
+        if(doDraw==true)
+        {
         sf::RectangleShape colorCell(cellSize);
         for (int x = 0; x < cellNumber.x ; x++)
         {
@@ -50,6 +52,7 @@ public:
                 colorCell.setFillColor(getColor(this->SortedPeoples[x+y*cellNumber.x].size()));
                 window.draw(colorCell);
             }
+        }
         }
     }
 
@@ -80,9 +83,19 @@ public:
         }
     }
 
+    static void toggleDraw()
+    {
+        if (doDraw)
+        {
+            doDraw = false;
+        }
+        else doDraw = true;
+    }
+
 private:
     //Calculates the Color that fits to the number of people in the current Cell
-    // needs rework to look cool
+    static bool doDraw ;
+
     sf::Color getColor(int People)
     {
         sf::Color background;
@@ -117,5 +130,6 @@ private:
     sf::Vector2i MapSize;
     sf::Vector2f cellSize;
 };
+ bool ClHeatMap::doDraw = false;
 
 #endif // HEATMAP_HPP_INCLUDED
