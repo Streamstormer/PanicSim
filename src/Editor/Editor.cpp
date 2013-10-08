@@ -11,6 +11,8 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pWall->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Wall_clicked));
     pFence->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Fence_clicked));
 
+    pClear->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Clear_clicked));
+
     pSizeX->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 20.0, 0.1, 0.1));
     pSizeY->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 20.0, 0.1, 0.1));
     pRot->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 20.0, 0.1, 0.1));
@@ -47,4 +49,9 @@ void Editor::on_Button_Wall_clicked()
 {
     pObjLabel->set_label("Wall");
     SFMLArea->setObject(WALL, sf::Vector2<float>(0.,0.), sf::Vector2<float>(10.,10.), 0.0);
+}
+
+void Editor::on_Button_Clear_clicked()
+{
+    SFMLArea->clearArea();
 }

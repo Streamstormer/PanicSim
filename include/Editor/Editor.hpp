@@ -12,6 +12,7 @@ private:
     void on_Button_Stage_clicked();
     void on_Button_Wall_clicked();
     void on_Button_Fence_clicked();
+    void on_Button_Clear_clicked();
 
     SimulationArea *SFMLArea;
 public:

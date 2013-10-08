@@ -73,6 +73,37 @@ void SimulationArea::resize()
 
 void SimulationArea::setObject(enum staticObjects object, sf::Vector2f position, sf::Vector2f size, float rotation)
 {
-    selectedID = Area->insertStObj(object, size, position, rotation);
+    static int items = 0;
 
+    selectedID = Area->insertStObj(object, size, position, rotation);
+    string label;
+    switch(object){
+    case BAR:
+        label = "Bar";
+        break;
+    case STAGE:
+        label = "Stage";
+        break;
+    case WC:
+        label = "WC";
+        break;
+    case WALL:
+        label = "Wall";
+        break;
+    case FENCE:
+        label = "Fence";
+        break;
+    }
+
+    Gtk::CheckButton *checkObj = manage(new Gtk::CheckButton(string("Object Nr.")  + (char)(selectedID+0x30) + string(": ") + label));
+    ObjectBox->pack_start(*checkObj);
+    checkObj->show();
+}
+
+void SimulationArea::clearArea()
+{
+     selectedID = 0;
+     delete Area;
+     Area = new ClArea();
+     renderWindow.clear();
 }

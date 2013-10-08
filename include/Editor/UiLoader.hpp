@@ -52,7 +52,6 @@ protected:
     void SaveFile();
     void StartSim();
     void SaveTo();
-    void Clear();
 
 };
 #endif // UILOADER_HPP_INCLUDED

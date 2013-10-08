@@ -60,7 +60,7 @@ UiLoader::UiLoader(string UiPath)
     pSaveFile->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::SaveFile));
     pStartSim->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::StartSim));
     pSaveTo->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::SaveTo));
-    pClear->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::Clear));
+
 
 }
 
@@ -170,10 +170,5 @@ void UiLoader::StartSim()
         string start("PanicSim -f " + SimFile);
         cout<<system(start.c_str());
     }
-
-}
-
-void UiLoader::Clear()
-{
 
 }
