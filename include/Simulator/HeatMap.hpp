@@ -36,7 +36,7 @@ class ClHeatMap
         }
     }
     void draw(sf::RenderWindow& window)
-    {
+    {/*
         sf::RectangleShape colorCell(cellSize);
         for (int x = 0; x < cellNumber.x ; x++)
         {
@@ -46,7 +46,7 @@ class ClHeatMap
                 colorCell.setFillColor(getColor(this->SortedPeoples[x+y*cellNumber.x].size()));
                 window.draw(colorCell);
             }
-        }
+        }*/
     }
 
 
