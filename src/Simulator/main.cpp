@@ -1,10 +1,28 @@
 #include <iostream>
+#include <string>
+#include <getopt.h>
 #include "../../include/Simulator/Crowd.hpp"
 #include "../../include/Simulator/Area.hpp"
 #include "../../include/Simulator/CrowdManager.hpp"
 
-int main()
+using namespace std;
+
+int main(int argc, char *argv[])
 {
+    int opts;
+    while((opts = getopt(argc, argv, "f:")) != -1){
+        switch(opts){
+            case 'f': {
+                string filePath(optarg);
+                break;
+            }
+            default: {
+                cerr<<"Wrong option: "<<opts<<endl;
+                return EXIT_FAILURE;
+            }
+        }
+    }
+
   //  sf::VideoMode Mode = sf::VideoMode::getFullscreenModes();
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Panic Sim!");
     sf::Vector2f Position;
