@@ -1,10 +1,28 @@
 #include <iostream>
+#include <string>
+#include <getopt.h>
 #include "../../include/Simulator/Crowd.hpp"
 #include "../../include/Simulator/Area.hpp"
 #include "../../include/Simulator/CrowdManager.hpp"
 
-int main()
+using namespace std;
+
+int main(int argc, char *argv[])
 {
+    int opts;
+    while((opts = getopt(argc, argv, "f:")) != -1){
+        switch(opts){
+            case 'f': {
+                string filePath(optarg);
+                break;
+            }
+            default: {
+                cerr<<"Wrong option: "<<opts<<endl;
+                return EXIT_FAILURE;
+            }
+        }
+    }
+
   //  sf::VideoMode Mode = sf::VideoMode::getFullscreenModes();
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Panic Sim!");
     sf::Vector2f Position;
@@ -19,7 +37,7 @@ int main()
     ClCrowdManager CrowdManager(&Area);
     CrowdManager.CreateCrowd(sf::Vector2f(300,250),150,100);
     CrowdManager.CreateCrowd(sf::Vector2f(550,350),150,200);
-    CrowdManager.CreateCrowd(sf::Vector2f(250,523),150,1500);
+    CrowdManager.CreateCrowd(sf::Vector2f(250,523),150,150);
 
     sf::Clock clock;
     while (window.isOpen())
@@ -35,7 +53,9 @@ int main()
         }
 
         CrowdManager.Update(elapsed.asMilliseconds());
-
+        sf::Vector2f temp = Area.getPosition(1);
+        temp.x += 0.01;
+        Area.setPosition(1,temp);
 
         ///Render
         window.clear();
