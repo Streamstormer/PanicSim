@@ -3,8 +3,6 @@
 Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     UiLoader(UiPath)
 {
-    SFMLArea = new SimulationArea(*pSFMLFrame, *pBox);
-
     pBar->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Bar_clicked));
     pWC->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_WC_clicked));
     pStage->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Stage_clicked));
@@ -16,6 +14,8 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pSizeX->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 20.0, 0.1, 0.1));
     pSizeY->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 20.0, 0.1, 0.1));
     pRot->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 20.0, 0.1, 0.1));
+
+    SFMLArea = new SimulationArea(*pSFMLFrame, *pBox, pSizeX, pSizeY, pRot);
 
     app->run(*pWindow);
 }

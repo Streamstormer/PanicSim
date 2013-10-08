@@ -1,6 +1,7 @@
 #include "../../include/Editor/SimulationArea.hpp"
 
-SimulationArea::SimulationArea(Gtk::Frame& AreaFrame, Gtk::Box& ObjectBox)
+SimulationArea::SimulationArea(Gtk::Frame& AreaFrame, Gtk::Box& ObjectBox, Gtk::SpinButton *PosX,
+                               Gtk::SpinButton *PosY, Gtk::SpinButton *Rot)
                                : SFML_Widget(sf::VideoMode(640, 480))
 {
     // add this widget to Area Frame..
@@ -12,7 +13,9 @@ SimulationArea::SimulationArea(Gtk::Frame& AreaFrame, Gtk::Box& ObjectBox)
     Area = new ClArea();
     this->ObjectBox = &ObjectBox;
     selectedID = 0;
-
+    this->PosX = PosX;
+    this->PosY = PosY;
+    this->Rot = Rot;
     // Let the animate method be called every 25ms
     // Note: MovingCircle::animate() doesn't return any value, but signal_timeout() expects
     //       a boolean value.
@@ -38,6 +41,8 @@ SimulationArea::SimulationArea(Gtk::Frame& AreaFrame, Gtk::Box& ObjectBox)
 void SimulationArea::animate()
 {
     if(selectedID){
+        Area->setSize(selectedID, sf::Vector2f(PosX->get_value(), PosY->get_value()));
+        Area->setRotation(selectedID, Rot->get_value());
         if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             sf::Vector2i pos = sf::Mouse::getPosition(renderWindow);
             if(pos.x > 0 && pos.y > 0)
@@ -73,8 +78,6 @@ void SimulationArea::resize()
 
 void SimulationArea::setObject(enum staticObjects object, sf::Vector2f position, sf::Vector2f size, float rotation)
 {
-    static int items = 0;
-
     selectedID = Area->insertStObj(object, size, position, rotation);
     string label;
     switch(object){
