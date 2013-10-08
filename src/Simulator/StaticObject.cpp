@@ -1,6 +1,5 @@
 #include "../../include/Simulator/StaticObject.hpp"
 
-
 ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst)
 {
     sf::Vector2f RectSize = Rectconst->getSize();
@@ -14,6 +13,12 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst)
     updateCenter();
 
 }
+
+ClStaticObject::~ClStaticObject()
+{
+    delete Rect;
+}
+
 void ClStaticObject::draw(sf::RenderWindow& window)
 {
     sf::CircleShape Shape(1);

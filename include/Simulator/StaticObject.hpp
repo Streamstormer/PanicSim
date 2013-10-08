@@ -9,6 +9,7 @@ class ClStaticObject
 {
 public:
     ClStaticObject(sf::RectangleShape *Rectconst);
+    ~ClStaticObject();
     void draw(sf::RenderWindow& window);
     void update(  );
     bool isInRange( const sf::Vector2f & massPoint, float radius);
