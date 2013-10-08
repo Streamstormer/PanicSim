@@ -1,21 +1,20 @@
 #include "../../include/Editor/UiLoader.hpp"
 
-UiLoader::UiLoader(string UiPath) {
+UiLoader::UiLoader(string UiPath)
+{
     this->UiPath = UiPath;
     this->isOpen = false;
+    this->SimFile = " ";
 
-    try{
+    try {
         this->builder = Gtk::Builder::create_from_file(UiPath);
-    }
-    catch(const Glib::FileError& ex){
+    } catch(const Glib::FileError& ex) {
         std::cerr << "FileError: " << ex.what() << std::endl;
         exit(EXIT_FAILURE);
-    }
-    catch(const Glib::MarkupError& ex){
+    } catch(const Glib::MarkupError& ex) {
         std::cerr << "MarkupError: " << ex.what() << std::endl;
         exit(EXIT_FAILURE);
-    }
-    catch(const Gtk::BuilderError& ex){
+    } catch(const Gtk::BuilderError& ex) {
         std::cerr << "BuilderError: " << ex.what() << std::endl;
         exit(EXIT_FAILURE);
     }
@@ -44,8 +43,7 @@ UiLoader::UiLoader(string UiPath) {
     // object Attributes
     builder->get_widget("size_x", pSizeX);
     builder->get_widget("size_y", pSizeY);
-    builder->get_widget("rotation_x", pRotX);
-    builder->get_widget("rotation_y", pRotY);
+    builder->get_widget("rotation", pRot);
 
     // Frames with existing Objects
     builder->get_widget("ObjectFrame", pObjFrame);
@@ -58,17 +56,20 @@ UiLoader::UiLoader(string UiPath) {
     pLoadFile->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::loadFile));
     pSaveFile->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::SaveFile));
     pStartSim->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::StartSim));
+    pSaveTo->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::SaveTo));
+    pClear->signal_clicked().connect(sigc::mem_fun(*this, &UiLoader::Clear));
 
 }
 
-void UiLoader::loadFile() {
-    Gtk::FileChooserDialog dialog("Please choose a Simulation file to open",
+void UiLoader::loadFile()
+{
+    Gtk::FileChooserDialog dialog("Bitte wählen sie eine Simulations Datei aus",
                                   Gtk::FILE_CHOOSER_ACTION_OPEN);
     dialog.set_transient_for(*this);
 
     //Add response buttons the the dialog:
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    dialog.add_button("Select", Gtk::RESPONSE_OK);
+    dialog.add_button("Auswählen", Gtk::RESPONSE_OK);
 
     int result = dialog.run();
 
@@ -77,6 +78,7 @@ void UiLoader::loadFile() {
     case(Gtk::RESPONSE_OK): {
         cout << "Select clicked." << endl;
         cout << "File selected: " << dialog.get_filename()<< endl;
+        this->SimFile = dialog.get_filename();
         this->isOpen = true;
         break;
     }
@@ -91,7 +93,8 @@ void UiLoader::loadFile() {
     }
 }
 
-void UiLoader::SaveFile() {
+void UiLoader::SaveFile()
+{
 
     if(this->isOpen) {
         // do something
@@ -126,7 +129,48 @@ void UiLoader::SaveFile() {
     }
 }
 
-void UiLoader::StartSim() {
+void UiLoader::SaveTo()
+{
+    Gtk::FileChooserDialog dialog("Bitte wählen sie einen Ort zu spiechern aus",
+                                  Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
+    dialog.set_transient_for(*this);
+
+    //Add response buttons to the dialog:
+    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button("Auswählen", Gtk::RESPONSE_OK);
+
+    int result = dialog.run();
+
+    //Handle the response:
+    switch(result) {
+    case(Gtk::RESPONSE_OK):
+        std::cout << "Select clicked." << std::endl;
+        std::cout << "Folder selected: " << dialog.get_filename()
+                  << std::endl;
+        break;
+
+    case(Gtk::RESPONSE_CANCEL):
+        std::cout << "Cancel clicked." << std::endl;
+        break;
+
+    default:
+        std::cout << "Unexpected button clicked." << std::endl;
+        break;
+    }
+}
+
+void UiLoader::StartSim()
+{
+    if(this->SimFile == " ")
+        return;
+    else {
+        string start("PanicSim -f " + SimFile);
+        cout<<system(start.c_str());
+    }
 
 }
 
+void UiLoader::Clear()
+{
+
+}

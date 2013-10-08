@@ -14,6 +14,7 @@ class UiLoader : public Gtk::Window
 private:
    Glib::RefPtr<Gtk::Builder> builder;
    string UiPath;
+   string SimFile;
    bool isOpen;
 
 
@@ -37,8 +38,7 @@ protected:
 
     Gtk::SpinButton *pSizeX;
     Gtk::SpinButton *pSizeY;
-    Gtk::SpinButton *pRotX;
-    Gtk::SpinButton *pRotY;
+    Gtk::SpinButton *pRot;
     Gtk::SpinButton *pAreaX;
     Gtk::SpinButton *pAreaY;
 
@@ -50,6 +50,8 @@ protected:
     void loadFile();
     void SaveFile();
     void StartSim();
+    void SaveTo();
+    void Clear();
 
 };
 #endif // UILOADER_HPP_INCLUDED

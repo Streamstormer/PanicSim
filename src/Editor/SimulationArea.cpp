@@ -2,7 +2,7 @@
 
 SimulationArea::SimulationArea(Gtk::Frame& AreaFrame): SFML_Widget(sf::VideoMode(640, 480))
 {
-    // add this widget to window Box..
+    // add this widget to Area Frame..
     Gtk::Container *inFrame = (Gtk::Container*) AreaFrame.get_child();
     inFrame->add(*this);
     // .. and show it
@@ -11,13 +11,14 @@ SimulationArea::SimulationArea(Gtk::Frame& AreaFrame): SFML_Widget(sf::VideoMode
     example = 0;
 
 
-    // Let the animate method be called every 50ms
+    // Let the animate method be called every 25ms
     // Note: MovingCircle::animate() doesn't return any value, but signal_timeout() expects
     //       a boolean value.
     //       Using sigc::bind_return(true, ...) we get a signal returning always true.
     Glib::signal_timeout().connect(sigc::bind_return(sigc::mem_fun(this, &SimulationArea::animate),
                                        true),
-                                   50);
+                                   25);
+
 
     // Makes our draw Method beeing drawn everytime the widget itself gets drawn.
     // Note: MovingCircle::draw() doesn't accept any parameter, but signal_draw() gives one.
@@ -45,6 +46,8 @@ void SimulationArea::animate()
     // make sfmlWidget invalide so that it will be redrawn
     invalidate();
 }
+
+
 
 void SimulationArea::draw()
 {

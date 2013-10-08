@@ -12,8 +12,7 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 
     pSizeX->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 20.0, 0.1, 0.1));
     pSizeY->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 20.0, 0.1, 0.1));
-    pRotX->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 20.0, 0.1, 0.1));
-    pRotY->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 20.0, 0.1, 0.1));
+    pRot->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 20.0, 0.1, 0.1));
 
     app->run(*pWindow);
 }
