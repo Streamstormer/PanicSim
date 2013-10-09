@@ -49,6 +49,9 @@
             pArea->insertStObj(STAGE, sf::Vector2f(50,100), sf::Vector2f(250,120),90);
             pArea->insertStObj(BAR, sf::Vector2f(120,350), sf::Vector2f(500,200),0);
             pArea->insertStObj(WC, sf::Vector2f(150,80), sf::Vector2f(40,400),0);
+            ClFileHandler fH;
+            fH.writeLevel("test", pArea);
+
         }
 
 
