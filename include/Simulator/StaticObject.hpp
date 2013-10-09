@@ -8,13 +8,13 @@
 class ClStaticObject
 {
 public:
-    ClStaticObject(sf::RectangleShape *Rectconst, int id);
+    ClStaticObject(sf::RectangleShape *Rectconst, int id, int Type);
     ~ClStaticObject();
     void draw(sf::RenderWindow& window);
 
     bool Intersects( const sf::Vector2f  &Position); // returns true if Position is inside of the StaticObject
     int getID();
-
+    int getType();
     const sf::Vector2f &getPosition();
     const sf::Vector2f &getSize();
 
@@ -25,6 +25,7 @@ public:
     void setSize(const sf::Vector2f &newSize);
 
 private:
+    int Type;
     sf::RectangleShape *Rect;
     int id; // unique id
 };
