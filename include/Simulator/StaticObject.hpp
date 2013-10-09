@@ -12,7 +12,7 @@ public:
     ~ClStaticObject();
     void draw(sf::RenderWindow& window);
 
-    bool Intersects( const sf::Vector2f  &Position); // returns true if Position is inside the StaticObject
+    bool Intersects( const sf::Vector2f  &Position); // returns true if Position is inside of the StaticObject
     int getID();
 
     const sf::Vector2f &getPosition();

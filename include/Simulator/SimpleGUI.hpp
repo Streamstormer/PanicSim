@@ -61,7 +61,7 @@ private:
         ClSimpleButton *pAddMe;
         float scale = 0.25;
 
-        Position.y-=ButtonSize.x*1,5;
+        Position.y -= ButtonSize.x*1.5;
         Position.x += ButtonSize.x*0.5;
 
         // ClSimpleButton(int id, Buttons button, int GameState, const sf::Texture &texture, const sf::Vector2f &newSize, const sf::Vector2f& position, float scale)

@@ -39,6 +39,9 @@ class ClSimpleButton
             Rect.left = position.x;
             ButtonPicture.setPosition(position);
 
+            // Additional
+            ClickTimer.restart();
+
             // Debugging
             /*
             std::cout << " --- " << std::endl;
@@ -51,8 +54,9 @@ class ClSimpleButton
         }
         bool isPressed(const sf::Vector2i &Mouse)
         {
-            if(pressed == false && Rect.contains(Mouse))
+            if(pressed == false && Rect.contains(Mouse) && ClickTimer.getElapsedTime().asMilliseconds() > 1000)
             {
+                ClickTimer.restart();
                 pressed = true;
                 return true;
             }
@@ -68,6 +72,9 @@ class ClSimpleButton
             return ButtonType;
         }
     private:
+
+        sf::Clock ClickTimer;
+
         bool pressed;
         float scale;
         int id;

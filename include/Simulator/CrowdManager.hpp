@@ -9,20 +9,17 @@
 class ClCrowdManager
 {
     public:
-        ClCrowdManager(ClArea *pArea)
+        ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize)
         {
-            temp = false;
-            drawClock.restart();
             this->pArea = pArea;
             //Create HeatMap
             sf::Vector2i numberOfCells(30,30);
-            sf::Vector2i ScreenSize(800, 600);
             pHeatMap = new ClHeatMap(numberOfCells, ScreenSize);
 
         }
         ~ClCrowdManager()
         {
-            for (int n = 0; n< Crowds.size(); n++)
+            for (unsigned int n = 0; n< Crowds.size(); n++)
             {
                 delete Crowds[n];
             }
@@ -36,7 +33,7 @@ class ClCrowdManager
 
             // Update Crowds
 
-            int n;
+            unsigned int n;
             for(n=0;n<Crowds.size();n++)
             {
                 if ( n== 0)
@@ -52,7 +49,7 @@ class ClCrowdManager
         }
         void Draw(sf::RenderWindow& window)
         {
-            int n;
+            unsigned int n;
             pHeatMap->draw(window);
             for(n=0;n<Crowds.size();n++)
             {
@@ -92,15 +89,10 @@ class ClCrowdManager
         }
 
     private:
-        // delete Me
-        sf::Clock drawClock;
-        bool temp;
-        //
+
         ClArea *pArea;
         ClHeatMap *pHeatMap;
         std::vector<ClCrowd *> Crowds;
-
-
 };
 
 #endif // CROWDMANGER_HPP

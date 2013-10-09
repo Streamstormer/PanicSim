@@ -25,7 +25,7 @@ class ClArea
 
     const sf::Vector2f & getPosition(int id);   // returns position of StaticObject via id
     const sf::Vector2f & getSize(int id);       // returns size of StaticObject via id
-    float getRotation(int id);            // returns rotation of StaticObject via id
+    float getRotation(int id);                  // returns rotation of StaticObject via id
 
     /// Set Methods for StaticObjects attributes via id and new value
     /// for the editor
@@ -33,6 +33,10 @@ class ClArea
     void setPosition(int id, const sf::Vector2f &position);     // sets position of StaticObject via id
     void setSize(int id, const sf::Vector2f &newSize);          // sets size of StaticObject via id
     void setRotation(int id, float rotation);                   // sets rotation of StaticObject via id
+
+    /// For the FileHandler
+    int getNumberOfStaticObjects() {return id;}     // return total number of static objects
+                                                    // ids of static objects start at id = 1 !!!
 
     private:
 
