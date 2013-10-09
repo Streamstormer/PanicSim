@@ -1,4 +1,0 @@
-StaticObjects: 3; Position Xf; Position Yf; Size Xf; Size Yf; Rotation f; Type i
- ;250,120;50,100;90;0;
- ;500,200;120,350;0;1;
- ;40,400;150,80;0;2;

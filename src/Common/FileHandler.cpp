@@ -15,7 +15,10 @@ bool ClFileHandler::createFile(const char *fileName){
     return 0;
 }
 
+
+
 bool ClFileHandler::writeLevelDetails(){
+    myFile << "Details.";
 return 0;
 }
 
@@ -42,14 +45,46 @@ bool ClFileHandler::closeFile(){
     return 0;
 }
 
+bool openFile(const char *fileName){
+
+    return 0;
+}
+
 bool ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
-    std::string aFileName = fileName + "A.csv";
+    std::string aFileName = fileName + "L.csv";
     createFile(aFileName.c_str());
     writeLevelDetails();
     closeFile();
-    std::string sOFileName = fileName + "sO.csv";
+    std::string sOFileName = fileName + "O.csv";
     createFile(sOFileName.c_str());
     writeStaticObjects(pArea);
     closeFile();
+    return 0;
+}
+
+    bool ClFileHandler::importStaticObjects(ClArea *pArea){
+
+    return 0;
+    }
+
+    bool ClFileHandler::importLevelDetails(){
+
+    return 0;
+    }
+
+bool ClFileHandler::readLevel(std::string fileName, ClArea *pArea){
+
+    /*
+    openExistingFile(fileName.c_str());
+    importStaticObjects(pArea);
+    closeFile();
+
+    std::string lFileName;
+    lFileName.resize(strcspn(fileName.c_str(),"O.csv"));
+    lFileName += "L.csv";
+    openExistingFile(lFileName.c_str());
+    importLevelDetails();
+    closeFile();
+    */
     return 0;
 }
