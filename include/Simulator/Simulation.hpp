@@ -5,6 +5,7 @@
 #include "../../include/Simulator/Area.hpp"
 #include "../../include/Simulator/CrowdManager.hpp"
 #include "../../include/Simulator/SimpleGUI.hpp"
+#include "../../include/Common/FileHandler.hpp"
 
 class ClSimulation
 {

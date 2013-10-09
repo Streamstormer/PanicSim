@@ -6,17 +6,17 @@
 #include <vector>
 #include "../Simulator/Area.hpp"
 
-class FileHandler
+class ClFileHandler
 {
     public:
-        FileHandler();
-        ~FileHandler();
-        bool writeArea(std::string fileName, ClArea *pArea);
+        ClFileHandler();
+        ~ClFileHandler();
+        bool writeLevel(std::string fileName, ClArea *pArea);
 
 
     private:
         bool createFile(const char *fileName);
-        bool writeLevelDetails(ClArea *pArea);
+        bool writeLevelDetails();
         bool writeStaticObjects(ClArea *pArea);
         bool closeFile();
         std::ofstream myFile;

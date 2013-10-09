@@ -1,48 +1,55 @@
 #include "../../include/Common/FileHandler.hpp"
 
-FileHandler::FileHandler()
+ClFileHandler::ClFileHandler()
 {
 
 }
 
-FileHandler::~FileHandler()
+ClFileHandler::~ClFileHandler()
 {
     //dtor
 }
 
-bool FileHandler::createFile(const char *fileName){
-    myFile.open(fileName);
+bool ClFileHandler::createFile(const char *fileName){
+    myFile.open(fileName, std::ios::trunc);
     return 0;
 }
 
-bool FileHandler::writeLevelDetails(ClArea *pArea){
+bool ClFileHandler::writeLevelDetails(){
 return 0;
 }
 
-bool FileHandler::writeStaticObjects(ClArea *pArea){
+bool ClFileHandler::writeStaticObjects(ClArea *pArea){
     int x = pArea->getNumberOfStaticObjects();
     sf::Vector2f sOPosition;
     sf::Vector2f sOSize;
     float sORotation;
     int sOType = 0;
+    myFile << "StaticObjectId " << x << "; Position Xf; Position Yf; Size Xf; Size Yf; Rotation f; Type i\n";
     for(int i = 1; i<= x; i++){
         sOPosition = pArea->getPosition(i);
         sOSize = pArea->getSize(i);
         sORotation = pArea->getRotation(i);
-        //sOType = pArea->getType(i);
-
+        sOType = pArea->getType(i);
+        myFile << i << ";" << sOPosition.x << ";" << sOPosition.y << ";" << sOSize.x << ";" << sOSize.y << ";" << sORotation << ";" << sOType << "\n";
     }
     return 0;
 }
 
-bool FileHandler::closeFile(){
+bool ClFileHandler::closeFile(){
 
     myFile.close();
     return 0;
 }
 
-bool FileHandler::writeArea(std::string fileName, ClArea *pArea){
-    createFile(fileName.c_str());
+bool ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
+    std::string aFileName = fileName + "A.csv";
+    createFile(aFileName.c_str());
+    writeLevelDetails();
+    closeFile();
+    std::string sOFileName = fileName + "sO.csv";
+    createFile(sOFileName.c_str());
     writeStaticObjects(pArea);
+    closeFile();
     return 0;
 }
