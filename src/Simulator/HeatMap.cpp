@@ -41,9 +41,12 @@ void ClHeatMap::draw(sf::RenderWindow& window)
         {
             for (int y = 0; y < cellNumber.y; y++)
             {
+                if(this->SortedPeoples[x+y*cellNumber.x].size() > 0)
+                {
                 colorCell.setPosition(x*cellSize.x, y*cellSize.y);
                 colorCell.setFillColor(getColor(this->SortedPeoples[x+y*cellNumber.x].size()));
                 window.draw(colorCell);
+                }
             }
         }
     }

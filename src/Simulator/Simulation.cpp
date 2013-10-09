@@ -8,9 +8,9 @@
             CreateObjects();
             pCrowdManager = new ClCrowdManager(pArea, sf::Vector2i(Mode.width,Mode.height));
 
-            pCrowdManager->CreateCrowd(sf::Vector2f(300,250),150,600);
-            pCrowdManager->CreateCrowd(sf::Vector2f(550,350),150,500);
-            pCrowdManager->CreateCrowd(sf::Vector2f(250,523),150,150);
+            pCrowdManager->CreateCrowd(sf::Vector2f(300,250),150,800);
+            pCrowdManager->CreateCrowd(sf::Vector2f(550,350),150,700);
+            pCrowdManager->CreateCrowd(sf::Vector2f(250,523),150,650);
 
             pGUI = new ClSimpleGUI(sf::Vector2f(Mode.width, Mode.height));
             elapsedTime.restart();
@@ -23,7 +23,8 @@
         }
         bool ClSimulation::update(sf::RenderWindow &window)
         {
-            float frameTime = elapsedTime.getElapsedTime().asSeconds();
+            float frameTime = elapsedTime.getElapsedTime().asMilliseconds();
+            elapsedTime.restart();
             // Update Crowds Pathfinding Statemachine and Heatmap
             pCrowdManager->Update(frameTime);
             // Update GUI

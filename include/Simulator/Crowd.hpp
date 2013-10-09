@@ -28,8 +28,6 @@ public:
 
     const std::vector<StrPeople *> & getPeoples() {return peoples;}
 private:
-    /// ToDo : Add computer independent force toggeling
-    int toggleForce; // used to calculate different forces each time ClCrowd is called
 
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );
     sf::Vector2f Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destination, const sf::Vector2f & CurVelocity);
