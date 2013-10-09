@@ -13,8 +13,8 @@ private:
     ClArea *Area;
     Gtk::Box *ObjectBox;
     int selectedID;
-    Gtk::SpinButton *PosX;
-    Gtk::SpinButton *PosY;
+    Gtk::SpinButton *SizeX;
+    Gtk::SpinButton *SizeY;
     Gtk::SpinButton *Rot;
     vector<Gtk::CheckButton*> CheckButt;
 
@@ -22,10 +22,9 @@ private:
     void draw();
     void resize();
 public:
-    SimulationArea(Gtk::Frame& AreaFrame, Gtk::Box& ObjectBox, Gtk::SpinButton *PosX,
-                   Gtk::SpinButton *PosY, Gtk::SpinButton *Rot);
+    SimulationArea(Gtk::Frame& AreaFrame, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
+                   Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot);
     void clearArea();
-    // sf::Rect sollte später dann ein object von uns sein wie Bar oder Bühne.
     void setObject(enum staticObjects object, sf::Vector2f position, sf::Vector2f size, float rotation);
 };
 

@@ -1,7 +1,7 @@
 #include "../../include/Editor/SimulationArea.hpp"
 
-SimulationArea::SimulationArea(Gtk::Frame& AreaFrame, Gtk::Box& ObjectBox, Gtk::SpinButton *PosX,
-                               Gtk::SpinButton *PosY, Gtk::SpinButton *Rot)
+SimulationArea::SimulationArea(Gtk::Frame& AreaFrame, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
+                               Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot)
                                : SFML_Widget(sf::VideoMode(640, 480))
 {
     // add this widget to Area Frame..
@@ -13,8 +13,8 @@ SimulationArea::SimulationArea(Gtk::Frame& AreaFrame, Gtk::Box& ObjectBox, Gtk::
     Area = new ClArea();
     this->ObjectBox = &ObjectBox;
     selectedID = 0;
-    this->PosX = PosX;
-    this->PosY = PosY;
+    this->SizeX = SizeX;
+    this->SizeY = SizeY;
     this->Rot = Rot;
     // Let the animate method be called every 25ms
     // Note: MovingCircle::animate() doesn't return any value, but signal_timeout() expects
@@ -47,24 +47,22 @@ void SimulationArea::animate()
             string label(CheckButt[i]->get_label());
             size_t startPos = label.find_first_of('.');
             size_t endPos = label.find_first_of(':');
-            //cerr<<label<<startPos<<endPos;
-            cerr<<label.substr(startPos+2, (startPos+2) - endPos)<<endl<<startPos<<" "<<endPos<<endl;
             stringstream convert(label.substr(startPos+2,  endPos - (startPos+2)));
             convert >> selectedID;
-            cerr<<selectedID;
+            SizeX->set_value(Area->getSize(selectedID).x);
+            SizeY->set_value(Area->getSize(selectedID).y);
+            Rot->set_value(Area->getRotation(selectedID));
         }
         else if(CheckButt[i]->get_active() && oneChecked)
             CheckButt[i]->set_active(false);
     }
     if(selectedID){
-        Area->setSize(selectedID, sf::Vector2f(PosX->get_value(), PosY->get_value()));
+        Area->setSize(selectedID, sf::Vector2f(SizeX->get_value(), SizeY->get_value()));
         Area->setRotation(selectedID, Rot->get_value());
         if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             sf::Vector2i pos = sf::Mouse::getPosition(renderWindow);
             if(pos.x > 0 && pos.y > 0)
                 Area->setPosition(selectedID, sf::Vector2<float>(pos.x, pos.y));
-            sf::Vector2f temp = Area->getPosition(selectedID);
-            std::cout<<temp.x<<std::endl;
         }
     }
     // make sfmlWidget invalide so that it will be redrawn
@@ -127,5 +125,14 @@ void SimulationArea::clearArea()
      selectedID = 0;
      delete Area;
      Area = new ClArea();
+     CheckButt.clear();
+     vector<Gtk::Widget*> childrens = ObjectBox->get_children();
+     int size = childrens.size();
+     for(int i = 0; i<size;i++){
+        Gtk::Widget *tmp = childrens.back();
+        childrens.pop_back();
+        ObjectBox->remove(*tmp);
+        delete tmp;
+     }
      renderWindow.clear();
 }
