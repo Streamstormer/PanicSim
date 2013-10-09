@@ -24,8 +24,7 @@ void ClHeatMap::registerCrowd(ClCrowd *Crowd)
         sf::Vector2f position = registerMe[n]->position;
         position.x -= (int)position.x % (int)cellSize.x;
         position.y -= (int)position.y % (int)cellSize.y;
-        // needs to be improved
-        if ( position.x > 0 && position.y > 0 && position.x < 800 && position.y < 600 )
+        if ( position.x > 0 && position.y > 0 && position.x <= MapSize.x && position.y <= MapSize.y )
         {
             SortedPeoples[(position.x / cellSize.x) + (position.y / cellSize.y)*cellNumber.x].push_back(registerMe[n]);
         }
@@ -69,7 +68,7 @@ void ClHeatMap::update()
             // person number n
             if(!Cell.contains(SortedPeoples[m][n]->position))
             {
-                if ( SortedPeoples[m][n]->position.x > 0 && SortedPeoples[m][n]->position.y > 0 && SortedPeoples[m][n]->position.x < 800 && SortedPeoples[m][n]->position.y < 600 )
+                if ( SortedPeoples[m][n]->position.x > 0 && SortedPeoples[m][n]->position.y > 0 && SortedPeoples[m][n]->position.x <= MapSize.x && SortedPeoples[m][n]->position.y <= MapSize.y )
                 {
                     SortedPeoples[(int)(SortedPeoples[m][n]->position.x / cellSize.x) + (int)(SortedPeoples[m][n]->position.y / cellSize.y)*cellNumber.x].push_back(SortedPeoples[m][n]);
                 }

@@ -55,6 +55,8 @@ void ClCrowdManager::CreateCrowd(sf::Vector2f position, float radius, int people
     // set people count does not work yet
     static int j =0;
     j++;
+    // increment people for SimpleGUI
+    ClCrowdManager::addPeople(people);
 
     // for debugging puposes: each crowd gets a different color
     if(j==0)
@@ -79,5 +81,15 @@ void ClCrowdManager::CreateCrowd(sf::Vector2f position, float radius, int people
     }
 
 }
+// Static Functions for the Simple Labels
+int ClCrowdManager::getPeopleCount()
+{
+    return peopleCount;
+}
 
+void ClCrowdManager::addPeople(int Number)
+{
+    peopleCount +=Number;
+}
 
+int ClCrowdManager::peopleCount = 0;

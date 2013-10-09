@@ -16,11 +16,16 @@ class ClCrowdManager
         void Draw(sf::RenderWindow& window);
         void CreateCrowd(sf::Vector2f position, float radius, int people);
 
+        static int getPeopleCount();
+        static void addPeople(int Number);
+
     private:
 
         ClArea *pArea;
         ClHeatMap *pHeatMap;
         std::vector<ClCrowd *> Crowds;
+
+        static int peopleCount;
 };
 
 #endif // CROWDMANGER_HPP
