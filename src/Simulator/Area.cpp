@@ -7,7 +7,7 @@
         }
     }
 
-    int ClArea::insertStObj(enum staticObjects, const sf::Vector2f & sizeOfRectangle,
+    int ClArea::insertStObj(enum staticObjects Type, const sf::Vector2f & sizeOfRectangle,
                             const sf::Vector2f & positionOfRectangle, float rotAngle)
     {
         id++;
@@ -15,7 +15,7 @@
         tempRe->setPosition(positionOfRectangle);
         tempRe->setSize(sizeOfRectangle);
         tempRe->setRotation(rotAngle);
-        ClStaticObject *tempSt = new ClStaticObject(tempRe, id);
+        ClStaticObject *tempSt = new ClStaticObject(tempRe, id, (int)Type);
         sobjects.push_back(tempSt);
         return id;
     }
@@ -72,6 +72,17 @@
             if (sobjects[n]->getID() == id)
             {
                 return sobjects[n]->getRotation();
+            }
+        }
+    }
+
+    int ClArea::getType(int id)
+    {
+        for (unsigned int n = 0; n < sobjects.size();n++)
+        {
+            if (sobjects[n]->getID() == id)
+            {
+                return sobjects[n]->getType();
             }
         }
     }

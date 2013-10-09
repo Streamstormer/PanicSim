@@ -26,7 +26,7 @@ public:
     {
         // Adds the peoples of a crowd to a local array where they can be managed all together
         const std::vector<StrPeople *> registerMe = Crowd->getPeoples();
-        for (int n=0; n<registerMe.size(); n++)
+        for (unsigned int n=0; n<registerMe.size(); n++)
         {
             sf::Vector2f position = registerMe[n]->position;
             position.x -= (int)position.x % (int)cellSize.x;
@@ -41,6 +41,9 @@ public:
 
     void draw(sf::RenderWindow& window)
     {
+     //   if(doDraw==true)
+        if(false)
+        {
         sf::RectangleShape colorCell(cellSize);
         for (int x = 0; x < cellNumber.x ; x++)
         {
@@ -51,20 +54,21 @@ public:
                 window.draw(colorCell);
             }
         }
+        }
     }
 
     void update()
     {
         //loop through the SortedPeople vector to update the colored cells
         sf::Rect<float> Cell;
-        for(int m=0; m<SortedPeoples.size(); m++)
+        for(unsigned int m=0; m<SortedPeoples.size(); m++)
         {
             Cell.top = ((int)(m/cellNumber.x))*cellSize.y;
             Cell.left = (m%cellNumber.x)*cellSize.x;
             Cell.height = cellSize.y;
             Cell.width = cellSize.x;
 
-            for(int n=0; n<SortedPeoples[m].size(); n++)
+            for(unsigned int n=0; n<SortedPeoples[m].size(); n++)
             {
                 // SortedPeoples[m][n] cell number m
                 // person number n
@@ -80,9 +84,19 @@ public:
         }
     }
 
+    static void toggleDraw()
+    {
+   /*     if (doDraw)
+        {
+            doDraw = false;
+        }
+        else doDraw = true; */
+    }
+
 private:
     //Calculates the Color that fits to the number of people in the current Cell
-    // needs rework to look cool
+ //   static bool doDraw ;
+
     sf::Color getColor(int People)
     {
         sf::Color background;
@@ -117,5 +131,6 @@ private:
     sf::Vector2i MapSize;
     sf::Vector2f cellSize;
 };
+// bool ClHeatMap::doDraw = false;
 
 #endif // HEATMAP_HPP_INCLUDED

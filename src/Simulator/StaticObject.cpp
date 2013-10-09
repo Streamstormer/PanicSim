@@ -1,11 +1,17 @@
 #include "../../include/Simulator/StaticObject.hpp"
 
-ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id)
+ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, int Type)
 {
     sf::Vector2f RectSize = Rectconst->getSize();
     Rect = Rectconst;
+    this->Type = Type;
 
     this->id = id;
+}
+
+int ClStaticObject::getType()
+{
+    return Type;
 }
 
 ClStaticObject::~ClStaticObject()

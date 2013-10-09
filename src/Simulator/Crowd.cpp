@@ -171,15 +171,12 @@ float ClCrowd::invert(float Max, float Current)
 
 sf::Vector2f ClCrowd::DistanceForce(int current)
 {
-
-    int n;
-
     sf::Vector2f delta;
     sf::Vector2f force(0,0);
     float helpVar;
     int NbCount = 0;
 
-    for ( n = 0; n< peoples.size(); n++)
+    for ( unsigned int n = 0; n< peoples.size(); n++)
     {
         if ( n != current)
         {
