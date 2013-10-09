@@ -40,6 +40,22 @@ SimulationArea::SimulationArea(Gtk::Frame& AreaFrame, Gtk::Box& ObjectBox, Gtk::
 
 void SimulationArea::animate()
 {
+    bool oneChecked = false;
+    for(unsigned int i = 0;i<CheckButt.size();i++){
+        if(CheckButt[i]->get_active() && !oneChecked){
+            oneChecked = true;
+            string label(CheckButt[i]->get_label());
+            size_t startPos = label.find_first_of('.');
+            size_t endPos = label.find_first_of(':');
+            //cerr<<label<<startPos<<endPos;
+            cerr<<label.substr(startPos+2, (startPos+2) - endPos)<<endl<<startPos<<" "<<endPos<<endl;
+            stringstream convert(label.substr(startPos+2,  endPos - (startPos+2)));
+            convert >> selectedID;
+            cerr<<selectedID;
+        }
+        else if(CheckButt[i]->get_active() && oneChecked)
+            CheckButt[i]->set_active(false);
+    }
     if(selectedID){
         Area->setSize(selectedID, sf::Vector2f(PosX->get_value(), PosY->get_value()));
         Area->setRotation(selectedID, Rot->get_value());
@@ -98,9 +114,12 @@ void SimulationArea::setObject(enum staticObjects object, sf::Vector2f position,
         break;
     }
 
-    Gtk::CheckButton *checkObj = manage(new Gtk::CheckButton(string("Object Nr.")  + (char)(selectedID+0x30) + string(": ") + label));
+    stringstream convert;
+    convert<<selectedID;
+    Gtk::CheckButton *checkObj = manage(new Gtk::CheckButton(string("Object Nr. ")  + convert.str() + string(": ") + label));
     ObjectBox->pack_start(*checkObj);
     checkObj->show();
+    CheckButt.push_back(checkObj);
 }
 
 void SimulationArea::clearArea()

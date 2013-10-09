@@ -16,6 +16,7 @@ private:
     Gtk::SpinButton *PosX;
     Gtk::SpinButton *PosY;
     Gtk::SpinButton *Rot;
+    vector<Gtk::CheckButton*> CheckButt;
 
     void animate();
     void draw();
