@@ -1,0 +1,5 @@
+3 StaticObjectId; Position Xf; Position Yf; Size Xf; Size Yf; Rotation f; Type i; Levelsize X; Levelsize Y; BGColor; Persons count
+Details;;;;;;;1000;1000;green;1000
+1;250;120;50;100;90;0
+2;500;200;120;350;0;1
+3;40;400;150;80;0;2
