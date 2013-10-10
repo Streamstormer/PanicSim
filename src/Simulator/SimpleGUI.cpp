@@ -69,13 +69,29 @@
         id++;
         pAddMe = new ClSimpleButton(id, FASTFORWARD, SIMULATION, ButtonsTexture, ButtonSize, Position, scale);
         ButtonVector.push_back(pAddMe);
+
+        // Add down right Buttons
+        Position.x = ScreenSize.x;
+        Position.y = ScreenSize.y;
+
+        Position.y -= ButtonSize.y;
+        Position.x -= 0.25 *ButtonSize.x;
+
         // add HEATMAP Button
-         Position.x+=ButtonSize.x*1.5*scale;
+         Position.x-=ButtonSize.x*1.5*scale;
         id++;
         pAddMe = new ClSimpleButton(id, HEATMAP, SIMULATION, ButtonsTexture, ButtonSize, Position, scale);
         ButtonVector.push_back(pAddMe);
         // add BOMB Button
+        Position.x-=ButtonSize.x*1.5*scale;
+        id++;
+        pAddMe = new ClSimpleButton(id, BOMB, SIMULATION, ButtonsTexture, ButtonSize, Position, scale);
+        ButtonVector.push_back(pAddMe);
         // add FIRE Button
+        Position.x-=ButtonSize.x*1.5*scale;
+        id++;
+        pAddMe = new ClSimpleButton(id, FIRE, SIMULATION, ButtonsTexture, ButtonSize, Position, scale);
+        ButtonVector.push_back(pAddMe);
     }
     void ClSimpleGUI::Execute(Buttons btn)
     {
