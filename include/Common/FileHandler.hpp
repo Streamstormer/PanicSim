@@ -23,6 +23,7 @@ class ClFileHandler
         bool closeFile();
         bool importStaticObjects(ClArea *pArea);
         bool importLevelDetails();
+        bool writeHeader(ClArea *pArea);
 
         std::ofstream myFile;
 };

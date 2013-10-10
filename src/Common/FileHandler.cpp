@@ -18,7 +18,7 @@ bool ClFileHandler::createFile(const char *fileName){
 
 
 bool ClFileHandler::writeLevelDetails(){
-    myFile << "Details.";
+    myFile << "Details;;;;;;;1000;1000;green;1000\n";
 return 0;
 }
 
@@ -28,7 +28,7 @@ bool ClFileHandler::writeStaticObjects(ClArea *pArea){
     sf::Vector2f sOSize;
     float sORotation;
     int sOType = 0;
-    myFile << "StaticObjectId " << x << "; Position Xf; Position Yf; Size Xf; Size Yf; Rotation f; Type i\n";
+    //myFile << "StaticObjectId " << x << "; Position Xf; Position Yf; Size Xf; Size Yf; Rotation f; Type i\n";
     for(int i = 1; i<= x; i++){
         sOPosition = pArea->getPosition(i);
         sOSize = pArea->getSize(i);
@@ -45,18 +45,22 @@ bool ClFileHandler::closeFile(){
     return 0;
 }
 
-bool openFile(const char *fileName){
+bool ClFileHandler::writeHeader(ClArea *pArea){
+    int x = pArea->getNumberOfStaticObjects();
+    myFile << "StaticObjectId " << x << "; Position Xf; Position Yf; Size Xf; Size Yf; Rotation f; Type i; Levelsize X; Levelsize Y; BGColor; Persons count\n";
+    return 0;
+}
 
+bool ClFileHandler::openExistingFile(const char *fileName){
+    myFile.open(fileName);
     return 0;
 }
 
 bool ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
-    std::string aFileName = fileName + "L.csv";
+    std::string aFileName = fileName + ".csv";
     createFile(aFileName.c_str());
+    writeHeader(pArea);
     writeLevelDetails();
-    closeFile();
-    std::string sOFileName = fileName + "O.csv";
-    createFile(sOFileName.c_str());
     writeStaticObjects(pArea);
     closeFile();
     return 0;
@@ -74,7 +78,7 @@ bool ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
 
 bool ClFileHandler::readLevel(std::string fileName, ClArea *pArea){
 
-    /*
+
     openExistingFile(fileName.c_str());
     importStaticObjects(pArea);
     closeFile();
@@ -85,6 +89,6 @@ bool ClFileHandler::readLevel(std::string fileName, ClArea *pArea){
     openExistingFile(lFileName.c_str());
     importLevelDetails();
     closeFile();
-    */
+
     return 0;
 }
