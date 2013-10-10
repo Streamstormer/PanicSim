@@ -15,7 +15,11 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pSizeY->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 500.0, 0.1, 0.1));
     pRot->set_adjustment(Gtk::Adjustment::create(0.0, 0.0, 360.0, 0.1, 0.1));
 
-    SFMLArea = new SimulationArea(*pSFMLFrame, *pBox, pSizeX, pSizeY, pRot);
+    pAreaX->set_adjustment(Gtk::Adjustment::create(100.0, 600.0, 4000.0, 1.0, 1.0));
+    pAreaY->set_adjustment(Gtk::Adjustment::create(100.0, 900.0, 4000.0, 1.0, 1.0));
+
+
+    SFMLArea = new SimulationArea(*pSFMLWindow, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY);
 
     app->run(*pWindow);
 }
@@ -23,7 +27,7 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 void Editor::on_Button_Bar_clicked()
 {
     pObjLabel->set_label("Bar");
-        pSizeX->set_value(10.0);
+    pSizeX->set_value(10.0);
     pSizeY->set_value(10.0);
     pRot->set_value(0.0);
     SFMLArea->setObject(BAR, sf::Vector2<float>(0.0,0.0), sf::Vector2<float>(10.0,10.0), 0.0);
@@ -71,3 +75,4 @@ void Editor::on_Button_Clear_clicked()
 {
     SFMLArea->clearArea();
 }
+

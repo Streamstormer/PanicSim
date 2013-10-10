@@ -23,7 +23,7 @@ UiLoader::UiLoader(string UiPath)
     builder->get_widget("EditorWin", pWindow);
 
     // SFML Frame
-    builder->get_widget("SFML_Frame", pSFMLFrame);
+    builder->get_widget("SFMLWindow", pSFMLWindow);
 
     // Main Buttons
     builder->get_widget("LoadFile", pLoadFile);
@@ -103,7 +103,7 @@ void UiLoader::SaveFile()
         // do something
     } else {
 
-        Gtk::FileChooserDialog dialog("Please choose a folder to save the file",
+        Gtk::FileChooserDialog dialog("Bitte wählen sie einen Ort zu speichern aus",
                                       Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
         dialog.set_transient_for(*this);
 
@@ -134,7 +134,7 @@ void UiLoader::SaveFile()
 
 void UiLoader::SaveTo()
 {
-    Gtk::FileChooserDialog dialog("Bitte wählen sie einen Ort zu spiechern aus",
+    Gtk::FileChooserDialog dialog("Bitte wählen sie einen Ort zu speichern aus",
                                   Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
     dialog.set_transient_for(*this);
 
