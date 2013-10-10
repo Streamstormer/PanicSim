@@ -20,7 +20,7 @@ private:
 
 protected:
     Gtk::Window *pWindow;
-    Gtk::Frame *pSFMLFrame;
+    Gtk::ScrolledWindow *pSFMLWindow;
 
     Gtk::Button *pLoadFile;
     Gtk::Button *pSaveFile;

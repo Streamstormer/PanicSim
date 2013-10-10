@@ -16,16 +16,22 @@ private:
     Gtk::SpinButton *SizeX;
     Gtk::SpinButton *SizeY;
     Gtk::SpinButton *Rot;
+    Gtk::SpinButton *pAreaSizeX;
+    Gtk::SpinButton *pAreaSizeY;
+    bool boxChecked;
     vector<Gtk::CheckButton*> CheckButt;
+    void box_clicked();
 
     void animate();
     void draw();
     void resize();
 public:
-    SimulationArea(Gtk::Frame& AreaFrame, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
-                   Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot);
+    SimulationArea(Gtk::ScrolledWindow& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
+                   Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot,  Gtk::SpinButton *pAreaSizeX,
+                   Gtk::SpinButton *pAreaSizeY);
     void clearArea();
     void setObject(enum staticObjects object, sf::Vector2f position, sf::Vector2f size, float rotation);
+    void setChecked();
 };
 
 #endif // SIMULATIONAREA_HPP_INCLUDED

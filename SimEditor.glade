@@ -183,9 +183,6 @@
                           </packing>
                         </child>
                         <child>
-                          <placeholder/>
-                        </child>
-                        <child>
                           <object class="GtkButton" id="Fence">
                             <property name="label" translatable="yes">Zaun</property>
                             <property name="use_action_appearance">False</property>
@@ -220,6 +217,9 @@
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
                         </child>
                       </object>
                       <packing>
@@ -301,7 +301,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="halign">start</property>
-                                        <property name="label" translatable="yes">Rotation (m);</property>
+                                        <property name="label" translatable="yes">Rotation (°):</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -620,7 +620,14 @@
                     <property name="can_focus">False</property>
                     <property name="left_padding">12</property>
                     <child>
-                      <placeholder/>
+                      <object class="GtkScrolledWindow" id="SFMLWindow">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
                     </child>
                   </object>
                 </child>
