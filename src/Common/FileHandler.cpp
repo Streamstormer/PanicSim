@@ -38,12 +38,13 @@ int ClFileHandler::writeStaticObjects(ClArea *pArea){
     }
     return 0;
 }
-
+/* Doesn't need to be encapsulated
 int ClFileHandler::closeFile(){
 
     myFile.close();
     return 0;
 }
+*/
 
 int ClFileHandler::writeHeader(ClArea *pArea){
     int x = pArea->getNumberOfStaticObjects();
@@ -62,7 +63,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
     writeHeader(pArea);
     writeLevelDetails();
     writeStaticObjects(pArea);
-    closeFile();
+    myFile.close();
     //readLevel("test.csv", pArea);
     return 0;
 }
@@ -74,8 +75,10 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
         int divider = 1;
         for(unsigned int i = 0; i < inNrOfObjects; i++){
         inFile.getline(str,1000);
+            int j = 0;
             for(int k = 0; k<7; k++){
-                int j = 0;
+            props[k] = 0;
+
                 while(str[j] != ';'){
                     if(str[j] != '.'){
                         if(multiplier == 1)
@@ -88,6 +91,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
                     }
                     j++;
                 }
+                j++;
             }
             sf::Vector2f position;
             position.x = props[1];
@@ -96,7 +100,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
             objectSize.x = props[3];
             objectSize.y = props[4];
             int type = (int) props[6];
-            pArea->insertStObj(type,position,objectSize,props[5]);
+            pArea->insertStObj(type,objectSize,position,props[5]);
 
 
         }
@@ -108,7 +112,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
         inFile.getline(str, 1000);
 
         /*Read Nr of Static Objects to Class Variable*/
-        int j = 0;
+        int j = inNrOfObjects = 0;
         while(str[j] != ' '){
             inNrOfObjects = 10 * inNrOfObjects + (str[j] - 48);
             j++;
@@ -124,7 +128,7 @@ int ClFileHandler::readLevel(std::string fileName, ClArea *pArea){
     openExistingFile(fileName.c_str());
     importLevelDetails();
     importStaticObjects(pArea);
-    closeFile();
+    inFile.close();
 
     return 0;
 }

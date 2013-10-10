@@ -17,11 +17,12 @@ class ClFileHandler
 
 
     private:
-        int createFile(const char *fileName);  //expects filename without ending
-        int openExistingFile(const char *fileName);    //expects file ending with ".csv"
+        int createFile(const char *fileName);           //if it exists it will be deleted, creates by ';' delimited ".csv" file
+        int openExistingFile(const char *fileName);     //expects file ending with ".csv"
         int writeLevelDetails();
         int writeStaticObjects(ClArea *pArea);
-        int closeFile();
+        /*Doesn't need to be encapsulated
+        int closeFile();*/
         int importStaticObjects(ClArea *pArea);
         int importLevelDetails();
         int writeHeader(ClArea *pArea);
