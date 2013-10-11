@@ -16,7 +16,7 @@ class ClCrowdManager
         void Draw(sf::RenderWindow& window);
         void CreateCrowd(sf::Vector2f position, float radius, int people);
 
-        static int getPeopleCount();
+        static int *getPeopleCount();
         static void addPeople(int Number);
 
     private:

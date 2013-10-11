@@ -4,7 +4,9 @@
 
 #include <vector>
 #include "SimpleButton.hpp"
+#include "SimpleLabel.hpp"
 #include "HeatMap.hpp"
+#include "CrowdManager.hpp"
 
 enum GameStates {MENU, SIMULATION, PAUSE};
 
@@ -20,9 +22,11 @@ public:
 private:
 
     void CreateAllButtons();// called in the constructor to create all buttons
+    void CreateAllLabels();
     void Execute(Buttons btn);
 
     std::vector<ClSimpleButton *> ButtonVector;
+    std::vector<ClSimpleLabel *> LabelVector;
     sf::Texture ButtonsTexture;
     int id;                     // used to give Buttons a unique id
     sf::Vector2f ScreenSize;
