@@ -22,6 +22,10 @@ private:
     sf::Vector2i MapSize;
     sf::Vector2f cellSize;
 
+    //used for giving the heatmap different collors depending on number of people
+    int sw_red;
+    int sw_yellow;
+
 };
 
 #endif // HEATMAP_HPP_INCLUDED
