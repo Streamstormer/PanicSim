@@ -30,6 +30,7 @@ private:
     sf::Texture ButtonsTexture;
     int id;                     // used to give Buttons a unique id
     sf::Vector2f ScreenSize;
+    sf::Font labelFont;
 
 };
 

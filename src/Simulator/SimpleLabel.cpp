@@ -1,4 +1,5 @@
 #include "../../include/Simulator/SimpleLabel.hpp"
+#include <sstream>
 
 ClSimpleLabel::ClSimpleLabel(const sf::Vector2f &position, const sf::Vector2f &labelSize,const sf::String &labelText, int *pNumber)
 {
@@ -31,8 +32,12 @@ void ClSimpleLabel::draw(sf::RenderWindow& window)
 {
     text.setCharacterSize(30);
     text.setStyle(sf::Text::Regular);
-    //sprintf(number, "%d", *pNumber);
-    text.setString(title + "\n" + "1000");
+
+    std::stringstream number_ss;
+    number_ss << *pNumber;
+    number = number_ss.str();
+
+    text.setString(title + "\n" + number);
 
     window.draw(textSpace);
     window.draw(text);
