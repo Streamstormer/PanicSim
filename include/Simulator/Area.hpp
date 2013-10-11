@@ -5,6 +5,7 @@
 #include <vector>
 
 enum staticObjects{STAGE, BAR, WC, WALL, FENCE};
+const unsigned int MAXSTATICOBJECTTYPES = FENCE;
 
 class ClArea
 {

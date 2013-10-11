@@ -17,7 +17,7 @@ class ClFileHandler
 
 
     private:
-        int createFile(const char *fileName);           //if it exists it will be deleted, creates by ';' delimited ".csv" file
+        int createFile(const char *fileName);           //if file exists it will be deleted, creates by ';' delimited file, file ending required, optimized for ".csv"
         int openExistingFile(const char *fileName);     //expects file ending with ".csv"
         int writeLevelDetails();
         int writeStaticObjects(ClArea *pArea);

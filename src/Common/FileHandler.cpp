@@ -58,8 +58,7 @@ int ClFileHandler::openExistingFile(const char *fileName){
 }
 
 int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
-    std::string aFileName = fileName + ".csv";
-    createFile(aFileName.c_str());
+    createFile(fileName.c_str());
     writeHeader(pArea);
     writeLevelDetails();
     writeStaticObjects(pArea);
@@ -69,6 +68,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
 }
 
     int ClFileHandler::importStaticObjects(ClArea *pArea){
+        int returnCode;
         char str[1000];
         float props[7];
         int multiplier = 10;
@@ -100,6 +100,8 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
             objectSize.x = props[3];
             objectSize.y = props[4];
             int type = (int) props[6];
+            if(type < 0 || type > MAXSTATICOBJECTTYPES)
+                type = (int) WALL;
             pArea->insertStObj((enum staticObjects)type,objectSize,position,props[5]);
 
 
