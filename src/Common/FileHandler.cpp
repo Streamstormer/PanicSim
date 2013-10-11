@@ -68,7 +68,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
 }
 
     int ClFileHandler::importStaticObjects(ClArea *pArea){
-        int returnCode;
+        int returnCode = 0;
         char str[1000];
         float props[7];
         int multiplier = 10;
@@ -99,14 +99,16 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
             sf::Vector2f objectSize;
             objectSize.x = props[3];
             objectSize.y = props[4];
-            int type = (int) props[6];
-            if(type < 0 || type > MAXSTATICOBJECTTYPES)
+            unsigned int type = (int) props[6];
+            if(type < 0 || type > MAXSTATICOBJECTTYPES){
                 type = (int) WALL;
+                returnCode = 3;
+            }
             pArea->insertStObj((enum staticObjects)type,objectSize,position,props[5]);
 
 
         }
-        return 0;
+        return returnCode;
     }
 
     int ClFileHandler::importLevelDetails(){

@@ -21,8 +21,12 @@ class ClFileHandler
         int openExistingFile(const char *fileName);     //expects file ending with ".csv"
         int writeLevelDetails();
         int writeStaticObjects(ClArea *pArea);
-        /*Doesn't need to be encapsulated
-        int closeFile();*/
+
+        /*
+        Return codes:
+        0: No error
+        3: Object Type out of range
+        */
         int importStaticObjects(ClArea *pArea);
         int importLevelDetails();
         int writeHeader(ClArea *pArea);
