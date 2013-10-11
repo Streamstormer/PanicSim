@@ -13,7 +13,7 @@ class ClArea
     ClArea() {id = 0;}
     ~ClArea();
 
-    int insertStObj(int type, const sf::Vector2f & sizeOfRectangle,
+    int insertStObj(enum staticObjects type, const sf::Vector2f & sizeOfRectangle,
                     const sf::Vector2f & positionOfRectangle, float rotAngle);
     void draw(sf::RenderWindow& window);
     bool validPoint(sf::Vector2f point);

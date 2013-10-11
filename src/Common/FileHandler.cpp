@@ -100,7 +100,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
             objectSize.x = props[3];
             objectSize.y = props[4];
             int type = (int) props[6];
-            pArea->insertStObj(type,objectSize,position,props[5]);
+            pArea->insertStObj((enum staticObjects)type,objectSize,position,props[5]);
 
 
         }
