@@ -53,15 +53,31 @@ int ClFileHandler::writeHeader(ClArea *pArea){
 }
 
 int ClFileHandler::openExistingFile(const char *fileName){
-    inFile.open(fileName);
+    try{
+        inFile.open(fileName);
+    }catch(std::ios_base::failure){
+        return 1;
+    }
     return 0;
 }
 
 int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
-    createFile(fileName.c_str());
-    writeHeader(pArea);
-    writeLevelDetails();
-    writeStaticObjects(pArea);
+
+    int code = createFile(fileName.c_str());
+    if(code != 0)
+        return code;
+    code = createFile(fileName.c_str());
+    if(code != 0)
+        return code;
+    code = writeHeader(pArea);
+    if(code != 0)
+        return code;
+    code = writeLevelDetails();
+    if(code != 0)
+        return code;
+    code = writeStaticObjects(pArea);
+    if(code != 0)
+        return code;
     myFile.close();
     //readLevel("test.csv", pArea);
     return 0;
@@ -128,10 +144,15 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
     }
 
 int ClFileHandler::readLevel(std::string fileName, ClArea *pArea){
-
-    openExistingFile(fileName.c_str());
-    importLevelDetails();
-    importStaticObjects(pArea);
+    int code = openExistingFile(fileName.c_str());
+    if(code != 0)
+        return code;
+    code = importLevelDetails();
+    if(code != 0)
+        return code;
+    code = importStaticObjects(pArea);
+    if(code != 0)
+        return code;
     inFile.close();
 
     return 0;
