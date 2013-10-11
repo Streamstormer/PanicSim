@@ -7,6 +7,7 @@
         ButtonsTexture.loadFromFile("pictures/ButtonSet1.png");
 
         CreateAllButtons();
+        CreateAllLabels();
     }
     ClSimpleGUI::~ClSimpleGUI()
     {
@@ -14,6 +15,12 @@
         {
             delete ButtonVector[n];
         }
+
+        for(unsigned int n = 0; n< LabelVector.size();n++)
+        {
+            delete LabelVector[n];
+        }
+
     }
 
     void ClSimpleGUI::draw(sf::RenderWindow &window)
@@ -22,6 +29,11 @@
         for(unsigned int n = 0; n< ButtonVector.size();n++)
         {
             ButtonVector[n]->draw(window);
+        }
+
+        for(unsigned int n = 0; n< LabelVector.size();n++)
+        {
+            LabelVector[n]->draw(window);
         }
     }
 
@@ -93,6 +105,22 @@
         pAddMe = new ClSimpleButton(id, FIRE, SIMULATION, ButtonsTexture, ButtonSize, Position, scale);
         ButtonVector.push_back(pAddMe);
     }
+
+    void ClSimpleGUI::CreateAllLabels()
+    {
+        ClSimpleLabel *pAddLabel;
+        //ClSimpleLabel::ClSimpleLabel(const sf::Vector2f &position, const sf::Vector2f &labelSize, const sf::String &labelText, int *pNumber)
+        //add Timelabel top left
+        sf::Vector2f labelSize(200,100);
+        sf::Vector2f position(10,10);
+        sf::String labelText("Number of people");
+
+        id++;
+        pAddLabel = new ClSimpleLabel(position, labelSize, labelText, ClCrowdManager::getPeopleCount());
+        LabelVector.push_back(pAddLabel);
+
+    }
+
     void ClSimpleGUI::Execute(Buttons btn)
     {
         switch(btn)

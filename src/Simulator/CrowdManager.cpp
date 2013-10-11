@@ -82,9 +82,9 @@ void ClCrowdManager::CreateCrowd(sf::Vector2f position, float radius, int people
 
 }
 // Static Functions for the Simple Labels
-int ClCrowdManager::getPeopleCount()
+int *ClCrowdManager::getPeopleCount()
 {
-    return peopleCount;
+    return &peopleCount;
 }
 
 void ClCrowdManager::addPeople(int Number)
