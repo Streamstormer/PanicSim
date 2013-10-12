@@ -22,16 +22,15 @@ public:
 private:
 
     void CreateAllButtons();// called in the constructor to create all buttons
-    void CreateAllLabels();
+    void CreateAllLabels();// called in the constructor to create all labels
     void Execute(Buttons btn);
 
     std::vector<ClSimpleButton *> ButtonVector;
     std::vector<ClSimpleLabel *> LabelVector;
     sf::Texture ButtonsTexture;
+    sf::Font labelFont;
     int id;                     // used to give Buttons a unique id
     sf::Vector2f ScreenSize;
-    sf::Font labelFont;
-
 };
 
 #endif // SIMPLE_GUI_INCLUDE

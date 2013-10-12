@@ -1,7 +1,7 @@
 #include "../../include/Simulator/SimpleLabel.hpp"
 #include <sstream>
 
-ClSimpleLabel::ClSimpleLabel(const sf::Vector2f &position, const sf::Vector2f &labelSize,const sf::String &labelText, int *pNumber)
+ClSimpleLabel::ClSimpleLabel(const sf::Vector2f &position, const sf::Vector2f &labelSize, const sf::String &labelText, const sf::Font &font, int *pNumber)
 {
     this->position = position;
     this->labelSize = labelSize;
@@ -18,13 +18,7 @@ ClSimpleLabel::ClSimpleLabel(const sf::Vector2f &position, const sf::Vector2f &l
     text.setPosition(position);
     title = labelText;
     text.setColor(sf::Color::Red);
-
-    if(!font.loadFromFile("fonts/LiberationSerif-Regular.ttf"))
-    {
-        std::cout << "Hallo" << std::endl;
-    }
     text.setFont(font);
-
 }
 
 

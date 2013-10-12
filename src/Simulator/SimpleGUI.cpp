@@ -5,10 +5,12 @@
         id = 0;
         this->ScreenSize = ScreenSize;
         ButtonsTexture.loadFromFile("pictures/ButtonSet1.png");
+        labelFont.loadFromFile("fonts/LiberationSerif-Regular.ttf");
 
         CreateAllButtons();
         CreateAllLabels();
     }
+
     ClSimpleGUI::~ClSimpleGUI()
     {
         for(unsigned int n = 0; n< ButtonVector.size();n++)
@@ -109,14 +111,14 @@
     void ClSimpleGUI::CreateAllLabels()
     {
         ClSimpleLabel *pAddLabel;
-        //ClSimpleLabel::ClSimpleLabel(const sf::Vector2f &position, const sf::Vector2f &labelSize, const sf::String &labelText, int *pNumber)
-        //add Timelabel top left
+        //ClSimpleLabel::ClSimpleLabel(const sf::Vector2f &position, const sf::Vector2f &labelSize, const sf::String &labelText, const sf::Font &font, int *pNumber)
+        //add label for counting people (top left)
         sf::Vector2f labelSize(200,100);
         sf::Vector2f position(10,10);
         sf::String labelText("Number of people");
 
         id++;
-        pAddLabel = new ClSimpleLabel(position, labelSize, labelText, ClCrowdManager::getPeopleCount());
+        pAddLabel = new ClSimpleLabel(position, labelSize, labelText, labelFont, ClCrowdManager::getPeopleCount());
         LabelVector.push_back(pAddLabel);
 
     }
