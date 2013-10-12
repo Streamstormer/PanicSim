@@ -95,22 +95,22 @@ sf::Color ClHeatMap::getColor(int People)
     sf::Color background;
     background.b = 0;
 
-    if (People <= 3)   // at the end: green 0,255,0
+    if (People <= sw_green)   // at the end: green 0,255,0
     {
         background.r = 0;
-        background.g = (People/3)*255;
+        background.g = (int)((People/sw_green)*255);
         return background;
     }
-    else if (People <= 6)   // at the end: yellow 255,255,0
+    else if (People <= sw_yellow)   // at the end: yellow 255,255,0
     {
-        background.r = ((People-3)/3)*255;
+        background.r = (int)(((People-sw_green)/(sw_yellow-sw_green))*255);
         background.g = 255;
         return background;
     }
     background.r = 225;   // at the end: red 255,0,0
-    if(People<=9)
+    if(People <= sw_red)
     {
-        background.g = 255-(((People-6)/3)*255);
+        background.g = (int)(255-(((People-sw_yellow)/(sw_red-sw_yellow))*255));
     }
     else background.g = 0;
     return background;
