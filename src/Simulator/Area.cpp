@@ -45,7 +45,7 @@
 /// Get Methods for static Object attributes via the id
 /// for the editor
 
- const sf::Vector2f & ClArea::getPosition(int id)
+    const sf::Vector2f & ClArea::getPosition(int id)
     {
         for (unsigned int n = 0; n < sobjects.size();n++)
         {

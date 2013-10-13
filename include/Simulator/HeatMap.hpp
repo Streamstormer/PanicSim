@@ -24,11 +24,11 @@ private:
 
     //used for giving the heatmap different collors depending on number of people
     //color is green until there are sw_green people
-    const static int sw_green = 5;
+    const static int sw_green = 10;
     //color is yellow until there are sw_yellow people
-    const static int sw_yellow = 10;
+    const static int sw_yellow = 17;
     //color is (stepwise) red until there are sw_red people above it´s red too
-    const static int sw_red = 15;
+    const static int sw_red = 25;
 
 };
 

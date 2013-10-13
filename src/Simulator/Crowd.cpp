@@ -14,15 +14,19 @@ ClCrowd::ClCrowd(float radius, ClArea * area, sf::Color Color, sf::Vector2f posi
     for (int n = 0; n < numOfPeoples; n++)
     {
         StrPeople *newPerson = new StrPeople;
+        do
+        {
+            newPerson->position.x = std::rand();
+            newPerson->position.x = (int)newPerson->position.x % (int)(2*radius);
+            newPerson->position.x -= radius;
+        } while (newPerson->position.x < 0);
 
-
-        newPerson->position.x = std::rand();
-        newPerson->position.x = (int)newPerson->position.x % (int)(2*radius);
-        newPerson->position.x -= radius;
-        newPerson->position.y = std::rand();
-        newPerson->position.y = (int)newPerson->position.y % (int)(2*radius);
-        newPerson->position.y -= radius;
-
+        do
+        {
+            newPerson->position.y = std::rand();
+            newPerson->position.y = (int)newPerson->position.y % (int)(2*radius);
+            newPerson->position.y -= radius;
+        } while (newPerson->position.y < 0);
         newPerson->position.x += mP.x;
         newPerson->position.y += mP.y;
 

@@ -5,7 +5,7 @@
 #include <vector>
 
 enum staticObjects{STAGE, BAR, WC, WALL, FENCE};
-const unsigned int MAXSTATICOBJECTTYPES = FENCE;
+const unsigned int MAXSTATICOBJECTTYPES = FENCE; // set this enum to the rightmost of all staticObjects
 
 class ClArea
 {
@@ -17,7 +17,7 @@ class ClArea
     int insertStObj(enum staticObjects type, const sf::Vector2f & sizeOfRectangle,
                     const sf::Vector2f & positionOfRectangle, float rotAngle);
     void draw(sf::RenderWindow& window);
-    bool validPoint(sf::Vector2f point);
+    bool validPoint(sf::Vector2f point); // returns whether a point is inside a staticObject ( false ) or not ( true )
 
     /// Get and Set for StaticObjects
 
