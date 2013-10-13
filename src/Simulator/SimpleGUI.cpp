@@ -130,8 +130,22 @@
         case(HEATMAP):
             {
                 ClHeatMap::toggleDraw();
+            }break;
+        case(PLAY):
+            {
+                ClSimulation::updateSpeed(false, true, false);
+            }break;
+        case(FASTFORWARD):
+            {
+                ClSimulation::updateSpeed(false, false, true);
+            }break;
+        case(PAUSE):
+            {
+                ClSimulation::updateSpeed(true,false,false);
             }
+
             // add more functionality
         }
+
     }  // called to execute code when a button is pressed
 

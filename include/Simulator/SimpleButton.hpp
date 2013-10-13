@@ -12,7 +12,6 @@ class ClSimpleButton
         ClSimpleButton(int id, Buttons button, int GameState, const sf::Texture &texture, const sf::Vector2f &newSize, const sf::Vector2f& position, float scale)
         {
             //
-            pressed = false;
             this->scale = scale;
             this->GameState = GameState;
             this->ButtonType = button;
@@ -39,28 +38,30 @@ class ClSimpleButton
             Rect.left = position.x;
             ButtonPicture.setPosition(position);
 
+            // scale the rect correctly
+            Rect.width *= scale;
+            Rect.height *= scale;
+
             // Additional
             ClickTimer.restart();
 
             // Debugging
             /*
             std::cout << " --- " << std::endl;
-            std::cout << "p.x" << Rect.left;
-            std::cout << " p.y " << Rect.top << std::endl;
-            std::cout << "w :" << Rect.width;
-            std::cout << "h :" << Rect.height;
+            std::cout << "p.x " << Rect.left;
+            std::cout << "p.y " << Rect.top << std::endl;
+            std::cout << "w : " << Rect.width;
+            std::cout << "h : " << Rect.height;
             std::cout << "----id : " << id << "----" << std::endl;
             */
         }
         bool isPressed(const sf::Vector2i &Mouse)
         {
-            if(pressed == false && Rect.contains(Mouse) && ClickTimer.getElapsedTime().asMilliseconds() > 1000)
+            if( Rect.contains(Mouse) && ClickTimer.getElapsedTime().asMilliseconds() > 1000)
             {
                 ClickTimer.restart();
-                pressed = true;
                 return true;
             }
-            pressed = false;
             return false;
         }
         void draw(sf::RenderWindow& window)
@@ -75,7 +76,6 @@ class ClSimpleButton
 
         sf::Clock ClickTimer;
 
-        bool pressed;
         float scale;
         int id;
         Buttons ButtonType;

@@ -4,7 +4,6 @@
 #include "../../include/Simulator/Crowd.hpp"
 #include "../../include/Simulator/Area.hpp"
 #include "../../include/Simulator/CrowdManager.hpp"
-#include "../../include/Simulator/SimpleGUI.hpp"
 #include "../../include/Common/FileHandler.hpp"
 
 class ClSimulation
@@ -16,16 +15,19 @@ class ClSimulation
         bool update(sf::RenderWindow &window);
         void draw(sf::RenderWindow &window);
 
+        static void updateSpeed(bool pause, bool normal, bool fastForward);
     private:
 
-        void createObjects(); // FileHandler logic goes here
+        // FileHandler logic goes here
                               // this function is called in the constructor
 
-        void calculateOffset(float frameTime); // Calculates the offset to enable scrolling
-                                // called in update
+        void createObjects();
+        // Calculates the offset to enable scrolling
+        // called in update
+        void calculateOffset(float frameTime);
+
         ClArea *pArea;
         ClCrowdManager *pCrowdManager;
-        ClSimpleGUI *pGUI;
         sf::VideoMode Mode;
         sf::Clock elapsedTime;
         sf::Vector2f LevelSize;
@@ -33,6 +35,7 @@ class ClSimulation
         // used for scrolling
         sf::View gameView;
         sf::Vector2f currentOffset;
+        static int speed;
 };
 
 #endif // SIMULATION_HPP_INCLUDED

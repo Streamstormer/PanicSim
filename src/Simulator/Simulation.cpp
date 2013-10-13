@@ -23,23 +23,20 @@
             pCrowdManager->CreateCrowd(sf::Vector2f(550,350),150,700);
             pCrowdManager->CreateCrowd(sf::Vector2f(250,523),150,650);
 
-            pGUI = new ClSimpleGUI(sf::Vector2f(Mode.width, Mode.height));
             elapsedTime.restart();
         }
         ClSimulation::~ClSimulation()
         {
             delete pArea;
             delete pCrowdManager;
-            delete pGUI;
         }
         bool ClSimulation::update(sf::RenderWindow &window)
         {
             float frameTime = elapsedTime.getElapsedTime().asMilliseconds();
+            frameTime *= speed;
             elapsedTime.restart();
             // Update Crowds Pathfinding Statemachine and Heatmap
             pCrowdManager->Update(frameTime);
-            // Update GUI
-            pGUI->update(window);
             // Update View
             calculateOffset(frameTime);
 
@@ -54,10 +51,7 @@
             pArea->draw(window);
             // Draw Crowds
             pCrowdManager->Draw(window);
-            // Draw GUI
-            // reset View so GUI is drawn at the same position everytime
-            window.setView(window.getDefaultView());
-            pGUI->draw(window);
+
         }
         // private :
 
@@ -114,5 +108,27 @@
             }
         }
 
+        void ClSimulation::updateSpeed(bool pause,bool normal, bool fastForward)
+        {
+            if (pause)
+                {
+                ClSimulation::speed = 0;
+                }
+            else if (normal)
+                {
+                    speed = 1;
+                }
+            else if (fastForward)
+            {
+                ClSimulation::speed++;
+                if (ClSimulation::speed > 3)
+                {
+                    ClSimulation::speed = 1;
+                }
 
+            }
+            std::cout << "speed :" << ClSimulation::speed << std::endl;
+        }
+
+        int ClSimulation::speed = 1;
 

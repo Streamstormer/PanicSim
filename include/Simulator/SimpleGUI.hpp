@@ -7,6 +7,7 @@
 #include "SimpleLabel.hpp"
 #include "HeatMap.hpp"
 #include "CrowdManager.hpp"
+#include "Simulation.hpp"
 
 enum GameStates {MENU, SIMULATION, PAUSE};
 

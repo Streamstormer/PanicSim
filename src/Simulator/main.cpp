@@ -3,6 +3,7 @@
 #include <getopt.h>
 
 #include "../../include/Simulator/Simulation.hpp"
+#include "../../include/Simulator/SimpleGUI.hpp"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ int main(int argc, char *argv[])
     sf::VideoMode Mode = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(Mode, "Panic Sim!");
     ClSimulation *pSimulation = new ClSimulation(Mode);
-
+    ClSimpleGUI *pGUI = new ClSimpleGUI(sf::Vector2f(Mode.width,Mode.height));
     while (window.isOpen())
     {
         /// Update
@@ -34,13 +35,20 @@ int main(int argc, char *argv[])
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-
+        // Update Simulation
         pSimulation->update(window);
-
+        // Update GUI
+        pGUI->update(window);
         ///Render
         window.clear();
         pSimulation->draw(window);
+        // Draw GUI
+        // reset View so GUI is drawn at the same position everytime
+        window.setView(window.getDefaultView());
+        pGUI->draw(window);
         window.display();
     }
+    delete pSimulation;
+    delete pGUI;
     return 0;
 }
