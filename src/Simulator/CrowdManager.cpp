@@ -5,7 +5,7 @@ ClCrowdManager::ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize)
 {
     this->pArea = pArea;
     //Create HeatMap
-    sf::Vector2i numberOfCells(30,30);
+    sf::Vector2i numberOfCells(50,50);
     pHeatMap = new ClHeatMap(numberOfCells, ScreenSize);
 
 }
@@ -17,11 +17,11 @@ ClCrowdManager::~ClCrowdManager()
     }
 }
 
-void ClCrowdManager::Update(float frameTime)
+void ClCrowdManager::Update(float frameTime, sf::RenderWindow &window)
 {
     // Update HeatMap
 
-    pHeatMap->update();
+    pHeatMap->update(frameTime);
 
     // Update Crowds
 
@@ -31,7 +31,7 @@ void ClCrowdManager::Update(float frameTime)
         if ( n== 0)
         {
             //     The first crowd is movable with the mouse for debugging purposes
-            Crowds[n]->Update(sf::Mouse::getPosition(),frameTime);
+            Crowds[n]->Update(sf::Mouse::getPosition(window),frameTime);
         }
         else
         {
@@ -54,31 +54,28 @@ void ClCrowdManager::CreateCrowd(sf::Vector2f position, float radius, int people
 {
     // set people count does not work yet
     static int j =0;
-    j++;
     // increment people for SimpleGUI
     ClCrowdManager::addPeople(people);
 
     // for debugging puposes: each crowd gets a different color
     if(j==0)
     {
-        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::White,position, people);
-        pHeatMap->registerCrowd(Crowd);
+        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::White,position, people, pHeatMap);
         Crowds.push_back(Crowd);
     }
     else if (j==1)
     {
 
-        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Red,position, people);
-        pHeatMap->registerCrowd(Crowd);
+        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Red,position, people, pHeatMap);
         Crowds.push_back(Crowd);
 
     }
     else
     {
-        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Green,position, people);
-        pHeatMap->registerCrowd(Crowd);
+        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Green,position, people, pHeatMap);
         Crowds.push_back(Crowd);
     }
+    j++;
 
 }
 // Static Functions for the Simple Labels

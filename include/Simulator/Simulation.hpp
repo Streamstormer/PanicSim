@@ -30,7 +30,7 @@ class ClSimulation
         ClCrowdManager *pCrowdManager;
         sf::VideoMode Mode;
         sf::Clock elapsedTime;
-        sf::Vector2f LevelSize;
+        sf::Vector2i levelSize;
 
         // used for scrolling
         sf::View gameView;

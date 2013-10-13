@@ -6,17 +6,13 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 #include <vector>
-
-struct StrPeople
-{
-    sf::Vector2f position;
-    sf::Vector2f forceVec;
-};
+#include "HeatMap.hpp"
+#include "People.hpp"
 
 class ClCrowd
 {
 public:
-    ClCrowd(float radius, ClArea * area, sf::Color Color, sf::Vector2f position, int numOfPeoples);
+    ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f position, int numOfPeoples, ClHeatMap * pHeatMap);
     ~ClCrowd();
 
     void Update(sf::Vector2i position,float frameTime);
@@ -26,8 +22,9 @@ public:
     const sf::Vector2f  getMassPoint();
     float getRadius();
 
-    const std::vector<StrPeople *> & getPeoples() {return peoples;}
 private:
+    // used to register all peoples in the heatmap
+    const std::vector<StrPeople *> & getPeoples() {return peoples;}
 
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );
     sf::Vector2f Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destination, const sf::Vector2f & CurVelocity);
@@ -35,15 +32,15 @@ private:
     sf::Vector2f DistanceForce(int current);
     //sf::Vector2f Cohesion(StrPeople* start, const sf::Vector2f & massPoint, int current);
 
-    ClArea *Area; // used for collision detection
+    ClArea *pArea;       // used for human - static object collision detection
+    ClHeatMap *pHeatMap; // used for human - human collision detection
+
     std::vector<StrPeople *> peoples;
     sf::Vector2f position;
     float radius;
 
     // for debugging puposes : each Crowd does have a unique color
-
     sf::Color Color;
-
 
 };
 

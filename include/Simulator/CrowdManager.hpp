@@ -12,7 +12,7 @@ class ClCrowdManager
         ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize);
         ~ClCrowdManager();
 
-        void Update(float frameTime);
+        void Update(float frameTime, sf::RenderWindow &window);
         void Draw(sf::RenderWindow& window);
         void CreateCrowd(sf::Vector2f position, float radius, int people);
 

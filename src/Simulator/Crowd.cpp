@@ -1,14 +1,15 @@
 #include "../../include/Simulator/Crowd.hpp"
 
 
-ClCrowd::ClCrowd(float radius, ClArea * area, sf::Color Color, sf::Vector2f position, int numOfPeoples)
+ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f position, int numOfPeoples, ClHeatMap *pHeatMap)
 {
     this->position = position;
     this->Color = Color;
 
     this->radius = radius;
     sf::Vector2f mP = this->getMassPoint();
-    Area = area;
+    this->pArea = pArea;
+    this->pHeatMap = pHeatMap;
 
     //randomize the position of the people
     for (int n = 0; n < numOfPeoples; n++)
@@ -36,6 +37,10 @@ ClCrowd::ClCrowd(float radius, ClArea * area, sf::Color Color, sf::Vector2f posi
 
     }
 
+    // register people in the HeatMap
+
+    pHeatMap->registerCrowd(this->getPeoples());
+
 }
 ClCrowd::~ClCrowd()
 {
@@ -58,12 +63,14 @@ void  ClCrowd::Update(float frameTime)
             peoples[n]->position.x += peoples[n]->forceVec.x * frameTime *0.1;
             peoples[n]->position.y += peoples[n]->forceVec.y * frameTime *0.1;
         // Crappy Collision detection
-            if(!Area->validPoint(peoples[n]->position))
+        /*
+            if(!pArea->validPoint(peoples[n]->position))
             {
                 peoples[n]->position.x -= peoples[n]->forceVec.x * frameTime;
                 peoples[n]->position.y -= peoples[n]->forceVec.y * frameTime;
             }
         // Distance Force
+
             peoples[n]->forceVec = DistanceForce(n);
             Vec2DNormalize(&peoples[n]->forceVec);
             peoples[n]->forceVec.x *= -2.5;
@@ -72,11 +79,12 @@ void  ClCrowd::Update(float frameTime)
         peoples[n]->position.x += peoples[n]->forceVec.x * frameTime *0.1;
         peoples[n]->position.y += peoples[n]->forceVec.y * frameTime *0.1;
         // Another Crappy Collision detection :)
-        if(!Area->validPoint(peoples[n]->position))
+        if(!pArea->validPoint(peoples[n]->position))
         {
             peoples[n]->position.x -= peoples[n]->forceVec.x * frameTime;
             peoples[n]->position.y -= peoples[n]->forceVec.y * frameTime;
         }
+        */
     }
 }
 void  ClCrowd::Update(sf::Vector2i position,float frameTime)
