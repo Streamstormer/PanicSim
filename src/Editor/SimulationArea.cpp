@@ -104,6 +104,7 @@ void SimulationArea::resize()
     sf::View view(lower_right * 0.5f,
                   lower_right);
     renderWindow.setView(view);
+    queue_resize();
 }
 
 
