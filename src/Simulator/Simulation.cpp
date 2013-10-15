@@ -18,9 +18,11 @@
 
             pCrowdManager = new ClCrowdManager(pArea, levelSize);
 
-            pCrowdManager->CreateCrowd(sf::Vector2f(1600,1550),150,1800);
-            pCrowdManager->CreateCrowd(sf::Vector2f(1550,1350),150,1700);
-            pCrowdManager->CreateCrowd(sf::Vector2f(1250,1523),150,1650);
+            pCrowdManager->CreateCrowd(sf::Vector2f(600,550),150,1000);
+            pCrowdManager->CreateCrowd(sf::Vector2f(850,250),150,500);
+            pCrowdManager->CreateCrowd(sf::Vector2f(800,750),150,500);
+
+
 
             elapsedTime.restart();
         }
@@ -33,6 +35,7 @@
         {
             float frameTime = elapsedTime.getElapsedTime().asMilliseconds();
             frameTime *= speed;
+
             elapsedTime.restart();
             // Update Crowds Pathfinding Statemachine and Heatmap
             pCrowdManager->Update(frameTime, window);
@@ -47,7 +50,7 @@
             // Draw Background
             pArea->draw(window);
             // Draw Crowds
-            pCrowdManager->Draw(window);
+            pCrowdManager->draw(window);
 
         }
         // private :

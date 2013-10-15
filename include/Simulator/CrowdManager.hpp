@@ -13,9 +13,10 @@ class ClCrowdManager
         ~ClCrowdManager();
 
         void Update(float frameTime, sf::RenderWindow &window);
-        void Draw(sf::RenderWindow& window);
+        void draw(sf::RenderWindow& window);
         void CreateCrowd(sf::Vector2f position, float radius, int people);
 
+        // for lable showing the total ammount of people
         static int *getPeopleCount();
         static void addPeople(int Number);
 

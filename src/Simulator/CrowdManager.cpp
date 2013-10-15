@@ -19,9 +19,6 @@ ClCrowdManager::~ClCrowdManager()
 
 void ClCrowdManager::Update(float frameTime, sf::RenderWindow &window)
 {
-    // Update HeatMap
-
-    pHeatMap->update(frameTime);
 
     // Update Crowds
 
@@ -38,8 +35,11 @@ void ClCrowdManager::Update(float frameTime, sf::RenderWindow &window)
             Crowds[n]->Update(frameTime);
         }
     }
+    // Update HeatMap
+
+    pHeatMap->update(frameTime);
 }
-void ClCrowdManager::Draw(sf::RenderWindow& window)
+void ClCrowdManager::draw(sf::RenderWindow& window)
 {
     unsigned int n;
     pHeatMap->draw(window);
