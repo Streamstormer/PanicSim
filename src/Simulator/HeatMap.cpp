@@ -149,11 +149,11 @@ sf::Vector2f ClHeatMap::distanceForce(std::vector<StrPeople *> &cell, StrPeople 
             delta.x =   (checkMe->position.x-cell[n]->position.x );
             delta.y =   (checkMe->position.y-cell[n]->position.y );
 
-            if (((delta.x*delta.x) + (delta.y * delta.y)) < 120) // is in range ?
+            if (((delta.x*delta.x) + (delta.y * delta.y)) < 160) // is in range ?
             {
                 helpVar = sqrt((delta.x*delta.x) + (delta.y * delta.y));
                 Vec2DNormalize(&delta);
-                helpVar = invert(sqrt(120),helpVar);
+                helpVar = invert(sqrt(160),helpVar);
 
                 force.x += delta.x *helpVar;
                 force.y += delta.y *helpVar;

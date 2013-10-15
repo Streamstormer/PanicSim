@@ -31,7 +31,7 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
         newPerson->position.x += mP.x;
         newPerson->position.y += mP.y;
 
-        newPerson->forceVec.x = newPerson->forceVec.y =0;
+    //    newPerson->forceVec.x = newPerson->forceVec.y =0;
 
         peoples.push_back(newPerson);
 
@@ -52,16 +52,15 @@ ClCrowd::~ClCrowd()
 
 void  ClCrowd::Update(float frameTime)
 {
+    sf::Vector2f force;
      for (unsigned int n = 0; n < peoples.size(); n++)
     {
         // Center Force
-            peoples[n]->forceVec =  Seek( peoples[n]->position, this->getMassPoint(), peoples[n]->forceVec);
-            Vec2DNormalize(&peoples[n]->forceVec);
-            peoples[n]->forceVec.x *= 2;
-            peoples[n]->forceVec.y *= 2;
+            force =  Seek( peoples[n]->position, this->getMassPoint(), sf::Vector2f(0,0));
+         //   Vec2DNormalize(&force);
 
-            peoples[n]->position.x += peoples[n]->forceVec.x * frameTime *0.1;
-            peoples[n]->position.y += peoples[n]->forceVec.y * frameTime *0.1;
+            peoples[n]->position.x += force.x * frameTime *0.03;
+            peoples[n]->position.y += force.y * frameTime *0.03;
         // Crappy Collision detection
         /*
             if(!pArea->validPoint(peoples[n]->position))
@@ -139,22 +138,15 @@ void ClCrowd::Vec2DNormalize( sf::Vector2f *NormalizeMe )
 
 sf::Vector2f ClCrowd::Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destination, const sf::Vector2f & CurVelocity)
 {
-float Factor = 1;
     TargetPos.x -= Destination.x;
     TargetPos.y -= Destination.y;
-
-        Factor = TargetPos.x*TargetPos.x + TargetPos.y *TargetPos.y;
-        Factor /= peoples.size()*100;
-        if (Factor > 1)
-        {
-            Factor = 1;
-        }
-
+  //  float helpVar = (TargetPos.x + TargetPos.y)*(TargetPos.x * TargetPos.y);
+  //  helpVar = sqrt(helpVar);
     Vec2DNormalize(&TargetPos);
-    TargetPos.x *=  Factor;
-    TargetPos.y *=  Factor;
 
-    return (-TargetPos - CurVelocity );
+ //   TargetPos.x *= helpVar;
+ //   TargetPos.y *= helpVar;
+    return (-TargetPos );
 }
 /*
 sf::Vector2f ClCrowd::CenterForce(sf::Vector2f TargetPos, const sf::Vector2f & Destination, const sf::Vector2f & CurVelocity)

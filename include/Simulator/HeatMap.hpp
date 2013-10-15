@@ -32,9 +32,9 @@ private:
     sf::Color getColor(int People);
     //used for giving the heatmap different collors depending on number of people
     //color is green until there are sw_green people
-    const static int sw_green = 10;
+    const static int sw_green = 3;
     //color is yellow until there are sw_yellow people
-    const static int sw_yellow = 17;
+    const static int sw_yellow = 15;
     //color is (stepwise) red until there are sw_red people above it´s red too
     const static int sw_red = 25;
 
