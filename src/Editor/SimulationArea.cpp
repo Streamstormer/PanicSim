@@ -20,6 +20,7 @@ SimulationArea::SimulationArea(Gtk::ScrolledWindow& AreaWin, Gtk::Box& ObjectBox
     this->boxChecked = false;
     this->pAreaSizeX = pAreaSizeX;
     this->pAreaSizeY = pAreaSizeY;
+
     // Let the animate method be called every 25ms
     // Note: MovingCircle::animate() doesn't return any value, but signal_timeout() expects
     //       a boolean value.
@@ -157,4 +158,14 @@ void SimulationArea::clearArea()
 void SimulationArea::box_clicked()
 {
     boxChecked = true;
+}
+
+ClArea *SimulationArea::getArea()
+{
+    return Area;
+}
+
+void SimulationArea::insertCheck(Gtk::CheckButton *check)
+{
+    this->CheckButt.push_back(check);
 }

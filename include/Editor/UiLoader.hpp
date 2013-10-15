@@ -14,9 +14,6 @@ class UiLoader : public Gtk::Window
 private:
    Glib::RefPtr<Gtk::Builder> builder;
    string UiPath;
-   string SimFile;
-   bool isOpen;
-
 
 protected:
     Gtk::Window *pWindow;
@@ -48,10 +45,7 @@ protected:
 
     Gtk::Box *pBox;
     UiLoader(string UiPath);
-    void loadFile();
-    void SaveFile();
-    void StartSim();
-    void SaveTo();
+
 
 };
 #endif // UILOADER_HPP_INCLUDED

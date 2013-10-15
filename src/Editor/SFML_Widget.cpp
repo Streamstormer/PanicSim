@@ -1,26 +1,5 @@
 #include "../../include/Editor/SFML_Widget.hpp"
 
-#if defined(SFML_SYSTEM_WINDOWS)
-
-#include <gdk/gdkwin32.h>
-#define GET_WINDOW_HANDLE_FROM_GDK GDK_WINDOW_HANDLE
-
-#elif defined(SFML_SYSTEM_LINUX) || defined(SFML_SYSTEM_FREEBSD)
-
-#include <gdk/gdkx.h>
-#define GET_WINDOW_HANDLE_FROM_GDK GDK_WINDOW_XID
-
-#elif defined(SFML_SYSTEM_MACOS)
-
-#error Note: You have to figure out an analogue way to access the handle of the widget on a Mac-System
-
-#else
-
-#error Unsupported Operating System
-
-#endif
-
-
 SFML_Widget::SFML_Widget(sf::VideoMode mode, int size_request)
 {
     if(size_request<=0)

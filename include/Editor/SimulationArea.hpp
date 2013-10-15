@@ -2,6 +2,7 @@
 #define SIMULATIONAREA_HPP_INCLUDED
 
 #include "SFML_Widget.hpp"
+#include <gtkmm.h>
 #include "../Simulator/Area.hpp"
 
 
@@ -20,7 +21,6 @@ private:
     Gtk::SpinButton *pAreaSizeY;
     bool boxChecked;
     vector<Gtk::CheckButton*> CheckButt;
-    void box_clicked();
 
     void animate();
     void draw();
@@ -32,6 +32,9 @@ public:
     void clearArea();
     void setObject(enum staticObjects object, sf::Vector2f position, sf::Vector2f size, float rotation);
     void setChecked();
+    ClArea *getArea();
+    void insertCheck(Gtk::CheckButton *check);
+    void box_clicked();
 };
 
 #endif // SIMULATIONAREA_HPP_INCLUDED

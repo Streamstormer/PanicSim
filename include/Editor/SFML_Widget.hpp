@@ -5,6 +5,26 @@
 #include <gtkmm.h>
 #include <iostream>
 
+#if defined(SFML_SYSTEM_WINDOWS)
+
+#include <gdk/gdkwin32.h>
+#define GET_WINDOW_HANDLE_FROM_GDK (HWND)gdk_win32_window_get_handle
+
+#elif defined(SFML_SYSTEM_LINUX) || defined(SFML_SYSTEM_FREEBSD)
+
+#include <gdk/gdkx.h>
+#define GET_WINDOW_HANDLE_FROM_GDK GDK_WINDOW_XID
+
+#elif defined(SFML_SYSTEM_MACOS)
+
+#error Note: You have to figure out an analogue way to access the handle of the widget on a Mac-System
+
+#else
+
+#error Unsupported Operating System
+
+#endif
+
 class SFML_Widget : public Gtk::Widget
 {
 protected:

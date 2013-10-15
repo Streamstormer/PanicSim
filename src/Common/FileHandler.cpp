@@ -56,6 +56,7 @@ int ClFileHandler::openExistingFile(const char *fileName){
     try{
         inFile.open(fileName);
     }catch(std::ios_base::failure){
+        std::cout<<"Error";
         return 1;
     }
     return 0;
@@ -64,9 +65,6 @@ int ClFileHandler::openExistingFile(const char *fileName){
 int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
 
     int code = createFile(fileName.c_str());
-    if(code != 0)
-        return code;
-    code = createFile(fileName.c_str());
     if(code != 0)
         return code;
     code = writeHeader(pArea);
@@ -78,6 +76,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
     code = writeStaticObjects(pArea);
     if(code != 0)
         return code;
+    myFile.flush();
     myFile.close();
     //readLevel("test.csv", pArea);
     return 0;
@@ -114,8 +113,8 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
             position.y = props[2];
             sf::Vector2f objectSize;
             objectSize.x = props[3];
-            objectSize.y = props[4];
-            unsigned int type = (int) props[6];
+            objectSize.y = props[4]; // not unsigned, because then it is always false
+            int type = (int) props[6];
             if(type < 0 || type > MAXSTATICOBJECTTYPES){
                 type = (int) WALL;
                 returnCode = 3;

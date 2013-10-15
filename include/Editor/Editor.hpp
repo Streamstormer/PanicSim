@@ -3,6 +3,7 @@
 
 #include "UiLoader.hpp"
 #include "SimulationArea.hpp"
+#include "../Common/FileHandler.hpp"
 
 class Editor : public UiLoader
 {
@@ -14,7 +15,15 @@ private:
     void on_Button_Fence_clicked();
     void on_Button_Clear_clicked();
 
+    void loadFile();
+    void SaveFile();
+    void StartSim();
+    void SaveTo();
+
     SimulationArea *SFMLArea;
+    string SimFile;
+    bool isOpen;
+    ClFileHandler *level;
 public:
     Editor(string UiPath, Glib::RefPtr<Gtk::Application> app);
 };
