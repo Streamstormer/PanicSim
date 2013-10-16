@@ -16,9 +16,6 @@ public:
     static void toggleDraw();
     static bool doDraw;
 
-    // for collision detection between single humans
-    // const std::vector<StrPeople *> & getCell(sf::Vector2f, bool top, bool right, bool center)
-
 private:
     sf::Vector2f distanceForce(std::vector<StrPeople *> &cell, StrPeople *checkMe, int position );
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );

@@ -28,11 +28,9 @@ private:
 
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );
     sf::Vector2f Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destination, const sf::Vector2f & CurVelocity);
-    float invert(float Max, float Current);
-    sf::Vector2f DistanceForce(int current);
-    //sf::Vector2f Cohesion(StrPeople* start, const sf::Vector2f & massPoint, int current);
 
     ClArea *pArea;       // used for human - static object collision detection
+                         // just registers the crowd there
     ClHeatMap *pHeatMap; // used for human - human collision detection
 
     std::vector<StrPeople *> peoples;

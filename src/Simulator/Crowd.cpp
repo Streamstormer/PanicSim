@@ -61,29 +61,7 @@ void  ClCrowd::Update(float frameTime)
 
             peoples[n]->position.x += force.x * frameTime *0.03;
             peoples[n]->position.y += force.y * frameTime *0.03;
-        // Crappy Collision detection
-        /*
-            if(!pArea->validPoint(peoples[n]->position))
-            {
-                peoples[n]->position.x -= peoples[n]->forceVec.x * frameTime;
-                peoples[n]->position.y -= peoples[n]->forceVec.y * frameTime;
-            }
-        // Distance Force
 
-            peoples[n]->forceVec = DistanceForce(n);
-            Vec2DNormalize(&peoples[n]->forceVec);
-            peoples[n]->forceVec.x *= -2.5;
-            peoples[n]->forceVec.y *= -2.5;
-
-        peoples[n]->position.x += peoples[n]->forceVec.x * frameTime *0.1;
-        peoples[n]->position.y += peoples[n]->forceVec.y * frameTime *0.1;
-        // Another Crappy Collision detection :)
-        if(!pArea->validPoint(peoples[n]->position))
-        {
-            peoples[n]->position.x -= peoples[n]->forceVec.x * frameTime;
-            peoples[n]->position.y -= peoples[n]->forceVec.y * frameTime;
-        }
-        */
     }
 }
 void  ClCrowd::Update(sf::Vector2i position,float frameTime)
@@ -147,56 +125,5 @@ sf::Vector2f ClCrowd::Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destinat
  //   TargetPos.x *= helpVar;
  //   TargetPos.y *= helpVar;
     return (-TargetPos );
-}
-/*
-sf::Vector2f ClCrowd::CenterForce(sf::Vector2f TargetPos, const sf::Vector2f & Destination, const sf::Vector2f & CurVelocity)
-{
-    TargetPos.x -= Destination.x;
-    TargetPos.y -= Destination.y;
-
-    //Vec2DNormalize(&TargetPos);
-
-    return (-TargetPos - CurVelocity );
-}*/
-
-
-float ClCrowd::invert(float Max, float Current)
-{
-    return abs(Current - Max);
-}
-
-sf::Vector2f ClCrowd::DistanceForce(int current)
-{
-    sf::Vector2f delta;
-    sf::Vector2f force(0,0);
-    float helpVar;
-    int NbCount = 0;
-
-    for ( unsigned int n = 0; n< peoples.size(); n++)
-    {
-        if ( n != current)
-        {
-            delta.x =   (peoples[current]->position.x-peoples[n]->position.x );
-            delta.y =   (peoples[current]->position.y-peoples[n]->position.y );
-
-            if (((delta.x*delta.x) + (delta.y * delta.y)) < 120)
-            {
-                helpVar = sqrt((delta.x*delta.x) + (delta.y * delta.y));
-                Vec2DNormalize(&delta);
-                helpVar = invert(sqrt(120),helpVar);
-
-                force.x += delta.x *helpVar;
-                force.y += delta.y *helpVar;
-                NbCount++;
-            }
-
-        }
-    }
-    Vec2DNormalize(&force);
-    if (NbCount <= 1)
-    {
-        return sf::Vector2f (0,0);
-    }
-    return -force;
 }
 
