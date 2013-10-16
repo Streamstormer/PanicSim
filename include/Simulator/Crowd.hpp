@@ -23,8 +23,6 @@ public:
     float getRadius();
 
 private:
-    // used to register all peoples in the heatmap
-    const std::vector<StrPeople *> & getPeoples() {return peoples;}
 
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );
     sf::Vector2f Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destination, const sf::Vector2f & CurVelocity);

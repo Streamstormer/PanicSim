@@ -3,10 +3,7 @@
     // public:
         ClSimulation::ClSimulation(const sf::VideoMode &Mode)
         {
-            // Replace by FileHandler
-            this->levelSize.x = 2000;
-            this->levelSize.y = 2000;
-            // End Replace
+            readLevelMetaData();
 
             this->currentOffset.x = this->currentOffset.y = 0;
             this->Mode = Mode;
@@ -48,9 +45,11 @@
         {
             window.setView(gameView);
             // Draw Background
-            pArea->draw(window);
+            window.clear(bgColor);
             // Draw Crowds
             pCrowdManager->draw(window);
+            // Draw static / dynamic Objects
+            pArea->draw(window);
 
         }
         // private :
@@ -60,7 +59,18 @@
             // FileHandler goes here
             ClFileHandler fH;
             fH.readLevel("test.csv", pArea);
-            pArea->insertStObj(FENCE, sf::Vector2f(300,300),sf::Vector2f(1590,1590),0);
+
+        }
+
+        void ClSimulation::readLevelMetaData()
+        {
+            // Replace by FileHandler
+            bgColor.r = 205;
+            bgColor.g = 133;
+            bgColor.b = 63;
+            this->levelSize.x = 2000;
+            this->levelSize.y = 2000;
+            // End Replace
 
         }
 

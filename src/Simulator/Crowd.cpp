@@ -39,7 +39,7 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
 
     // register people in the HeatMap
 
-    pHeatMap->registerCrowd(this->getPeoples());
+    pHeatMap->registerCrowd(peoples);
 
 }
 ClCrowd::~ClCrowd()

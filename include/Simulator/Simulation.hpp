@@ -19,7 +19,12 @@ class ClSimulation
     private:
 
         // FileHandler logic goes here
-                              // this function is called in the constructor
+        // to read the Level Meta Data
+        // called in the constructor
+        void readLevelMetaData( );
+
+        // FileHandler logic goes here
+        // this function is called in the constructor
 
         void createObjects();
         // Calculates the offset to enable scrolling
@@ -36,6 +41,9 @@ class ClSimulation
         sf::View gameView;
         sf::Vector2f currentOffset;
         static int speed;
+
+        //Background Color
+        sf::Color bgColor;
 };
 
 #endif // SIMULATION_HPP_INCLUDED

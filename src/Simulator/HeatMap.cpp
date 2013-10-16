@@ -16,6 +16,7 @@ ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &Map
 ClHeatMap::~ClHeatMap() {}
 void ClHeatMap::registerCrowd(const std::vector<StrPeople *> &Crowd)
 {
+
     // Adds the peoples of a crowd to a local array where they can be managed all together
     for (unsigned int n=0; n<Crowd.size(); n++)
     {
@@ -38,7 +39,7 @@ void ClHeatMap::draw(sf::RenderWindow& window)
         {
             for (int y = 0; y < cellNumber.y; y++)
             {
-                if(this->SortedPeoples[x+y*cellNumber.x].size() > 0)
+                if(this->SortedPeoples[x+y*cellNumber.x].size() >= sw_green)
                 {
                 colorCell.setPosition(x*cellSize.x, y*cellSize.y);
                 colorCell.setFillColor(getColor(this->SortedPeoples[x+y*cellNumber.x].size()));
