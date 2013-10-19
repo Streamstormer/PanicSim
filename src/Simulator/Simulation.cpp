@@ -31,13 +31,14 @@
         bool ClSimulation::update(sf::RenderWindow &window)
         {
             float frameTime = elapsedTime.getElapsedTime().asMilliseconds();
+            float actualFrameTime = frameTime; // not changed by speed variable
             frameTime *= speed;
 
             elapsedTime.restart();
             // Update Crowds Pathfinding Statemachine and Heatmap
             pCrowdManager->Update(frameTime, window);
             // Update View
-            calculateOffset(frameTime);
+            calculateOffset(actualFrameTime);
 
             return true;
         }

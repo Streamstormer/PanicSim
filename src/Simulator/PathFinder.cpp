@@ -5,12 +5,7 @@ ClPathFinder::ClPathFinder(ClArea *pArea, float nodeDistance, const sf::Vector2f
     this->pArea = pArea;
     this->nodeDistance = nodeDistance;
     this->areaSize = areaSize;
-    nodeCounter = 0;
     createNodes();
-    //findPath(15, 10);
-
-
-
 }
 
 ClPathFinder::~ClPathFinder()
@@ -32,109 +27,117 @@ Nodes are only created if the position is valid (not in a static object)
 */
 void ClPathFinder::createNodes()
 {
-    ClNode *pAddMe;
+    // 1. create Nodes and check wheather the nodes are valid
+    // 1. create a list of valid nodes based on pArea->isValidPoint
+    // 2. add neighbour ids based on this list
     sf::Vector2f testPos;
-    nodeCounter=0;
-    //idArray is used to assign the top, left, right and below neighbour faster
-    int sizeIdArrayX = (int)areaSize.x/nodeDistance;
-    int sizeIdArrayY = (int)areaSize.y/nodeDistance;
-    int idArray [sizeIdArrayX][sizeIdArrayY];
-    int tempX,tempY;
+    sf::Vector2i nodeNumber((int)(areaSize.y/nodeDistance), (int)(areaSize.x/nodeDistance));
+    int idCounter=0;
+    int x, y;
+    bool validID[nodeNumber.x*nodeNumber.y]; // enough memory to store wheather it is a valid id or not
 
-    for(int i=0; i<sizeIdArrayX; i++)
+    for(y = 0;y<areaSize.y; y+=nodeDistance)
     {
-        for(int j=0; j<sizeIdArrayY; j++)
+        for(x=0; x<areaSize.x; x+=nodeDistance)
         {
-            idArray[i][j] = -1;
-        }
-    }
-
-    for(testPos.x = 0; testPos.x < areaSize.x-nodeDistance; testPos.x += nodeDistance)
-    {
-        for(testPos.y = 0; testPos.y < areaSize.y-nodeDistance; testPos.y += nodeDistance)
-        {
-            tempX = (int)testPos.x/nodeDistance;
-            tempY = (int)testPos.y/nodeDistance;
-            if(pArea->validPoint(testPos))
+            //1.
+            validID[idCounter] = false;
+            if(tryToAddNode(sf::Vector2i(x,y),idCounter))
             {
-                pAddMe = new ClNode(testPos, nodeCounter);
-                Nodes.push_back(pAddMe);
-                //idArray stores the nodeCounter at the position of nodeposition/nodeDistance
-                idArray [tempX][tempY] = nodeCounter;
-                nodeCounter++;
+                validID[idCounter] = true;
             }
-            else
-                //idArray stores -1 id the node does not exist
-                idArray [tempX][tempY] = -1;
+            idCounter++; // set idCounter ++ even if there is no node to add
         }
     }
-    for(int i=0; i<sizeIdArrayY; i++)
+    // debug output of validID Array
+    /*
+    for (int i = 0; i < nodeNumber.x * nodeNumber.y; i++)
     {
-        for(int j=0; j<sizeIdArrayX; j++)
+        if(i % nodeNumber.x == 0)
         {
-            //std::cerr<<"hallo"<<" "<<std::endl;
-            std::cerr<<idArray[i][j]<<" ";
+                std::cerr << std::endl;
         }
-        std::cerr<<" "<<std::endl;
-    }
-    //the neighbours of the nodes are set here
-    for(int k=0; k<(int)Nodes.size(); k++)
+        std::cerr << i << " " << validID[i] << " ";
+    } */
+    //2.
+    int currentID;
+    /*
+    usefull functions :
+    void set_neighbour_id_top(int id);
+    void set_neighbour_id_left(int id);
+    void set_neighbour_id_right(int id);
+    void set_neighbour_id_below(int id);
+    */
+    for(unsigned int n = 0; n<Nodes.size(); n++)
     {
-        tempX = (int)(Nodes[k]->get_x_position()/nodeDistance);
-        tempY = (int)(Nodes[k]->get_y_position()/nodeDistance);
-        int tempLeftX = (tempX-1);
-        int tempRightX = (tempX+1);
-        int tempTopY = (tempY-1);
-        int tempBelowY = (tempY+1);
-        //top neighbour
-        if(idArray[tempX][tempTopY] != -1 && tempTopY >= 0)
-        {
-            Nodes[k]->set_neighbour_id_top(idArray[tempX][tempTopY]);
-            std::cerr<<Nodes[k]->getID()<<" t"<<idArray[tempX][tempTopY]<<"|";
-        }
-        else
-        {
-            Nodes[k]->set_neighbour_id_top(-1);
-            std::cerr<<Nodes[k]->getID()<<" t"<<idArray[tempX][tempTopY]<<"|";
-        //below neighbour
-        }
-        if(idArray[tempX][tempBelowY] != -1 && tempBelowY <= (int)areaSize.y)
-        {
-            Nodes[k]->set_neighbour_id_below(idArray[tempX][tempBelowY]);
-            std::cerr<<Nodes[k]->getID()<<" b"<<idArray[tempX][tempTopY]<<"|";
-        }
-        else
-        {
-            Nodes[k]->set_neighbour_id_below(-1);
-            std::cerr<<Nodes[k]->getID()<<" b"<<idArray[tempX][tempTopY]<<"|";
-        }
-
+        currentID = Nodes[n]->getID();
+        // calculate ID left and right of current ID
+        x = currentID % nodeNumber.x;
+        y = (int)(currentID / nodeNumber.x);
+        std::cerr << "curID :" << currentID;
         //left neighbour
-        if(idArray[tempLeftX][tempY] != -1 && tempLeftX >= 0)
+        if ( x > 0 )
+        if( validID[(x-1)+y*nodeNumber.x]== true)
         {
-            Nodes[k]->set_neighbour_id_left(idArray[tempLeftX][tempY]);
-            std::cerr<<Nodes[k]->getID()<<" l"<<idArray[tempX][tempTopY]<<"|";
+            Nodes[n]->set_neighbour_id_left((x-1)+y*nodeNumber.x);
+            std::cerr << "left :" << (x-1)+y*nodeNumber.x;
         }
         else
         {
-            Nodes[k]->set_neighbour_id_left(-1);
-            std::cerr<<Nodes[k]->getID()<<" l"<<idArray[tempX][tempTopY]<<"|";
+            Nodes[n]->set_neighbour_id_left(-1);
         }
-
-        //right neighbour
-        if(idArray[tempRightX][tempY] != -1 && tempRightX <= (int)areaSize.x)
+        // right neighbour
+        if((x < nodeNumber.x-1) && validID[(x+1)+y*nodeNumber.x]== true )
         {
-            Nodes[k]->set_neighbour_id_right(idArray[tempRightX][tempY]);
-            std::cerr<<Nodes[k]->getID()<<" r"<<idArray[tempX][tempTopY]<<"|";
+            Nodes[n]->set_neighbour_id_right((x+1)+y*nodeNumber.x);
+            std::cerr << "right :" << (x+1)+y*nodeNumber.x;
         }
         else
         {
-            Nodes[k]->set_neighbour_id_right(-1);
-            std::cerr<<Nodes[k]->getID()<<" r"<<idArray[tempX][tempTopY]<<"|";
+            Nodes[n]->set_neighbour_id_right(-1);
         }
-        std::cerr <<std::endl;
+        // top neighbour
+        if(y >= 1)
+        if(validID[(x)+(y-1)*nodeNumber.x]== true )
+        {
+            Nodes[n]->set_neighbour_id_top((x)+(y-1)*nodeNumber.x);
+            std::cerr << "top :" << (x)+(y-1)*nodeNumber.x;
+        }
+        else
+        {
+            Nodes[n]->set_neighbour_id_top(-1);
+        }
+        // bottom neighbour
+        if(y < nodeNumber.y&& validID[(x)+(y+1)*nodeNumber.x]== true )
+        {
+            Nodes[n]->set_neighbour_id_below((x)+(y+1)*nodeNumber.x);
+            std::cerr << "bottom :" << (x)+(y+1)*nodeNumber.x;
+        }
+        else
+        {
+            Nodes[n]->set_neighbour_id_below(-1);
+        }
+       if(n>= 30 && n <= 40) std::cerr << std::endl;
     }
+
+    std::cerr << "idCounter :"<< idCounter;
+
 }
+
+bool ClPathFinder::tryToAddNode(const sf::Vector2i &here, int id)
+{
+    int tempX = (int)here.x/nodeDistance;
+    int tempY = (int)here.y/nodeDistance;
+    ClNode *pAddMe;
+    if(pArea->validPoint(sf::Vector2f(here.x, here.y)))
+    {
+        pAddMe = new ClNode(sf::Vector2f(here.x,here.y), id);
+        Nodes.push_back(pAddMe);
+        return true;
+    }
+    return false;
+}
+
 /*
 ---------------------------------------------------------------------------------------------------------------------------------------
 name:   draw(sf::RenderWindow & window)

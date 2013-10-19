@@ -1,10 +1,12 @@
 #ifndef SIMULATION_HPP_INCLUDED
 #define SIMULATION_HPP_INCLUDED
 
-#include "../../include/Simulator/Crowd.hpp"
-#include "../../include/Simulator/Area.hpp"
-#include "../../include/Simulator/CrowdManager.hpp"
+#include "Crowd.hpp"
+#include "Area.hpp"
+#include "CrowdManager.hpp"
 #include "../../include/Common/FileHandler.hpp"
+
+enum GameStates {MENU, SIMULATION, PAUSE};
 
 class ClSimulation
 {

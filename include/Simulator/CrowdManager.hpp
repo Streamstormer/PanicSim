@@ -4,6 +4,7 @@
 #include "Area.hpp"
 #include "Crowd.hpp"
 #include "HeatMap.hpp"
+#include "Pathfinder.hpp"
 #include <vector>
 
 class ClCrowdManager
@@ -24,6 +25,7 @@ class ClCrowdManager
 
         ClArea *pArea;
         ClHeatMap *pHeatMap;
+        ClPathFinder *pPathFinder;
         std::vector<ClCrowd *> Crowds;
 
         static int peopleCount;

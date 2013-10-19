@@ -3,13 +3,18 @@
 #define SIMPLE_GUI_INCLUDE
 
 #include <vector>
+// GUI related
 #include "SimpleButton.hpp"
 #include "SimpleLabel.hpp"
+#include "SimpleStartMenu.hpp"
+#include "SimpleSimulationMenu.hpp"
+
+// get static functions for execute from here
 #include "HeatMap.hpp"
 #include "CrowdManager.hpp"
 #include "Simulation.hpp"
 
-enum GameStates {MENU, SIMULATION, PAUSE};
+
 
 class ClSimpleGUI
 {
@@ -20,17 +25,21 @@ public:
     void draw(sf::RenderWindow &window);
     void update( sf::RenderWindow &window);     // executes code when a button is pressed
 
+    GameStates getGameState() {return curState;}
+
 private:
 
-    void CreateAllButtons();// called in the constructor to create all buttons
-    void CreateAllLabels();// called in the constructor to create all labels
-    void Execute(Buttons btn);
 
-    std::vector<ClSimpleButton *> ButtonVector;
-    std::vector<ClSimpleLabel *> LabelVector;
-    sf::Texture ButtonsTexture;
+    //void CreateAllLabels();// called in the constructor to create all labels
+    void createAllMenus();
+
+    // used for game states :
+    std::vector<ClSimpleMenu *> MenuVector;
+    ClSimpleMenu * pCurrentMenu;
+    GameStates curState;
+
+    // additional information
     sf::Font labelFont;
-    int id;                     // used to give Buttons a unique id
     sf::Vector2f ScreenSize;
 };
 

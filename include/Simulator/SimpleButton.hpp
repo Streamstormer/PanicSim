@@ -3,13 +3,13 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-enum Buttons {HEATMAP = 0, BOMB, STOP, PLAY, FASTFORWARD, FIRE };
+enum Buttons {HEATMAP = 0, BOMB, STOP, PLAY, FASTFORWARD, FIRE, START, CREDITS, EXIT };
 
 
 class ClSimpleButton
 {
     public:
-        ClSimpleButton(int id, Buttons button, int GameState, const sf::Texture &texture, const sf::Vector2f &newSize, const sf::Vector2f& position, float scale)
+        ClSimpleButton(int id, Buttons button, int PictureID ,int GameState, const sf::Texture &texture, const sf::Vector2f &newSize, const sf::Vector2f& position, float scale)
         {
             //
             this->scale = scale;
@@ -23,8 +23,8 @@ class ClSimpleButton
 
             // Cut the Button of the Picture containing all Buttons
             sf::Vector2f Offset;
-            Offset.x = (int)(button%2)*newSize.x;
-            Offset.y = (int)(button/2)*newSize.y;
+            Offset.x = (int)(PictureID%2)*newSize.x;
+            Offset.y = (int)(PictureID/2)*newSize.y;
             Rect.top += Offset.y;
             Rect.left += Offset.x;
 
@@ -42,8 +42,9 @@ class ClSimpleButton
             Rect.width *= scale;
             Rect.height *= scale;
 
-            // Additional
-            ClickTimer.restart();
+            // set sf::Text to not drawn
+
+            pFont = NULL;
 
             // Debugging
             /*
@@ -55,11 +56,11 @@ class ClSimpleButton
             std::cout << "----id : " << id << "----" << std::endl;
             */
         }
-        bool isPressed(const sf::Vector2i &Mouse)
+        ~ClSimpleButton() {}
+        bool isPressed(sf::RenderWindow & window)
         {
-            if( Rect.contains(Mouse) && ClickTimer.getElapsedTime().asMilliseconds() > 1000)
+            if( Rect.contains(sf::Mouse::getPosition(window)))
             {
-                ClickTimer.restart();
                 return true;
             }
             return false;
@@ -67,19 +68,34 @@ class ClSimpleButton
         void draw(sf::RenderWindow& window)
         {
             window.draw(ButtonPicture);
+            window.draw(text);
         }
         Buttons getButtonType()
         {
             return ButtonType;
         }
-    private:
+        void setText(const sf::String &buttonText, sf::Font *pFont)
+        {
+            this->buttonText = buttonText;
+            this->text.setString(this->buttonText);
+            this->text.setFont(*pFont);
+            this->text.setStyle(sf::Text::Regular);
 
-        sf::Clock ClickTimer;
+            this->text.setCharacterSize(60);
+            sf::Rect<float> textRect = this->text.getGlobalBounds();
+            this->text.setPosition(Rect.left + ((Rect.width-textRect.width)/2),Rect.top + (Rect.height-textRect.height)/4);
+
+            this->text.setColor(sf::Color::White);
+        }
+    private:
 
         float scale;
         int id;
         Buttons ButtonType;
         int GameState;
+        sf::String buttonText;
+        sf::Text text;
+        sf::Font *pFont;
         sf::Rect<int> Rect;
         sf::Sprite ButtonPicture;
 };

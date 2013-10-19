@@ -19,14 +19,13 @@ ClSimpleLabel::ClSimpleLabel(const sf::Vector2f &position, const sf::Vector2f &l
     title = labelText;
     text.setColor(sf::Color::Red);
     text.setFont(font);
+    text.setCharacterSize(30);
+    text.setStyle(sf::Text::Regular);
 }
 
 
 void ClSimpleLabel::draw(sf::RenderWindow& window)
 {
-    text.setCharacterSize(30);
-    text.setStyle(sf::Text::Regular);
-
     std::stringstream number_ss;
     number_ss << *pNumber;
     number = number_ss.str();

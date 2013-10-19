@@ -21,6 +21,8 @@ class ClPathFinder
         void setNodeWeight(int nodeID, int parentID);
         void createPath(int startID, int endID);
 
+        bool tryToAddNode(const sf::Vector2i &here, int id);
+
         int nodeCounter;
         ClArea *pArea;
         float nodeDistance;
