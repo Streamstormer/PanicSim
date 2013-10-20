@@ -4,7 +4,7 @@
 #include "Area.hpp"
 #include "Crowd.hpp"
 #include "HeatMap.hpp"
-#include "Pathfinder.hpp"
+#include "PathFinder.hpp"
 #include <vector>
 
 class ClCrowdManager

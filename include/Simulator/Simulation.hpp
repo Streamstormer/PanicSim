@@ -24,6 +24,7 @@ class ClSimulation
         // to read the Level Meta Data
         // called in the constructor
         void readLevelMetaData( );
+        void setLevelMetaData(sf::Vector2f *pLevelSize, sf::Color *pColor);
 
         // FileHandler logic goes here
         // this function is called in the constructor
