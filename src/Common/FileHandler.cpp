@@ -16,9 +16,15 @@ int ClFileHandler::createFile(const char *fileName){
 }
 
 
-
+/*
 int ClFileHandler::writeLevelDetails(){
     myFile << "Details;;;;;;;1000;1000;green;1000\n";
+return 0;
+}
+*/
+
+int ClFileHandler::writeLevelDetails(sf::Vector2f *levelSize, sf::Color *bgColor){
+    myFile << "Details;;;;;;;" << levelSize->x << ";" << levelSize->y << ";" << (int) bgColor->r << ";" << (int) bgColor->g << ";" << (int) bgColor->b << ";\n";
 return 0;
 }
 
@@ -48,7 +54,7 @@ int ClFileHandler::closeFile(){
 
 int ClFileHandler::writeHeader(ClArea *pArea){
     int x = pArea->getNumberOfStaticObjects();
-    myFile << x << " StaticObjectId" << "; Position Xf; Position Yf; Size Xf; Size Yf; Rotation f; Type i; Levelsize X; Levelsize Y; BGColor; Persons count\n";
+    myFile << x << " StaticObjectId" << "; Position Xf; Position Yf; Size Xf; Size Yf; Rotation f; Type i; Levelsize X; Levelsize Y; BGRed; BGGreen;BGBlue;\n";
     return 0;
 }
 
@@ -62,6 +68,7 @@ int ClFileHandler::openExistingFile(const char *fileName){
     return 0;
 }
 
+/*
 int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
 
     int code = createFile(fileName.c_str());
@@ -71,6 +78,27 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
     if(code != 0)
         return code;
     code = writeLevelDetails();
+    if(code != 0)
+        return code;
+    code = writeStaticObjects(pArea);
+    if(code != 0)
+        return code;
+    myFile.flush();
+    myFile.close();
+    //readLevel("test.csv", pArea);
+    return 0;
+}
+*/
+
+int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor){
+
+    int code = createFile(fileName.c_str());
+    if(code != 0)
+        return code;
+    code = writeHeader(pArea);
+    if(code != 0)
+        return code;
+    code = writeLevelDetails(levelSize,bgColor);
     if(code != 0)
         return code;
     code = writeStaticObjects(pArea);
@@ -114,7 +142,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
             sf::Vector2f objectSize;
             objectSize.x = props[3];
             objectSize.y = props[4]; // not unsigned, because then it is always false
-            int type = (int) props[6];
+            unsigned int type = (unsigned int) props[6];
             if(type < 0 || type > MAXSTATICOBJECTTYPES){
                 type = (int) WALL;
                 returnCode = 3;
@@ -142,11 +170,62 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
     return 0;
     }
 
+    int ClFileHandler::importLevelDetails(sf::Vector2f *levelSize, sf::Color *bgColor){
+        char str[1000];
+        inFile.getline(str, 1000);
+
+        /*Read Nr of Static Objects to Class Variable*/
+        int j = inNrOfObjects = 0;
+        while(str[j] != ' '){
+            inNrOfObjects = 10 * inNrOfObjects + (str[j] - 48);
+            j++;
+        }
+
+        j = 14;
+        int multiplier = 10;
+        int props[5];
+        inFile.getline(str, 1000);
+
+
+        for(int k = 0; k<5; k++){
+            props[k] = 0;
+            while(str[j] != ';'){
+                props[k] = multiplier * props[k] + (str[j] - 48);
+            j++;
+            }
+        j++;
+        }
+    levelSize->x = props[0];
+    levelSize->y = props[1];
+    bgColor->r = props[2];
+    bgColor->g = props[3];
+    bgColor->b = props[4];
+
+
+    std::cout << str << "\n Number of StaticObjects:" << inNrOfObjects;
+    return 0;
+    }
+
 int ClFileHandler::readLevel(std::string fileName, ClArea *pArea){
     int code = openExistingFile(fileName.c_str());
     if(code != 0)
         return code;
     code = importLevelDetails();
+    if(code != 0)
+        return code;
+    code = importStaticObjects(pArea);
+    if(code != 0)
+        return code;
+    inFile.close();
+
+    return 0;
+}
+
+int ClFileHandler::readLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor){
+    int code = openExistingFile(fileName.c_str());
+    if(code != 0)
+        return code;
+    code = importLevelDetails(levelSize, bgColor);
     if(code != 0)
         return code;
     code = importStaticObjects(pArea);

@@ -3,7 +3,9 @@
     // public:
         ClSimulation::ClSimulation(const sf::VideoMode &Mode)
         {
+            /*replaced by setLevelMetaData, called within createObjects
             readLevelMetaData();
+            */
 
             this->currentOffset.x = this->currentOffset.y = 0;
             this->Mode = Mode;
@@ -31,13 +33,14 @@
         bool ClSimulation::update(sf::RenderWindow &window)
         {
             float frameTime = elapsedTime.getElapsedTime().asMilliseconds();
+            float actualFrameTime = frameTime; // not changed by speed variable
             frameTime *= speed;
 
             elapsedTime.restart();
             // Update Crowds Pathfinding Statemachine and Heatmap
             pCrowdManager->Update(frameTime, window);
             // Update View
-            calculateOffset(frameTime);
+            calculateOffset(actualFrameTime);
 
             return true;
         }
@@ -58,10 +61,15 @@
         {
             // FileHandler goes here
             ClFileHandler fH;
-            fH.readLevel("test.csv", pArea);
-
+            sf::Vector2f *pLevelSize = new sf::Vector2f;
+            sf::Color *pColor = new sf::Color;
+            fH.readLevel("test.csv", pArea, pLevelSize, pColor);
+            this->setLevelMetaData(pLevelSize, pColor);
+            delete pLevelSize;
+            delete pColor;
         }
 
+        /*
         void ClSimulation::readLevelMetaData()
         {
             // Replace by FileHandler
@@ -70,6 +78,19 @@
             bgColor.b = 63;
             this->levelSize.x = 2000;
             this->levelSize.y = 2000;
+            // End Replace
+
+        }
+        */
+
+        void ClSimulation::setLevelMetaData(sf::Vector2f *pLevelSize, sf::Color *pColor)
+        {
+            // Replace by FileHandler
+            bgColor.r = pColor->r;
+            bgColor.g = pColor->g;
+            bgColor.b = pColor->b;
+            this->levelSize.x = pLevelSize->x;
+            this->levelSize.y = pLevelSize->y;
             // End Replace
 
         }

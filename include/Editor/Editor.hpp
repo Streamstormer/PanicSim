@@ -3,6 +3,7 @@
 
 #include "UiLoader.hpp"
 #include "SimulationArea.hpp"
+#include <vector>
 #include "../Common/FileHandler.hpp"
 
 class Editor : public UiLoader
@@ -24,8 +25,12 @@ private:
     string SimFile;
     bool isOpen;
     ClFileHandler *level;
+    sf::Vector2f *levelSize;
+    sf::Color *bgColor;
+
 public:
     Editor(string UiPath, Glib::RefPtr<Gtk::Application> app);
+    ~Editor();
 };
 
 

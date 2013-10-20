@@ -1,113 +1,49 @@
 #include "../../include/Simulator/SimpleGUI.hpp"
 
-   ClSimpleGUI::ClSimpleGUI(const sf::Vector2f &ScreenSize)
-    {
-        id = 0;
-        this->ScreenSize = ScreenSize;
-        ButtonsTexture.loadFromFile("pictures/ButtonSet1.png");
-        labelFont.loadFromFile("fonts/LiberationSerif-Regular.ttf");
+ClSimpleGUI::ClSimpleGUI(const sf::Vector2f &ScreenSize)
+{
 
-        CreateAllButtons();
-        CreateAllLabels();
+    this->ScreenSize = ScreenSize;
+    labelFont.loadFromFile("fonts/LiberationSerif-Regular.ttf");
+
+
+    createAllMenus();
+    pCurrentMenu = MenuVector.front();
+    curState = pCurrentMenu->getMyState();
+}
+
+ClSimpleGUI::~ClSimpleGUI()
+{
+    for(unsigned int n = 0; n< MenuVector.size(); n++)
+    {
+        delete MenuVector[n];
     }
+}
 
-    ClSimpleGUI::~ClSimpleGUI()
+void ClSimpleGUI::draw(sf::RenderWindow &window)
+{
+    pCurrentMenu->draw(window);
+}
+
+void ClSimpleGUI::update( sf::RenderWindow &window)     // executes code when a button is pressed
+{
+    enum GameStates testState = pCurrentMenu->update(window);
+    if ( testState != this->curState)
     {
-        for(unsigned int n = 0; n< ButtonVector.size();n++)
+        // time to change the Menu
+        curState = testState;
+        for ( unsigned int n = 0; n < MenuVector.size(); n++)
         {
-            delete ButtonVector[n];
-        }
-
-        for(unsigned int n = 0; n< LabelVector.size();n++)
-        {
-            delete LabelVector[n];
-        }
-
-    }
-
-    void ClSimpleGUI::draw(sf::RenderWindow &window)
-    {
-
-        for(unsigned int n = 0; n< ButtonVector.size();n++)
-        {
-            ButtonVector[n]->draw(window);
-        }
-
-        for(unsigned int n = 0; n< LabelVector.size();n++)
-        {
-            LabelVector[n]->draw(window);
-        }
-    }
-
-    void ClSimpleGUI::update( sf::RenderWindow &window)     // executes code when a button is pressed
-    {
-        for(unsigned int n = 0; n< ButtonVector.size();n++)
-        {
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            if(MenuVector[n]->getMyState()==curState)
             {
-                if(ButtonVector[n]->isPressed(sf::Mouse::getPosition(window)))
-                {
-                    Execute(ButtonVector[n]->getButtonType());
-                }
+                pCurrentMenu = MenuVector[n];
+                break;
             }
         }
     }
 
-
-    void ClSimpleGUI::CreateAllButtons()// called in the constructor to create all buttons
-    {
-        // add Simulation Buttons
-        // add downleft Buttons
-        sf::Vector2f ButtonSize(160,160);
-        sf::Vector2f Position(0,ScreenSize.y);
-
-        ClSimpleButton *pAddMe;
-        float scale = 0.25;
-
-        Position.y -= ButtonSize.y;
-        Position.x += ButtonSize.x*0.25;
-
-        // ClSimpleButton(int id, Buttons button, int GameState, const sf::Texture &texture, const sf::Vector2f &newSize, const sf::Vector2f& position, float scale)
-
-        // add STOP Button
-        id++;
-        pAddMe = new ClSimpleButton(id, STOP, SIMULATION, ButtonsTexture, ButtonSize, Position, scale);
-        ButtonVector.push_back(pAddMe);
-        // add PLAY Button
-         Position.x+=ButtonSize.x*1.5*scale;
-        id++;
-        pAddMe = new ClSimpleButton(id, PLAY, SIMULATION, ButtonsTexture, ButtonSize, Position, scale);
-        ButtonVector.push_back(pAddMe);
-        // add FASTFORWARD Button
-        Position.x+=ButtonSize.x*1.5*scale;
-        id++;
-        pAddMe = new ClSimpleButton(id, FASTFORWARD, SIMULATION, ButtonsTexture, ButtonSize, Position, scale);
-        ButtonVector.push_back(pAddMe);
-
-        // Add down right Buttons
-        Position.x = ScreenSize.x;
-        Position.y = ScreenSize.y;
-
-        Position.y -= ButtonSize.y;
-        Position.x -= 0.25 *ButtonSize.x;
-
-        // add HEATMAP Button
-         Position.x-=ButtonSize.x*1.5*scale;
-        id++;
-        pAddMe = new ClSimpleButton(id, HEATMAP, SIMULATION, ButtonsTexture, ButtonSize, Position, scale);
-        ButtonVector.push_back(pAddMe);
-        // add BOMB Button
-        Position.x-=ButtonSize.x*1.5*scale;
-        id++;
-        pAddMe = new ClSimpleButton(id, BOMB, SIMULATION, ButtonsTexture, ButtonSize, Position, scale);
-        ButtonVector.push_back(pAddMe);
-        // add FIRE Button
-        Position.x-=ButtonSize.x*1.5*scale;
-        id++;
-        pAddMe = new ClSimpleButton(id, FIRE, SIMULATION, ButtonsTexture, ButtonSize, Position, scale);
-        ButtonVector.push_back(pAddMe);
-    }
-
+}
+/*
     void ClSimpleGUI::CreateAllLabels()
     {
         ClSimpleLabel *pAddLabel;
@@ -122,30 +58,13 @@
         LabelVector.push_back(pAddLabel);
 
     }
+*/
 
-    void ClSimpleGUI::Execute(Buttons btn)
-    {
-        switch(btn)
-        {
-        case(HEATMAP):
-            {
-                ClHeatMap::toggleDraw();
-            }break;
-        case(PLAY):
-            {
-                ClSimulation::updateSpeed(false, true, false);
-            }break;
-        case(FASTFORWARD):
-            {
-                ClSimulation::updateSpeed(false, false, true);
-            }break;
-        case(PAUSE):
-            {
-                ClSimulation::updateSpeed(true,false,false);
-            }
+void ClSimpleGUI::createAllMenus()
+{
+    ClSimpleStartMenu *pStartMenu = new ClSimpleStartMenu(MENU,&labelFont,ScreenSize);
+    MenuVector.push_back(pStartMenu);
 
-            // add more functionality
-        }
-
-    }  // called to execute code when a button is pressed
-
+    ClSimpleSimulationMenu *pSimulationMenu = new ClSimpleSimulationMenu(SIMULATION,&labelFont,ScreenSize);
+    MenuVector.push_back(pSimulationMenu);
+}
