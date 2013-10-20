@@ -16,14 +16,15 @@ int ClFileHandler::createFile(const char *fileName){
 }
 
 
-
+/*
 int ClFileHandler::writeLevelDetails(){
     myFile << "Details;;;;;;;1000;1000;green;1000\n";
 return 0;
 }
+*/
 
 int ClFileHandler::writeLevelDetails(sf::Vector2f *levelSize, sf::Color *bgColor){
-    myFile << "Details;;;;;;;" << levelSize->x << ";" << levelSize->y << ";" << bgColor->r << ";" << bgColor->g << ";" << bgColor->b << ";\n";
+    myFile << "Details;;;;;;;" << levelSize->x << ";" << levelSize->y << ";" << (int) bgColor->r << ";" << (int) bgColor->g << ";" << (int) bgColor->b << ";\n";
 return 0;
 }
 
@@ -53,7 +54,7 @@ int ClFileHandler::closeFile(){
 
 int ClFileHandler::writeHeader(ClArea *pArea){
     int x = pArea->getNumberOfStaticObjects();
-    myFile << x << " StaticObjectId" << "; Position Xf; Position Yf; Size Xf; Size Yf; Rotation f; Type i; Levelsize X; Levelsize Y; BGColor; Persons count\n";
+    myFile << x << " StaticObjectId" << "; Position Xf; Position Yf; Size Xf; Size Yf; Rotation f; Type i; Levelsize X; Levelsize Y; BGRed; BGGreen;BGBlue;\n";
     return 0;
 }
 
@@ -67,6 +68,7 @@ int ClFileHandler::openExistingFile(const char *fileName){
     return 0;
 }
 
+/*
 int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
 
     int code = createFile(fileName.c_str());
@@ -86,6 +88,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
     //readLevel("test.csv", pArea);
     return 0;
 }
+*/
 
 int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor){
 
@@ -95,7 +98,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f 
     code = writeHeader(pArea);
     if(code != 0)
         return code;
-    code = writeLevelDetails();
+    code = writeLevelDetails(levelSize,bgColor);
     if(code != 0)
         return code;
     code = writeStaticObjects(pArea);
@@ -139,7 +142,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f 
             sf::Vector2f objectSize;
             objectSize.x = props[3];
             objectSize.y = props[4]; // not unsigned, because then it is always false
-            int type = (int) props[6];
+            unsigned int type = (unsigned int) props[6];
             if(type < 0 || type > MAXSTATICOBJECTTYPES){
                 type = (int) WALL;
                 returnCode = 3;

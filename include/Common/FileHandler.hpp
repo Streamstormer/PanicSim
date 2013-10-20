@@ -13,7 +13,7 @@ class ClFileHandler
     public:
         ClFileHandler();
         ~ClFileHandler();
-        int writeLevel(std::string fileName, ClArea *pArea);    //obsolete, should not be used anymore
+        //int writeLevel(std::string fileName, ClArea *pArea);    //obsolete, should not be used anymore
         int writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor);
         int readLevel(std::string fileName, ClArea *pArea);     //obsolete, should not be used anymore
         int readLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor);
@@ -30,7 +30,7 @@ class ClFileHandler
     private:
         int createFile(const char *fileName);           //if file exists it will be deleted, creates by ';' delimited file, file ending required, optimized for ".csv"
         int openExistingFile(const char *fileName);     //expects file ending with ".csv"
-        int writeLevelDetails(); //obsolete, should not be used anymore
+        //int writeLevelDetails(); //obsolete, should not be used anymore
         int writeLevelDetails(sf::Vector2f *levelSize, sf::Color *bgColor);
         int writeStaticObjects(ClArea *pArea);
         int importStaticObjects(ClArea *pArea);
