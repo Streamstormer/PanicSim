@@ -3,7 +3,7 @@
 SimulationArea::SimulationArea(Gtk::ScrolledWindow& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
                                Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot, Gtk::SpinButton *pAreaSizeX,
                                Gtk::SpinButton *pAreaSizeY)
-    : SFML_Widget(sf::VideoMode(640, 480))
+    : SFML_Widget(sf::VideoMode(748, 710))
 {
     // add this widget to Area Frame..
     // Gtk::Container *inFrame = (Gtk::Container*) AreaFrame.get_child();
@@ -45,9 +45,12 @@ SimulationArea::SimulationArea(Gtk::ScrolledWindow& AreaWin, Gtk::Box& ObjectBox
 
 void SimulationArea::animate()
 {
+
     sf::VideoMode mode(pAreaSizeX->get_value(), pAreaSizeY->get_value());
-    int size_request = std::max<int>(1, std::min<int>(mode.width, mode.height) / 2);
-    set_size_request(size_request, size_request);
+    set_size_request(mode.width, mode.height);
+
+
+
 
     bool oneChecked = false;
     if(boxChecked) {
@@ -101,10 +104,13 @@ void SimulationArea::resize()
     sf::Vector2f lower_right(renderWindow.getSize().x,
                              renderWindow.getSize().y);
 
-    sf::View view(lower_right * 0.5f,
-                  lower_right);
+    //std::cerr<<renderWindow.getSize().x<<std::endl;
+    //std::cerr<<renderWindow.getSize().y<<std::endl;
+    pAreaSizeX->set_value(renderWindow.getSize().x);
+    pAreaSizeY->set_value(renderWindow.getSize().y);
+
+    sf::View view(sf::FloatRect(0, 0, renderWindow.getSize().x, renderWindow.getSize().y));
     renderWindow.setView(view);
-    queue_resize();
 }
 
 

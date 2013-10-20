@@ -25,8 +25,8 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pSizeY->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 500.0, 0.1, 0.1));
     pRot->set_adjustment(Gtk::Adjustment::create(0.0, 0.0, 360.0, 0.1, 0.1));
 
-    pAreaX->set_adjustment(Gtk::Adjustment::create(100.0, 600.0, 4000.0, 1.0, 1.0));
-    pAreaY->set_adjustment(Gtk::Adjustment::create(100.0, 900.0, 4000.0, 1.0, 1.0));
+    pAreaX->set_adjustment(Gtk::Adjustment::create(748.0, 748.0, 10000.0, 1.0, 1.0));
+    pAreaY->set_adjustment(Gtk::Adjustment::create(710.0, 710.0, 10000.0, 1.0, 1.0));
 
 
     SFMLArea = new SimulationArea(*pSFMLWindow, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY);
