@@ -6,6 +6,7 @@ ClPathFinder::ClPathFinder(ClArea *pArea, float nodeDistance, const sf::Vector2f
     this->nodeDistance = nodeDistance;
     this->areaSize = areaSize;
     createNodes();
+    findPath(15, 42);
 }
 
 ClPathFinder::~ClPathFinder()
@@ -45,20 +46,11 @@ void ClPathFinder::createNodes()
             if(tryToAddNode(sf::Vector2i(x,y),idCounter))
             {
                 validID[idCounter] = true;
+                idCounter++;
             }
-            idCounter++; // set idCounter ++ even if there is no node to add
+            //idCounter++; // !does not make senese because adressing the nodes will be difficult! set idCounter ++ even if there is no node to add
         }
     }
-    // debug output of validID Array
-    /*
-    for (int i = 0; i < nodeNumber.x * nodeNumber.y; i++)
-    {
-        if(i % nodeNumber.x == 0)
-        {
-                std::cerr << std::endl;
-        }
-        std::cerr << i << " " << validID[i] << " ";
-    } */
     //2.
     int currentID;
     /*
@@ -70,57 +62,64 @@ void ClPathFinder::createNodes()
     */
     for(unsigned int n = 0; n<Nodes.size(); n++)
     {
+        //Bug neighbours are added even if they do not exist (example Node 390 is the last Node but the bottom neigbbour is >400)
         currentID = Nodes[n]->getID();
         // calculate ID left and right of current ID
         x = currentID % nodeNumber.x;
         y = (int)(currentID / nodeNumber.x);
-        std::cerr << "curID :" << currentID;
+        //std::cerr <<"  "<<n<< ": curID:" << currentID;
         //left neighbour
-        if ( x > 0 )
-        if( validID[(x-1)+y*nodeNumber.x]== true)
+        //if ( x > 0 )
+        if(x>0 && validID[(x-1)+y*nodeNumber.x]== true && ((x-1)+y*nodeNumber.x)<Nodes.size())
         {
             Nodes[n]->set_neighbour_id_left((x-1)+y*nodeNumber.x);
-            std::cerr << "left :" << (x-1)+y*nodeNumber.x;
+            //std::cerr << " left:" << (x-1)+y*nodeNumber.x;
         }
         else
         {
             Nodes[n]->set_neighbour_id_left(-1);
         }
         // right neighbour
-        if((x < nodeNumber.x-1) && validID[(x+1)+y*nodeNumber.x]== true )
+        if((x < nodeNumber.x-1) && validID[(x+1)+y*nodeNumber.x]== true && ((x+1)+y*nodeNumber.x)<Nodes.size())
         {
             Nodes[n]->set_neighbour_id_right((x+1)+y*nodeNumber.x);
-            std::cerr << "right :" << (x+1)+y*nodeNumber.x;
+            //std::cerr << " right:" << (x+1)+y*nodeNumber.x;
         }
         else
         {
             Nodes[n]->set_neighbour_id_right(-1);
         }
         // top neighbour
-        if(y >= 1)
-        if(validID[(x)+(y-1)*nodeNumber.x]== true )
+        //if(y >= 1)
+        if(y>= 1 && validID[(x)+(y-1)*nodeNumber.x]== true && ((x)+(y-1)*nodeNumber.x)<Nodes.size())
         {
             Nodes[n]->set_neighbour_id_top((x)+(y-1)*nodeNumber.x);
-            std::cerr << "top :" << (x)+(y-1)*nodeNumber.x;
+            //std::cerr << " top:" << (x)+(y-1)*nodeNumber.x;
         }
         else
         {
             Nodes[n]->set_neighbour_id_top(-1);
         }
         // bottom neighbour
-        if(y < nodeNumber.y&& validID[(x)+(y+1)*nodeNumber.x]== true )
+        if(y < nodeNumber.y&& validID[(x)+(y+1)*nodeNumber.x]== true && ((x)+(y+1)*nodeNumber.x)<Nodes.size())
         {
             Nodes[n]->set_neighbour_id_below((x)+(y+1)*nodeNumber.x);
-            std::cerr << "bottom :" << (x)+(y+1)*nodeNumber.x;
+            //std::cerr << " bottom:" << (x)+(y+1)*nodeNumber.x;
         }
         else
         {
             Nodes[n]->set_neighbour_id_below(-1);
         }
-       if(n>= 30 && n <= 40) std::cerr << std::endl;
+       //if(n>= 30 && n <= 40) std::cerr << std::endl;
     }
 
-    std::cerr << "idCounter :"<< idCounter;
+    for(unsigned int n = 0; n<Nodes.size(); n++)
+    {
+        std::cerr<<n<<" id"<<Nodes[n]->getID()<<" t"<<Nodes[n]->get_neighbour_id_top()<<" l"<<Nodes[n]->get_neighbour_id_left()<<" r"<<Nodes[n]->get_neighbour_id_right()<<" b"<<Nodes[n]->get_neighbour_id_below()<<std::endl;
+
+    }
+
+    std::cerr << " idCounter:"<< idCounter;
 
 }
 
@@ -177,7 +176,7 @@ bool ClPathFinder::findPath(int startID, int endID)
     }
     while(OpenList.size() > 0)
     {
-        int index = OpenList.front()->getID();
+        int index = OpenList[0]->getID();
 
         if(Nodes[index]->get_neighbour_id_top() != -1 && Nodes[Nodes[index]->get_neighbour_id_top()]->get_visited() == false)
         {
@@ -202,11 +201,11 @@ bool ClPathFinder::findPath(int startID, int endID)
         OpenList.erase(OpenList.begin());
         if(OpenList.size() == 0)
         {
-            /*for(int k=0; k<(int)Nodes.size(); k++)
+            for(int k=0; k<(int)Nodes.size(); k++)
             {
-                std::cerr<<Nodes[k]->getID()<<" "<<Nodes[k]->get_neighbour_id_top()<<" "<<Nodes[k]->get_neighbour_id_left()<<" "<<Nodes[k]->get_neighbour_id_right()<<" "<<Nodes[k]->get_neighbour_id_below()<<std::endl;
+                std::cerr<<Nodes[k]->getID()<<" "<<Nodes[k]->get_weight()<<" "<<Nodes[k]->get_visited()<<" ___ ";
             }
-            createPath(startID, endID);*/
+            createPath(startID, endID);
             return true;
         }
     }
@@ -215,37 +214,69 @@ bool ClPathFinder::findPath(int startID, int endID)
 
 void ClPathFinder::setNodeWeight(int nodeID, int parentID)
 {
-    Nodes[nodeID]->set_weight(Nodes[parentID]->get_weight() + 1);
+    int tempParentWeight = Nodes[parentID]->get_weight();
+    Nodes[nodeID]->set_weight(tempParentWeight + 1);
     Nodes[nodeID]->set_visited(true);
 }
 
-void ClPathFinder::createPath(int startID, int endID)
+bool ClPathFinder::createPath(int startID, int endID)
 {
-    int nextNode, tempWeight;
+    int nextNode, tempWeight, tempNext;
+    int counter = 0;
     nextNode = startID;
 
     while (nextNode != endID)
     {
-        tempWeight = Nodes[Nodes[nextNode]->get_neighbour_id_top()]->get_weight();
-        nextNode = Nodes[nextNode]->get_neighbour_id_top();
-        if(tempWeight > Nodes[Nodes[nextNode]->get_neighbour_id_left()]->get_weight())
+        counter ++;
+        tempWeight = 32000;
+
+        if(Nodes[nextNode]->get_neighbour_id_left() != -1)
         {
-            tempWeight = Nodes[Nodes[nextNode]->get_neighbour_id_left()]->get_weight();
-            nextNode = Nodes[nextNode]->get_neighbour_id_left();
+            if(tempWeight > Nodes[Nodes[nextNode]->get_neighbour_id_left()]->get_weight())
+            {
+                tempWeight = Nodes[Nodes[nextNode]->get_neighbour_id_left()]->get_weight();
+                tempNext = Nodes[nextNode]->get_neighbour_id_left();
+            }
         }
-        if(tempWeight > Nodes[Nodes[nextNode]->get_neighbour_id_right()]->get_weight())
+        if(Nodes[nextNode]->get_neighbour_id_right() != -1)
         {
-            tempWeight = Nodes[Nodes[nextNode]->get_neighbour_id_right()]->get_weight();
-            nextNode = Nodes[nextNode]->get_neighbour_id_right();
+            if(tempWeight > Nodes[Nodes[nextNode]->get_neighbour_id_right()]->get_weight())
+            {
+                tempWeight = Nodes[Nodes[nextNode]->get_neighbour_id_right()]->get_weight();
+                tempNext = Nodes[nextNode]->get_neighbour_id_right();
+            }
         }
-        if(tempWeight > Nodes[Nodes[nextNode]->get_neighbour_id_below()]->get_weight())
+        if(Nodes[nextNode]->get_neighbour_id_below() != -1)
         {
-            tempWeight = Nodes[Nodes[nextNode]->get_neighbour_id_below()]->get_weight();
-            nextNode = Nodes[nextNode]->get_neighbour_id_below();
+            if(tempWeight > Nodes[Nodes[nextNode]->get_neighbour_id_below()]->get_weight())
+            {
+                tempWeight = Nodes[Nodes[nextNode]->get_neighbour_id_below()]->get_weight();
+                tempNext = Nodes[nextNode]->get_neighbour_id_below();
+            }
         }
+        if(Nodes[nextNode]->get_neighbour_id_top() != -1)
+        {
+            if(tempWeight > Nodes[Nodes[nextNode]->get_neighbour_id_top()]->get_weight())
+            {
+                tempWeight = Nodes[Nodes[nextNode]->get_neighbour_id_top()]->get_weight();
+                tempNext = Nodes[nextNode]->get_neighbour_id_top();
+            }
+        }
+
         Path.push_back(Nodes[nextNode]);
+        nextNode = tempNext;
         if(nextNode == endID)
-            break;
+        {
+            Path.push_back(Nodes[nextNode]);
+            /*for(int k=0; k<(int)Path.size(); k++)
+            {
+                std::cerr<<Path[k]->getID()<<" ";
+            }*/
+            return true;
+        }
+
+        if(counter > Nodes.size())
+            return false;
     }
 
 }

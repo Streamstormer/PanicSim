@@ -7,7 +7,7 @@ ClCrowdManager::ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize)
     //Create HeatMap
     sf::Vector2i numberOfCells(50,50);
     pHeatMap = new ClHeatMap(numberOfCells, ScreenSize);
-   // pPathFinder = new ClPathFinder(pArea, 100,sf::Vector2f(ScreenSize.x,ScreenSize.y));
+    pPathFinder = new ClPathFinder(pArea, 100,sf::Vector2f(ScreenSize.x,ScreenSize.y));
 
 }
 ClCrowdManager::~ClCrowdManager()
@@ -47,7 +47,8 @@ void ClCrowdManager::draw(sf::RenderWindow& window)
     {
         Crowds[n]->Draw(window);
     }
-    // pPathFinder->draw(window);
+    pPathFinder->draw(window);
+    pPathFinder->drawPath(window);
 }
 
 

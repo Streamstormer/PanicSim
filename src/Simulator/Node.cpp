@@ -33,7 +33,7 @@ bool ClNode::get_visited()
 
 void ClNode::set_weight(int cost)
 {
-    this->weight = weight;
+    this->weight = cost;
 }
 int ClNode::get_weight()
 {
