@@ -126,7 +126,10 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f 
                     if(str[j] != '.'){
                         if(multiplier == 1)
                             divider = divider * 10;
-                        props[k] = multiplier * props[k] + (str[j] - 48) / divider;
+                        if(str[j] < 58 && str[j] > 47)
+                            props[k] = multiplier * props[k] + (str[j] - 48) / divider;
+                        else
+                            return 7;
                     }
                     else{
                         multiplier = 1;
@@ -143,7 +146,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f 
             objectSize.x = props[3];
             objectSize.y = props[4]; // not unsigned, because then it is always false
             unsigned int type = (unsigned int) props[6];
-            if(type < 0 || type > MAXSTATICOBJECTTYPES){
+            if(type > MAXSTATICOBJECTTYPES){
                 type = (int) WALL;
                 returnCode = 3;
             }
@@ -176,9 +179,12 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f 
 
         /*Read Nr of Static Objects to Class Variable*/
         int j = inNrOfObjects = 0;
-        while(str[j] != ' '){
-            inNrOfObjects = 10 * inNrOfObjects + (str[j] - 48);
-            j++;
+        while(str[j] != ' ' && str[j] != ';'){
+            if(str[j] < 58 && str[j] > 47){
+                inNrOfObjects = 10 * inNrOfObjects + (str[j] - 48);
+                j++;
+            }else
+                return 2;
         }
 
         j = 14;
