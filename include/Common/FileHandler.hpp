@@ -24,6 +24,9 @@ class ClFileHandler
         0: No error
         1: Error while opening file
         3: Object Type from file out of range (enum staticObjects), autocorrection to WALL
+        4: Unexpected token at line 2 of csv file when loading. Only ";" and numbers [0-9] are allowed, except first column.
+        5: Unexpected RGB number in line 2 of csv file too long. Only [0-255] are allowed.
+        6: Unexpected error reading line 2 of csv file: negative number.
         */
 
 

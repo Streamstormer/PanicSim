@@ -190,10 +190,21 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f 
         for(int k = 0; k<5; k++){
             props[k] = 0;
             while(str[j] != ';'){
-                props[k] = multiplier * props[k] + (str[j] - 48);
-            j++;
+                if(str[j] < 58 && str[j] > 47)
+                    props[k] = multiplier * props[k] + (str[j] - 48);
+                else
+                    return 4;
+            j++;    //inc j within while (one number with several digigts)
             }
-        j++;
+        j++;        //inc j (next number)
+        }
+        for(int i = 0; i<5; i++){
+            if(props[i] < 0){
+                return 6;
+            }
+            if(i > 1 && props[i] > 255){
+                return 5;
+            }
         }
     levelSize->x = props[0];
     levelSize->y = props[1];
