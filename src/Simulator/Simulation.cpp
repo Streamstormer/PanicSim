@@ -3,9 +3,11 @@
     // public:
         ClSimulation::ClSimulation(const sf::VideoMode &Mode)
         {
-
+            /*
             ClFileHandler fH;
-            sf::Vector2i levelSize = fH.getLevelSize("test.csv");
+            fH.openFile("test.csv");
+            levelSize = fH.getLevelSize();
+            */
 
             this->currentOffset.x = this->currentOffset.y = 0;
             this->Mode = Mode;

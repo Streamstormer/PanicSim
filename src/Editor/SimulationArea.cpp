@@ -93,7 +93,7 @@ void SimulationArea::animate()
 void SimulationArea::draw()
 {
     // clear widget
-    renderWindow.clear();
+    renderWindow.clear(bgColor);
     Area->draw(renderWindow);
     display();
 }

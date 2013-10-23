@@ -17,8 +17,13 @@ class ClFileHandler
         //int writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor);
         int readLevel(std::string fileName, ClArea *pArea);
         //int readLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor);
-        sf::Vector2i getLevelSize(std::string fileName);
-
+        int openFile(std::string fileName);
+        sf::Vector2i getLevelSize(){return myArea->getLevelSize();};
+        sf::Color getBgColor(){return myArea->getBgColor();};
+        int getNumberOfStaticObjects(){return myArea->getNumberOfStaticObjects();};
+        const sf::Vector2f & getPosition(int id){return myArea->getPosition(id);};   // returns position of a StaticObject via id
+        const sf::Vector2f & getSize(int id){return myArea->getSize(id);};      // returns size of a StaticObject via id
+        float getRotation(int id){return myArea->getRotation(id);};                  // returns rotation of a StaticObject via id
 
         /*
         Return codes:
@@ -51,6 +56,7 @@ class ClFileHandler
         unsigned int inNrOfObjects;
         std::ifstream inFile;
         std::ofstream myFile;
+        ClArea *myArea;
 };
 
 #endif // FILEHANDLER_H

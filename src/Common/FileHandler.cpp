@@ -199,14 +199,23 @@ int ClFileHandler::readLevel(std::string fileName, ClArea *pArea){
     return 0;
 }
 
-sf::Vector2i ClFileHandler::getLevelSize(std::string fileName){
+
+int ClFileHandler::openFile(std::string fileName){
+    if(myArea != 0)
+        delete myArea;
     ClArea *myArea = new ClArea;
 
     int code = openExistingFile(fileName.c_str());
-
+    if(code != 0)
+        return code;
     code = importLevelDetails(myArea);
-
+    if(code != 0)
+        return code;
+    code = importStaticObjects(myArea);
+    if(code != 0)
+        return code;
     inFile.close();
 
-    return myArea->getLevelSize();
+    return 0;
+
 }
