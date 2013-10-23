@@ -4,8 +4,6 @@
 #include "StaticObject.hpp"
 #include <vector>
 
-enum staticObjects{STAGE, BAR, WC, WALL, FENCE};
-const unsigned int MAXSTATICOBJECTTYPES = FENCE; // set this enum to the rightmost of all staticObjects
 
 class ClArea
 {
