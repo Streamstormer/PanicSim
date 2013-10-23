@@ -23,7 +23,7 @@ public:
     ~ClSimpleGUI();
 
     void draw(sf::RenderWindow &window);
-    void update( sf::RenderWindow &window);     // executes code when a button is pressed
+    void update( sf::RenderWindow &window, bool mouseReleased);     // executes code when a button is pressed
 
     GameStates getGameState() {return curState;}
 

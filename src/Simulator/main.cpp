@@ -31,23 +31,22 @@ int main(int argc, char *argv[])
     {
         /// Update
         sf::Event event;
+        mouseReleased = false;
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed) window.close();
 
-            if(event.type == sf::Event::MouseButtonReleased)
+            if(event.type == sf::Event::MouseButtonReleased )
             {
                 mouseReleased = true;
             }
-            else
-            {
-                mouseReleased = false;
-            }
         }
+
+
         // Update Simulation
         pSimulation->update(window, mouseReleased);
         // Update GUI
-        pGUI->update(window);
+        pGUI->update(window, mouseReleased);
         ///Render
         window.clear();
         pSimulation->draw(window);

@@ -52,15 +52,17 @@ ClSimpleSimulationMenu::ClSimpleSimulationMenu(enum GameStates myState, sf::Font
     }
 
     //virtual void execute(enum Buttons btn) const = 0;
-    enum GameStates ClSimpleSimulationMenu::update(sf::RenderWindow &window) const
+    enum GameStates ClSimpleSimulationMenu::update(sf::RenderWindow &window, bool mouseReleased) const
     {
-
+        if(mouseReleased == true)
+        {
         for (unsigned int n = 0;n<ButtonVector.size();n++)
         {
             if (ButtonVector[n]->isPressed(window))
             {
                 execute(ButtonVector[n]->getButtonType());
             }
+        }
         }
         return SIMULATION;
     }

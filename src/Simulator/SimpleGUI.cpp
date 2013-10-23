@@ -25,9 +25,9 @@ void ClSimpleGUI::draw(sf::RenderWindow &window)
     pCurrentMenu->draw(window);
 }
 
-void ClSimpleGUI::update( sf::RenderWindow &window)     // executes code when a button is pressed
+void ClSimpleGUI::update( sf::RenderWindow &window, bool mouseReleased)     // executes code when a button is pressed
 {
-    enum GameStates testState = pCurrentMenu->update(window);
+    enum GameStates testState = pCurrentMenu->update(window, mouseReleased);
     if ( testState != this->curState)
     {
         // time to change the Menu

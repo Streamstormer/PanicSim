@@ -13,7 +13,7 @@ class ClSimpleMenu
         virtual void draw(sf::RenderWindow &window) const = 0;
         enum GameStates getMyState();
         virtual enum GameStates execute(enum Buttons btn) const = 0;
-        virtual enum GameStates update(sf::RenderWindow &window) const = 0;
+        virtual enum GameStates update(sf::RenderWindow &window, bool mouseReleased) const = 0;
     protected:
         sf::Font *pFont;
         sf::Sprite myButtons;

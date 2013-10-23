@@ -12,7 +12,7 @@ class ClSimpleStartMenu : public ClSimpleMenu
     enum GameStates execute(enum Buttons btn) const;
 
     //virtual void execute(enum Buttons btn) const = 0;
-    virtual enum GameStates update(sf::RenderWindow &window) const;
+    virtual enum GameStates update(sf::RenderWindow &window, bool mouseReleased) const;
     private:
     void createMenu();
 };
