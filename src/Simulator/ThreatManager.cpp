@@ -4,23 +4,27 @@ bool ClThreatManager::bomb_static = false;
 
 ClThreatManager::ClThreatManager()
 {
-    bomb_texture.loadFromFile("pictures/bomb_texture.png");
-    fire_texture.loadFromFile("pictures/fire_texture.png");
+    bomb_texture.loadFromFile("pictures/bomb_tex.png");
+    fire_texture.loadFromFile("pictures/fire_tex.png");
 }
 
 ClThreatManager::~ClThreatManager() {}
 
 void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f position)
 {
-    ClThreat *threat;
-    sf::Vector2f size_threat(0,0);
-
+    sf::Vector2f size_threat(40,40);
     if(bomb)
     {
         threat = new ClThreat(true, false, position, size_threat, bomb_texture);
         bomb = false;
+        threatVector.push_back(threat);
     }
-    threatVector.push_back(threat);
+    if(fire)
+    {
+        threat = new ClThreat(false, true, position, size_threat, fire_texture);
+        fire = false;
+        threatVector.push_back(threat);
+    }
 }
 
 void ClThreatManager::draw(sf::RenderWindow &window)
@@ -31,15 +35,21 @@ void ClThreatManager::draw(sf::RenderWindow &window)
     }
 }
 
+//called from SimpleGUI (after button check)
 void ClThreatManager::buttonPressed(bool bomb, bool fire)
 {
     if(bomb)
     {
         bomb_static = true;
-        fire_static = false;
+    }
+
+    if(fire)
+    {
+        fire_static = true;
     }
 }
 
+//called in Simulation to update all threats (position) and create threats according to buttonPressed
 void ClThreatManager::update(sf::RenderWindow &window)
 {
     if(bomb_static)
@@ -48,15 +58,23 @@ void ClThreatManager::update(sf::RenderWindow &window)
         bomb_static = false;
     }
 
+    if(fire_static)
+    {
+        createThreat(false, true, sf::Vector2f (1140,550));
+        fire_static = false;
+    }
+
     for(unsigned int n=0; n<threatVector.size(); n++)
     {
+        //new check for mouse action
         threatVector[n]->recognizeMouse(window);
+
+        //if there was a mouse action
         if(threatVector[n]->isMoved == true)
         {
-            std::cerr<<"Move"<<n<<std::endl;
-            sf::Vector2i Mouse = sf::Mouse::getPosition(window);
-            threatVector[n]->setPosition((float)Mouse.x,(float)Mouse.y);
-            threatVector[n]->recognizeMouse(window);
+            //set new position for each threat
+            mouse = sf::Mouse::getPosition(window);
+            threatVector[n]->setPosition((float)mouse.x,(float)mouse.y);
         }
     }
 }

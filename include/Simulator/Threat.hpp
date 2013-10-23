@@ -10,11 +10,10 @@ public:
     ~ClThreat();
     void draw(sf::RenderWindow &window);
     static void toggleDraw();
-    static bool drawFire;
-    static bool drawBomb;
     void recognizeMouse(sf::RenderWindow &window);
     bool isMoved;
     void setPosition(float x_Position, float y_Position);
+    sf::Vector2i mousePosition;
 private:
     bool bomb;
     bool fire;

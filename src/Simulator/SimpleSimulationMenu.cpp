@@ -45,7 +45,7 @@ ClSimpleSimulationMenu::ClSimpleSimulationMenu(enum GameStates myState, sf::Font
             }break;
         case(FIRE):
             {
-               // ClThreatManager::buttonPressed(false, true);
+                ClThreatManager::buttonPressed(false, true);
             }break;
         }
         return SIMULATION;
