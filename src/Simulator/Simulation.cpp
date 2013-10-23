@@ -3,16 +3,16 @@
     // public:
         ClSimulation::ClSimulation(const sf::VideoMode &Mode)
         {
-            /*
             ClFileHandler fH;
             fH.openFile("test.csv");
+            /*
             levelSize = fH.getLevelSize();
             */
 
             this->currentOffset.x = this->currentOffset.y = 0;
             this->Mode = Mode;
-            pArea = new ClArea;
-            createObjects();
+            pArea = fH.getArea();
+            //createObjects();
 
             gameView.setSize(Mode.width,Mode.height);
             gameView.setCenter(Mode.width/2, Mode.height/2);
@@ -59,6 +59,8 @@
         }
         // private :
 
+
+        //obsolote
         void ClSimulation::createObjects()
         {
             ClFileHandler fH;

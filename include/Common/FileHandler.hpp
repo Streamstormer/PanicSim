@@ -18,6 +18,12 @@ class ClFileHandler
         int readLevel(std::string fileName, ClArea *pArea);
         //int readLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor);
         int openFile(std::string fileName);
+        ClArea * getArea(){return myArea;};
+
+        /********************************************************
+        Methods inherited from Area
+        *******************************************************/
+
         sf::Vector2i getLevelSize(){return myArea->getLevelSize();};
         sf::Color getBgColor(){return myArea->getBgColor();};
         int getNumberOfStaticObjects(){return myArea->getNumberOfStaticObjects();};
