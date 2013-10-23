@@ -38,9 +38,15 @@ ClSimpleSimulationMenu::ClSimpleSimulationMenu(enum GameStates myState, sf::Font
         case(PAUSE):
             {
                 ClSimulation::updateSpeed(true,false,false);
-            }
-
-            // add more functionality
+            }break;
+        case(BOMB):
+            {
+                ClThreatManager::buttonPressed(true, false);
+            }break;
+        case(FIRE):
+            {
+               // ClThreatManager::buttonPressed(false, true);
+            }break;
         }
         return SIMULATION;
     }
