@@ -41,10 +41,17 @@ class ClArea
                                                     // ids of static objects start at id = 1 !!!
     int getType(int id);                            // returns Type of a StaticObject via id
 
+    void setLevelSize(sf::Vector2i *pLevelSize){levelSize.x = pLevelSize->x; levelSize.y = pLevelSize->y;};
+    void setBgColor(sf::Color *pColor){bgColor.r = pColor->r; bgColor.g = pColor->g; bgColor.b = pColor->b;};
+    sf::Color getBgColor(){return bgColor;};
+    sf::Vector2i getLevelSize(){return levelSize;};
+
     private:
 
     int id; // used to give StaticObjects a unique id
     std::vector<ClStaticObject *> sobjects;
+    sf::Vector2i levelSize;
+    sf::Color bgColor;
 };
 
 #endif // AREA_HPP_INCLUDED

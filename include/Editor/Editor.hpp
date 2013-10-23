@@ -22,15 +22,13 @@ private:
     void SaveTo();
 
     SimulationArea *SFMLArea;
+    ClArea *pArea;
     string SimFile;
     bool isOpen;
     ClFileHandler *level;
-    sf::Vector2f *levelSize;
-    sf::Color *bgColor;
 
 public:
     Editor(string UiPath, Glib::RefPtr<Gtk::Application> app);
-    ~Editor();
 };
 
 

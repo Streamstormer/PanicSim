@@ -7,20 +7,6 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     this->SimFile = " ";
 
     level = new ClFileHandler();
-    levelSize = new sf::Vector2f;
-    bgColor = new sf::Color;
-
-    /*********************
-    //TO-DO: selectable Levelsize and bgColor
-    //Default Values (should be removed later):
-    *********************/
-    bgColor->r = 205;
-    bgColor->g = 133;
-    bgColor->b = 63;
-    levelSize->x = 2000;
-    levelSize->y = 2000;
-    /****************************************/
-
 
     pBar->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Bar_clicked));
     pWC->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_WC_clicked));
@@ -45,16 +31,22 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 
     SFMLArea = new SimulationArea(*pSFMLWindow, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY);
 
+    pArea = SFMLArea->getArea();
+
+    /*********************
+    //TO-DO: selectable Levelsize and bgColor
+    //Default Values (should be removed later):
+    *********************/
+    pArea->setBgColor(new sf::Color(205,133,63));
+    pArea->setLevelSize((new sf::Vector2i(2000,2000)));
+    /****************************************/
+
     app->run(*pWindow);
 
 
 }
 
-Editor::~Editor()
-{
-    delete levelSize;
-    delete bgColor;
-}
+
 
 void Editor::on_Button_Bar_clicked()
 {
@@ -106,6 +98,7 @@ void Editor::on_Button_Wall_clicked()
 void Editor::on_Button_Clear_clicked()
 {
     SFMLArea->clearArea();
+    pArea = SFMLArea->getArea();
 }
 
 void Editor::loadFile()
@@ -129,7 +122,7 @@ void Editor::loadFile()
         this->isOpen = true;
         SFMLArea->clearArea();
         ClArea *pArea = SFMLArea->getArea();
-        level->readLevel(dialog.get_filename(),pArea,levelSize,bgColor);
+        level->readLevel(dialog.get_filename(),pArea);
         for(int i=1; i<=pArea->getNumberOfStaticObjects();i++){
             int object = pArea->getType(i);
             string label;
@@ -174,9 +167,11 @@ void Editor::loadFile()
 
 void Editor::SaveFile()
 {
+    if(this->SimFile.length() < 1)
+        this->SaveTo();
 
     if(this->isOpen) {
-        level->writeLevel(this->SimFile, SFMLArea->getArea(),levelSize,bgColor);
+        level->writeLevel(this->SimFile, pArea);
     } else {
 
         Gtk::FileChooserDialog dialog("Bitte wählen sie einen Ort zu speichern aus",
@@ -196,7 +191,7 @@ void Editor::SaveFile()
             std::cout << "Folder selected: " << dialog.get_filename()
                       << std::endl;
 
-            if (level->writeLevel(dialog.get_filename(), SFMLArea->getArea(),levelSize,bgColor) != 0)
+            if (level->writeLevel(dialog.get_filename(), pArea) != 0)
                 exit(EXIT_FAILURE);
             this->SimFile = dialog.get_filename();
 
@@ -231,7 +226,7 @@ void Editor::SaveTo()
         std::cout << "Select clicked." << std::endl;
         std::cout << "Folder selected: " << dialog.get_filename()
                   << std::endl;
-        level->writeLevel(dialog.get_filename(), SFMLArea->getArea(),levelSize,bgColor);
+        level->writeLevel(dialog.get_filename(), pArea);
         break;
 
     case(Gtk::RESPONSE_CANCEL):

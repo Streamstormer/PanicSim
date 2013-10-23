@@ -15,7 +15,7 @@
             gameView.setSize(Mode.width,Mode.height);
             gameView.setCenter(Mode.width/2, Mode.height/2);
 
-            pCrowdManager = new ClCrowdManager(pArea, levelSize);
+            pCrowdManager = new ClCrowdManager(pArea, pArea->getLevelSize());
 
             pCrowdManager->CreateCrowd(sf::Vector2f(600,550),150,1000);
             pCrowdManager->CreateCrowd(sf::Vector2f(850,250),150,500);
@@ -48,7 +48,7 @@
         {
             window.setView(gameView);
             // Draw Background
-            window.clear(bgColor);
+            window.clear(pArea->getBgColor());
             // Draw Crowds
             pCrowdManager->draw(window);
             // Draw static / dynamic Objects
@@ -59,41 +59,12 @@
 
         void ClSimulation::createObjects()
         {
-            // FileHandler goes here
             ClFileHandler fH;
-            sf::Vector2f *pLevelSize = new sf::Vector2f;
-            sf::Color *pColor = new sf::Color;
-            fH.readLevel("test.csv", pArea, pLevelSize, pColor);
-            this->setLevelMetaData(pLevelSize, pColor);
-            delete pLevelSize;
-            delete pColor;
-        }
 
-        /*
-        void ClSimulation::readLevelMetaData()
-        {
-            // Replace by FileHandler
-            bgColor.r = 205;
-            bgColor.g = 133;
-            bgColor.b = 63;
-            this->levelSize.x = 2000;
-            this->levelSize.y = 2000;
-            // End Replace
+            fH.readLevel("test.csv", pArea);
 
         }
-        */
 
-        void ClSimulation::setLevelMetaData(sf::Vector2f *pLevelSize, sf::Color *pColor)
-        {
-            // Replace by FileHandler
-            bgColor.r = pColor->r;
-            bgColor.g = pColor->g;
-            bgColor.b = pColor->b;
-            this->levelSize.x = pLevelSize->x;
-            this->levelSize.y = pLevelSize->y;
-            // End Replace
-
-        }
 
         void ClSimulation::calculateOffset(float frameTime)
         {
