@@ -15,7 +15,7 @@ class ClSimulation
 
         ClSimulation(const sf::VideoMode &Mode);
         ~ClSimulation();
-        bool update(sf::RenderWindow &window);
+        bool update(sf::RenderWindow &window, bool mouseReleased);
         void draw(sf::RenderWindow &window);
 
         static void updateSpeed(bool pause, bool normal, bool fastForward);

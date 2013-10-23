@@ -83,11 +83,7 @@ void ClSimpleStartMenu::createMenu()
 
     enum GameStates ClSimpleStartMenu::update(sf::RenderWindow &window) const
     {
-        sf::Event event;
-        window.pollEvent(event);
-        if( event.type == sf::Event::MouseButtonReleased)
-            {
-                std::cerr << "released" << std::endl;
+
                 for (unsigned int n = 0;n<ButtonVector.size();n++)
                 {
                     if (ButtonVector[n]->isPressed(window))
@@ -95,7 +91,7 @@ void ClSimpleStartMenu::createMenu()
                         return execute(ButtonVector[n]->getButtonType());
                     }
                 }
-            }
+
             return MENU;
 
     }

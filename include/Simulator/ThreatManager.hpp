@@ -9,7 +9,7 @@ class ClThreatManager
 public:
     ClThreatManager();
     ~ClThreatManager();
-    void update(sf::RenderWindow &window);
+    void update(sf::RenderWindow &window, bool mouseReleased);
     void draw(sf::RenderWindow &window);
     void createThreat(bool bomb, bool fire, const sf::Vector2f position);
     static void buttonPressed(bool bomb, bool fire);

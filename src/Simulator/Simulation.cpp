@@ -33,7 +33,8 @@
             delete pCrowdManager;
             delete pThreatManager;
         }
-        bool ClSimulation::update(sf::RenderWindow &window)
+
+        bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
         {
             float frameTime = elapsedTime.getElapsedTime().asMilliseconds();
             float actualFrameTime = frameTime; // not changed by speed variable
@@ -45,10 +46,11 @@
             // Update View
             calculateOffset(actualFrameTime);
             // Update Threats
-            pThreatManager->update(window);
+            pThreatManager->update(window, mouseReleased);
 
             return true;
         }
+
         void ClSimulation::draw(sf::RenderWindow &window)
         {
             window.setView(gameView);

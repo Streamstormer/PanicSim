@@ -26,17 +26,26 @@ int main(int argc, char *argv[])
     sf::RenderWindow window(Mode, "Panic Sim!");
     ClSimulation *pSimulation = new ClSimulation(Mode);
     ClSimpleGUI *pGUI = new ClSimpleGUI(sf::Vector2f(Mode.width,Mode.height));
+    bool mouseReleased = false;
     while (window.isOpen())
     {
         /// Update
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
-                window.close();
+            if (event.type == sf::Event::Closed) window.close();
+
+            if(event.type == sf::Event::MouseButtonReleased)
+            {
+                mouseReleased = true;
+            }
+            else
+            {
+                mouseReleased = false;
+            }
         }
         // Update Simulation
-        pSimulation->update(window);
+        pSimulation->update(window, mouseReleased);
         // Update GUI
         pGUI->update(window);
         ///Render
