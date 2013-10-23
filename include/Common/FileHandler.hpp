@@ -17,6 +17,7 @@ class ClFileHandler
         //int writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor);
         int readLevel(std::string fileName, ClArea *pArea);
         //int readLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor);
+        sf::Vector2i getLevelSize(std::string fileName);
 
 
         /*

@@ -22,12 +22,6 @@ int ClFileHandler::writeLevelDetails(ClArea *pArea){
 return 0;
 }
 
-/*
-int ClFileHandler::writeLevelDetails(sf::Vector2f *levelSize, sf::Color *bgColor){
-    myFile << "Details;;;;;;;" << levelSize->x << ";" << levelSize->y << ";" << (int) bgColor->r << ";" << (int) bgColor->g << ";" << (int) bgColor->b << ";\n";
-return 0;
-}
-*/
 
 int ClFileHandler::writeStaticObjects(ClArea *pArea){
     int x = pArea->getNumberOfStaticObjects();
@@ -45,13 +39,6 @@ int ClFileHandler::writeStaticObjects(ClArea *pArea){
     }
     return 0;
 }
-/* Doesn't need to be encapsulated
-int ClFileHandler::closeFile(){
-
-    myFile.close();
-    return 0;
-}
-*/
 
 int ClFileHandler::writeHeader(ClArea *pArea){
     int x = pArea->getNumberOfStaticObjects();
@@ -91,29 +78,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea){
 }
 
 
-/*
-int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor){
-
-    int code = createFile(fileName.c_str());
-    if(code != 0)
-        return code;
-    code = writeHeader(pArea);
-    if(code != 0)
-        return code;
-    code = writeLevelDetails(pArea);
-    if(code != 0)
-        return code;
-    code = writeStaticObjects(pArea);
-    if(code != 0)
-        return code;
-    myFile.flush();
-    myFile.close();
-    //readLevel("test.csv", pArea);
-    return 0;
-}
-*/
-
-    int ClFileHandler::importStaticObjects(ClArea *pArea){
+int ClFileHandler::importStaticObjects(ClArea *pArea){
         int returnCode = 0;
         char str[1000];
         float props[7];
@@ -217,58 +182,7 @@ int ClFileHandler::writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f 
     return 0;
     }
 
-/*
-    int ClFileHandler::importLevelDetails(sf::Vector2f *levelSize, sf::Color *bgColor){
-        char str[1000];
-        inFile.getline(str, 1000);
 
-        //Read Nr of Static Objects to Class Variable
-        int j = inNrOfObjects = 0;
-        while(str[j] != ' ' && str[j] != ';'){
-            if(str[j] < 58 && str[j] > 47){
-                inNrOfObjects = 10 * inNrOfObjects + (str[j] - 48);
-                j++;
-            }else
-                return 2;
-        }
-
-        j = 14;
-        int multiplier = 10;
-        int props[5];
-        inFile.getline(str, 1000);
-
-
-        for(int k = 0; k<5; k++){
-            props[k] = 0;
-            while(str[j] != ';'){
-                if(str[j] < 58 && str[j] > 47)
-                    props[k] = multiplier * props[k] + (str[j] - 48);
-                else
-                    return 4;
-            j++;    //inc j within while (one number with several digigts)
-            }
-        j++;        //inc j (next number)
-        }
-        for(int i = 0; i<5; i++){
-            if(props[i] < 0){
-                return 6;
-            }
-            if(i > 1 && props[i] > 255){
-                return 5;
-            }
-        }
-    levelSize->x = props[0];
-    levelSize->y = props[1];
-    bgColor->r = props[2];
-    bgColor->g = props[3];
-    bgColor->b = props[4];
-
-
-    std::cout << str << "\n Number of StaticObjects:" << inNrOfObjects;
-    return 0;
-    }
-
-    */
 
 int ClFileHandler::readLevel(std::string fileName, ClArea *pArea){
     int code = openExistingFile(fileName.c_str());
@@ -285,19 +199,14 @@ int ClFileHandler::readLevel(std::string fileName, ClArea *pArea){
     return 0;
 }
 
-/*
-int ClFileHandler::readLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor){
+sf::Vector2i ClFileHandler::getLevelSize(std::string fileName){
+    ClArea *myArea = new ClArea;
+
     int code = openExistingFile(fileName.c_str());
-    if(code != 0)
-        return code;
-    code = importLevelDetails(levelSize, bgColor);
-    if(code != 0)
-        return code;
-    code = importStaticObjects(pArea);
-    if(code != 0)
-        return code;
+
+    code = importLevelDetails(myArea);
+
     inFile.close();
 
-    return 0;
+    return myArea->getLevelSize();
 }
-*/
