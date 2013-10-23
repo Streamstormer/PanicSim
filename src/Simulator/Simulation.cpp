@@ -23,7 +23,7 @@
             pCrowdManager->CreateCrowd(sf::Vector2f(850,250),150,500);
             pCrowdManager->CreateCrowd(sf::Vector2f(800,750),150,500);
 
-
+            pThreatManager = new ClThreatManager();
 
             elapsedTime.restart();
         }
@@ -31,6 +31,7 @@
         {
             delete pArea;
             delete pCrowdManager;
+            delete pThreatManager;
         }
         bool ClSimulation::update(sf::RenderWindow &window)
         {
@@ -43,6 +44,8 @@
             pCrowdManager->Update(frameTime, window);
             // Update View
             calculateOffset(actualFrameTime);
+            // Update Threats
+            pThreatManager->update(window);
 
             return true;
         }
@@ -55,6 +58,8 @@
             pCrowdManager->draw(window);
             // Draw static / dynamic Objects
             pArea->draw(window);
+            // Draw Threats
+            pThreatManager->draw(window);
 
         }
         // private :

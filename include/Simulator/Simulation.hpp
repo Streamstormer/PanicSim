@@ -4,6 +4,7 @@
 #include "Crowd.hpp"
 #include "Area.hpp"
 #include "CrowdManager.hpp"
+#include "ThreatManager.hpp"
 #include "../../include/Common/FileHandler.hpp"
 
 enum GameStates {MENU, SIMULATION, PAUSE};
@@ -36,6 +37,7 @@ class ClSimulation
 
         ClArea *pArea;
         ClCrowdManager *pCrowdManager;
+        ClThreatManager *pThreatManager;
         sf::VideoMode Mode;
         sf::Clock elapsedTime;
         sf::Vector2i levelSize;
