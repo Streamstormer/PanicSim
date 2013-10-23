@@ -25,6 +25,7 @@ private:
     void animate();
     void draw();
     void resize();
+    sf::Color bgColor;
 public:
     SimulationArea(Gtk::ScrolledWindow& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
                    Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot,  Gtk::SpinButton *pAreaSizeX,
@@ -35,6 +36,7 @@ public:
     ClArea *getArea();
     void insertCheck(Gtk::CheckButton *check);
     void box_clicked();
+    void setBgColor(sf::Color pColor){bgColor = pColor;};
 };
 
 #endif // SIMULATIONAREA_HPP_INCLUDED

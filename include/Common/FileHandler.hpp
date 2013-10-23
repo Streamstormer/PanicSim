@@ -13,11 +13,23 @@ class ClFileHandler
     public:
         ClFileHandler();
         ~ClFileHandler();
-        //int writeLevel(std::string fileName, ClArea *pArea);    //obsolete, should not be used anymore
-        int writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor);
-        int readLevel(std::string fileName, ClArea *pArea);     //obsolete, should not be used anymore
-        int readLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor);
+        int writeLevel(std::string fileName, ClArea *pArea);
+        //int writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor);
+        int readLevel(std::string fileName, ClArea *pArea);
+        //int readLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor);
+        int openFile(std::string fileName);
+        ClArea * getArea(){return myArea;};
 
+        /********************************************************
+        Methods inherited from Area
+        *******************************************************/
+
+        sf::Vector2i getLevelSize(){return myArea->getLevelSize();};
+        sf::Color getBgColor(){return myArea->getBgColor();};
+        int getNumberOfStaticObjects(){return myArea->getNumberOfStaticObjects();};
+        const sf::Vector2f & getPosition(int id){return myArea->getPosition(id);};   // returns position of a StaticObject via id
+        const sf::Vector2f & getSize(int id){return myArea->getSize(id);};      // returns size of a StaticObject via id
+        float getRotation(int id){return myArea->getRotation(id);};                  // returns rotation of a StaticObject via id
 
         /*
         Return codes:
@@ -35,18 +47,22 @@ class ClFileHandler
     private:
         int createFile(const char *fileName);           //if file exists it will be deleted, creates by ';' delimited file, file ending required, optimized for ".csv"
         int openExistingFile(const char *fileName);     //expects file ending with ".csv"
-        //int writeLevelDetails(); //obsolete, should not be used anymore
-        int writeLevelDetails(sf::Vector2f *levelSize, sf::Color *bgColor);
+
+        //int writeLevelDetails(sf::Vector2f *levelSize, sf::Color *bgColor);
         int writeStaticObjects(ClArea *pArea);
         int importStaticObjects(ClArea *pArea);
-        int importLevelDetails();
+
+        int writeLevelDetails(ClArea *pArea);
+        int importLevelDetails(ClArea *pArea);
+
         int writeHeader(ClArea *pArea);
-        int importLevelDetails(sf::Vector2f *levelSize, sf::Color *bgColor);
+        //int importLevelDetails(sf::Vector2f *levelSize, sf::Color *bgColor);
 
 
         unsigned int inNrOfObjects;
         std::ifstream inFile;
         std::ofstream myFile;
+        ClArea *myArea;
 };
 
 #endif // FILEHANDLER_H

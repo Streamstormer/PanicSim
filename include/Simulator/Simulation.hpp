@@ -24,8 +24,8 @@ class ClSimulation
         // FileHandler logic goes here
         // to read the Level Meta Data
         // called in the constructor
-        void readLevelMetaData( );
-        void setLevelMetaData(sf::Vector2f *pLevelSize, sf::Color *pColor);
+        //void readLevelMetaData( );
+        //void setLevelMetaData(sf::Vector2f *pLevelSize, sf::Color *pColor);
 
         // FileHandler logic goes here
         // this function is called in the constructor
@@ -48,7 +48,7 @@ class ClSimulation
         static int speed;
 
         //Background Color
-        sf::Color bgColor;
+        //sf::Color bgColor;
 };
 
 #endif // SIMULATION_HPP_INCLUDED
