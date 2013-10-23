@@ -50,7 +50,7 @@ void ClThreatManager::buttonPressed(bool bomb, bool fire)
 }
 
 //called in Simulation to update all threats (position) and create threats according to buttonPressed
-void ClThreatManager::update(sf::RenderWindow &window)
+void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
 {
     if(bomb_static)
     {
@@ -66,8 +66,11 @@ void ClThreatManager::update(sf::RenderWindow &window)
 
     for(unsigned int n=0; n<threatVector.size(); n++)
     {
-        //new check for mouse action
-        threatVector[n]->recognizeMouse(window);
+        if(mouseReleased)
+        {
+            //new check for mouse action
+            threatVector[n]->recognizeMouse(window);
+        }
 
         //if there was a mouse action
         if(threatVector[n]->isMoved == true)

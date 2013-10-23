@@ -27,17 +27,14 @@ ClThreat::~ClThreat() {}
 
 void ClThreat::draw(sf::RenderWindow &window)
 {
+    //draw threat with position
     window.draw(sprite_threat);
-    //draw threat with position and check for mouse contact
-    recognizeMouse(window);
 }
 
 void ClThreat::recognizeMouse(sf::RenderWindow &window)
 {
-    sf::Event event2;
-    window.pollEvent(event2);
     mousePosition = sf::Mouse::getPosition(window);
-    if (threat.contains(mousePosition) && (event2.type == sf::Event::MouseButtonReleased) && (event2.mouseButton.button == sf::Mouse::Left))
+    if(threat.contains(mousePosition))
     {
         if(isMoved==false)
         {
