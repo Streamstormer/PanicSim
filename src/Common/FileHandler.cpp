@@ -2,7 +2,7 @@
 
 ClFileHandler::ClFileHandler()
 {
-
+    isArea = false;
 }
 
 ClFileHandler::~ClFileHandler()
@@ -201,9 +201,11 @@ int ClFileHandler::readLevel(std::string fileName, ClArea *pArea){
 
 
 int ClFileHandler::openFile(std::string fileName){
-    if(myArea != 0)
+    if(isArea){
         delete myArea;
-    ClArea *myArea = new ClArea;
+    }
+    myArea = new ClArea;
+    isArea = true;
 
     int code = openExistingFile(fileName.c_str());
     if(code != 0)
@@ -217,5 +219,4 @@ int ClFileHandler::openFile(std::string fileName){
     inFile.close();
 
     return 0;
-
 }

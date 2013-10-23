@@ -21,15 +21,15 @@ class ClFileHandler
         ClArea * getArea(){return myArea;};
 
         /********************************************************
-        Methods inherited from Area
+        Methods forwarded from Area
         *******************************************************/
 
-        sf::Vector2i getLevelSize(){return myArea->getLevelSize();};
-        sf::Color getBgColor(){return myArea->getBgColor();};
-        int getNumberOfStaticObjects(){return myArea->getNumberOfStaticObjects();};
-        const sf::Vector2f & getPosition(int id){return myArea->getPosition(id);};   // returns position of a StaticObject via id
-        const sf::Vector2f & getSize(int id){return myArea->getSize(id);};      // returns size of a StaticObject via id
-        float getRotation(int id){return myArea->getRotation(id);};                  // returns rotation of a StaticObject via id
+        sf::Vector2i getLevelSize(){if(isArea) return myArea->getLevelSize();};
+        sf::Color getBgColor(){if(isArea) return myArea->getBgColor();};
+        int getNumberOfStaticObjects(){if(isArea) return myArea->getNumberOfStaticObjects();};
+        const sf::Vector2f & getPosition(int id){if(isArea) return myArea->getPosition(id);};   // returns position of a StaticObject via id
+        const sf::Vector2f & getSize(int id){if(isArea) return myArea->getSize(id);};      // returns size of a StaticObject via id
+        float getRotation(int id){if(isArea) return myArea->getRotation(id);};                  // returns rotation of a StaticObject via id
 
         /*
         Return codes:
@@ -45,24 +45,39 @@ class ClFileHandler
 
 
     private:
-        int createFile(const char *fileName);           //if file exists it will be deleted, creates by ';' delimited file, file ending required, optimized for ".csv"
-        int openExistingFile(const char *fileName);     //expects file ending with ".csv"
 
-        //int writeLevelDetails(sf::Vector2f *levelSize, sf::Color *bgColor);
-        int writeStaticObjects(ClArea *pArea);
+
+
+        /*This is a call block.
+        Expects file ending with ".csv", by ';' delimited (created by the Editor).
+        Object of ClArea will be created and filled with objects of given file.
+        After call of this function the file is closed, but Area object stays.
+        Area object can be gathered by getArea() method.
+        */
+        int openExistingFile(const char *fileName);
+        int importLevelDetails(ClArea *pArea);
         int importStaticObjects(ClArea *pArea);
 
-        int writeLevelDetails(ClArea *pArea);
-        int importLevelDetails(ClArea *pArea);
+        //if file exists it will be deleted, creates new file, ending required, optimized for ".csv"
+        int createFile(const char *fileName);
 
+        /*ONLY TO CALL WITHIN writeLevel(), FOR REQUIREMENTS
+        */
         int writeHeader(ClArea *pArea);
-        //int importLevelDetails(sf::Vector2f *levelSize, sf::Color *bgColor);
+        /*ONLY TO CALL WITHIN writeLevel(), FOR REQUIREMENTS
+        */
+        int writeLevelDetails(ClArea *pArea);
+        /*ONLY TO CALL WITHIN writeLevel(), FOR REQUIREMENTS
+        Writes static objects within the given Area object into the opened myFile.
+        */
+        int writeStaticObjects(ClArea *pArea);
 
 
         unsigned int inNrOfObjects;
         std::ifstream inFile;
         std::ofstream myFile;
         ClArea *myArea;
+        bool isArea;
 };
 
 #endif // FILEHANDLER_H
