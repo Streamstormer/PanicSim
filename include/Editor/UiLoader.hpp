@@ -30,6 +30,7 @@ protected:
     Gtk::Button *pStage;
     Gtk::Button *pFence;
     Gtk::Button *pWall;
+    Gtk::Button *pExit;
 
     Gtk::Frame *pObjFrame;
     Gtk::Label *pObjLabel;
@@ -41,7 +42,6 @@ protected:
     Gtk::SpinButton *pAreaY;
 
     Gtk::ComboBoxText *pAreaTex;
-
 
     Gtk::Box *pBox;
     UiLoader(string UiPath);

@@ -47,8 +47,13 @@ void ClCrowdManager::draw(sf::RenderWindow& window)
     {
         Crowds[n]->Draw(window);
     }
+
+    sf::Vector2f TestPosition1(20,80);
+    sf::Vector2f TestPosition2(320,580);
     pPathFinder->draw(window);
-    pPathFinder->drawPath(window);
+    (pPathFinder->findPath(TestPosition1, TestPosition2))->drawPath(window);
+
+
 }
 
 

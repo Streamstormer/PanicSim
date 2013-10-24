@@ -15,13 +15,14 @@ private:
     void on_Button_Wall_clicked();
     void on_Button_Fence_clicked();
     void on_Button_Clear_clicked();
+    void on_Button_Exit_clicked();
 
     void loadFile();
     void SaveFile();
     void StartSim();
     void SaveTo();
 
-    void setColor(sf::Color *pColor);
+    void setColor(sf::Color pColor);
 
     SimulationArea *SFMLArea;
     ClArea *pArea;

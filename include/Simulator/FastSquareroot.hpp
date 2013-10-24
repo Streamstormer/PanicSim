@@ -1,7 +1,7 @@
 #ifndef FASTSQUAREROOT_HPP
 #define FASTSQUAREROOT_HPP
 
-#include <Math.h>
+#include <math.h>
 #include <iostream>
 
 const int NOPCS = 200; // number of previous calculated squareroots

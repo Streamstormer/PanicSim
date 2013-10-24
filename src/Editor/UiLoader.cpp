@@ -36,6 +36,7 @@ UiLoader::UiLoader(string UiPath)
     builder->get_widget("Stage", pStage);
     builder->get_widget("Fence", pFence);
     builder->get_widget("Wall", pWall);
+    builder->get_widget("Exit", pExit);
 
     // Label for selected Objects
     builder->get_widget("ObjectLabel", pObjLabel);

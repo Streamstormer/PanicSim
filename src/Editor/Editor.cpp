@@ -13,6 +13,7 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pStage->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Stage_clicked));
     pWall->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Wall_clicked));
     pFence->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Fence_clicked));
+    pExit->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Exit_clicked));
 
     pClear->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Clear_clicked));
 
@@ -37,8 +38,8 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     //TO-DO: selectable Levelsize and bgColor
     //Default Values (should be removed later):
     *********************/
-    this->setColor(new sf::Color(205,133,63));
-    pArea->setLevelSize((new sf::Vector2i(2000,2000)));
+    this->setColor(sf::Color(205,133,63));
+    pArea->setLevelSize((sf::Vector2i(2000,2000)));
     /****************************************/
 
     app->run(*pWindow);
@@ -46,10 +47,10 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 
 }
 
-void Editor::setColor(sf::Color *pColor)
+void Editor::setColor(sf::Color pColor)
 {
     pArea->setBgColor(pColor);
-    SFMLArea->setBgColor(*pColor);
+    SFMLArea->setBgColor(pColor);
 }
 
 void Editor::on_Button_Bar_clicked()
@@ -99,6 +100,15 @@ void Editor::on_Button_Wall_clicked()
     SFMLArea->setObject(WALL, sf::Vector2<float>(0.,0.), sf::Vector2<float>(10.,10.), 0.0);
 }
 
+void Editor::on_Button_Exit_clicked()
+{
+    pObjLabel->set_label("Exit");
+    pSizeX->set_value(10.0);
+    pSizeY->set_value(10.0);
+    pRot->set_value(0.0);
+    SFMLArea->setObject(EXIT, sf::Vector2<float>(0.,0.), sf::Vector2<float>(10.,10.), 0.0);
+}
+
 void Editor::on_Button_Clear_clicked()
 {
     SFMLArea->clearArea();
@@ -145,6 +155,9 @@ void Editor::loadFile()
                 break;
             case FENCE:
                 label = "Fence";
+                break;
+            case EXIT:
+                label = "Exit";
                 break;
             }
 
