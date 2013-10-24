@@ -21,7 +21,7 @@ private:
     void StartSim();
     void SaveTo();
 
-    void setColor(sf::Color *pColor);
+    void setColor(sf::Color pColor);
 
     SimulationArea *SFMLArea;
     ClArea *pArea;

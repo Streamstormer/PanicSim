@@ -37,8 +37,8 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     //TO-DO: selectable Levelsize and bgColor
     //Default Values (should be removed later):
     *********************/
-    this->setColor(new sf::Color(205,133,63));
-    pArea->setLevelSize((new sf::Vector2i(2000,2000)));
+    this->setColor(sf::Color(205,133,63));
+    pArea->setLevelSize((sf::Vector2i(2000,2000)));
     /****************************************/
 
     app->run(*pWindow);
@@ -46,10 +46,10 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 
 }
 
-void Editor::setColor(sf::Color *pColor)
+void Editor::setColor(sf::Color pColor)
 {
     pArea->setBgColor(pColor);
-    SFMLArea->setBgColor(*pColor);
+    SFMLArea->setBgColor(pColor);
 }
 
 void Editor::on_Button_Bar_clicked()
