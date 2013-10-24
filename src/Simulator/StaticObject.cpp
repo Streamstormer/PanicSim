@@ -98,7 +98,7 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
     void ClStaticObject::setRotation(float rotation)
     {
         Rect->setRotation(rotation);
-        settext();
+        this->settext();
     }
     void ClStaticObject::setSize(const sf::Vector2f &newSize)
     {
@@ -140,12 +140,16 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
    {
     Rect->setOrigin(Rect->getSize().x/2,Rect->getSize().y/2);
     text.setPosition(Rect->getPosition().x,Rect->getPosition().y);
+    text.setCharacterSize(60);
+
+    /*
     getTextfromType(Type);
     font.loadFromFile("fonts/LiberationSerif-Regular.ttf");
     text.setFont(font);
-    text.setCharacterSize(60);
-    text.setColor(sf::Color::Black);
 
+
+    text.setColor(sf::Color::Black);
+*/
 
     text.setOrigin(text.getLocalBounds().width/2,text.getLocalBounds().height);
 

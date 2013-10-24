@@ -106,7 +106,7 @@ void Editor::on_Button_Exit_clicked()
     pSizeX->set_value(10.0);
     pSizeY->set_value(10.0);
     pRot->set_value(0.0);
-    SFMLArea->setObject(EXIT, sf::Vector2<float>(0.,0.), sf::Vector2<float>(10.,10.), 0.0);
+    SFMLArea->setObject(GATE, sf::Vector2<float>(0.,0.), sf::Vector2<float>(10.,10.), 0.0);
 }
 
 void Editor::on_Button_Clear_clicked()
@@ -156,7 +156,7 @@ void Editor::loadFile()
             case FENCE:
                 label = "Fence";
                 break;
-            case EXIT:
+            case GATE:
                 label = "Exit";
                 break;
             }

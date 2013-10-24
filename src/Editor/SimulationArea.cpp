@@ -134,7 +134,7 @@ void SimulationArea::setObject(enum staticObjects object, sf::Vector2f position,
     case FENCE:
         label = "Fence";
         break;
-    case EXIT:
+    case GATE:
         label = "Exit";
         break;
     }
