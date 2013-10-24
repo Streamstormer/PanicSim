@@ -48,7 +48,7 @@ UiLoader::UiLoader(string UiPath)
     // Frames with existing Objects
     builder->get_widget("ObjectFrame", pObjFrame);
     // Texture of the Area
-    builder->get_widget("AreaTextures", pAreaTex);
+    builder->get_widget("AreaColor", pAreaColor);
 
     builder->get_widget("AreaSize_x", pAreaX);
     builder->get_widget("AreaSize_y", pAreaY);

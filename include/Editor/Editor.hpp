@@ -5,6 +5,9 @@
 #include "SimulationArea.hpp"
 #include <vector>
 #include "../Common/FileHandler.hpp"
+#include <cctype>
+
+enum BackgroundColor{GREY, BROWN, GREEN};
 
 class Editor : public UiLoader
 {
@@ -16,6 +19,8 @@ private:
     void on_Button_Fence_clicked();
     void on_Button_Clear_clicked();
     void on_Button_Exit_clicked();
+
+    void change_comboBox();
 
     void loadFile();
     void SaveFile();

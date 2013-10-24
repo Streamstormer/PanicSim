@@ -41,7 +41,7 @@ protected:
     Gtk::SpinButton *pAreaX;
     Gtk::SpinButton *pAreaY;
 
-    Gtk::ComboBoxText *pAreaTex;
+    Gtk::ComboBoxText *pAreaColor;
 
     Gtk::Box *pBox;
     UiLoader(string UiPath);

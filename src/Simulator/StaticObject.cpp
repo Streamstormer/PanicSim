@@ -3,8 +3,6 @@
 
 ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, int Type)
 {
-
-    sf::Vector2f RectSize = Rectconst->getSize();
     Rect = Rectconst;
     this->Type = Type;
 

@@ -477,7 +477,7 @@
                           <object class="GtkLabel" id="label11">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Hintergrundtexturen: </property>
+                            <property name="label" translatable="yes">Hintergrundfarbe:</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -487,7 +487,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkComboBoxText" id="AreaTextures">
+                          <object class="GtkComboBoxText" id="AreaColor">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="wrap_width">8</property>

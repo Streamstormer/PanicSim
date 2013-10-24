@@ -8,6 +8,16 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 
     level = new ClFileHandler();
 
+    stringstream convert;
+    convert<<GREY;
+    pAreaColor->append(convert.str(), "Grau");
+    convert<<GREEN;
+    pAreaColor->append(convert.str(), "Grün");
+    convert<<BROWN;
+    pAreaColor->append(convert.str(), "Braun");
+    pAreaColor->set_active(true);
+    pAreaColor->show();
+
     pBar->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Bar_clicked));
     pWC->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_WC_clicked));
     pStage->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Stage_clicked));
@@ -16,6 +26,8 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pExit->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Exit_clicked));
 
     pClear->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Clear_clicked));
+
+    pAreaColor->signal_changed().connect(sigc::mem_fun(*this, &Editor::change_comboBox));
 
     pLoadFile->signal_clicked().connect(sigc::mem_fun(*this, &Editor::loadFile));
     pSaveFile->signal_clicked().connect(sigc::mem_fun(*this, &Editor::SaveFile));
@@ -30,6 +42,8 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pAreaY->set_adjustment(Gtk::Adjustment::create(710.0, 710.0, 10000.0, 1.0, 1.0));
 
 
+
+
     SFMLArea = new SimulationArea(*pSFMLWindow, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY);
 
     pArea = SFMLArea->getArea();
@@ -39,7 +53,6 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     //Default Values (should be removed later):
     *********************/
     this->setColor(new sf::Color(205,133,63));
-    pArea->setLevelSize((new sf::Vector2i(2000,2000)));
     /****************************************/
 
     app->run(*pWindow);
@@ -115,6 +128,20 @@ void Editor::on_Button_Clear_clicked()
     pArea = SFMLArea->getArea();
 }
 
+void Editor::change_comboBox()
+{
+    string id = pAreaColor->get_active_id();
+    switch (atoi(id.c_str()))
+    {
+        case GREY:
+            pArea->setBgColor(sf::Color(193,205,205));
+        case GREEN:
+            pArea->setBgColor(sf::Color(162,205,90));
+        case BROWN:
+            pArea->setBgColor(sf::Color(205,132, 63));
+    }
+}
+
 void Editor::loadFile()
 {
     Gtk::FileChooserDialog dialog("Bitte wählen sie eine Simulations Datei aus",
@@ -188,6 +215,7 @@ void Editor::SaveFile()
         this->SaveTo();
 
     if(this->isOpen) {
+        pArea->setLevelSize(new sf::Vector2i(pAreaX->get_value(), pAreaY->get_value()));
         level->writeLevel(this->SimFile, pArea);
     } else {
 
