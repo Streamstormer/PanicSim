@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
     ClSimulation *pSimulation = new ClSimulation(Mode);
     ClSimpleGUI *pGUI = new ClSimpleGUI(sf::Vector2f(Mode.width,Mode.height));
     bool mouseReleased = false;
+    enum GameStates curState = MENU;
     while (window.isOpen())
     {
         /// Update
@@ -46,7 +47,12 @@ int main(int argc, char *argv[])
         // Update Simulation
         pSimulation->update(window, mouseReleased);
         // Update GUI
-        pGUI->update(window, mouseReleased);
+        curState = pGUI->update(window, mouseReleased);
+        if(curState == EXITSTATE)
+        {
+            window.close();
+        }
+        pSimulation->setCurGameState(curState);
         ///Render
         window.clear();
         pSimulation->draw(window);

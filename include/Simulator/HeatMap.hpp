@@ -4,6 +4,7 @@
 #include <math.h>
 #include <vector>
 #include "People.hpp"
+#include "FastSquareroot.hpp"
 
 class ClHeatMap
 {
@@ -25,6 +26,8 @@ private:
     sf::Vector2i cellNumber;
     sf::Vector2i MapSize;
     sf::Vector2f cellSize;
+
+    ClFastSquareroot FSquare; // used for faster squareroots than sqrt() of <math.h>
 
     sf::Color getColor(int People);
     //used for giving the heatmap different collors depending on number of people

@@ -65,12 +65,11 @@ void ClSimpleStartMenu::createMenu()
         {
         case(START):
             {
-                std::cout << "START" << std::endl;
                 return SIMULATION;
             }break;
         case(EXIT) :
             {
-                std::cout << "EXIT" << std::endl;
+                return EXITSTATE;
             }break;
         case(CREDITS) :
             {
@@ -93,6 +92,6 @@ void ClSimpleStartMenu::createMenu()
                     }
                 }
         }
-            return MENU;
+        return MENU;
 
     }

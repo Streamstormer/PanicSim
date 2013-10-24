@@ -25,7 +25,7 @@ void ClSimpleGUI::draw(sf::RenderWindow &window)
     pCurrentMenu->draw(window);
 }
 
-void ClSimpleGUI::update( sf::RenderWindow &window, bool mouseReleased)     // executes code when a button is pressed
+enum GameStates ClSimpleGUI::update( sf::RenderWindow &window, bool mouseReleased)     // executes code when a button is pressed
 {
     enum GameStates testState = pCurrentMenu->update(window, mouseReleased);
     if ( testState != this->curState)
@@ -41,6 +41,7 @@ void ClSimpleGUI::update( sf::RenderWindow &window, bool mouseReleased)     // e
             }
         }
     }
+    return curState;
 
 }
 /*

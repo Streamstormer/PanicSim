@@ -152,7 +152,7 @@ sf::Vector2f ClHeatMap::distanceForce(std::vector<StrPeople *> &cell, StrPeople 
 
             if (((delta.x*delta.x) + (delta.y * delta.y)) < 100) // is in range ?
             {
-                helpVar = sqrt((delta.x*delta.x) + (delta.y * delta.y));
+                helpVar = FSquare.getSqrt((delta.x*delta.x) + (delta.y * delta.y));
                 Vec2DNormalize(&delta);
                 helpVar = invert(10,helpVar);
 

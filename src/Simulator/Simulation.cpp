@@ -20,12 +20,13 @@
             pCrowdManager = new ClCrowdManager(pArea, pArea->getLevelSize());
 
             pCrowdManager->CreateCrowd(sf::Vector2f(600,550),150,1000);
-            pCrowdManager->CreateCrowd(sf::Vector2f(850,250),150,500);
-            pCrowdManager->CreateCrowd(sf::Vector2f(800,750),150,500);
+            pCrowdManager->CreateCrowd(sf::Vector2f(850,250),150,5000);
+            pCrowdManager->CreateCrowd(sf::Vector2f(800,750),150,5000);
 
             pThreatManager = new ClThreatManager();
 
             elapsedTime.restart();
+            curGameState = MENU;
         }
         ClSimulation::~ClSimulation()
         {
@@ -39,15 +40,17 @@
             float frameTime = elapsedTime.getElapsedTime().asMilliseconds();
             float actualFrameTime = frameTime; // not changed by speed variable
             frameTime *= speed;
-
             elapsedTime.restart();
-            // Update Crowds Pathfinding Statemachine and Heatmap
-            pCrowdManager->Update(frameTime, window);
+
+            if(curGameState==SIMULATION)
+            {
+                // Update Crowds Pathfinding Statemachine and Heatmap
+                pCrowdManager->Update(frameTime, window);
+                // Update Threats
+                pThreatManager->update(window, mouseReleased);
+            }
             // Update View
             calculateOffset(actualFrameTime);
-            // Update Threats
-            pThreatManager->update(window, mouseReleased);
-
             return true;
         }
 

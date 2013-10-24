@@ -5,7 +5,7 @@ ClCrowdManager::ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize)
 {
     this->pArea = pArea;
     //Create HeatMap
-    sf::Vector2i numberOfCells(50,50);
+    sf::Vector2i numberOfCells(70,70);
     pHeatMap = new ClHeatMap(numberOfCells, ScreenSize);
     pPathFinder = new ClPathFinder(pArea, 100,sf::Vector2f(ScreenSize.x,ScreenSize.y));
 

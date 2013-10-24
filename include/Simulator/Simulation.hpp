@@ -7,7 +7,7 @@
 #include "ThreatManager.hpp"
 #include "../../include/Common/FileHandler.hpp"
 
-enum GameStates {MENU, SIMULATION, PAUSE};
+enum GameStates {MENU, SIMULATION, PAUSE, EXITSTATE};
 
 class ClSimulation
 {
@@ -17,6 +17,12 @@ class ClSimulation
         ~ClSimulation();
         bool update(sf::RenderWindow &window, bool mouseReleased);
         void draw(sf::RenderWindow &window);
+
+        void setCurGameState(enum GameStates newGS)
+        {
+            curGameState = newGS;
+        }
+
 
         static void updateSpeed(bool pause, bool normal, bool fastForward);
     private:
@@ -46,6 +52,8 @@ class ClSimulation
         sf::View gameView;
         sf::Vector2f currentOffset;
         static int speed;
+
+        enum GameStates curGameState;
 
         //Background Color
         //sf::Color bgColor;
