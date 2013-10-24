@@ -165,14 +165,14 @@ int ClFileHandler::importStaticObjects(ClArea *pArea){
             }
         }
 
-    sf::Vector2i *myLevelSize = new sf::Vector2i;
-    sf::Color *myBgColor = new sf::Color;
+    sf::Vector2i myLevelSize;
+    sf::Color myBgColor;
 
-    myLevelSize->x = props[0];
-    myLevelSize->y = props[1];
-    myBgColor->r = props[2];
-    myBgColor->g = props[3];
-    myBgColor->b = props[4];
+    myLevelSize.x = props[0];
+    myLevelSize.y = props[1];
+    myBgColor.r = props[2];
+    myBgColor.g = props[3];
+    myBgColor.b = props[4];
 
     pArea->setLevelSize(myLevelSize);
     pArea->setBgColor(myBgColor);

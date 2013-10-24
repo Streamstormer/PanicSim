@@ -52,7 +52,12 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     //TO-DO: selectable Levelsize and bgColor
     //Default Values (should be removed later):
     *********************/
+<<<<<<< HEAD
     this->setColor(new sf::Color(205,133,63));
+=======
+    this->setColor(sf::Color(205,133,63));
+    pArea->setLevelSize((sf::Vector2i(2000,2000)));
+>>>>>>> c85518642cd908e08294c812264c53f7abf2429b
     /****************************************/
 
     app->run(*pWindow);
@@ -60,10 +65,10 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 
 }
 
-void Editor::setColor(sf::Color *pColor)
+void Editor::setColor(sf::Color pColor)
 {
     pArea->setBgColor(pColor);
-    SFMLArea->setBgColor(*pColor);
+    SFMLArea->setBgColor(pColor);
 }
 
 void Editor::on_Button_Bar_clicked()
@@ -119,7 +124,7 @@ void Editor::on_Button_Exit_clicked()
     pSizeX->set_value(10.0);
     pSizeY->set_value(10.0);
     pRot->set_value(0.0);
-    SFMLArea->setObject(EXIT, sf::Vector2<float>(0.,0.), sf::Vector2<float>(10.,10.), 0.0);
+    SFMLArea->setObject(GATE, sf::Vector2<float>(0.,0.), sf::Vector2<float>(10.,10.), 0.0);
 }
 
 void Editor::on_Button_Clear_clicked()
@@ -183,7 +188,7 @@ void Editor::loadFile()
             case FENCE:
                 label = "Fence";
                 break;
-            case EXIT:
+            case GATE:
                 label = "Exit";
                 break;
             }

@@ -15,12 +15,14 @@ ClSimpleLabel::ClSimpleLabel(const sf::Vector2f &position, const sf::Vector2f &l
     spaceColor.a = 50;
     textSpace.setFillColor(spaceColor);
 
-    text.setPosition(position);
+    text.setPosition(position.x+ labelSize.x/4,position.y);
+
     title = labelText;
     text.setColor(sf::Color::Red);
     text.setFont(font);
     text.setCharacterSize(30);
     text.setStyle(sf::Text::Regular);
+
 }
 
 

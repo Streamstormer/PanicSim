@@ -5,8 +5,8 @@
 #include <iostream>
 #include <math.h>
 
-enum staticObjects{STAGE, BAR, WC, WALL, FENCE, EXIT};
-const unsigned int MAXSTATICOBJECTTYPES = EXIT; // set this enum to the rightmost of all staticObjects
+enum staticObjects{STAGE, BAR, WC, WALL, FENCE, GATE};
+const unsigned int MAXSTATICOBJECTTYPES = GATE; // set this enum to the rightmost of all staticObjects
 
 class ClStaticObject
 {
@@ -29,14 +29,14 @@ public:
 
 private:
     void getTextfromType(int type);
-
+    void settext();
 
     int Type;
     sf::RectangleShape *Rect;
     int id; // unique id
     sf::Text text;
     sf::Font font;
-
+    sf::RectangleShape line;
 
 };
 
