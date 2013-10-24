@@ -15,6 +15,7 @@ private:
     void on_Button_Wall_clicked();
     void on_Button_Fence_clicked();
     void on_Button_Clear_clicked();
+    void on_Button_Exit_clicked();
 
     void loadFile();
     void SaveFile();

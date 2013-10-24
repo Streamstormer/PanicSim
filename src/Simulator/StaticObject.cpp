@@ -10,7 +10,7 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, int Type)
 
     this->id = id;
 
-   Rect->setOrigin(Rect->getSize().x/2,Rect->getSize().y/2);
+    Rect->setOrigin(Rect->getSize().x/2,Rect->getSize().y/2);
     text.setPosition(Rect->getPosition().x,Rect->getPosition().y);
     getTextfromType(Type);
     font.loadFromFile("fonts/LiberationSerif-Regular.ttf");
@@ -38,14 +38,6 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, int Type)
             text.setOrigin(text.getLocalBounds().width/2,text.getLocalBounds().height);
 
     }
-
-
-
-
-
-
-
-
 
 }
 int ClStaticObject::getType()
@@ -106,11 +98,24 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
     {
       switch(type)
         {
-        case 0: text.setString("Stage"); break;
-        case 1: text.setString("Bar");break;
-        case 2: text.setString("WC");break;
-        case 3: text.setString("Wall");break;
-        case 4: text.setString("Fence");break;
+        case STAGE:
+            text.setString("Stage");
+            break;
+        case BAR:
+            text.setString("Bar");
+            break;
+        case WC:
+            text.setString("WC");
+            break;
+        case WALL:
+            text.setString("Wall");
+            break;
+        case FENCE:
+            text.setString("Fence");
+            break;
+        case EXIT:
+            text.setString("Exit");
+            break;
         }
     }
 
