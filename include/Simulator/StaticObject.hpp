@@ -5,8 +5,8 @@
 #include <iostream>
 #include <math.h>
 
-enum staticObjects{STAGE, BAR, WC, WALL, FENCE};
-const unsigned int MAXSTATICOBJECTTYPES = FENCE; // set this enum to the rightmost of all staticObjects
+enum staticObjects{STAGE, BAR, WC, WALL, FENCE, EXIT};
+const unsigned int MAXSTATICOBJECTTYPES = EXIT; // set this enum to the rightmost of all staticObjects
 
 class ClStaticObject
 {
