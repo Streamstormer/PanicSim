@@ -1,14 +1,22 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Patrick Senneka
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    create an object, then call the function findPath(Vector2f, Vector2f) and you will recive an ClPath with the shortest Path
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
 #include "../../include/Simulator/PathFinder.hpp"
 
+//creates all Nodes on creation of the PathFinder
 ClPathFinder::ClPathFinder(ClArea *pArea, float nodeDistance, const sf::Vector2f & areaSize)
 {
     this->pArea = pArea;
     this->nodeDistance = nodeDistance;
     this->areaSize = areaSize;
     createNodes();
-    findPath(15, 42);
 }
 
+//destructor deletes all Nodes and Paths
 ClPathFinder::~ClPathFinder()
 {
     for(unsigned int n = 0; n < Nodes.size(); n++)
@@ -16,6 +24,7 @@ ClPathFinder::~ClPathFinder()
         delete Nodes[n];
     }
 }
+
 /*
 ---------------------------------------------------------------------------------------------------------------------------------------
 name:   createNodes()
@@ -46,15 +55,15 @@ void ClPathFinder::createNodes()
             if(tryToAddNode(sf::Vector2i(x,y),idCounter))
             {
                 validID[idCounter] = true;
-                idCounter++;
             }
-            //idCounter++; // !does not make senese because adressing the nodes will be difficult! set idCounter ++ even if there is no node to add
+            idCounter++; // set idCounter ++ even if there is no node to add
         }
     }
+
     //2.
     int currentID;
     /*
-    usefull functions :
+    usefull functions of ClNode :
     void set_neighbour_id_top(int id);
     void set_neighbour_id_left(int id);
     void set_neighbour_id_right(int id);
@@ -62,19 +71,16 @@ void ClPathFinder::createNodes()
     */
     for(unsigned int n = 0; n<Nodes.size(); n++)
     {
-        //Bug neighbours are added even if they do not exist (example Node 390 is the last Node but the bottom neigbbour is >400)
         currentID = Nodes[n]->getID();
         // calculate ID left and right of current ID
         x = currentID % nodeNumber.x;
         y = (int)(currentID / nodeNumber.x);
-        //std::cerr <<"  "<<n<< ": curID:" << currentID;
-        //left neighbour
-        //if ( x > 0 )
+        // left neighbour
         if(x>0 && validID[(x-1)+y*nodeNumber.x]== true && ((x-1)+y*nodeNumber.x)<Nodes.size())
         {
             Nodes[n]->set_neighbour_id_left((x-1)+y*nodeNumber.x);
-            //std::cerr << " left:" << (x-1)+y*nodeNumber.x;
         }
+        // if the neigbour is not valid set it on -1
         else
         {
             Nodes[n]->set_neighbour_id_left(-1);
@@ -83,46 +89,41 @@ void ClPathFinder::createNodes()
         if((x < nodeNumber.x-1) && validID[(x+1)+y*nodeNumber.x]== true && ((x+1)+y*nodeNumber.x)<Nodes.size())
         {
             Nodes[n]->set_neighbour_id_right((x+1)+y*nodeNumber.x);
-            //std::cerr << " right:" << (x+1)+y*nodeNumber.x;
         }
         else
         {
             Nodes[n]->set_neighbour_id_right(-1);
         }
         // top neighbour
-        //if(y >= 1)
         if(y>= 1 && validID[(x)+(y-1)*nodeNumber.x]== true && ((x)+(y-1)*nodeNumber.x)<Nodes.size())
         {
             Nodes[n]->set_neighbour_id_top((x)+(y-1)*nodeNumber.x);
-            //std::cerr << " top:" << (x)+(y-1)*nodeNumber.x;
         }
         else
         {
             Nodes[n]->set_neighbour_id_top(-1);
         }
-        // bottom neighbour
+        // below neighbour
         if(y < nodeNumber.y&& validID[(x)+(y+1)*nodeNumber.x]== true && ((x)+(y+1)*nodeNumber.x)<Nodes.size())
         {
             Nodes[n]->set_neighbour_id_below((x)+(y+1)*nodeNumber.x);
-            //std::cerr << " bottom:" << (x)+(y+1)*nodeNumber.x;
         }
         else
         {
             Nodes[n]->set_neighbour_id_below(-1);
         }
-       //if(n>= 30 && n <= 40) std::cerr << std::endl;
     }
-
-    for(unsigned int n = 0; n<Nodes.size(); n++)
-    {
-        std::cerr<<n<<" id"<<Nodes[n]->getID()<<" t"<<Nodes[n]->get_neighbour_id_top()<<" l"<<Nodes[n]->get_neighbour_id_left()<<" r"<<Nodes[n]->get_neighbour_id_right()<<" b"<<Nodes[n]->get_neighbour_id_below()<<std::endl;
-
-    }
-
-    std::cerr << " idCounter:"<< idCounter;
-
 }
 
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+name:   tryToAddNode(const sf::Vector2i &here, int id)
+---------------------------------------------------------------------------------------------------------------------------------------
+return value: bool
+---------------------------------------------------------------------------------------------------------------------------------------
+The function validPoint of ClArea is used to check if the Vector is in a static object or not
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
 bool ClPathFinder::tryToAddNode(const sf::Vector2i &here, int id)
 {
     int tempX = (int)here.x/nodeDistance;
@@ -139,11 +140,229 @@ bool ClPathFinder::tryToAddNode(const sf::Vector2i &here, int id)
 
 /*
 ---------------------------------------------------------------------------------------------------------------------------------------
+name:   findPath(int startID, int endID)
+---------------------------------------------------------------------------------------------------------------------------------------
+return value:   true if Path can be found       false if no Path exists
+---------------------------------------------------------------------------------------------------------------------------------------
+The Node with the endID is set a weight of 0. Depending on the walkable distance between Nodes to the Node with the endID their
+weights are assigned
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+bool ClPathFinder::findPath(int startID, int endID, ClPath *Path)
+{
+    if(startID == endID)
+        return false;
+    else
+    {
+        getNodeByID(endID)->set_visited(true);
+        getNodeByID(endID)->set_weight(0);
+        OpenList.push_back(getNodeByID(endID));
+    }
+    while(OpenList.size() > 0)
+    {
+        int index = OpenList[0]->getID();
+
+        if(getNodeByID(index)->get_neighbour_id_top() != -1 && getNodeByID(getNodeByID(index)->get_neighbour_id_top())->get_visited() == false)
+        {
+            setNodeWeight(getNodeByID(index)->get_neighbour_id_top(), index);
+            OpenList.push_back(getNodeByID(getNodeByID(index)->get_neighbour_id_top()));
+        }
+        if(getNodeByID(index)->get_neighbour_id_left() != -1 && getNodeByID(getNodeByID(index)->get_neighbour_id_left())->get_visited() == false)
+        {
+            setNodeWeight(getNodeByID(index)->get_neighbour_id_left(), index);
+            OpenList.push_back(getNodeByID(getNodeByID(index)->get_neighbour_id_left()));
+        }
+        if(getNodeByID(index)->get_neighbour_id_right() != -1 && getNodeByID(getNodeByID(index)->get_neighbour_id_right())->get_visited() == false)
+        {
+            setNodeWeight(getNodeByID(index)->get_neighbour_id_right(), index);
+            OpenList.push_back(getNodeByID(getNodeByID(index)->get_neighbour_id_right()));
+        }
+        if(getNodeByID(index)->get_neighbour_id_below() != -1 && getNodeByID(getNodeByID(index)->get_neighbour_id_below())->get_visited() == false)
+        {
+            setNodeWeight(getNodeByID(index)->get_neighbour_id_below(), index);
+            OpenList.push_back(getNodeByID(getNodeByID(index)->get_neighbour_id_below()));
+        }
+        OpenList.erase(OpenList.begin());
+        if(OpenList.size() == 0)
+        {
+            createPath(startID, endID, Path);
+            return true;
+        }
+    }
+
+}
+
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+name:   setNodeWeight(int nodeID, int parentID)
+---------------------------------------------------------------------------------------------------------------------------------------
+return value:   none
+---------------------------------------------------------------------------------------------------------------------------------------
+setNodeWeight assigns the Node weight depending on the parents Node weight.
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+void ClPathFinder::setNodeWeight(int nodeID, int parentID)
+{
+    int tempParentWeight = getNodeByID(parentID)->get_weight();
+    getNodeByID(nodeID)->set_weight(tempParentWeight + 1);
+    getNodeByID(nodeID)->set_visited(true);
+}
+
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+name:   createPath(int startID, int endID)
+---------------------------------------------------------------------------------------------------------------------------------------
+return value:   ture if a path from startID to endID can be found           false if there is no path
+---------------------------------------------------------------------------------------------------------------------------------------
+createPath starts at the Node with the startID and takes always the neighbour with the lowest weight as the the next Node
+until the Node with the endID is reached.
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+bool ClPathFinder::createPath(int startID, int endID, ClPath *Path)
+{
+    int nextNode, tempWeight, tempNext;
+    int counter = 0;
+    nextNode = startID;
+
+    while (nextNode != endID)
+    {
+        counter ++;
+        tempWeight = 32000;
+
+        if(getNodeByID(nextNode)->get_neighbour_id_left() != -1)
+        {
+            if(tempWeight > getNodeByID(getNodeByID(nextNode)->get_neighbour_id_left())->get_weight())
+            {
+                tempWeight = getNodeByID(getNodeByID(nextNode)->get_neighbour_id_left())->get_weight();
+                tempNext = getNodeByID(nextNode)->get_neighbour_id_left();
+            }
+        }
+        if(getNodeByID(nextNode)->get_neighbour_id_right() != -1)
+        {
+            if(tempWeight > getNodeByID(getNodeByID(nextNode)->get_neighbour_id_right())->get_weight())
+            {
+                tempWeight = getNodeByID(getNodeByID(nextNode)->get_neighbour_id_right())->get_weight();
+                tempNext = getNodeByID(nextNode)->get_neighbour_id_right();
+            }
+        }
+        if(getNodeByID(nextNode)->get_neighbour_id_below() != -1)
+        {
+            if(tempWeight > getNodeByID(getNodeByID(nextNode)->get_neighbour_id_below())->get_weight())
+            {
+                tempWeight = getNodeByID(getNodeByID(nextNode)->get_neighbour_id_below())->get_weight();
+                tempNext = getNodeByID(nextNode)->get_neighbour_id_below();
+            }
+        }
+        if(getNodeByID(nextNode)->get_neighbour_id_top() != -1)
+        {
+            if(tempWeight > getNodeByID(getNodeByID(nextNode)->get_neighbour_id_top())->get_weight())
+            {
+                tempWeight = getNodeByID(getNodeByID(nextNode)->get_neighbour_id_top())->get_weight();
+                tempNext = getNodeByID(nextNode)->get_neighbour_id_top();
+            }
+        }
+        Path->addVector(getNodeByID(nextNode)->getPosition());
+        //Path->addNode(getNodeByID(nextNode)->getPosition());
+        nextNode = tempNext;
+        if(nextNode == endID)
+        {
+            Path->addVector(getNodeByID(nextNode)->getPosition());
+            //Path->addNode(getNodeByID(nextNode)->getPosition());
+
+            return true;
+        }
+        if(counter > Nodes.size())
+        {
+            return false;
+        }
+    }
+}
+
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+name:   getNodeByID(int id)
+---------------------------------------------------------------------------------------------------------------------------------------
+return value:   ClNode* with the id
+---------------------------------------------------------------------------------------------------------------------------------------
+helper-function to allow a fast addressing of the right Node (so not the whole Vector Nodes has to be walked
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+ClNode* ClPathFinder::getNodeByID(int id)
+{
+    for (int n = id; n>=0; n--)
+    {
+        if (Nodes[n]->getID() == id)
+        {
+            return Nodes[n];
+        }
+    }
+}
+
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+name:   assignVectorNode(const sf::Vector2f & Position)
+---------------------------------------------------------------------------------------------------------------------------------------
+return value:   id of the nearest Node
+---------------------------------------------------------------------------------------------------------------------------------------
+helper-function for an easy use of the pathFinder
+A Path can be created without knowing about the Nodes, because the Position is assigned to the nearest Node
+The function is called rarely so that a fast implementation was not nessesary
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+int ClPathFinder::assignVectorNode(const sf::Vector2f & Position)
+{
+    int id = -1;
+    double distance = 1000000000;
+    double test;
+
+    for (int n=0; n < Nodes.size(); n++)
+    {
+        test = sqrt( ((Nodes[n]->get_x_position() - Position.x)*(Nodes[n]->get_x_position() - Position.x)) + ((Nodes[n]->get_y_position() - Position.y)*(Nodes[n]->get_y_position() - Position.y)) );
+        if(test < distance)
+        {
+            distance = test;
+            id = Nodes[n]->getID();
+        }
+    }
+    return id;
+}
+
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+name:   findPath(const sf::Vector2f & Start, const sf::Vector2f & Ende)
+---------------------------------------------------------------------------------------------------------------------------------------
+return value:   pointer to ClPath object    object size is 0 if there is no path        objectsize is >1 if there is a path
+---------------------------------------------------------------------------------------------------------------------------------------
+helper-function to address the private findPath function with the right id's
+A Path is created, which stores the path steps as vectors
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+ClPath* ClPathFinder::findPath(const sf::Vector2f & Start, const sf::Vector2f & Ende)
+{
+    bool temp;
+    ClPath *pPath = new ClPath(Start);
+
+    temp = findPath(assignVectorNode(Start), assignVectorNode(Ende) , pPath );
+    if(temp == true)
+    {
+        pPath->addVector(Ende);
+        return pPath;
+    }
+    else
+    {
+        pPath->clearVectorPath();
+        return pPath;
+    }
+}
+
+
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
 name:   draw(sf::RenderWindow & window)
 ---------------------------------------------------------------------------------------------------------------------------------------
 return value:   none
 ---------------------------------------------------------------------------------------------------------------------------------------
-draw(sf::RenderWindow & window) is a test-function to validate if the createNodes() works proverly
+draw(sf::RenderWindow & window) is a test-function to validate if the createNodes() works properly
 The nodes are drawn on the screen.
 ---------------------------------------------------------------------------------------------------------------------------------------
 */
@@ -155,141 +374,3 @@ void ClPathFinder::draw(sf::RenderWindow & window)
     }
 }
 
-/*
----------------------------------------------------------------------------------------------------------------------------------------
-name:   findPath(int startID, int endID)
----------------------------------------------------------------------------------------------------------------------------------------
-return value:   true if Path can be found       false if no Path exists
----------------------------------------------------------------------------------------------------------------------------------------
-
----------------------------------------------------------------------------------------------------------------------------------------
-*/
-bool ClPathFinder::findPath(int startID, int endID)
-{
-    if(startID == endID)
-        return false;
-    else
-    {
-        Nodes[endID]->set_visited(true);
-        Nodes[endID]->set_weight(0);
-        OpenList.push_back(Nodes[endID]);
-    }
-    while(OpenList.size() > 0)
-    {
-        int index = OpenList[0]->getID();
-
-        if(Nodes[index]->get_neighbour_id_top() != -1 && Nodes[Nodes[index]->get_neighbour_id_top()]->get_visited() == false)
-        {
-            setNodeWeight(Nodes[index]->get_neighbour_id_top(), index);
-            OpenList.push_back(Nodes[Nodes[index]->get_neighbour_id_top()]);
-        }
-        if(Nodes[index]->get_neighbour_id_left() != -1 && Nodes[Nodes[index]->get_neighbour_id_left()]->get_visited() == false)
-        {
-            setNodeWeight(Nodes[index]->get_neighbour_id_left(), index);
-            OpenList.push_back(Nodes[Nodes[index]->get_neighbour_id_left()]);
-        }
-        if(Nodes[index]->get_neighbour_id_right() != -1 && Nodes[Nodes[index]->get_neighbour_id_right()]->get_visited() == false)
-        {
-            setNodeWeight(Nodes[index]->get_neighbour_id_right(), index);
-            OpenList.push_back(Nodes[Nodes[index]->get_neighbour_id_right()]);
-        }
-        if(Nodes[index]->get_neighbour_id_below() != -1 && Nodes[Nodes[index]->get_neighbour_id_below()]->get_visited() == false)
-        {
-            setNodeWeight(Nodes[index]->get_neighbour_id_below(), index);
-            OpenList.push_back(Nodes[Nodes[index]->get_neighbour_id_below()]);
-        }
-        OpenList.erase(OpenList.begin());
-        if(OpenList.size() == 0)
-        {
-            for(int k=0; k<(int)Nodes.size(); k++)
-            {
-                std::cerr<<Nodes[k]->getID()<<" "<<Nodes[k]->get_weight()<<" "<<Nodes[k]->get_visited()<<" ___ ";
-            }
-            createPath(startID, endID);
-            return true;
-        }
-    }
-
-}
-
-void ClPathFinder::setNodeWeight(int nodeID, int parentID)
-{
-    int tempParentWeight = Nodes[parentID]->get_weight();
-    Nodes[nodeID]->set_weight(tempParentWeight + 1);
-    Nodes[nodeID]->set_visited(true);
-}
-
-bool ClPathFinder::createPath(int startID, int endID)
-{
-    int nextNode, tempWeight, tempNext;
-    int counter = 0;
-    nextNode = startID;
-
-    while (nextNode != endID)
-    {
-        counter ++;
-        tempWeight = 32000;
-
-        if(Nodes[nextNode]->get_neighbour_id_left() != -1)
-        {
-            if(tempWeight > Nodes[Nodes[nextNode]->get_neighbour_id_left()]->get_weight())
-            {
-                tempWeight = Nodes[Nodes[nextNode]->get_neighbour_id_left()]->get_weight();
-                tempNext = Nodes[nextNode]->get_neighbour_id_left();
-            }
-        }
-        if(Nodes[nextNode]->get_neighbour_id_right() != -1)
-        {
-            if(tempWeight > Nodes[Nodes[nextNode]->get_neighbour_id_right()]->get_weight())
-            {
-                tempWeight = Nodes[Nodes[nextNode]->get_neighbour_id_right()]->get_weight();
-                tempNext = Nodes[nextNode]->get_neighbour_id_right();
-            }
-        }
-        if(Nodes[nextNode]->get_neighbour_id_below() != -1)
-        {
-            if(tempWeight > Nodes[Nodes[nextNode]->get_neighbour_id_below()]->get_weight())
-            {
-                tempWeight = Nodes[Nodes[nextNode]->get_neighbour_id_below()]->get_weight();
-                tempNext = Nodes[nextNode]->get_neighbour_id_below();
-            }
-        }
-        if(Nodes[nextNode]->get_neighbour_id_top() != -1)
-        {
-            if(tempWeight > Nodes[Nodes[nextNode]->get_neighbour_id_top()]->get_weight())
-            {
-                tempWeight = Nodes[Nodes[nextNode]->get_neighbour_id_top()]->get_weight();
-                tempNext = Nodes[nextNode]->get_neighbour_id_top();
-            }
-        }
-
-        Path.push_back(Nodes[nextNode]);
-        nextNode = tempNext;
-        if(nextNode == endID)
-        {
-            Path.push_back(Nodes[nextNode]);
-            /*for(int k=0; k<(int)Path.size(); k++)
-            {
-                std::cerr<<Path[k]->getID()<<" ";
-            }*/
-            return true;
-        }
-
-        if(counter > Nodes.size())
-            return false;
-    }
-
-}
-void ClPathFinder::drawPath(sf::RenderWindow & window)
-{
-    for(int paint = 0; paint < (int)Path.size(); paint++)
-    {
-        sf::Vector2f position;
-        position = Path[paint]->getPosition();
-        sf::CircleShape Node;
-        Node.setPosition(position);
-        Node.setFillColor(sf::Color::Red);
-        Node.setRadius(4.0f);
-        window.draw(Node);
-    }
-}
