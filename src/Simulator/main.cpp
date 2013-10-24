@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
         mouseReleased = false;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed) window.close();
+            if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) window.close();
 
             if(event.type == sf::Event::MouseButtonReleased )
             {

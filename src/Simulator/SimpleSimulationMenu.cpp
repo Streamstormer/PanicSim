@@ -17,6 +17,10 @@ ClSimpleSimulationMenu::ClSimpleSimulationMenu(enum GameStates myState, sf::Font
         {
             ButtonVector[n]->draw(window);
         }
+        for(int n =0; n< LabelVector.size();n++)
+        {
+            LabelVector[n]->draw(window);
+        }
     }
 
     enum GameStates ClSimpleSimulationMenu::execute(enum Buttons btn) const
@@ -117,4 +121,10 @@ ClSimpleSimulationMenu::ClSimpleSimulationMenu(enum GameStates myState, sf::Font
         id++;
         pAddMe = new ClSimpleButton(id, FIRE,5, SIMULATION, texture, ButtonSize, Position, scale);
         ButtonVector.push_back(pAddMe);
+
+        // Labels
+        ClSimpleLabel*pLabel;
+        Position.x=Position.y=0;
+        pLabel= new ClSimpleLabel(Position, sf::Vector2f(200,100), sf::String("Besucher"),*pFont,ClCrowdManager::getPeopleCount());
+        LabelVector.push_back(pLabel);
     }
