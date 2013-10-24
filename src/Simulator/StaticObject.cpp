@@ -16,7 +16,7 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, int Type)
     font.loadFromFile("fonts/LiberationSerif-Regular.ttf");
     text.setFont(font);
     text.setCharacterSize(60);
-    text.setColor(sf::Color::Red);
+    text.setColor(sf::Color::Black);
 
 
     text.setOrigin(text.getLocalBounds().width/2,text.getLocalBounds().height);
@@ -30,14 +30,23 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, int Type)
             text.setRotation(Rect->getRotation());
         }
 
-
-
     while((Rect->getSize().x<text.getLocalBounds().width || Rect->getSize().y< text.getLocalBounds().height) && text.getCharacterSize()> 30)
     {
             text.setCharacterSize(text.getCharacterSize()-1);
             text.setOrigin(text.getLocalBounds().width/2,text.getLocalBounds().height);
 
     }
+
+    if(Type!=FENCE && Type!=WALL)
+    {
+        line.setSize(sf::Vector2f(Rect->getSize().x,5));
+        line.setFillColor(sf::Color::Red);
+        line.setPosition(Rect->getPosition());
+        line.setOrigin(Rect->getSize().x/2,-Rect->getSize().y/2+line.getSize().y);
+        line.setRotation(Rect->getRotation());
+    }
+
+
 
 }
 int ClStaticObject::getType()
@@ -54,8 +63,9 @@ void ClStaticObject::draw(sf::RenderWindow& window)
 {
 
     window.draw(*Rect);
-    window.draw(text);
 
+    window.draw(line);
+    window.draw(text);
 
 }
 bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
@@ -82,16 +92,18 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
 
     void ClStaticObject::setPosition(const sf::Vector2f &position)
     {
-        Rect->setPosition(position);
+                Rect->setPosition(position);
+                settext();
     }
     void ClStaticObject::setRotation(float rotation)
     {
         Rect->setRotation(rotation);
-       // text->setOrigin(text.getLocalBounds().width/2,text.getLocalBounds().height);  //Eventuell notwendig um die Rotation 2 mal aufzurufen
+        settext();
     }
     void ClStaticObject::setSize(const sf::Vector2f &newSize)
     {
         Rect->setSize(newSize);
+        settext();
     }
 
     void ClStaticObject::getTextfromType(int type)
@@ -113,7 +125,7 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
         case FENCE:
             text.setString("Fence");
             break;
-        case EXIT:
+        case GATE:
             text.setString("Exit");
             break;
         }
@@ -122,5 +134,44 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
    sf::Vector2f ClStaticObject::getCenter()
    {
       return Rect->getPosition();
+   }
+
+   void ClStaticObject::settext()
+   {
+    Rect->setOrigin(Rect->getSize().x/2,Rect->getSize().y/2);
+    text.setPosition(Rect->getPosition().x,Rect->getPosition().y);
+    getTextfromType(Type);
+    font.loadFromFile("fonts/LiberationSerif-Regular.ttf");
+    text.setFont(font);
+    text.setCharacterSize(60);
+    text.setColor(sf::Color::Black);
+
+
+    text.setOrigin(text.getLocalBounds().width/2,text.getLocalBounds().height);
+
+    if(Rect->getRotation()>90 && Rect->getRotation()<271)
+        {
+        text.setRotation(Rect->getRotation()-180);
+        }
+        else
+        {
+            text.setRotation(Rect->getRotation());
+        }
+
+    while((Rect->getSize().x<text.getLocalBounds().width || Rect->getSize().y< text.getLocalBounds().height) && text.getCharacterSize()> 30)
+    {
+            text.setCharacterSize(text.getCharacterSize()-1);
+            text.setOrigin(text.getLocalBounds().width/2,text.getLocalBounds().height);
+
+    }
+
+    if(Type!=FENCE && Type!=WALL)
+    {
+        line.setSize(sf::Vector2f(Rect->getSize().x,5));
+        line.setFillColor(sf::Color::Red);
+        line.setPosition(Rect->getPosition());
+        line.setOrigin(Rect->getSize().x/2,-Rect->getSize().y/2+line.getSize().y);
+        line.setRotation(Rect->getRotation());
+    }
    }
 

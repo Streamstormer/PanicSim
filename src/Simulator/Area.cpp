@@ -15,7 +15,7 @@
         tempRe->setPosition(positionOfRectangle);
         tempRe->setSize(sizeOfRectangle);
         tempRe->setRotation(rotAngle);
-        if(type == EXIT)
+        if(type == GATE)
             tempRe->setFillColor(sf::Color::Red);
         ClStaticObject *tempSt = new ClStaticObject(tempRe, id, (int) type);
         sobjects.push_back(tempSt);
