@@ -129,7 +129,7 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
         }
     }
 
-   sf::Vector2f ClStaticObject::getCenter()
+   const sf::Vector2f & ClStaticObject::getCenter()
    {
       return Rect->getPosition();
    }

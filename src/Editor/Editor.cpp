@@ -158,8 +158,6 @@ void Editor::loadFile()
     //Handle the response:
     switch(result) {
     case(Gtk::RESPONSE_OK): {
-        cout << "Select clicked." << endl;
-        cout << "File selected: " << dialog.get_filename()<< endl;
         this->SimFile = dialog.get_filename();
         this->isOpen = true;
         SFMLArea->clearArea();
@@ -233,11 +231,10 @@ void Editor::SaveFile()
         //Handle the response:
         switch(result) {
         case(Gtk::RESPONSE_OK):
-            std::cout << "Select clicked." << std::endl;
-            std::cout << "Folder selected: " << dialog.get_filename()
-                      << std::endl;
-
-            if (level->writeLevel(dialog.get_filename(), pArea) != 0)
+            SimFile = dialog.get_filename();
+            isOpen = true;
+            pArea->setLevelSize(sf::Vector2i(pAreaX->get_value(), pAreaY->get_value()));
+            if (level->writeLevel(SimFile, pArea) != 0)
                 exit(EXIT_FAILURE);
             this->SimFile = dialog.get_filename();
 
@@ -272,7 +269,11 @@ void Editor::SaveTo()
         std::cout << "Select clicked." << std::endl;
         std::cout << "Folder selected: " << dialog.get_filename()
                   << std::endl;
-        level->writeLevel(dialog.get_filename(), pArea);
+        SimFile = dialog.get_filename();
+        isOpen = true;
+        pArea->setLevelSize(sf::Vector2i(pAreaX->get_value(), pAreaY->get_value()));
+        level->writeLevel(SimFile, pArea);
+
         break;
 
     case(Gtk::RESPONSE_CANCEL):

@@ -1,7 +1,8 @@
 #include "../../include/Simulator/HeatMap.hpp"
 
-ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &MapSize)
+ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &MapSize, ClArea *pArea)
 {
+    this->pArea = pArea;
     this->MapSize = MapSize;
     this->cellNumber = cellNumber;
     cellSize.x = MapSize.x / cellNumber.x;
@@ -80,8 +81,11 @@ void ClHeatMap::update(float frameTime)
     // 1. loop through the cells
     // 2. loop through every single people inside
     // 3. loop through to the neibour zones and the zone containing the guy
+    // 4. calculate collision detection
     // 1
     sf::Vector2f force;
+    sf::Vector2f source;
+    int id = -1; // used for collision detection
 
     for (int x = 0; x < cellNumber.x ; x++)
         {
@@ -128,6 +132,26 @@ void ClHeatMap::update(float frameTime)
 
                     SortedPeoples[x+y*cellNumber.x][n]->position += force*frameTime;
 
+                    // check collision
+                    id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position);
+                    if( id != -1)
+                    {
+
+                        sf::Vector2f force2;
+                        //person is inside a static Object
+                        source = pArea->getSource(id);
+                        // seek
+                        force2.x = SortedPeoples[x+y*cellNumber.x][n]->position.x- source.x;
+                        force2.y = SortedPeoples[x+y*cellNumber.x][n]->position.y- source.y;
+
+                        Vec2DNormalize(&force2);
+
+
+                        SortedPeoples[x+y*cellNumber.x][n]->position += force2;
+
+
+                    }
+
                     }
 
                 }
@@ -150,12 +174,11 @@ sf::Vector2f ClHeatMap::distanceForce(std::vector<StrPeople *> &cell, StrPeople 
             delta.x =   (checkMe->position.x-cell[n]->position.x );
             delta.y =   (checkMe->position.y-cell[n]->position.y );
 
-            if (((delta.x*delta.x) + (delta.y * delta.y)) < 100) // is in range ?
+            if (((delta.x*delta.x) + (delta.y * delta.y)) < 160) // is in range ?
             {
-                helpVar = FSquare.getSqrt((delta.x*delta.x) + (delta.y * delta.y));
+                helpVar = FSquare.getSqrt((int)((delta.x*delta.x) + (delta.y * delta.y)));
                 Vec2DNormalize(&delta);
-                helpVar = invert(10,helpVar);
-
+                helpVar = invert(FSquare.getSqrt(160),helpVar);
                 force.x += delta.x *helpVar;
                 force.y += delta.y *helpVar;
                 NbCount++;

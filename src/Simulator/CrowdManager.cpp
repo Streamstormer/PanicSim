@@ -5,8 +5,8 @@ ClCrowdManager::ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize)
 {
     this->pArea = pArea;
     //Create HeatMap
-    sf::Vector2i numberOfCells(70,70);
-    pHeatMap = new ClHeatMap(numberOfCells, ScreenSize);
+    sf::Vector2i numberOfCells(40,40);
+    pHeatMap = new ClHeatMap(numberOfCells, ScreenSize, pArea);
     pPathFinder = new ClPathFinder(pArea, 100,sf::Vector2f(ScreenSize.x,ScreenSize.y));
 
 }
@@ -29,11 +29,11 @@ void ClCrowdManager::Update(float frameTime, sf::RenderWindow &window)
         if ( n== 0)
         {
             //     The first crowd is movable with the mouse for debugging purposes
-            Crowds[n]->Update(sf::Mouse::getPosition(window),frameTime);
+            //Crowds[n]->Update(sf::Mouse::getPosition(window),frameTime);
         }
         else
         {
-            Crowds[n]->Update(frameTime);
+            //Crowds[n]->Update(frameTime);
         }
     }
     // Update HeatMap
