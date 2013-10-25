@@ -164,6 +164,9 @@ void Editor::loadFile()
         ClArea *pArea = SFMLArea->getArea();
         level->readLevel(dialog.get_filename(),pArea);
         setColor(pArea->getBgColor());
+        pAreaX->set_value(pArea->getLevelSize().x);
+        pAreaY->set_value(pArea->getLevelSize().y);
+
         for(int i=1; i<=pArea->getNumberOfStaticObjects();i++){
             int object = pArea->getType(i);
             string label;
