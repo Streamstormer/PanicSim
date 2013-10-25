@@ -127,15 +127,15 @@ void Editor::change_comboBox()
     {
         case GREY:
             //pArea->setBgColor(sf::Color(193,205,205));
-            SFMLArea->setBgColor(sf::Color(193,205,205));
+            this->setColor(sf::Color(193,205,205));
             break;
         case GREEN:
             //pArea->setBgColor(sf::Color(162,205,90));
-            SFMLArea->setBgColor(sf::Color(162,205,90));
+            this->setColor(sf::Color(162,205,90));
             break;
         case BROWN:
             //pArea->setBgColor(sf::Color(205,132, 63));
-            SFMLArea->setBgColor(sf::Color(205,132, 63));
+            this->setColor(sf::Color(205,132, 63));
             break;
         default:
             std::cerr<<i<<std::endl;
