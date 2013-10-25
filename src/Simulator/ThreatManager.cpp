@@ -68,15 +68,17 @@ void ClThreatManager::buttonPressed(bool bomb, bool fire)
 //called in Simulation to update all threats (position) and create threats according to buttonPressed
 void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
 {
+    mouse = sf::Mouse::getPosition(window);
+    sf::Vector2f mouseFloat((float)mouse.x,(float)mouse.y);
     if(bomb_static)
     {
-        createThreat(true,false, sf::Vector2f (1165,560));
+        createThreat(true,false, mouseFloat);
         bomb_static = false;
     }
 
     if(fire_static)
     {
-        createThreat(false, true, sf::Vector2f (1085,550));
+        createThreat(false, true, mouseFloat);
         fire_static = false;
     }
 
@@ -92,8 +94,7 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
         if(threatVector[n]->isMoved == true)
         {
             //set new position for each threat
-            mouse = sf::Mouse::getPosition(window);
-            threatVector[n]->setPosition((float)mouse.x, (float)mouse.y);
+            threatVector[n]->setPosition(mouseFloat.x, mouseFloat.y);
         }
     }
 }
