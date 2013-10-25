@@ -19,6 +19,7 @@ private:
     Gtk::SpinButton *Rot;
     Gtk::SpinButton *pAreaSizeX;
     Gtk::SpinButton *pAreaSizeY;
+    Gtk::Label *pObjLabel;
     bool boxChecked;
     vector<Gtk::CheckButton*> CheckButt;
 
@@ -29,7 +30,7 @@ private:
 public:
     SimulationArea(Gtk::ScrolledWindow& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
                    Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot,  Gtk::SpinButton *pAreaSizeX,
-                   Gtk::SpinButton *pAreaSizeY);
+                   Gtk::SpinButton *pAreaSizeY, Gtk::Label *pObjLabel);
     void clearArea();
     void setObject(enum staticObjects object, sf::Vector2f position, sf::Vector2f size, float rotation);
     void setChecked();

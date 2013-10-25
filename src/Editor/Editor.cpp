@@ -8,7 +8,7 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 
     level = new ClFileHandler();
 
-    SFMLArea = new SimulationArea(*pSFMLWindow, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY);
+    SFMLArea = new SimulationArea(*pSFMLWindow, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY, pObjLabel);
 
     stringstream convert;
     convert<<GREY<<GREEN<<BROWN;
