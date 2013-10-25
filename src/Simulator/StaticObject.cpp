@@ -134,7 +134,6 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
       return Rect->getPosition();
    }
 
-<<<<<<< HEAD
    void ClStaticObject::settext()
    {
     Rect->setOrigin(Rect->getSize().x/2,Rect->getSize().y/2);
@@ -178,7 +177,6 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
     }
    }
 
-=======
 bool ClStaticObject::isValidPath(sf::Vector2f startPoint, sf::Vector2f endPoint)
 {
     sf::Rect<float> testRect;
@@ -217,4 +215,4 @@ bool ClStaticObject::isValidPath(sf::Vector2f startPoint, sf::Vector2f endPoint)
     testRect.width = 1;
     return Rect->getGlobalBounds().intersects(testRect);
 }
->>>>>>> PathFinder_v_1.1_extension
+
