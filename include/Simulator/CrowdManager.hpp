@@ -5,6 +5,7 @@
 #include "Crowd.hpp"
 #include "HeatMap.hpp"
 #include "PathFinder.hpp"
+#include "../StateEngine/StateVault.hpp"
 #include <vector>
 
 class ClCrowdManager

@@ -38,8 +38,8 @@ ClSimpleButton::ClSimpleButton(int id, Buttons button, int PictureID ,int GameSt
     // set sf::Text to not drawn
 
     pFont = NULL;
-    buttonText.clear();
-    text.setString(buttonText);
+    pText = NULL;
+
     // Debugging
     /*
     std::cout << " --- " << std::endl;
@@ -50,7 +50,12 @@ ClSimpleButton::ClSimpleButton(int id, Buttons button, int PictureID ,int GameSt
     std::cout << "----id : " << id << "----" << std::endl;
     */
 }
-ClSimpleButton::~ClSimpleButton() {}
+ClSimpleButton::~ClSimpleButton()
+{
+    // CleanUp is done by the OS here
+    //delete this->pButtonText;
+    //delete this->pText;
+}
 bool ClSimpleButton::isPressed(sf::RenderWindow & window)
 {
     if( Rect.contains(sf::Mouse::getPosition(window)))
@@ -62,25 +67,28 @@ bool ClSimpleButton::isPressed(sf::RenderWindow & window)
 void ClSimpleButton::draw(sf::RenderWindow& window)
 {
     window.draw(ButtonPicture);
-    window.draw(text);
+    if(pText != NULL)
+    window.draw(*pText);
 }
 Buttons ClSimpleButton::getButtonType()
 {
     return ButtonType;
 }
 
-void ClSimpleButton::setText(const sf::String &buttonText, sf::Font *pFont)
+void ClSimpleButton::setText(sf::String buttonText, sf::Font *pFont)
 {
-    this->buttonText = buttonText;
-    this->text.setString(this->buttonText);
-    this->text.setFont(*pFont);
-    this->text.setStyle(sf::Text::Regular);
+    pText = new sf::Text;
+    pButtonText = new sf::String(buttonText);
+    //*this->pButtonText = buttonText;
+    this->pText->setString(*this->pButtonText);
+    this->pText->setFont(*pFont);
+    this->pText->setStyle(sf::Text::Regular);
 
-    this->text.setCharacterSize(60);
-    sf::Rect<float> textRect = this->text.getGlobalBounds();
-    this->text.setPosition(Rect.left + ((Rect.width-textRect.width)/2),Rect.top + (Rect.height-textRect.height)/4);
+    this->pText->setCharacterSize(60);
+    sf::Rect<float> textRect = this->pText->getGlobalBounds();
+    this->pText->setPosition(Rect.left + ((Rect.width-textRect.width)/2),Rect.top + (Rect.height-textRect.height)/4);
 
-    this->text.setColor(sf::Color::White);
+    this->pText->setColor(sf::Color::White);
 }
 
 

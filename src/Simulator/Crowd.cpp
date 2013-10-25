@@ -59,8 +59,42 @@ void  ClCrowd::Update(float frameTime)
             force =  Seek( peoples[n]->position, this->getMassPoint(), sf::Vector2f(0,0));
          //   Vec2DNormalize(&force);
 
-            peoples[n]->position.x += force.x * frameTime *0.03;
-            peoples[n]->position.y += force.y * frameTime *0.03;
+
+
+            // check collision
+
+
+            int id = pArea->getIdByVector(peoples[n]->position);
+            if( id == -1)
+            {
+                peoples[n]->position.x += force.x * frameTime *0.03;
+                peoples[n]->position.y += force.y * frameTime *0.03;
+            }
+            else
+            {
+                peoples[n]->position.x -= force.x * frameTime *0.03;
+                peoples[n]->position.y -= force.y * frameTime *0.03;
+            }
+
+            /*sf::Vector2f source, force2;
+             int id = pArea->getIdByVector(peoples[n]->position);
+            if( id != -1)
+            {
+
+            sf::Vector2f force2;
+            // person is inside a staticObject
+            source = pArea->getSource(id);
+            // seek
+            force2.x = peoples[n]->position.x- source.x;
+            force2.y = peoples[n]->position.y- source.y;
+
+            Vec2DNormalize(&force2);
+
+            peoples[n]->position.x += force2.x*frameTime;
+            peoples[n]->position.x += force2.x*frameTime;
+
+            }*/
+
 
     }
 }

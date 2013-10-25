@@ -29,11 +29,11 @@ void ClCrowdManager::Update(float frameTime, sf::RenderWindow &window)
         if ( n== 0)
         {
             //     The first crowd is movable with the mouse for debugging purposes
-            //Crowds[n]->Update(sf::Mouse::getPosition(window),frameTime);
+            Crowds[n]->Update(sf::Mouse::getPosition(window),frameTime);
         }
         else
         {
-            //Crowds[n]->Update(frameTime);
+            Crowds[n]->Update(frameTime);
         }
     }
     // Update HeatMap
@@ -67,7 +67,7 @@ void ClCrowdManager::CreateCrowd(sf::Vector2f position, float radius, int people
     // for debugging puposes: each crowd gets a different color
     if(j==0)
     {
-        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::White,position, people, pHeatMap);
+        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Black,position, people, pHeatMap);
         Crowds.push_back(Crowd);
     }
     else if (j==1)

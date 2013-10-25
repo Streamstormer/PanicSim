@@ -16,7 +16,7 @@ class ClSimpleButton
         void draw(sf::RenderWindow& window);
 
         Buttons getButtonType();
-        void setText(const sf::String &buttonText, sf::Font *pFont);
+        void setText(sf::String buttonText, sf::Font *pFont);
 
     private:
 
@@ -24,8 +24,8 @@ class ClSimpleButton
         int id;
         Buttons ButtonType;
         int GameState;
-        sf::String buttonText;
-        sf::Text text;
+        sf::String *pButtonText;
+        sf::Text *pText;
         sf::Font *pFont;
         sf::Rect<int> Rect;
         sf::Sprite ButtonPicture;

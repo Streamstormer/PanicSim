@@ -133,7 +133,8 @@ void ClHeatMap::update(float frameTime)
                     SortedPeoples[x+y*cellNumber.x][n]->position += force*frameTime;
 
                     // check collision
-                    id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position);
+
+                    /*id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position);
                     if( id != -1)
                     {
 
@@ -147,11 +148,19 @@ void ClHeatMap::update(float frameTime)
                         Vec2DNormalize(&force2);
 
 
-                        SortedPeoples[x+y*cellNumber.x][n]->position += force2;
+                        SortedPeoples[x+y*cellNumber.x][n]->position.x += force2.x*frameTime;
+                        SortedPeoples[x+y*cellNumber.x][n]->position.x += force2.x*frameTime;
 
 
+
+                    }*/
+
+                    id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position);
+                    if( id != -1)
+                    {
+                        SortedPeoples[x+y*cellNumber.x][n]->position.x -= force.x * frameTime *2;
+                        SortedPeoples[x+y*cellNumber.x][n]->position.y -= force.y * frameTime *2;
                     }
-
                     }
 
                 }
