@@ -44,6 +44,8 @@ class ClArea
     sf::Color getBgColor(){return bgColor;};
     sf::Vector2i getLevelSize(){return levelSize;};
 
+    bool validPath(sf::Vector2f startPoint, sf::Vector2f endPoint); //returns ture if the neighbour is valid
+
     private:
 
     int id; // used to give StaticObjects a unique id

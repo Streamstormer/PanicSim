@@ -26,6 +26,7 @@ public:
     void setPosition(const sf::Vector2f &position);
     void setRotation(float rotation);
     void setSize(const sf::Vector2f &newSize);
+    bool isValidPath(sf::Vector2f startPoint, sf::Vector2f endPoint); //used for pathfinding. returns true if there is a static object in the path
 
 private:
     void getTextfromType(int type);

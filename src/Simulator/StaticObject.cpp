@@ -136,6 +136,7 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
       return Rect->getPosition();
    }
 
+<<<<<<< HEAD
    void ClStaticObject::settext()
    {
     Rect->setOrigin(Rect->getSize().x/2,Rect->getSize().y/2);
@@ -179,3 +180,43 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
     }
    }
 
+=======
+bool ClStaticObject::isValidPath(sf::Vector2f startPoint, sf::Vector2f endPoint)
+{
+    sf::Rect<float> testRect;
+    //checks if start node and end node are horizontal or vertical
+    if(startPoint.y == endPoint.y)
+    {
+    if(startPoint.x < endPoint.x)
+    {
+        testRect.left = startPoint.x;
+    }
+    else
+    {
+        testRect.left = endPoint.x;
+    }
+
+    testRect.top = startPoint.y;
+
+    testRect.width = abs(startPoint.x-endPoint.x);
+    testRect.height = 1;
+    return Rect->getGlobalBounds().intersects(testRect);
+    }
+
+    //creates rect between start and end point. returns true if there is a intersect with another object
+    if(startPoint.y < endPoint.y)
+    {
+        testRect.top = startPoint.y;
+    }
+    else
+    {
+        testRect.top = endPoint.y;
+    }
+
+    testRect.left = startPoint.x;
+
+    testRect.height = abs(startPoint.y-endPoint.y);
+    testRect.width = 1;
+    return Rect->getGlobalBounds().intersects(testRect);
+}
+>>>>>>> PathFinder_v_1.1_extension

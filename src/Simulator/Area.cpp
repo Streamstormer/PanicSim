@@ -44,6 +44,18 @@
          return true;
     }
 
+    bool ClArea::validPath(sf::Vector2f startPoint, sf::Vector2f endPoint)
+    {
+        for( unsigned int n=0; n < sobjects.size(); n++)
+        {
+            if(sobjects[n]->isValidPath(startPoint, endPoint))
+            {
+                return false;
+            }
+        }
+         return true;
+    }
+
 /// Get Methods for static Object attributes via the id
 /// for the editor
 
