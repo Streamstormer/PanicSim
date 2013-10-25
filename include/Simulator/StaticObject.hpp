@@ -14,7 +14,7 @@ public:
     ClStaticObject(sf::RectangleShape *Rectconst, int id, int Type);
     ~ClStaticObject();
     void draw(sf::RenderWindow& window);
-    sf::Vector2f getCenter();
+    const sf::Vector2f &getCenter();
     bool Intersects( const sf::Vector2f  &Position); // returns true if Position is inside of the StaticObject
     int getID();
     int getType();

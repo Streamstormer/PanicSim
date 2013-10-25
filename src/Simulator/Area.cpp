@@ -101,6 +101,30 @@
         }
     }
 
+     int  ClArea::getIdByVector(sf::Vector2f mouse)
+     {
+        for( unsigned int n=0; n < sobjects.size(); n++)
+        {
+            if(sobjects[n]->Intersects(mouse))
+            {
+                return sobjects[n]->getID();
+            }
+        }
+        return -1;
+     }
+    /// not for the editor
+
+    const sf::Vector2f & ClArea::getSource(int id)
+    {
+        for (unsigned int n = 0; n < sobjects.size();n++)
+        {
+            if (sobjects[n]->getID() == id)
+            {
+                return sobjects[n]->getCenter();
+            }
+        }
+    }
+
 
     /// Set Methods for StaticObjects attributes via id and new value
     /// for the editor

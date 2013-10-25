@@ -17,9 +17,9 @@
 
             pCrowdManager = new ClCrowdManager(pArea, pArea->getLevelSize());
 
-            pCrowdManager->CreateCrowd(sf::Vector2f(600,550),150,1000);
-            pCrowdManager->CreateCrowd(sf::Vector2f(850,250),150,5000);
-            pCrowdManager->CreateCrowd(sf::Vector2f(800,750),150,5000);
+            pCrowdManager->CreateCrowd(sf::Vector2f(600,550),150,100);
+            pCrowdManager->CreateCrowd(sf::Vector2f(850,250),150,500);
+            pCrowdManager->CreateCrowd(sf::Vector2f(800,750),150,500);
 
             pThreatManager = new ClThreatManager(pArea);
 

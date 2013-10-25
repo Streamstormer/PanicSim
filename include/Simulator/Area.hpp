@@ -16,6 +16,7 @@ class ClArea
                     const sf::Vector2f & positionOfRectangle, float rotAngle);
     void draw(sf::RenderWindow& window);
     bool validPoint(sf::Vector2f point); // returns whether a point is inside a staticObject ( false ) or not ( true )
+    int  getIdByVector(sf::Vector2f mouse); // returns -1 when mouse is not inside any staticObject
 
     /// Get and Set for StaticObjects
 
@@ -26,6 +27,9 @@ class ClArea
     const sf::Vector2f & getSize(int id);       // returns size of a StaticObject via id
     float getRotation(int id);                  // returns rotation of a StaticObject via id
 
+    /// not for the editor
+
+    const sf::Vector2f & getSource(int id);
 
     /// Set Methods for StaticObjects attributes via id and new value
     /// for the editor

@@ -5,11 +5,12 @@
 #include <vector>
 #include "People.hpp"
 #include "FastSquareroot.hpp"
+#include "Area.hpp"
 
 class ClHeatMap
 {
 public:
-    ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &MapSize);
+    ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &MapSize, ClArea *pArea);
     ~ClHeatMap();
     void registerCrowd(const std::vector<StrPeople *> &Crowd);
     void draw(sf::RenderWindow& window);
@@ -21,6 +22,8 @@ private:
     sf::Vector2f distanceForce(std::vector<StrPeople *> &cell, StrPeople *checkMe, int position );
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );
     float invert(float Max, float Current);
+
+    ClArea *pArea;
 
     std::vector<std::vector<StrPeople *> > SortedPeoples ;
     sf::Vector2i cellNumber;
