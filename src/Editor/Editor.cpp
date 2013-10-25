@@ -163,6 +163,7 @@ void Editor::loadFile()
         SFMLArea->clearArea();
         ClArea *pArea = SFMLArea->getArea();
         level->readLevel(dialog.get_filename(),pArea);
+        setColor(pArea->getBgColor());
         for(int i=1; i<=pArea->getNumberOfStaticObjects();i++){
             int object = pArea->getType(i);
             string label;
