@@ -8,15 +8,17 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 
     level = new ClFileHandler();
 
+    SFMLArea = new SimulationArea(*pSFMLWindow, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY);
+
     stringstream convert;
-    convert<<GREY;
-    pAreaColor->append(convert.str(), "Grau");
-    convert<<GREEN;
-    pAreaColor->append(convert.str(), "Grün");
-    convert<<BROWN;
-    pAreaColor->append(convert.str(), "Braun");
-    pAreaColor->set_active(true);
-    pAreaColor->show();
+    convert<<GREY<<GREEN<<BROWN;
+    string tmp(convert.str());
+    pAreaColor->append(tmp.substr(0,0), "Grau");
+    pAreaColor->append(tmp.substr(1,1), "Grün");
+    pAreaColor->append(tmp.substr(2,2), "Braun");
+    pAreaColor->set_active(1);
+
+    change_comboBox();
 
     pBar->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Bar_clicked));
     pWC->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_WC_clicked));
@@ -41,24 +43,7 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pAreaX->set_adjustment(Gtk::Adjustment::create(748.0, 748.0, 10000.0, 1.0, 1.0));
     pAreaY->set_adjustment(Gtk::Adjustment::create(710.0, 710.0, 10000.0, 1.0, 1.0));
 
-
-
-
-    SFMLArea = new SimulationArea(*pSFMLWindow, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY);
-
     pArea = SFMLArea->getArea();
-
-    /*********************
-    //TO-DO: selectable Levelsize and bgColor
-    //Default Values (should be removed later):
-    *********************/
-<<<<<<< HEAD
-    this->setColor(new sf::Color(205,133,63));
-=======
-    this->setColor(sf::Color(205,133,63));
-    pArea->setLevelSize((sf::Vector2i(2000,2000)));
->>>>>>> c85518642cd908e08294c812264c53f7abf2429b
-    /****************************************/
 
     app->run(*pWindow);
 
@@ -136,14 +121,25 @@ void Editor::on_Button_Clear_clicked()
 void Editor::change_comboBox()
 {
     string id = pAreaColor->get_active_id();
-    switch (atoi(id.c_str()))
+    int i = atoi(id.c_str());
+    pArea = SFMLArea->getArea();
+    switch (i)
     {
         case GREY:
-            pArea->setBgColor(sf::Color(193,205,205));
+            //pArea->setBgColor(sf::Color(193,205,205));
+            SFMLArea->setBgColor(sf::Color(193,205,205));
+            break;
         case GREEN:
-            pArea->setBgColor(sf::Color(162,205,90));
+            //pArea->setBgColor(sf::Color(162,205,90));
+            SFMLArea->setBgColor(sf::Color(162,205,90));
+            break;
         case BROWN:
-            pArea->setBgColor(sf::Color(205,132, 63));
+            //pArea->setBgColor(sf::Color(205,132, 63));
+            SFMLArea->setBgColor(sf::Color(205,132, 63));
+            break;
+        default:
+            std::cerr<<i<<std::endl;
+            break;
     }
 }
 
@@ -220,7 +216,7 @@ void Editor::SaveFile()
         this->SaveTo();
 
     if(this->isOpen) {
-        pArea->setLevelSize(new sf::Vector2i(pAreaX->get_value(), pAreaY->get_value()));
+        pArea->setLevelSize(sf::Vector2i(pAreaX->get_value(), pAreaY->get_value()));
         level->writeLevel(this->SimFile, pArea);
     } else {
 

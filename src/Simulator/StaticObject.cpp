@@ -37,7 +37,7 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, int Type)
 
     if(Type!=FENCE && Type!=WALL)
     {
-        line.setSize(sf::Vector2f(Rect->getSize().x,5));
+        line.setSize(sf::Vector2f(Rect->getSize().x,3));
         line.setFillColor(sf::Color::Red);
         line.setPosition(Rect->getPosition());
         line.setOrigin(Rect->getSize().x/2,-Rect->getSize().y/2+line.getSize().y);
@@ -169,7 +169,7 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
 
     if(Type!=FENCE && Type!=WALL)
     {
-        line.setSize(sf::Vector2f(Rect->getSize().x,5));
+        line.setSize(sf::Vector2f(Rect->getSize().x,3));
         line.setFillColor(sf::Color::Red);
         line.setPosition(Rect->getPosition());
         line.setOrigin(Rect->getSize().x/2,-Rect->getSize().y/2+line.getSize().y);

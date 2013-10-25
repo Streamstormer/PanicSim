@@ -491,12 +491,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="wrap_width">8</property>
-                            <property name="button_sensitivity">off</property>
                             <property name="entry_text_column">0</property>
                             <property name="id_column">1</property>
-                            <items>
-                              <item translatable="yes">Standard</item>
-                            </items>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
