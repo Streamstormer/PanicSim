@@ -2,11 +2,12 @@
 #define THREAT_HPP_INCLUDED
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "Area.hpp"
 
 class ClThreat
 {
 public:
-    ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat);
+    ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea);
     ~ClThreat();
     void draw(sf::RenderWindow &window);
     static void toggleDraw();
@@ -21,6 +22,7 @@ private:
     //sf::Vector2f size_threat;
     sf::Sprite sprite_threat;
     sf::IntRect threat;
+    ClArea *pArea;
 };
 
 #endif // THREAT_HPP_INCLUDED

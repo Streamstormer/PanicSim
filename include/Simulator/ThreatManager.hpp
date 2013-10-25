@@ -3,11 +3,12 @@
 #include <vector>
 #include "SimpleButton.hpp"
 #include "Threat.hpp"
+#include "Area.hpp"
 
 class ClThreatManager
 {
 public:
-    ClThreatManager();
+    ClThreatManager(ClArea *pArea);
     ~ClThreatManager();
     void update(sf::RenderWindow &window, bool mouseReleased);
     void draw(sf::RenderWindow &window);
@@ -21,6 +22,8 @@ private:
     static bool fire_static;
     static bool bomb_static;
     ClThreat *threat;
+    sf::Image image;
+    ClArea *pArea;
 };
 
 #endif // THREATMANAGER_HPP_INCLUDED

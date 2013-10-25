@@ -21,7 +21,7 @@
             pCrowdManager->CreateCrowd(sf::Vector2f(850,250),150,5000);
             pCrowdManager->CreateCrowd(sf::Vector2f(800,750),150,5000);
 
-            pThreatManager = new ClThreatManager();
+            pThreatManager = new ClThreatManager(pArea);
 
             elapsedTime.restart();
             curGameState = MENU;
