@@ -76,9 +76,16 @@ void ClPathFinder::createNodes()
         x = currentID % nodeNumber.x;
         y = (int)(currentID / nodeNumber.x);
         // left neighbour
-        if(x>0 && validID[(x-1)+y*nodeNumber.x]== true && ((x-1)+y*nodeNumber.x)<Nodes.size())
+        if(x>0 && validID[(x-1)+y*nodeNumber.x]== true  && ((x-1)+y*nodeNumber.x)<Nodes.size() )
         {
+            if( validConnection(currentID, ((x-1)+y*nodeNumber.x) ) == true)
+            {
             Nodes[n]->set_neighbour_id_left((x-1)+y*nodeNumber.x);
+            }
+            else
+            {
+            Nodes[n]->set_neighbour_id_left(-1);
+            }
         }
         // if the neigbour is not valid set it on -1
         else
@@ -86,33 +93,60 @@ void ClPathFinder::createNodes()
             Nodes[n]->set_neighbour_id_left(-1);
         }
         // right neighbour
-        if((x < nodeNumber.x-1) && validID[(x+1)+y*nodeNumber.x]== true && ((x+1)+y*nodeNumber.x)<Nodes.size())
+        if((x < nodeNumber.x-1) && validID[(x+1)+y*nodeNumber.x]== true && ((x+1)+y*nodeNumber.x)<Nodes.size() )
         {
+            if(validConnection(currentID, ((x+1)+y*nodeNumber.x) ) == true)
+            {
             Nodes[n]->set_neighbour_id_right((x+1)+y*nodeNumber.x);
+            }
+            else
+            {
+            Nodes[n]->set_neighbour_id_right(-1);
+            }
         }
         else
         {
             Nodes[n]->set_neighbour_id_right(-1);
         }
         // top neighbour
-        if(y>= 1 && validID[(x)+(y-1)*nodeNumber.x]== true && ((x)+(y-1)*nodeNumber.x)<Nodes.size())
+        if(y>= 1 && validID[(x)+(y-1)*nodeNumber.x]== true && ((x)+(y-1)*nodeNumber.x)<Nodes.size() )
         {
+            if(validConnection(currentID, ((x)+(y-1)*nodeNumber.x) ) == true)
+            {
             Nodes[n]->set_neighbour_id_top((x)+(y-1)*nodeNumber.x);
+            }
+            else
+            {
+            Nodes[n]->set_neighbour_id_top(-1);
+            }
         }
         else
         {
             Nodes[n]->set_neighbour_id_top(-1);
         }
         // below neighbour
-        if(y < nodeNumber.y&& validID[(x)+(y+1)*nodeNumber.x]== true && ((x)+(y+1)*nodeNumber.x)<Nodes.size())
+        if(y < nodeNumber.y&& validID[(x)+(y+1)*nodeNumber.x]== true && ((x)+(y+1)*nodeNumber.x)<Nodes.size() )
         {
+            if(validConnection(currentID, ((x)+(y+1)*nodeNumber.x) ) == true )
+            {
             Nodes[n]->set_neighbour_id_below((x)+(y+1)*nodeNumber.x);
+            }
+            else
+            {
+            Nodes[n]->set_neighbour_id_below(-1);
+            }
         }
         else
         {
             Nodes[n]->set_neighbour_id_below(-1);
         }
     }
+}
+
+// returns true if the connection is valitd, which means that there is no static object between two nodes.
+bool ClPathFinder::validConnection(int startNodeId, int endNodeId)
+{
+    return pArea->validPath(getNodeByID(startNodeId)->getPosition(), getNodeByID(endNodeId)->getPosition() );
 }
 
 /*
@@ -162,26 +196,23 @@ bool ClPathFinder::findPath(int startID, int endID, ClPath *Path)
     {
         int index = OpenList[0]->getID();
 
-        if(getNodeByID(index)->get_neighbour_id_top() != -1 && getNodeByID(getNodeByID(index)->get_neighbour_id_top())->get_visited() == false)
+        if ( getNodeByID(index)->get_neighbour_id_top() != -1 )
         {
-            setNodeWeight(getNodeByID(index)->get_neighbour_id_top(), index);
-            OpenList.push_back(getNodeByID(getNodeByID(index)->get_neighbour_id_top()));
+            tryToAddNeighbour(index, getNodeByID(index)->get_neighbour_id_top(), getNodeByID(getNodeByID(index)->get_neighbour_id_top())->get_visited() );
         }
-        if(getNodeByID(index)->get_neighbour_id_left() != -1 && getNodeByID(getNodeByID(index)->get_neighbour_id_left())->get_visited() == false)
+        if ( getNodeByID(index)->get_neighbour_id_left() != -1)
         {
-            setNodeWeight(getNodeByID(index)->get_neighbour_id_left(), index);
-            OpenList.push_back(getNodeByID(getNodeByID(index)->get_neighbour_id_left()));
+            tryToAddNeighbour(index, getNodeByID(index)->get_neighbour_id_left(), getNodeByID(getNodeByID(index)->get_neighbour_id_left())->get_visited() );
         }
-        if(getNodeByID(index)->get_neighbour_id_right() != -1 && getNodeByID(getNodeByID(index)->get_neighbour_id_right())->get_visited() == false)
+        if ( getNodeByID(index)->get_neighbour_id_right() != -1)
         {
-            setNodeWeight(getNodeByID(index)->get_neighbour_id_right(), index);
-            OpenList.push_back(getNodeByID(getNodeByID(index)->get_neighbour_id_right()));
+            tryToAddNeighbour(index, getNodeByID(index)->get_neighbour_id_right(), getNodeByID(getNodeByID(index)->get_neighbour_id_right())->get_visited() );
         }
-        if(getNodeByID(index)->get_neighbour_id_below() != -1 && getNodeByID(getNodeByID(index)->get_neighbour_id_below())->get_visited() == false)
+        if ( getNodeByID(index)->get_neighbour_id_below() != -1)
         {
-            setNodeWeight(getNodeByID(index)->get_neighbour_id_below(), index);
-            OpenList.push_back(getNodeByID(getNodeByID(index)->get_neighbour_id_below()));
+            tryToAddNeighbour(index, getNodeByID(index)->get_neighbour_id_below(), getNodeByID(getNodeByID(index)->get_neighbour_id_below())->get_visited() );
         }
+
         OpenList.erase(OpenList.begin());
         if(OpenList.size() == 0)
         {
@@ -190,6 +221,15 @@ bool ClPathFinder::findPath(int startID, int endID, ClPath *Path)
         }
     }
 
+}
+// helper-fuction to assign node-weight. the function must not be called without checking if the node exists
+void ClPathFinder::tryToAddNeighbour(int index, int neighbour_id, bool visited)
+{
+    if(visited == false)
+        {
+            setNodeWeight(neighbour_id, index);
+            OpenList.push_back(getNodeByID(neighbour_id));
+        }
 }
 
 /*
@@ -289,13 +329,19 @@ helper-function to allow a fast addressing of the right Node (so not the whole V
 */
 ClNode* ClPathFinder::getNodeByID(int id)
 {
-    for (int n = id; n>=0; n--)
+    int n = id;
+    if( n >= Nodes.size())
+    {
+        n = Nodes.size()-1;
+    }
+    for (n ; n>=0; n--)
     {
         if (Nodes[n]->getID() == id)
         {
             return Nodes[n];
         }
     }
+
 }
 
 /*

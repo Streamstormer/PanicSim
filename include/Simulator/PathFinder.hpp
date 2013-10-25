@@ -32,6 +32,9 @@ class ClPathFinder
         int assignVectorNode(const sf::Vector2f & Position);
 
         bool tryToAddNode(const sf::Vector2i &here, int id);
+        void tryToAddNeighbour(int index, int neighbour_id, bool visited);
+
+        bool validConnection(int startNodeId, int endNodeId);
 
         int nodeCounter;
         ClArea *pArea;
