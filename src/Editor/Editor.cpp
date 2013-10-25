@@ -8,7 +8,7 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 
     level = new ClFileHandler();
 
-    SFMLArea = new SimulationArea(*pSFMLWindow, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY);
+    SFMLArea = new SimulationArea(*pSFMLWindow, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY, pObjLabel);
 
     stringstream convert;
     convert<<GREY<<GREEN<<BROWN;
@@ -158,13 +158,15 @@ void Editor::loadFile()
     //Handle the response:
     switch(result) {
     case(Gtk::RESPONSE_OK): {
-        cout << "Select clicked." << endl;
-        cout << "File selected: " << dialog.get_filename()<< endl;
         this->SimFile = dialog.get_filename();
         this->isOpen = true;
         SFMLArea->clearArea();
         ClArea *pArea = SFMLArea->getArea();
         level->readLevel(dialog.get_filename(),pArea);
+        setColor(pArea->getBgColor());
+        pAreaX->set_value(pArea->getLevelSize().x);
+        pAreaY->set_value(pArea->getLevelSize().y);
+
         for(int i=1; i<=pArea->getNumberOfStaticObjects();i++){
             int object = pArea->getType(i);
             string label;
@@ -233,11 +235,10 @@ void Editor::SaveFile()
         //Handle the response:
         switch(result) {
         case(Gtk::RESPONSE_OK):
-            std::cout << "Select clicked." << std::endl;
-            std::cout << "Folder selected: " << dialog.get_filename()
-                      << std::endl;
-
-            if (level->writeLevel(dialog.get_filename(), pArea) != 0)
+            SimFile = dialog.get_filename();
+            isOpen = true;
+            pArea->setLevelSize(sf::Vector2i(pAreaX->get_value(), pAreaY->get_value()));
+            if (level->writeLevel(SimFile, pArea) != 0)
                 exit(EXIT_FAILURE);
             this->SimFile = dialog.get_filename();
 
@@ -272,7 +273,11 @@ void Editor::SaveTo()
         std::cout << "Select clicked." << std::endl;
         std::cout << "Folder selected: " << dialog.get_filename()
                   << std::endl;
-        level->writeLevel(dialog.get_filename(), pArea);
+        SimFile = dialog.get_filename();
+        isOpen = true;
+        pArea->setLevelSize(sf::Vector2i(pAreaX->get_value(), pAreaY->get_value()));
+        level->writeLevel(SimFile, pArea);
+
         break;
 
     case(Gtk::RESPONSE_CANCEL):

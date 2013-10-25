@@ -36,6 +36,8 @@ class ClPathFinder
 
         bool validConnection(int startNodeId, int endNodeId);
 
+        void getTempNextNode (int neighbourId, int *pTempWeight, int *pTempNextNode);
+
         int nodeCounter;
         ClArea *pArea;
         float nodeDistance;

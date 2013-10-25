@@ -2,7 +2,7 @@
 
 SimulationArea::SimulationArea(Gtk::ScrolledWindow& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
                                Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot, Gtk::SpinButton *pAreaSizeX,
-                               Gtk::SpinButton *pAreaSizeY)
+                               Gtk::SpinButton *pAreaSizeY, Gtk::Label *pObjLabel)
     : SFML_Widget(sf::VideoMode(748, 710))
 {
     // add this widget to Area Frame..
@@ -20,6 +20,7 @@ SimulationArea::SimulationArea(Gtk::ScrolledWindow& AreaWin, Gtk::Box& ObjectBox
     this->boxChecked = false;
     this->pAreaSizeX = pAreaSizeX;
     this->pAreaSizeY = pAreaSizeY;
+    this->pObjLabel = pObjLabel;
 
     // Let the animate method be called every 25ms
     // Note: MovingCircle::animate() doesn't return any value, but signal_timeout() expects
@@ -48,29 +49,52 @@ void SimulationArea::animate()
 
     sf::VideoMode mode(pAreaSizeX->get_value(), pAreaSizeY->get_value());
     set_size_request(mode.width, mode.height);
-
-
-
-
-    bool oneChecked = false;
+    int rightID;
     if(boxChecked) {
         for(unsigned int i = 0; i<CheckButt.size(); i++) {
-            if(CheckButt[i]->get_active() && !oneChecked) {
-                oneChecked = true;
+            if(CheckButt[i]->get_active()) {
+                int ID;
 
                 string label(CheckButt[i]->get_label());
                 size_t startPos = label.find_first_of('.');
                 size_t endPos = label.find_first_of(':');
                 stringstream convert(label.substr(startPos+2,  endPos - (startPos+2)));
-                convert >> selectedID;
+                cerr<<convert.str();
+                convert >> ID;
 
-                SizeX->set_value(Area->getSize(selectedID).x);
-                SizeY->set_value(Area->getSize(selectedID).y);
-                Rot->set_value(Area->getRotation(selectedID));
+                if(selectedID != ID){
+                    SizeX->set_value(Area->getSize(ID).x);
+                    SizeY->set_value(Area->getSize(ID).y);
+                    Rot->set_value(Area->getRotation(ID));
+                    string label;
+                    switch(Area->getType(ID)) {
+                        case BAR:
+                            label = "Bar";
+                            break;
+                        case STAGE:
+                            label = "Stage";
+                            break;
+                        case WC:
+                            label = "WC";
+                            break;
+                        case WALL:
+                            label = "Wall";
+                            break;
+                        case FENCE:
+                            label = "Fence";
+                            break;
+                        case GATE:
+                            label = "Exit";
+                            break;
+                    }
+                    pObjLabel->set_label(label);
+                    rightID = ID;
 
-            } else if(CheckButt[i]->get_active() && oneChecked)
-                CheckButt[i]->set_active(false);
+                } else
+                    CheckButt[i]->set_active(false);
+            }
         }
+        selectedID = rightID;
         boxChecked = false;
     }
     if(selectedID) {
@@ -112,7 +136,6 @@ void SimulationArea::resize()
     sf::View view(sf::FloatRect(0, 0, renderWindow.getSize().x, renderWindow.getSize().y));
     renderWindow.setView(view);
 }
-
 
 void SimulationArea::setObject(enum staticObjects object, sf::Vector2f position, sf::Vector2f size, float rotation)
 {
