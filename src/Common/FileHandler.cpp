@@ -150,8 +150,10 @@ int ClFileHandler::importStaticObjects(ClArea *pArea){
             while(str[j] != ';'){
                 if(str[j] < 58 && str[j] > 47)
                     props[k] = multiplier * props[k] + (str[j] - 48);
-                else
+                else{
                     return 4;
+                    std::cout << "Error when reading level detals: Leveldetail not a number.";
+                }
             j++;    //inc j within while (one number with several digigts)
             }
         j++;        //inc j (next number)
