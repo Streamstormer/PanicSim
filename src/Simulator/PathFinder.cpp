@@ -73,10 +73,10 @@ void ClPathFinder::createNodes()
     {
         currentID = Nodes[n]->getID();
         // calculate ID left and right of current ID
-        x = (int)(currentID % nodeNumber.x);
+        x = currentID % nodeNumber.x;
         y = (int)(currentID / nodeNumber.x);
         // left neighbour
-        if(x>0 && validID[(x-1)+y*nodeNumber.x]== true  && ((x-1)+y*nodeNumber.x) < (int)Nodes.size() )
+        if(x>0 && validID[(x-1)+y*nodeNumber.x]== true  && ((x-1)+y*nodeNumber.x)<Nodes.size() )
         {
             if( validConnection(currentID, ((x-1)+y*nodeNumber.x) ) == true)
             {
@@ -93,7 +93,7 @@ void ClPathFinder::createNodes()
             Nodes[n]->set_neighbour_id_left(-1);
         }
         // right neighbour
-        if((x < nodeNumber.x-1) && validID[(x+1)+y*nodeNumber.x]== true && ((x+1)+y*nodeNumber.x) < (int)Nodes.size() )
+        if((x < nodeNumber.x-1) && validID[(x+1)+y*nodeNumber.x]== true && ((x+1)+y*nodeNumber.x)<Nodes.size() )
         {
             if(validConnection(currentID, ((x+1)+y*nodeNumber.x) ) == true)
             {
@@ -109,7 +109,7 @@ void ClPathFinder::createNodes()
             Nodes[n]->set_neighbour_id_right(-1);
         }
         // top neighbour
-        if(y>= 1 && validID[(x)+(y-1)*nodeNumber.x]== true && ((x)+(y-1)*nodeNumber.x) < (int)Nodes.size() )
+        if(y>= 1 && validID[(x)+(y-1)*nodeNumber.x]== true && ((x)+(y-1)*nodeNumber.x)<Nodes.size() )
         {
             if(validConnection(currentID, ((x)+(y-1)*nodeNumber.x) ) == true)
             {
@@ -125,7 +125,7 @@ void ClPathFinder::createNodes()
             Nodes[n]->set_neighbour_id_top(-1);
         }
         // below neighbour
-        if(y < nodeNumber.y&& validID[(x)+(y+1)*nodeNumber.x]== true && ((x)+(y+1)*nodeNumber.x) < (int)Nodes.size() )
+        if(y < nodeNumber.y&& validID[(x)+(y+1)*nodeNumber.x]== true && ((x)+(y+1)*nodeNumber.x)<Nodes.size() )
         {
             if(validConnection(currentID, ((x)+(y+1)*nodeNumber.x) ) == true )
             {
@@ -158,11 +158,10 @@ return value: bool
 The function validPoint of ClArea is used to check if the Vector is in a static object or not
 ---------------------------------------------------------------------------------------------------------------------------------------
 */
-//Support: Lukas
 bool ClPathFinder::tryToAddNode(const sf::Vector2i &here, int id)
 {
-    //int tempX = (int)here.x/nodeDistance;
-    //int tempY = (int)here.y/nodeDistance;
+    int tempX = (int)here.x/nodeDistance;
+    int tempY = (int)here.y/nodeDistance;
     ClNode *pAddMe;
     if(pArea->validPoint(sf::Vector2f(here.x, here.y)))
     {
@@ -183,7 +182,6 @@ The Node with the endID is set a weight of 0. Depending on the walkable distance
 weights are assigned
 ---------------------------------------------------------------------------------------------------------------------------------------
 */
-//Support: Lukas und Patrick
 bool ClPathFinder::findPath(int startID, int endID, ClPath *Path)
 {
     if(startID == endID)
@@ -222,7 +220,7 @@ bool ClPathFinder::findPath(int startID, int endID, ClPath *Path)
             return true;
         }
     }
-    return false;
+
 }
 // helper-fuction to assign node-weight. the function must not be called without checking if the node exists
 void ClPathFinder::tryToAddNeighbour(int index, int neighbour_id, bool visited)
@@ -262,16 +260,14 @@ until the Node with the endID is reached.
 */
 bool ClPathFinder::createPath(int startID, int endID, ClPath *Path)
 {
-    int nextNode, tempNext;
-    int tempWeight = 32000;
+    int nextNode, tempWeight, tempNext;
     int counter = 0;
     nextNode = startID;
-    tempNext = startID;
 
     while (nextNode != endID)
     {
         counter ++;
-        //tempWeight = 32000;
+        tempWeight = 32000;
 
         if(getNodeByID(nextNode)->get_neighbour_id_left() != -1)
         {
@@ -315,12 +311,11 @@ bool ClPathFinder::createPath(int startID, int endID, ClPath *Path)
 
             return true;
         }
-        if(counter > (int)Nodes.size())
+        if(counter > Nodes.size())
         {
             return false;
         }
     }
-    return false;
 }
 
 /*
@@ -335,19 +330,18 @@ helper-function to allow a fast addressing of the right Node (so not the whole V
 ClNode* ClPathFinder::getNodeByID(int id)
 {
     int n = id;
-    if( n >= (int)Nodes.size())
+    if( n >= Nodes.size())
     {
         n = Nodes.size()-1;
     }
-    for ( ; n>=0; n--)
+    for (n ; n>=0; n--)
     {
         if (Nodes[n]->getID() == id)
         {
             return Nodes[n];
         }
-        n--;
     }
-    return  NULL;
+
 }
 
 /*
@@ -367,7 +361,7 @@ int ClPathFinder::assignVectorNode(const sf::Vector2f & Position)
     double distance = 1000000000;
     double test;
 
-    for (int n=0; n < (int)Nodes.size(); n++)
+    for (int n=0; n < Nodes.size(); n++)
     {
         test = sqrt( ((Nodes[n]->get_x_position() - Position.x)*(Nodes[n]->get_x_position() - Position.x)) + ((Nodes[n]->get_y_position() - Position.y)*(Nodes[n]->get_y_position() - Position.y)) );
         if(test < distance)
