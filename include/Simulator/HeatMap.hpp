@@ -6,6 +6,7 @@
 #include "People.hpp"
 #include "FastSquareroot.hpp"
 #include "Area.hpp"
+#include "Statistic.hpp"
 
 class ClHeatMap
 {
@@ -17,13 +18,13 @@ public:
     void update(float frameTime);
     static void toggleDraw();
     static bool doDraw;
-
 private:
     sf::Vector2f distanceForce(std::vector<StrPeople *> &cell, StrPeople *checkMe, int position );
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );
     float invert(float Max, float Current);
 
     ClArea *pArea;
+    ClStatistic *pStatistic;
 
     std::vector<std::vector<StrPeople *> > SortedPeoples ;
     sf::Vector2i cellNumber;
@@ -40,7 +41,6 @@ private:
     const static int sw_yellow = 15;
     //color is (stepwise) red until there are sw_red people above it´s red too
     const static int sw_red = 25;
-
 };
 
 #endif // HEATMAP_HPP_INCLUDED

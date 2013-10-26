@@ -13,11 +13,17 @@ ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &Map
         std::vector<StrPeople *> oneCell;
         SortedPeoples.push_back(oneCell);
     }
+
+    pStatistic = new ClStatistic(cellNumber);
 }
-ClHeatMap::~ClHeatMap() {}
+
+ClHeatMap::~ClHeatMap()
+{
+    delete pStatistic;
+}
+
 void ClHeatMap::registerCrowd(const std::vector<StrPeople *> &Crowd)
 {
-
     // Adds the peoples of a crowd to a local array where they can be managed all together
     for (unsigned int n=0; n<Crowd.size(); n++)
     {
@@ -33,22 +39,26 @@ void ClHeatMap::registerCrowd(const std::vector<StrPeople *> &Crowd)
 
 void ClHeatMap::draw(sf::RenderWindow& window)
 {
-    if(doDraw==true)
+    for (int x = 0; x < cellNumber.x ; x++)
     {
-        sf::RectangleShape colorCell(cellSize);
-        for (int x = 0; x < cellNumber.x ; x++)
+        for (int y = 0; y < cellNumber.y; y++)
         {
-            for (int y = 0; y < cellNumber.y; y++)
+            int cellCounter = x+y*cellNumber.x;
+            int numberOfPeopleInCell = this->SortedPeoples[cellCounter].size();
+            if(numberOfPeopleInCell >= sw_green)
             {
-                if(this->SortedPeoples[x+y*cellNumber.x].size() >= sw_green)
+                pStatistic->rememberCells(x, y, numberOfPeopleInCell);
+                if(doDraw==true)
                 {
-                colorCell.setPosition(x*cellSize.x, y*cellSize.y);
-                colorCell.setFillColor(getColor(this->SortedPeoples[x+y*cellNumber.x].size()));
-                window.draw(colorCell);
+                    sf::RectangleShape colorCell(cellSize);
+                    colorCell.setPosition(x*cellSize.x, y*cellSize.y);
+                    colorCell.setFillColor(getColor(numberOfPeopleInCell));
+                    window.draw(colorCell);
                 }
             }
         }
     }
+    pStatistic->rememberLoopNumber();
 }
 
 void ClHeatMap::update(float frameTime)
@@ -64,7 +74,8 @@ void ClHeatMap::update(float frameTime)
 
         for(unsigned int n=0; n<SortedPeoples[m].size(); n++)
         {
-            // SortedPeoples[m][n] cell number m
+            // SortedPeoples[m][n]
+            // cell number m
             // person number n
             if(!Cell.contains(SortedPeoples[m][n]->position))
             {
@@ -88,42 +99,42 @@ void ClHeatMap::update(float frameTime)
     int id = -1; // used for collision detection
 
     for (int x = 0; x < cellNumber.x ; x++)
+    {
+        for (int y = 0; y < cellNumber.y; y++)
         {
-            for (int y = 0; y < cellNumber.y; y++)
+            //2.
+            if(this->SortedPeoples[x+y*cellNumber.x].size() > 0)
             {
-                //2.
-                if(this->SortedPeoples[x+y*cellNumber.x].size() > 0)
+                for (unsigned int n = 0; n < SortedPeoples[x+y*cellNumber.x].size(); n++)
                 {
-                    for (unsigned int n = 0; n < SortedPeoples[x+y*cellNumber.x].size();n++)
-                    {
                     //3.
                     // center
                     force = distanceForce(SortedPeoples[x+y*cellNumber.x],          SortedPeoples[x+y*cellNumber.x][n],n);
 
                     // top left
                     if( (x-1) >= 0 && (y-1) > 0 ) // does top left cell exist ?
-                    force += distanceForce(SortedPeoples[(x-1)+(y-1)*cellNumber.x], SortedPeoples[x+y*cellNumber.x][n],-1);
+                        force += distanceForce(SortedPeoples[(x-1)+(y-1)*cellNumber.x], SortedPeoples[x+y*cellNumber.x][n],-1);
                     // top cell
                     if ( (y-1) >= 0)
-                    force += distanceForce(SortedPeoples[x+(y-1)*cellNumber.x],     SortedPeoples[x+y*cellNumber.x][n],-1);
+                        force += distanceForce(SortedPeoples[x+(y-1)*cellNumber.x],     SortedPeoples[x+y*cellNumber.x][n],-1);
                     // top right cell
                     if ((x+1) <= cellSize.x && (y-1) > 0)
-                    force += distanceForce(SortedPeoples[(x+1)+(y-1)*cellNumber.x], SortedPeoples[x+y*cellNumber.x][n],-1);
+                        force += distanceForce(SortedPeoples[(x+1)+(y-1)*cellNumber.x], SortedPeoples[x+y*cellNumber.x][n],-1);
                     // left cell
                     if ((x-1) >= 0 )
-                    force += distanceForce(SortedPeoples[(x-1)+y*cellNumber.x],     SortedPeoples[x+y*cellNumber.x][n],-1);
+                        force += distanceForce(SortedPeoples[(x-1)+y*cellNumber.x],     SortedPeoples[x+y*cellNumber.x][n],-1);
                     // right cell
                     if ((x+1) <= cellSize.x )
-                    force += distanceForce(SortedPeoples[(x+1)+y*cellNumber.x],     SortedPeoples[x+y*cellNumber.x][n],-1);
+                        force += distanceForce(SortedPeoples[(x+1)+y*cellNumber.x],     SortedPeoples[x+y*cellNumber.x][n],-1);
                     // bottom left cell
                     if ((x-1)>=0 && (y+1)<=cellSize.y)
-                    force += distanceForce(SortedPeoples[(x-1)+(y+1)*cellNumber.x], SortedPeoples[x+y*cellNumber.x][n],-1);
+                        force += distanceForce(SortedPeoples[(x-1)+(y+1)*cellNumber.x], SortedPeoples[x+y*cellNumber.x][n],-1);
                     // bottom cell
                     if ((y+1)<= cellSize.y)
-                    force += distanceForce(SortedPeoples[x+(y+1)*cellNumber.x],    SortedPeoples[x+y*cellNumber.x][n],-1);
+                        force += distanceForce(SortedPeoples[x+(y+1)*cellNumber.x],    SortedPeoples[x+y*cellNumber.x][n],-1);
                     // bottom right cell
                     if ((y+1)<= cellSize.y&& (x+1)<=cellSize.x)
-                    force += distanceForce(SortedPeoples[(x+1)+(y+1)*cellNumber.x], SortedPeoples[x+y*cellNumber.x][n],-1);
+                        force += distanceForce(SortedPeoples[(x+1)+(y+1)*cellNumber.x], SortedPeoples[x+y*cellNumber.x][n],-1);
 
 
                     Vec2DNormalize(&force);
@@ -133,8 +144,7 @@ void ClHeatMap::update(float frameTime)
                     SortedPeoples[x+y*cellNumber.x][n]->position += force*frameTime;
 
                     // check collision
-
-                    /*id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position);
+                    id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position);
                     if( id != -1)
                     {
 
@@ -148,24 +158,16 @@ void ClHeatMap::update(float frameTime)
                         Vec2DNormalize(&force2);
 
 
-                        SortedPeoples[x+y*cellNumber.x][n]->position.x += force2.x*frameTime;
-                        SortedPeoples[x+y*cellNumber.x][n]->position.x += force2.x*frameTime;
+                        SortedPeoples[x+y*cellNumber.x][n]->position += force2;
 
 
-
-                    }*/
-
-                    id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position);
-                    if( id != -1)
-                    {
-                        SortedPeoples[x+y*cellNumber.x][n]->position.x -= force.x * frameTime *2;
-                        SortedPeoples[x+y*cellNumber.x][n]->position.y -= force.y * frameTime *2;
-                    }
                     }
 
                 }
+
             }
         }
+    }
 }
 
 
@@ -207,11 +209,11 @@ sf::Vector2f ClHeatMap::distanceForce(std::vector<StrPeople *> &cell, StrPeople 
 
 void ClHeatMap::toggleDraw()
 {
-        if (doDraw)
-         {
-             doDraw = false;
-         }
-         else doDraw = true;
+    if (doDraw)
+    {
+        doDraw = false;
+    }
+    else doDraw = true;
 }
 
 //Calculates the Color that fits to the number of people in the current Cell
@@ -253,8 +255,8 @@ void ClHeatMap::Vec2DNormalize( sf::Vector2f *NormalizeMe )
     if (NormalizeMe->x != 0 && NormalizeMe->y != 0)
     {
 
-    float helpVar = fabs(NormalizeMe->x) + fabs(NormalizeMe->y);
-    NormalizeMe->x /= helpVar;
-    NormalizeMe->y /= helpVar;
+        float helpVar = fabs(NormalizeMe->x) + fabs(NormalizeMe->y);
+        NormalizeMe->x /= helpVar;
+        NormalizeMe->y /= helpVar;
     }
 }
