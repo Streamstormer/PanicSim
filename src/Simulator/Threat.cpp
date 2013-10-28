@@ -1,61 +1,89 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Melanie Hammerschmidt
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    creation of threats, handling mouse action on threats and set new position according to mouse position
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
 #include "../../include/Simulator/Threat.hpp"
 #include <iostream>
 
-//Creation of threats using a specific position, a size and one of the two possible textures (fire or bomb)
+//Creation of threats on an area using a specific position, a size and one of the two possible textures (fire or bomb)
 ClThreat::ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea)
 {
+//boolean values for differentiation
     this->bomb = bomb;
     this->fire = fire;
-//    this->position_threat = position_threat;
-//    this->size_threat = size_threat;
+
+//attributes of each threat
+    this->position_threat = position_threat;
+    this->size_threat = size_threat;
+    this->pArea = pArea;
 
 //Threat gets this position and texture
     sprite_threat.setPosition(position_threat);
     sprite_threat.setTexture(texture_threat);
 
-//Threat is an IntRect which is used to calculate if the mouse is contained in the threat (recognizeMouse())
+//"threat" is an IntRect which is used to calculate if the mouse is contained in the threat (recognizeMouse())
     threat.left = position_threat.x-(0.5*(sprite_threat.getGlobalBounds().width));
     threat.top = position_threat.y-(0.5*(sprite_threat.getGlobalBounds().height));
     threat.width = sprite_threat.getGlobalBounds().width;
     threat.height = sprite_threat.getGlobalBounds().height;
 
-//at the start: the threat is not moved (calculate in recognizeMouse())
-    isMoved = false;
+//at the start: the threat is moved (new calculation in recognizeMouse() after button is released)
+    isMoved = true;
 
-//Vector to set the origin in the middle of the threat
+//set the origin in the middle of the threat
     sf::Vector2f sizeT(sprite_threat.getGlobalBounds().width, sprite_threat.getGlobalBounds().height);
     sprite_threat.setOrigin(sizeT.x/2,sizeT.y/2);
-
-    this->pArea = pArea;
 }
 
 ClThreat::~ClThreat() {}
 
 void ClThreat::draw(sf::RenderWindow &window)
 {
-    //draw threat with position
     window.draw(sprite_threat);
 }
 
+//is only called if there is a mouse action (left mouse button released) in main function
 void ClThreat::recognizeMouse(sf::RenderWindow &window)
 {
-    mousePosition = sf::Mouse::getPosition(window);
+    //1. take position of mouse
+    //2. if mouse is contained in IntRect "threat"
+    //3. check if threat is moved actually
+    //3.1       if threat is not moving - click causes start of move
+    //3.2       if threat is moving -> 4.
+    //4. differentaition if threat is a bomb -> 4.1 if it is a fire -> 4.2
+    //4.1 click causes stop of move
+    //4.2 check if mouse (as float vector) is set on a valid point (on a buidling in area)
+    //5. if valid point stop moving otherwise continue moving with mouse
+
+    //1.
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+    //2.
     if(threat.contains(mousePosition))
     {
+        //3.
         if(isMoved==false)
         {
+            //3.1
             isMoved = true;
         }
+        //3.2
         else
         {
-            sf::Vector2f mouseFloat((float)mousePosition.x, (float)mousePosition.y);
-            //check if the threat is a fire and if yes - check for valid point in a static object
+            //4.
             if(fire)
             {
+                //4.2
+                sf::Vector2f mouseFloat((float)mousePosition.x, (float)mousePosition.y);
+                //5.
                 isMoved = pArea->validPoint(mouseFloat);
             }
             else
             {
+                //4.1
                 isMoved = false;
             }
         }
@@ -65,7 +93,19 @@ void ClThreat::recognizeMouse(sf::RenderWindow &window)
 //set new threat position
 void ClThreat::setPosition(float x_Position, float y_Position)
 {
+    //1. set new position of threat (sprite which is drawn) according to the given float values
+    //2. move IntRect "threat" (not drawn) accordingly for calculation if mouse is contained in threat (recognizeMouse())
+
+    //1.
     sprite_threat.setPosition(x_Position, y_Position);
+
+    //2.
     threat.left = x_Position-(0.5*(sprite_threat.getGlobalBounds().width));
     threat.top = y_Position-(0.5*(sprite_threat.getGlobalBounds().height));
+}
+
+//getter for isMoved
+bool ClThreat::getIsMoved()
+{
+    return isMoved;
 }

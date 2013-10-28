@@ -1,3 +1,11 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Melanie Hammerschmidt
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    handling threat creation, update and draw
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
 #ifndef THREATMANAGER_HPP_INCLUDED
 #define THREATMANAGER_HPP_INCLUDED
 #include <vector>
@@ -14,16 +22,15 @@ public:
     void draw(sf::RenderWindow &window);
     void createThreat(bool bomb, bool fire, const sf::Vector2f position);
     static void buttonPressed(bool bomb, bool fire);
-    sf::Vector2i mouse;
 private:
-    std::vector<ClThreat *> threatVector;
-    sf::Texture bomb_texture;
-    sf::Texture fire_texture;
-    static bool fire_static;
-    static bool bomb_static;
-    ClThreat *threat;
     sf::Image image;
     ClArea *pArea;
+    sf::Texture bomb_texture;
+    sf::Texture fire_texture;
+    std::vector<ClThreat *> threatVector;
+    static bool fire_static;
+    static bool bomb_static;
+    ClThreat *pThreat;
 };
 
 #endif // THREATMANAGER_HPP_INCLUDED
