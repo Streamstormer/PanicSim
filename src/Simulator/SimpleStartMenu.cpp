@@ -15,6 +15,7 @@ void ClSimpleStartMenu::createMenu()
         ClSimpleButton *pButton;
         sf::Vector2f position;
         sf::Vector2f buttonSize;
+        sf::Vector2f labelSize(200,160);
         buttonSize.x = (float)texture.getSize().x;
         buttonSize.y = (float)texture.getSize().y;
 
@@ -26,21 +27,25 @@ void ClSimpleStartMenu::createMenu()
         position.x = screenSize.x / 2;
         position.x -= buttonSize.x / 2;
         position.y = screenSize.y / 8;
-        pButton = new ClSimpleButton(id, START, 0,MENU, texture, buttonSize,position, 1.0f);
+        pButton = new ClSimpleButton(id, START, 0, texture, buttonSize,position, 1.0f);
         pButton->setText(sf::String("Start"),pFont);
         ButtonVector.push_back(pButton);
 
+        //Param Field
+        position.y += buttonSize.y * 1.5f;
+        paramField = new ClSimpleParamField(position,buttonSize,labelSize, pFont);
+
         // Credits Button
 
-        position.y += buttonSize.y * 1.5f;
-        pButton = new ClSimpleButton(id, CREDITS,0, MENU, texture, buttonSize,position, 1.0f);
+        position.y += labelSize.y * 1.5f;
+        pButton = new ClSimpleButton(id, CREDITS,0, texture, buttonSize,position, 1.0f);
         pButton->setText(sf::String("Credits"),pFont);
         ButtonVector.push_back(pButton);
 
         // Exit Button
 
         position.y += buttonSize.y * 1.5f;
-        pButton = new ClSimpleButton(id,EXIT,0,MENU,texture,buttonSize,position,1.0f);
+        pButton = new ClSimpleButton(id,EXIT,0,texture,buttonSize,position,1.0f);
         pButton->setText(sf::String("Exit"),pFont);
         ButtonVector.push_back(pButton);
     }
@@ -59,6 +64,7 @@ void ClSimpleStartMenu::createMenu()
         {
             ButtonVector[n]->draw(window);
         }
+        paramField->draw(window);
     }
      enum GameStates ClSimpleStartMenu::execute(enum Buttons btn) const
     {
@@ -92,7 +98,10 @@ void ClSimpleStartMenu::createMenu()
                         return execute(ButtonVector[n]->getButtonType());
                     }
                 }
+
         }
+        //update of paramField
+        paramField->update(mouseReleased, window);
         return MENU;
 
     }

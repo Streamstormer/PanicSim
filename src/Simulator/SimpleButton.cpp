@@ -2,11 +2,10 @@
 
 
 //public:
-ClSimpleButton::ClSimpleButton(int id, Buttons button, int PictureID ,int GameState, const sf::Texture &texture, const sf::Vector2f &newSize, const sf::Vector2f& position, float scale)
+ClSimpleButton::ClSimpleButton(int id, Buttons button, int PictureID , const sf::Texture &texture, const sf::Vector2f &newSize, const sf::Vector2f& position, float scale)
 {
     //
     this->scale = scale;
-    this->GameState = GameState;
     this->ButtonType = button;
     this->id = id;
     Rect.width = newSize.x;

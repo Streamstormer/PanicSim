@@ -2,6 +2,7 @@
 #define SIMPLESTARTMENU_HPP
 
 #include "SimpleMenu.hpp"
+#include "SimpleParamField.hpp"
 
 class ClSimpleStartMenu : public ClSimpleMenu
 {
@@ -15,6 +16,7 @@ class ClSimpleStartMenu : public ClSimpleMenu
     virtual enum GameStates update(sf::RenderWindow &window, bool mouseReleased) const;
     private:
     void createMenu();
+    ClSimpleParamField* paramField;
 };
 
 #endif // SIMPLESTARTMENU_HPP

@@ -86,17 +86,17 @@ ClSimpleSimulationMenu::ClSimpleSimulationMenu(enum GameStates myState, sf::Font
         float scale = 0.35f;
         // add STOP Button
         id++;
-        pAddMe = new ClSimpleButton(id, STOP,2, SIMULATION, texture, ButtonSize, Position, scale);
+        pAddMe = new ClSimpleButton(id, STOP,2, texture, ButtonSize, Position, scale);
         ButtonVector.push_back(pAddMe);
         // add PLAY Button
          Position.x+=ButtonSize.x*1.5*scale;
         id++;
-        pAddMe = new ClSimpleButton(id, PLAY,3, SIMULATION, texture, ButtonSize, Position, scale);
+        pAddMe = new ClSimpleButton(id, PLAY,3, texture, ButtonSize, Position, scale);
         ButtonVector.push_back(pAddMe);
         // add FASTFORWARD Button
         Position.x+=ButtonSize.x*1.5*scale;
         id++;
-        pAddMe = new ClSimpleButton(id, FASTFORWARD,4, SIMULATION, texture, ButtonSize, Position, scale);
+        pAddMe = new ClSimpleButton(id, FASTFORWARD,4, texture, ButtonSize, Position, scale);
         ButtonVector.push_back(pAddMe);
 
         // Add down right Buttons
@@ -109,17 +109,17 @@ ClSimpleSimulationMenu::ClSimpleSimulationMenu(enum GameStates myState, sf::Font
         // add HEATMAP Button
          Position.x-=ButtonSize.x*1.5*scale;
         id++;
-        pAddMe = new ClSimpleButton(id, HEATMAP,0, SIMULATION, texture, ButtonSize, Position, scale);
+        pAddMe = new ClSimpleButton(id, HEATMAP,0, texture, ButtonSize, Position, scale);
         ButtonVector.push_back(pAddMe);
         // add BOMB Button
         Position.x-=ButtonSize.x*1.5*scale;
         id++;
-        pAddMe = new ClSimpleButton(id, BOMB,1, SIMULATION, texture, ButtonSize, Position, scale);
+        pAddMe = new ClSimpleButton(id, BOMB,1, texture, ButtonSize, Position, scale);
         ButtonVector.push_back(pAddMe);
         // add FIRE Button
         Position.x-=ButtonSize.x*1.5*scale;
         id++;
-        pAddMe = new ClSimpleButton(id, FIRE,5, SIMULATION, texture, ButtonSize, Position, scale);
+        pAddMe = new ClSimpleButton(id, FIRE,5, texture, ButtonSize, Position, scale);
         ButtonVector.push_back(pAddMe);
 
         // Labels
