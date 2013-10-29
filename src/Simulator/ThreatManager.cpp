@@ -12,16 +12,7 @@ bool ClThreatManager::bomb_static = false;
 
 ClThreatManager::ClThreatManager(ClArea *pArea)
 {
-    //load textures of fire and bomb (created by masking)
-    image.loadFromFile("pictures/fire_tex.png");
-    image.createMaskFromColor(sf::Color::Black, 0);
-    image.saveToFile("pictures/fire_tex.png");
-
-    image.loadFromFile("pictures/bomb_tex.png");
-    image.createMaskFromColor(sf::Color::White, 0);
-    image.saveToFile("pictures/bomb_tex.png");
-
-    //assigning thos textures to variables
+    //assigning the textures to variables
     bomb_texture.loadFromFile("pictures/bomb_tex.png");
     fire_texture.loadFromFile("pictures/fire_tex.png");
 

@@ -23,7 +23,6 @@ public:
     void createThreat(bool bomb, bool fire, const sf::Vector2f position);
     static void buttonPressed(bool bomb, bool fire);
 private:
-    sf::Image image;
     ClArea *pArea;
     sf::Texture bomb_texture;
     sf::Texture fire_texture;
