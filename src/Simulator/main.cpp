@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         }
     }
     sf::VideoMode Mode = sf::VideoMode::getDesktopMode();
-    sf::RenderWindow window(Mode, "Panic Sim!",sf::Style::Fullscreen);
+    sf::RenderWindow window(Mode, "Panic Sim!");
     ClSimulation *pSimulation = new ClSimulation(Mode);
     ClSimpleGUI *pGUI = new ClSimpleGUI(sf::Vector2f(Mode.width,Mode.height));
     bool mouseReleased = false;

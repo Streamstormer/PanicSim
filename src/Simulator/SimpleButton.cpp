@@ -79,7 +79,7 @@ void ClSimpleButton::setText(sf::String buttonText, sf::Font *pFont)
 {
     pText = new sf::Text;
     pButtonText = new sf::String(buttonText);
-    //*this->pButtonText = buttonText;
+    *this->pButtonText = buttonText;
     this->pText->setString(*this->pButtonText);
     this->pText->setFont(*pFont);
     this->pText->setStyle(sf::Text::Regular);
