@@ -141,26 +141,21 @@ void ClHeatMap::update(float frameTime)
                     force.x *= -0.25;
                     force.y *= -0.25;
 
-                    SortedPeoples[x+y*cellNumber.x][n]->position += force*frameTime;
+                    //SortedPeoples[x+y*cellNumber.x][n]->position += force*frameTime;
 
                     // check collision
+
                     id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position);
-                    if( id != -1)
+                    int id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position);
+                    if( id == -1)
                     {
-
-                        sf::Vector2f force2;
-                        //person is inside a static Object
-                        source = pArea->getSource(id);
-                        // seek
-                        force2.x = SortedPeoples[x+y*cellNumber.x][n]->position.x- source.x;
-                        force2.y = SortedPeoples[x+y*cellNumber.x][n]->position.y- source.y;
-
-                        Vec2DNormalize(&force2);
-
-
-                        SortedPeoples[x+y*cellNumber.x][n]->position += force2;
-
-
+                        SortedPeoples[x+y*cellNumber.x][n]->position.x += force.x * frameTime  ;
+                        SortedPeoples[x+y*cellNumber.x][n]->position.y += force.y * frameTime  ;
+                    }
+                    else
+                    {
+                        SortedPeoples[x+y*cellNumber.x][n]->position.x -= force.x * frameTime ;
+                        SortedPeoples[x+y*cellNumber.x][n]->position.y -= force.y * frameTime ;
                     }
 
                 }

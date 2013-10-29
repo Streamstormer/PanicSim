@@ -1,9 +1,12 @@
 #ifndef STATEVAULT_HPP
 #define STATEVAULT_HPP
 
+#include <vector>
+
+
 // include all the different states here
 #include "NormalState.hpp"
-#include <vector>
+#include "LeavingState.hpp"
 
 class ClStateVault
 {

@@ -33,6 +33,7 @@ private:
 
     std::vector<StrPeople *> peoples;
     sf::Vector2f position;
+    sf::Vector2f oldPosition;
     float radius;
 
     // for debugging puposes : each Crowd does have a unique color

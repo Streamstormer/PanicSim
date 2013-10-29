@@ -4,6 +4,7 @@
 ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f position, int numOfPeoples, ClHeatMap *pHeatMap)
 {
     this->position = position;
+    oldPosition = position;
     this->Color = Color;
 
     this->radius = radius;
@@ -52,6 +53,11 @@ ClCrowd::~ClCrowd()
 
 void  ClCrowd::Update(float frameTime)
 {
+    float movementFactor = 1.0f;
+    if(position == oldPosition)
+    {
+        movementFactor = 0.75f;
+    }
     sf::Vector2f force;
      for (unsigned int n = 0; n < peoples.size(); n++)
     {
@@ -62,41 +68,19 @@ void  ClCrowd::Update(float frameTime)
 
 
             // check collision
-
-
             int id = pArea->getIdByVector(peoples[n]->position);
             if( id == -1)
             {
-                peoples[n]->position.x += force.x * frameTime *0.03;
-                peoples[n]->position.y += force.y * frameTime *0.03;
+                peoples[n]->position.x += force.x * frameTime *0.03 * movementFactor;
+                peoples[n]->position.y += force.y * frameTime *0.03 * movementFactor;
             }
             else
             {
                 peoples[n]->position.x -= force.x * frameTime *0.03;
                 peoples[n]->position.y -= force.y * frameTime *0.03;
             }
-
-            /*sf::Vector2f source, force2;
-             int id = pArea->getIdByVector(peoples[n]->position);
-            if( id != -1)
-            {
-
-            sf::Vector2f force2;
-            // person is inside a staticObject
-            source = pArea->getSource(id);
-            // seek
-            force2.x = peoples[n]->position.x- source.x;
-            force2.y = peoples[n]->position.y- source.y;
-
-            Vec2DNormalize(&force2);
-
-            peoples[n]->position.x += force2.x*frameTime;
-            peoples[n]->position.x += force2.x*frameTime;
-
-            }*/
-
-
     }
+    oldPosition = position;
 }
 void  ClCrowd::Update(sf::Vector2i position,float frameTime)
 {
