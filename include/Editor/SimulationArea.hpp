@@ -28,7 +28,7 @@ private:
     void resize();
     sf::Color bgColor;
 public:
-    SimulationArea(Gtk::ScrolledWindow& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
+    SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
                    Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot,  Gtk::SpinButton *pAreaSizeX,
                    Gtk::SpinButton *pAreaSizeY, Gtk::Label *pObjLabel);
     void clearArea();

@@ -18,6 +18,7 @@ private:
 protected:
     Gtk::Window *pWindow;
     Gtk::ScrolledWindow *pSFMLWindow;
+    Gtk::Viewport *pSFMLView;
 
     Gtk::Button *pLoadFile;
     Gtk::Button *pSaveFile;

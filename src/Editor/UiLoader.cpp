@@ -23,6 +23,8 @@ UiLoader::UiLoader(string UiPath)
     // SFML Frame
     builder->get_widget("SFMLWindow", pSFMLWindow);
 
+    builder->get_widget("SFMLView", pSFMLView);
+
     // Main Buttons
     builder->get_widget("LoadFile", pLoadFile);
     builder->get_widget("SaveFile", pSaveFile);

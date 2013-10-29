@@ -1,6 +1,6 @@
 #include "../../include/Editor/SimulationArea.hpp"
 
-SimulationArea::SimulationArea(Gtk::ScrolledWindow& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
+SimulationArea::SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
                                Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot, Gtk::SpinButton *pAreaSizeX,
                                Gtk::SpinButton *pAreaSizeY, Gtk::Label *pObjLabel)
     : SFML_Widget(sf::VideoMode(748, 710))
