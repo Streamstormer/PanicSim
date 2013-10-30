@@ -21,16 +21,21 @@ public:
         }
     }
     ClAbstractState* requestStartState() {return createState(NORMAL);}
-    ClAbstractState* requestState(enum STATES newState, int oldId)
+    ClAbstractState* requestNewState(enum STATES newState, int oldId)
     {
-        for ( unsigned int n = 0; n < StatesVector.size();n++)
-        {   if(StatesVector[n]->getID() == oldId)
-            {
-                delete StatesVector[n];
-                StatesVector.erase(StatesVector.begin()+n);
-                break;
-            }
+        unsigned int n = 0;
+        while ( n < StatesVector.size() && (StatesVector[n]->getID() != oldId) )
+        {
+            n++;
         }
+
+        if ((StatesVector[n]->getID() != oldId))
+        {
+            delete StatesVector[n];
+            StatesVector.erase(StatesVector.begin()+n);
+        }
+        // else oldID is invalid
+
         return createState(newState);
     }
 private:
@@ -40,7 +45,13 @@ private:
         {
         case (NORMAL):
             {
-                ClNormalState *pAddMe = new ClNormalState(id,&StateMachine);
+                ClNormalState *pAddMe = new ClNormalState(id,&StateMachine,NORMAL);
+                StatesVector.push_back(pAddMe);
+                return pAddMe;
+            }
+        case (LEAVING):
+            {
+                ClLeavingState *pAddMe = new ClLeavingState(id,&StateMachine,LEAVING);
                 StatesVector.push_back(pAddMe);
                 return pAddMe;
             }

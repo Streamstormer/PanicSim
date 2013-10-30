@@ -8,11 +8,13 @@
 #include <vector>
 #include "HeatMap.hpp"
 #include "People.hpp"
+#include "StateEngine/StateVault.hpp"
+#include "PathFinder.hpp"
 
 class ClCrowd
 {
 public:
-    ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f position, int numOfPeoples, ClHeatMap * pHeatMap);
+    ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f position, int numOfPeoples, ClHeatMap * pHeatMap, ClStateVault *pStateVault, ClPathFinder *pPathfinder);
     ~ClCrowd();
 
     void Update(sf::Vector2i position,float frameTime);
@@ -27,17 +29,24 @@ private:
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );
     sf::Vector2f Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destination, const sf::Vector2f & CurVelocity);
 
-    ClArea *pArea;       // used for human - static object collision detection
-                         // just registers the crowd there
+    ClArea *pArea;       // used for finding the exit
     ClHeatMap *pHeatMap; // used for human - human collision detection
+    ClPathFinder *pPathFinder;
+    ClPath *pPath;
+
+    ClStateVault *pStateVault;          // used to determine what to do next
+    ClAbstractState *pCurrentState;     // current update logic
+    enum ACTIONS curAction;             // current update logic
 
     std::vector<StrPeople *> peoples;
     sf::Vector2f position;
     sf::Vector2f oldPosition;
+
     float radius;
 
     // for debugging puposes : each Crowd does have a unique color
     sf::Color Color;
+
 
 };
 

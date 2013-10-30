@@ -36,7 +36,7 @@
     {
         for( unsigned int n=0; n < sobjects.size(); n++)
         {
-            if(sobjects[n]->Intersects(point))
+            if(sobjects[n]->getType() != GATE && sobjects[n]->Intersects(point))
             {
                 return false;
             }

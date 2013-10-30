@@ -8,8 +8,9 @@ ClCrowdManager::ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize)
     sf::Vector2i numberOfCells(40,40);
     pHeatMap = new ClHeatMap(numberOfCells, ScreenSize, pArea);
     pPathFinder = new ClPathFinder(pArea, 100,sf::Vector2f(ScreenSize.x,ScreenSize.y));
-
+    pStateVault = new ClStateVault();
 }
+
 ClCrowdManager::~ClCrowdManager()
 {
     for (unsigned int n = 0; n< Crowds.size(); n++)
@@ -29,7 +30,14 @@ void ClCrowdManager::Update(float frameTime, sf::RenderWindow &window)
         if ( n== 0)
         {
             //     The first crowd is movable with the mouse for debugging purposes
-            Crowds[n]->Update(sf::Mouse::getPosition(window),frameTime);
+       // debugging of mouse with or without (window)
+       //     sf::Vector2i fWindow = sf::Mouse::getPosition(window);
+       //     sf::Vector2i fnoWindow = sf::Mouse::getPosition();
+
+     //       std::cout  << "fWindow x / y" << fWindow.x << " / " << fWindow.y << std::endl;
+    //        std::cout  << "fnoWindow x / y" << fnoWindow.x << " / " << fnoWindow.y << std::endl;
+
+            Crowds[n]->Update(/*sf::Mouse::getPosition(window),*/frameTime);
         }
         else
         {
@@ -47,19 +55,11 @@ void ClCrowdManager::draw(sf::RenderWindow& window)
     {
         Crowds[n]->Draw(window);
     }
-
-    sf::Vector2f TestPosition1(20,80);
-    sf::Vector2f TestPosition2(320,580);
-    pPathFinder->draw(window);
-    (pPathFinder->findPath(TestPosition1, TestPosition2))->drawPath(window);
-
-
 }
 
 
 void ClCrowdManager::CreateCrowd(sf::Vector2f position, float radius, int people)
 {
-    // set people count does not work yet
     static int j =0;
     // increment people for SimpleGUI
     ClCrowdManager::addPeople(people);
@@ -67,19 +67,19 @@ void ClCrowdManager::CreateCrowd(sf::Vector2f position, float radius, int people
     // for debugging puposes: each crowd gets a different color
     if(j==0)
     {
-        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Black,position, people, pHeatMap);
+        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Black,position, people, pHeatMap, pStateVault,pPathFinder);
         Crowds.push_back(Crowd);
     }
     else if (j==1)
     {
 
-        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Red,position, people, pHeatMap);
+        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Red,position, people, pHeatMap, pStateVault,pPathFinder);
         Crowds.push_back(Crowd);
 
     }
     else
     {
-        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Green,position, people, pHeatMap);
+        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Blue,position, people, pHeatMap, pStateVault,pPathFinder);
         Crowds.push_back(Crowd);
     }
     j++;

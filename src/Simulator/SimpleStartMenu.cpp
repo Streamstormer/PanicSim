@@ -5,7 +5,7 @@ ClSimpleStartMenu::~ClSimpleStartMenu()
     for(unsigned int n = 0; n<ButtonVector.size();n++)
     {
         // FIXME: Workaround for crash
-   //     delete ButtonVector[n];
+        //     delete ButtonVector[n];
     }
 }
 void ClSimpleStartMenu::createMenu()

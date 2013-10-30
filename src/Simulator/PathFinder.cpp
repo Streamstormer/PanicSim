@@ -10,13 +10,14 @@ usecase:    create an object, then call the function findPath(Vector2f, Vector2f
 //creates all Nodes on creation of the PathFinder
 ClPathFinder::ClPathFinder(ClArea *pArea, float nodeDistance, const sf::Vector2f & areaSize)
 {
+    nodeCounter = 0;
     this->pArea = pArea;
     this->nodeDistance = nodeDistance;
     this->areaSize = areaSize;
     createNodes();
 }
 
-//destructor deletes all Nodes. Paths are deleted in ClCrowdManager
+//destructor deletes all Nodes. Paths are deleted in the individual crowds
 ClPathFinder::~ClPathFinder()
 {
     for(unsigned int n = 0; n < Nodes.size(); n++)
@@ -70,7 +71,7 @@ void ClPathFinder::createNodes()
     void set_neighbour_id_right(int id);
     void set_neighbour_id_below(int id);
     */
-    for(unsigned int n = 0; n<Nodes.size(); n++)
+    for(unsigned int n = 0; n<Nodes.size();  n++)
     {
         currentID = Nodes[n]->getID();
         // calculate ID left and right of current ID
@@ -144,7 +145,7 @@ void ClPathFinder::createNodes()
     }
 }
 
-// returns true if the connection is valitd, which means that there is no static object between two nodes.
+// returns true if the connection is valid, which means that there is no static object between two nodes.
 bool ClPathFinder::validConnection(int startNodeId, int endNodeId)
 {
     return pArea->validPath(getNodeByID(startNodeId)->getPosition(), getNodeByID(endNodeId)->getPosition() );
@@ -354,13 +355,14 @@ int ClPathFinder::assignVectorNode(const sf::Vector2f & Position)
 
     for (int n=0; n < (int)Nodes.size(); n++)
     {
-        test = sqrt( ((Nodes[n]->get_x_position() - Position.x)*(Nodes[n]->get_x_position() - Position.x)) + ((Nodes[n]->get_y_position() - Position.y)*(Nodes[n]->get_y_position() - Position.y)) );
+        test = ( ((Nodes[n]->get_x_position() - Position.x)*(Nodes[n]->get_x_position() - Position.x)) + ((Nodes[n]->get_y_position() - Position.y)*(Nodes[n]->get_y_position() - Position.y)) );
         if(test < distance)
         {
             distance = test;
             id = Nodes[n]->getID();
         }
     }
+
     return id;
 }
 
@@ -379,7 +381,15 @@ ClPath* ClPathFinder::findPath(const sf::Vector2f & Start, const sf::Vector2f & 
     bool temp;
     ClPath *pPath = new ClPath(Start);
 
-    temp = findPath(assignVectorNode(Start), assignVectorNode(Ende) , pPath );
+    int startID = assignVectorNode(Start);
+    int endID = assignVectorNode(Ende);
+
+    if (startID == -1 || endID == -1)
+    {
+        return NULL;
+    }
+
+    temp = findPath(startID, endID , pPath );
     if(temp == true)
     {
         pPath->addVector(Ende);

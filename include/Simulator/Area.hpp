@@ -27,9 +27,29 @@ class ClArea
     const sf::Vector2f & getSize(int id);       // returns size of a StaticObject via id
     float getRotation(int id);                  // returns rotation of a StaticObject via id
 
-    /// not for the editor
+    /// not for the editor but for the collision detection / for the pathFinder
 
     const sf::Vector2f & getSource(int id);
+    const sf::Vector2f getClosestExit(const sf::Vector2f & myPosition)
+    {
+        float distance = INFINITY;
+        sf::Vector2f closestExitPosition;
+        for(unsigned int n = 0; n < sobjects.size(); n++)
+        {
+            if (sobjects[n]->getType() == GATE)
+            {
+                sf::Vector2f position = sobjects[n]->getCenter();
+                float testDistance = (myPosition.x - position.x)*(myPosition.x - position.x)+(myPosition.y - position.y)*(myPosition.x - position.x);
+                if (testDistance<distance)
+                {
+                    closestExitPosition = position;
+                    distance = testDistance;
+                }
+
+            }
+        }
+        return closestExitPosition;
+    }
 
     /// Set Methods for StaticObjects attributes via id and new value
     /// for the editor

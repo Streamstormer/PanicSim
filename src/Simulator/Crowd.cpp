@@ -1,7 +1,7 @@
 #include "../../include/Simulator/Crowd.hpp"
 
 
-ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f position, int numOfPeoples, ClHeatMap *pHeatMap)
+ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f position, int numOfPeoples, ClHeatMap *pHeatMap, ClStateVault *pStateVault, ClPathFinder *pPathfinder)
 {
     this->position = position;
     oldPosition = position;
@@ -11,6 +11,8 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
     sf::Vector2f mP = this->getMassPoint();
     this->pArea = pArea;
     this->pHeatMap = pHeatMap;
+    this->pPathFinder = pPathfinder;
+    pPath = NULL;
 
     //randomize the position of the people
     for (int n = 0; n < numOfPeoples; n++)
@@ -32,8 +34,7 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
         newPerson->position.x += mP.x;
         newPerson->position.y += mP.y;
 
-    //    newPerson->forceVec.x = newPerson->forceVec.y =0;
-
+        //newPerson->forceVec.x = newPerson->forceVec.y =0;
         peoples.push_back(newPerson);
 
     }
@@ -42,12 +43,21 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
 
     pHeatMap->registerCrowd(peoples);
 
+    // get start state
+
+    this->pStateVault = pStateVault;
+    pCurrentState = pStateVault->requestStartState();
+    curAction = pCurrentState->getNextAction();
 }
 ClCrowd::~ClCrowd()
 {
     for (unsigned int n = 0; n < peoples.size(); n++)
     {
         delete peoples[n];
+    }
+    if(pPath != NULL)
+    {
+        delete pPath;
     }
 }
 
@@ -69,6 +79,36 @@ void  ClCrowd::Update(float frameTime)
          peoples[n]->force = force;
     }
     oldPosition = position;
+
+    // update state
+    enum STATES state =  pCurrentState->update();
+    if(state != pCurrentState->getState())
+    {
+        // change state
+        pCurrentState = pStateVault->requestNewState(state,pCurrentState->getID());
+        switch (pCurrentState->getNextAction())
+        {
+        case(LEAVETOEXIT):
+            {
+                sf::Vector2f exitPosition(300,399); //= pArea->getClosestExit(this->position);
+                if (pPath != NULL) { delete pPath; pPath = NULL;}
+
+                pPath = pPathFinder->findPath(sf::Vector2f(499,400),exitPosition);
+
+            }
+        // To Do add more action init logic
+        }
+    }
+
+    //update logic of crowd
+
+    switch (curAction)
+    {
+        case(LEAVETOEXIT):
+        {
+
+        }break;
+    }
 }
 void  ClCrowd::Update(sf::Vector2i position,float frameTime)
 {
@@ -92,6 +132,11 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
     personShape.setRadius(5);
     personShape.move(sf::Vector2f(-2.5,-2.5));
     window.draw(personShape);
+
+    if (pPath != NULL)
+    {
+        pPath->drawPath(window);
+    }
 }
 
 const sf::Vector2f ClCrowd::getMassPoint()

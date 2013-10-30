@@ -43,7 +43,6 @@ int main(int argc, char *argv[])
             }
         }
 
-
         // Update Simulation
         pSimulation->update(window, mouseReleased);
         // Update GUI

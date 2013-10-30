@@ -5,7 +5,7 @@
 #include "Crowd.hpp"
 #include "HeatMap.hpp"
 #include "PathFinder.hpp"
-#include "../StateEngine/StateVault.hpp"
+#include "StateEngine/StateVault.hpp"
 #include <vector>
 
 class ClCrowdManager
@@ -27,6 +27,8 @@ class ClCrowdManager
         ClArea *pArea;
         ClHeatMap *pHeatMap;
         ClPathFinder *pPathFinder;
+        ClStateVault *pStateVault;
+
         std::vector<ClCrowd *> Crowds;
 
         static int peopleCount;
