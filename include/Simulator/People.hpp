@@ -6,6 +6,7 @@
 struct StrPeople
 {
     sf::Vector2f position;
+    sf::Vector2f force;
 };
 
 #endif // PEOPLE_HPP_INCLUDED

@@ -63,22 +63,10 @@ void  ClCrowd::Update(float frameTime)
     {
         // Center Force
             force =  Seek( peoples[n]->position, this->getMassPoint(), sf::Vector2f(0,0));
-         //   Vec2DNormalize(&force);
-
-
-
-            // check collision
-            int id = pArea->getIdByVector(peoples[n]->position);
-            if( id == -1)
-            {
-                peoples[n]->position.x += force.x * frameTime *0.03 * movementFactor;
-                peoples[n]->position.y += force.y * frameTime *0.03 * movementFactor;
-            }
-            else
-            {
-                peoples[n]->position.x -= force.x * frameTime *0.03;
-                peoples[n]->position.y -= force.y * frameTime *0.03;
-            }
+         //   Vec2DNormalize(&force)
+         force.x *= frameTime * 0.03;
+         force.y *= frameTime * 0.03;
+         peoples[n]->force = force;
     }
     oldPosition = position;
 }
