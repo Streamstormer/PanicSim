@@ -155,21 +155,6 @@ void ClHeatMap::update(float frameTime)
                         SortedPeoples[x+y*cellNumber.x][n]->position.x += force.x + SortedPeoples[x+y*cellNumber.x][n]->force.x ;
                         SortedPeoples[x+y*cellNumber.x][n]->position.y += force.y + SortedPeoples[x+y*cellNumber.x][n]->force.y ;
                     }
-                    else
-                    {
-                        /*
-                        sf::Vector2f Destination = pArea->getSource(id);
-                        sf::Vector2f Target = SortedPeoples[x+y*cellNumber.x][n]->position;
-                        Target -= Destination;
-
-                        Vec2DNormalize(&Target);
-
-                        Target.x = -1 * 0.005;
-                        //Target.y *= frameTime * 0.005;
-
-                        SortedPeoples[x+y*cellNumber.x][n]->position += Target;
-                        */
-                    }
 
                 }
 
