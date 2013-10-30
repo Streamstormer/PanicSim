@@ -3,13 +3,15 @@
 SimulationArea::SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
                                Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot, Gtk::SpinButton *pAreaSizeX,
                                Gtk::SpinButton *pAreaSizeY, Gtk::Label *pObjLabel)
-    : SFML_Widget(sf::VideoMode(748, 710))
+    : SFML_Widget(sf::VideoMode(1024, 756))
 {
     // add this widget to Area Frame..
     // Gtk::Container *inFrame = (Gtk::Container*) AreaFrame.get_child();
     AreaWin.add(*this);
     // .. and show it
     show();
+
+    Port = &AreaWin;
 
     Area = new ClArea();
     this->ObjectBox = &ObjectBox;
@@ -46,8 +48,8 @@ SimulationArea::SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk:
 
 void SimulationArea::animate()
 {
-
     sf::VideoMode mode(pAreaSizeX->get_value(), pAreaSizeY->get_value());
+    renderWindow.setSize(sf::Vector2u(mode.width, mode.height));
     set_size_request(mode.width, mode.height);
     int rightID;
     if(boxChecked) {
@@ -103,6 +105,7 @@ void SimulationArea::animate()
 
         if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             sf::Vector2i pos = sf::Mouse::getPosition(renderWindow);
+            std::cerr<<pos.x<<" "<<pos.y<<std::endl;
 
             if(pos.x > 0 && pos.y > 0)
                 Area->setPosition(selectedID, sf::Vector2<float>(pos.x, pos.y));
@@ -118,23 +121,54 @@ void SimulationArea::draw()
 {
     // clear widget
     renderWindow.clear(bgColor);
+    //renderWindow.close();
     Area->draw(renderWindow);
     display();
 }
 
 void SimulationArea::resize()
-{
+{/*
+    sf::Event event;
+    while(renderWindow.pollEvent(event))
+        if(event.type == sf::Event::Resized){
+                set_size_request(event.size.width, event.size.height);
+                std::cerr<<"hello"<<std::endl;
+        }*/
+
+    /*
        // Let the View fit the pixels of the window.
     sf::Vector2f lower_right(renderWindow.getSize().x,
                              renderWindow.getSize().y);
 
-    //std::cerr<<renderWindow.getSize().x<<std::endl;
-    //std::cerr<<renderWindow.getSize().y<<std::endl;
-    pAreaSizeX->set_value(renderWindow.getSize().x);
-    pAreaSizeY->set_value(renderWindow.getSize().y);
+
+*/
+    std::cerr<<renderWindow.getSize().x<<std::endl;
+    std::cerr<<renderWindow.getSize().y<<std::endl;
+    std::cerr<<Port->get_height()<<std::endl;
+    std::cerr<<Port->get_width()<<std::endl;
+
+    if(Port->get_height() >= renderWindow.getSize().x){
+        sf::VideoMode mode(Port->get_height(), renderWindow.getSize().y);
+        set_size_request(mode.width, mode.height);
+        renderWindow.setSize(sf::Vector2u(mode.width, mode.height));
+    }
+    if(Port->get_width() >= renderWindow.getSize().y){
+        sf::VideoMode mode(renderWindow.getSize().y, Port->get_width());
+        set_size_request(mode.width, mode.height);
+        renderWindow.setSize(sf::Vector2u(mode.width, mode.height));
+    }
+    std::cerr<<"End"<<renderWindow.getSize().x<<std::endl;
+    std::cerr<<renderWindow.getSize().y<<std::endl;
+                // Let the View fit the pixels of the window.
+    sf::Vector2f lower_right(renderWindow.getSize().x,
+                            renderWindow.getSize().y);
+
+    //pAreaSizeX->set_value(renderWindow.getSize().x);
+    //pAreaSizeY->set_value(renderWindow.getSize().y);
 
     sf::View view(sf::FloatRect(0, 0, renderWindow.getSize().x, renderWindow.getSize().y));
     renderWindow.setView(view);
+
 }
 
 void SimulationArea::setObject(enum staticObjects object, sf::Vector2f position, sf::Vector2f size, float rotation)

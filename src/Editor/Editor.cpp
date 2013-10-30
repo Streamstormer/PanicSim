@@ -8,6 +8,8 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 
     level = new ClFileHandler();
 
+   // pWindow->fullscreen();
+
     SFMLArea = new SimulationArea(*pSFMLView, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY, pObjLabel);
 
     stringstream convert;

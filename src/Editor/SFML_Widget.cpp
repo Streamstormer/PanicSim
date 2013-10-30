@@ -1,11 +1,11 @@
 #include "../../include/Editor/SFML_Widget.hpp"
 
-SFML_Widget::SFML_Widget(sf::VideoMode mode, int size_request)
+SFML_Widget::SFML_Widget(sf::VideoMode mode)
 {
-    if(size_request<=0)
+  /*  if(size_request<=0)
         size_request = std::max<int>(1, std::min<int>(mode.width, mode.height) / 2);
-
-    set_size_request(size_request, size_request);
+*/
+    set_size_request(mode.width, mode.height);
 
     set_has_window(false); // Makes this behave like an interal object rather then a parent window.
 }
