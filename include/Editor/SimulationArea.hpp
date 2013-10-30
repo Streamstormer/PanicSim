@@ -12,6 +12,7 @@ class SimulationArea : public SFML_Widget
 {
 private:
     ClArea *Area;
+    Gtk::Viewport *Port;
     Gtk::Box *ObjectBox;
     int selectedID;
     Gtk::SpinButton *SizeX;

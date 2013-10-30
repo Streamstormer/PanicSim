@@ -37,7 +37,7 @@ protected:
 
     Glib::RefPtr<Gdk::Window> m_refGdkWindow;
 public:
-    SFML_Widget(sf::VideoMode mode, int size_request=-1);
+    SFML_Widget(sf::VideoMode mode);
     virtual ~SFML_Widget();
 
     void invalidate();
