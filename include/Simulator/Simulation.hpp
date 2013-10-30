@@ -7,7 +7,7 @@
 #include "ThreatManager.hpp"
 #include "../../include/Common/FileHandler.hpp"
 
-enum GameStates {MENU, SIMULATION, PAUSE, EXITSTATE};
+enum GameStates {MENU, SIMULATION, PAUSE, EXITSTATE, CREDITSMENU};
 
 class ClSimulation
 {

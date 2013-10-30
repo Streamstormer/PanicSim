@@ -80,7 +80,7 @@ void ClSimpleStartMenu::createMenu()
             }break;
         case(CREDITS) :
             {
-                std::cout << "CREDITS" << std::endl;
+                return CREDITSMENU;
             }break;
         }
         return MENU;

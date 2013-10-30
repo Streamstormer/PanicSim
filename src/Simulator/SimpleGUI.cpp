@@ -68,4 +68,7 @@ void ClSimpleGUI::createAllMenus()
 
     ClSimpleSimulationMenu *pSimulationMenu = new ClSimpleSimulationMenu(SIMULATION,&labelFont,ScreenSize);
     MenuVector.push_back(pSimulationMenu);
+
+    ClSimpleCreditsMenu *pCreditsMenu = new ClSimpleCreditsMenu(CREDITSMENU,&labelFont,ScreenSize);
+    MenuVector.push_back(pCreditsMenu);
 }

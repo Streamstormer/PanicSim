@@ -13,6 +13,7 @@
 #include "HeatMap.hpp"
 #include "CrowdManager.hpp"
 #include "Simulation.hpp"
+#include "SimpleCreditsMenu.hpp"
 
 
 
