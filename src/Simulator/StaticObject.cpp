@@ -179,7 +179,7 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
 
 bool ClStaticObject::isValidPath(sf::Vector2f startPoint, sf::Vector2f endPoint)
 {
-    if(Type==GATE) return true; // no collision with EXITS / GATES
+    if(Type==GATE) return false; // no collision with EXITS / GATES
     sf::Rect<float> testRect;
     //checks if start node and end node are horizontal or vertical
     if(startPoint.y == endPoint.y)

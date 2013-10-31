@@ -42,6 +42,8 @@ private:
     sf::Vector2f position;
     sf::Vector2f oldPosition;
 
+    sf::Vector2f nextNode;
+
     float radius;
 
     // for debugging puposes : each Crowd does have a unique color

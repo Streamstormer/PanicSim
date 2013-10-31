@@ -8,7 +8,6 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
     this->Color = Color;
 
     this->radius = radius;
-    sf::Vector2f mP = this->getMassPoint();
     this->pArea = pArea;
     this->pHeatMap = pHeatMap;
     this->pPathFinder = pPathfinder;
@@ -31,8 +30,8 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
             newPerson->position.y = (int)newPerson->position.y % (int)(2*radius);
             newPerson->position.y -= radius;
         } while (newPerson->position.y < 0);
-        newPerson->position.x += mP.x;
-        newPerson->position.y += mP.y;
+        newPerson->position.x += position.x ;
+        newPerson->position.y += position.y;
 
         //newPerson->forceVec.x = newPerson->forceVec.y =0;
         peoples.push_back(newPerson);
@@ -48,6 +47,8 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
     this->pStateVault = pStateVault;
     pCurrentState = pStateVault->requestStartState();
     curAction = pCurrentState->getNextAction();
+
+    nextNode.x = nextNode.y = -1;
 }
 ClCrowd::~ClCrowd()
 {
@@ -72,7 +73,7 @@ void  ClCrowd::Update(float frameTime)
      for (unsigned int n = 0; n < peoples.size(); n++)
     {
         // Center Force
-            force =  Seek( peoples[n]->position, this->getMassPoint(), sf::Vector2f(0,0));
+            force =  Seek( peoples[n]->position, position, sf::Vector2f(0,0));
          //   Vec2DNormalize(&force)
          force.x *= frameTime * 0.03;
          force.y *= frameTime * 0.03;
@@ -86,15 +87,16 @@ void  ClCrowd::Update(float frameTime)
     {
         // change state
         pCurrentState = pStateVault->requestNewState(state,pCurrentState->getID());
-        switch (pCurrentState->getNextAction())
+        curAction = pCurrentState->getNextAction();
+        switch (curAction)
         {
         case(LEAVETOEXIT):
             {
-                sf::Vector2f exitPosition(300,399); //= pArea->getClosestExit(this->position);
+                sf::Vector2f exitPosition = pArea->getClosestExit(this->position);
                 if (pPath != NULL) { delete pPath; pPath = NULL;}
 
-                pPath = pPathFinder->findPath(sf::Vector2f(499,400),exitPosition);
-
+                pPath = pPathFinder->findPath(position,exitPosition);
+                nextNode = pPath->getNextVector();
             }
         // To Do add more action init logic
         }
@@ -106,7 +108,14 @@ void  ClCrowd::Update(float frameTime)
     {
         case(LEAVETOEXIT):
         {
-
+            if( (position.x - nextNode.x)*(position.x - nextNode.x)+(position.y - nextNode.y)*(position.y - nextNode.y) < 100 )
+            {
+                nextNode = pPath->getNextVector();
+            }
+            sf::Vector2f force = Seek(nextNode,position, sf::Vector2f(0,0));
+            force.x *= frameTime * -0.01;
+            force.y *= frameTime * -0.01;
+            position += force;
         }break;
     }
 }
@@ -127,7 +136,9 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
         personShape.setPosition(peoples[n]->position);
         window.draw(personShape);
     }
-    personShape.setPosition(getMassPoint());
+
+    // debugging information
+    personShape.setPosition(position);
     personShape.setFillColor(sf::Color::Red);
     personShape.setRadius(5);
     personShape.move(sf::Vector2f(-2.5,-2.5));
@@ -137,16 +148,13 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
     {
         pPath->drawPath(window);
     }
+
+    personShape.setPosition(nextNode);
+    personShape.setFillColor(sf::Color::Black);
+    window.draw(personShape);
+
 }
 
-const sf::Vector2f ClCrowd::getMassPoint()
-{
-    sf::Vector2f massPoint;
-    massPoint = position;
-    massPoint.x -= radius;
-    massPoint.y -= radius;
-    return massPoint;
-}
 
 float ClCrowd::getRadius()
 {

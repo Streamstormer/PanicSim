@@ -78,7 +78,9 @@ void ClPathFinder::createNodes()
         x = currentID % nodeNumber.x;
         y = (int)(currentID / nodeNumber.x);
         // left neighbour
-        if(x>0 && validID[(x-1)+y*nodeNumber.x]== true  && ((x-1)+y*nodeNumber.x) < (int)Nodes.size() )
+        if(x>0 &&
+           validID[(x-1)+y*nodeNumber.x]== true  &&
+           ((x-1)+y*nodeNumber.x) < (int)Nodes.size() )
         {
             if( validConnection(currentID, ((x-1)+y*nodeNumber.x) ) == true)
             {
