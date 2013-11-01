@@ -92,17 +92,17 @@ void ClSimpleCreditsMenu::createMenu()
 
    enum GameStates ClSimpleCreditsMenu::update(sf::RenderWindow &window, bool mouseReleased) const
     {
-        if(mouseReleased)
-        {
+
 
                     if (pButton->isPressed(window))
+                    {
+                        if(mouseReleased)
                     {
 
                         return MENU;
                     }
+                    }
 
-
-        }
         //update of paramField
 
         return CREDITSMENU;

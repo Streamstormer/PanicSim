@@ -89,17 +89,17 @@ void ClSimpleStartMenu::createMenu()
 
     enum GameStates ClSimpleStartMenu::update(sf::RenderWindow &window, bool mouseReleased) const
     {
-        if(mouseReleased)
-        {
+
                 for (unsigned int n = 0;n<ButtonVector.size();n++)
                 {
                     if (ButtonVector[n]->isPressed(window))
                     {
+                        if(mouseReleased)
                         return execute(ButtonVector[n]->getButtonType());
                     }
                 }
 
-        }
+
         //update of paramField
         paramField->update(mouseReleased, window);
         return MENU;

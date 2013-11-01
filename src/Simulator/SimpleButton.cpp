@@ -24,6 +24,7 @@ ClSimpleButton::ClSimpleButton(int id, Buttons button, int PictureID , const sf:
     ButtonPicture.setTexture(texture);
     ButtonPicture.setTextureRect(Rect);
     ButtonPicture.setScale(scale,scale);
+    ButtonPicture.setColor( sf::Color(160,160,160) );
 
     // set the rect that was misused to the right values
     Rect.top = position.y;
@@ -57,8 +58,15 @@ ClSimpleButton::~ClSimpleButton()
 }
 bool ClSimpleButton::isPressed(sf::RenderWindow & window)
 {
+    ButtonPicture.setColor(sf::Color(180,180,180));
     if( Rect.contains(sf::Mouse::getPosition(window)))
     {
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            darkenButtonPressed();
+        }
+        else
+            lightButtonHover();
         return true;
     }
     return false;
@@ -90,4 +98,13 @@ void ClSimpleButton::setText(sf::String buttonText, sf::Font *pFont)
     this->pText->setColor(sf::Color::White);
 }
 
-
+void ClSimpleButton::lightButtonHover()         // when the mouse hovers over the button
+{
+    sf::Color color(255,255,255);
+    ButtonPicture.setColor(color);
+}
+void ClSimpleButton::darkenButtonPressed()      // when the mouse presses the button
+{
+    sf::Color color(120,120,120);
+    ButtonPicture.setColor(color);
+}

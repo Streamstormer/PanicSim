@@ -48,21 +48,26 @@ void ClSimpleParamField::draw(sf::RenderWindow& window)
 }
 void ClSimpleParamField::update(bool mouseButtonReleased, sf::RenderWindow& window)
 {
-    if(mouseButtonReleased)
-    {
+
         if(buttonMinus->isPressed(window) )
         {
+            if(mouseButtonReleased)
+            {
             if(value >= 1000)
             {
                 value -= 1000;
             }
+            }
         }
         if(buttonPlus->isPressed(window) )
         {
+            if(mouseButtonReleased)
+            {
             if(value <= 49000)
             {
                 value += 1000;
             }
+            }
         }
-    }
+
 }

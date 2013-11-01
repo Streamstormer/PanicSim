@@ -13,6 +13,8 @@ class ClSimpleButton
         ~ClSimpleButton();
 
         bool isPressed(sf::RenderWindow & window);
+        void lightButtonHover();         // when the mouse hovers over the button
+        void darkenButtonPressed();      // when the mouse presses the button
         void draw(sf::RenderWindow& window);
 
         Buttons getButtonType();
