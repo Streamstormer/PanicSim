@@ -21,6 +21,7 @@ public:
     void addVector(const sf::Vector2f & add);
     int getSize();
     void clearVectorPath ();
+    bool isLastVector ();
 
     //test-function
     void drawPath(sf::RenderWindow & window);

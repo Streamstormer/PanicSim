@@ -39,6 +39,18 @@ void ClPath::clearVectorPath()
     vectorPath.clear();
 }
 
+bool ClPath::isLastVector()
+{
+    if( vectorPath.back() == vectorPath[vectorPath.size()-1] )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 void ClPath::drawPath(sf::RenderWindow & window)
 {
     for(int paint = 0; paint < (int)vectorPath.size(); paint++)
