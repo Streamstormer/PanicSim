@@ -8,6 +8,7 @@ ClSimpleSimulationMenu::ClSimpleSimulationMenu(enum GameStates myState, sf::Font
         this->pFont = pFont;
         this->screenSize = screenSize;
         texture.loadFromFile("pictures/ButtonSet1.png");
+        texture2.loadFromFile("pictures/ButtonSet3.png");
         createMenu();
     }
 
@@ -120,6 +121,11 @@ ClSimpleSimulationMenu::ClSimpleSimulationMenu(enum GameStates myState, sf::Font
         Position.x-=ButtonSize.x*1.5*scale;
         id++;
         pAddMe = new ClSimpleButton(id, FIRE,5, texture, ButtonSize, Position, scale);
+        ButtonVector.push_back(pAddMe);
+        // add EXPLOSION Button
+        Position.x-=ButtonSize.x*1.5*scale;
+        id++;
+        pAddMe = new ClSimpleButton(id, EXPLOSION,0, texture2, ButtonSize, Position, scale);
         ButtonVector.push_back(pAddMe);
 
         // Labels
