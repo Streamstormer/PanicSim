@@ -108,13 +108,13 @@ void  ClCrowd::Update(float frameTime)
     {
         case(LEAVETOEXIT):
         {
-            if( (position.x - nextNode.x)*(position.x - nextNode.x)+(position.y - nextNode.y)*(position.y - nextNode.y) < 100 )
+            if( (position.x - nextNode.x)*(position.x - nextNode.x)+(position.y - nextNode.y)*(position.y - nextNode.y) < 100 && pPath->isLastVector() == false)
             {
                 nextNode = pPath->getNextVector();
             }
             sf::Vector2f force = Seek(nextNode,position);
-            force.x *= frameTime * 0.01;
-            force.y *= frameTime * 0.01;
+            force.x *= frameTime * 0.05;
+            force.y *= frameTime * 0.05;
             position += force;
         }break;
     }
