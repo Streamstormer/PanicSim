@@ -27,7 +27,7 @@ public:
 private:
 
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );
-    sf::Vector2f Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destination, const sf::Vector2f & CurVelocity);
+    sf::Vector2f Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destination);
 
     ClArea *pArea;       // used for finding the exit
     ClHeatMap *pHeatMap; // used for human - human collision detection

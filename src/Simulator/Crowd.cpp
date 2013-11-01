@@ -73,10 +73,10 @@ void  ClCrowd::Update(float frameTime)
      for (unsigned int n = 0; n < peoples.size(); n++)
     {
         // Center Force
-            force =  Seek( peoples[n]->position, position, sf::Vector2f(0,0));
+            force =  Seek( peoples[n]->position, position);
          //   Vec2DNormalize(&force)
-         force.x *= frameTime * 0.03;
-         force.y *= frameTime * 0.03;
+         force.x *= frameTime * -0.03;
+         force.y *= frameTime * -0.03;
          peoples[n]->force = force;
     }
     oldPosition = position;
@@ -112,9 +112,9 @@ void  ClCrowd::Update(float frameTime)
             {
                 nextNode = pPath->getNextVector();
             }
-            sf::Vector2f force = Seek(nextNode,position, sf::Vector2f(0,0));
-            force.x *= frameTime * -0.01;
-            force.y *= frameTime * -0.01;
+            sf::Vector2f force = Seek(nextNode,position);
+            force.x *= frameTime * 0.01;
+            force.y *= frameTime * 0.01;
             position += force;
         }break;
     }
@@ -173,16 +173,13 @@ void ClCrowd::Vec2DNormalize( sf::Vector2f *NormalizeMe )
     }
 }
 
-sf::Vector2f ClCrowd::Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destination, const sf::Vector2f & CurVelocity)
+sf::Vector2f ClCrowd::Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destination)
 {
     TargetPos.x -= Destination.x;
     TargetPos.y -= Destination.y;
-  //  float helpVar = (TargetPos.x + TargetPos.y)*(TargetPos.x * TargetPos.y);
-  //  helpVar = sqrt(helpVar);
+
     Vec2DNormalize(&TargetPos);
 
- //   TargetPos.x *= helpVar;
- //   TargetPos.y *= helpVar;
-    return (-TargetPos );
+    return (TargetPos );
 }
 
