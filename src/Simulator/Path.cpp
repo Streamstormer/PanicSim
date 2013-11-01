@@ -41,7 +41,7 @@ void ClPath::clearVectorPath()
 
 bool ClPath::isLastVector()
 {
-    if( vectorPath.back() == vectorPath[vectorPath.size()-1] )
+    if( vectorPath[position-1] == vectorPath[vectorPath.size()-1] )
     {
         return true;
     }
