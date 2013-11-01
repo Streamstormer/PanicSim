@@ -57,8 +57,11 @@
             window.setView(gameView);
             // Draw Background
             window.clear(pArea->getBgColor());
-            // Draw Crowds
-            pCrowdManager->draw(window);
+            if(curGameState==SIMULATION)
+            {
+                // Draw Crowds
+                pCrowdManager->draw(window);
+            }
             // Draw static / dynamic Objects
             pArea->draw(window);
             // Draw Threats

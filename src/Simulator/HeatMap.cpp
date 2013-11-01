@@ -13,7 +13,6 @@ ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &Map
         std::vector<StrPeople *> oneCell;
         SortedPeoples.push_back(oneCell);
     }
-
     pStatistic = new ClStatistic(cellNumber);
 }
 
@@ -39,26 +38,35 @@ void ClHeatMap::registerCrowd(const std::vector<StrPeople *> &Crowd)
 
 void ClHeatMap::draw(sf::RenderWindow& window)
 {
-    for (int x = 0; x < cellNumber.x ; x++)
+    statisticTime = checkStatClock.getElapsedTime().asSeconds();
+    if(doDraw==true || statisticTime>2)
     {
-        for (int y = 0; y < cellNumber.y; y++)
+        for (int x = 0; x < cellNumber.x; x++)
         {
-            int cellCounter = x+y*cellNumber.x;
-            int numberOfPeopleInCell = this->SortedPeoples[cellCounter].size();
-            if(numberOfPeopleInCell >= sw_green)
+            for (int y = 0; y < cellNumber.y; y++)
             {
-                pStatistic->rememberCells(x, y, numberOfPeopleInCell);
-                if(doDraw==true)
+                int cellCounter = x+y*cellNumber.x;
+                int numberOfPeopleInCell = this->SortedPeoples[cellCounter].size();
+                if(numberOfPeopleInCell >= sw_green)
                 {
-                    sf::RectangleShape colorCell(cellSize);
-                    colorCell.setPosition(x*cellSize.x, y*cellSize.y);
-                    colorCell.setFillColor(getColor(numberOfPeopleInCell));
-                    window.draw(colorCell);
+                    if(statisticTime>2)
+                    {
+                        pStatistic->rememberCells(x, y, numberOfPeopleInCell);
+                        checkStatClock.restart();
+                    }
+
+                    if(doDraw==true)
+                    {
+                        sf::RectangleShape colorCell(cellSize);
+                        colorCell.setPosition(x*cellSize.x, y*cellSize.y);
+                        colorCell.setFillColor(getColor(numberOfPeopleInCell));
+                        window.draw(colorCell);
+                    }
                 }
             }
         }
+        if(statisticTime>2) pStatistic->rememberLoop();
     }
-    pStatistic->rememberLoopNumber();
 }
 
 void ClHeatMap::update(float frameTime)

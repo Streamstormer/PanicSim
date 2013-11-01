@@ -26,12 +26,11 @@ ClStatistic::~ClStatistic()
 
 void ClStatistic::rememberCells(int cellX, int cellY, const int numberOfPeople)
 {
-    pAllCells[cellY][cellX] = numberOfPeople;
+    pAllCells[cellY][cellX] += numberOfPeople;
 }
 
-void ClStatistic::rememberLoopNumber()
+void ClStatistic::rememberLoop()
 {
-//    for(int n=0; n<cellNumber.x; n++)  if(loopNumber==100)std::cerr<<"Personen in Zeile 1,"<<n<<": "<<pAllCells[1][n]<<std::endl;
     loopNumber++;
 }
 
