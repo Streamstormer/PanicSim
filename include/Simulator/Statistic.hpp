@@ -12,6 +12,7 @@ public:
     void rememberCells(int cellX, int cellY, const int numberOfPeople);
     void rememberLoopNumber();
     void doCalculation();
+    void rememberLoop();
 private:
     sf::Vector2i cellNumber;
     int loopNumber;

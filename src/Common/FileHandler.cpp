@@ -96,8 +96,10 @@ int ClFileHandler::importStaticObjects(ClArea *pArea){
                             divider = divider * 10;
                         if(str[j] < 58 && str[j] > 47)
                             props[k] = multiplier * props[k] + (str[j] - 48) / divider;
-                        else
+                        else{
+                            std::cout << "StaticObject numchar not a number.";
                             return 7;
+                        }
                     }
                     else{
                         multiplier = 1;
@@ -163,6 +165,7 @@ int ClFileHandler::importStaticObjects(ClArea *pArea){
                 return 6;
             }
             if(i > 1 && props[i] > 255){
+                std::cout << "4: Unexpected token at line 2 of csv file when loading. Only ';' and numbers [0-9] are allowed, except first column.";
                 return 5;
             }
         }
