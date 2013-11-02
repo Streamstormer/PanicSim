@@ -16,10 +16,12 @@ public:
     void registerCrowd(const std::vector<StrPeople *> &Crowd);
     void draw(sf::RenderWindow& window);
     void update(float frameTime);
+    int explosion(const sf::Vector2f &here, int explosionRadius); // returns the ammount of casualties
     static void toggleDraw();
     static bool doDraw;
 private:
     sf::Vector2f distanceForce(std::vector<StrPeople *> &cell, StrPeople *checkMe, int position );
+    int calculateCasualtiesInCell(const sf::Vector2u &cell, const sf::Vector2f &bombPosition, int explosionRadius); // returns ammount of casualties (helper function of explosion)
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );
     float invert(float Max, float Current);
 

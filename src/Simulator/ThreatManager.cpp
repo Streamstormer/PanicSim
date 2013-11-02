@@ -9,6 +9,7 @@ usecase:    handling threat creation, update and draw
 #include "../../include/Simulator/ThreatManager.hpp"
 bool ClThreatManager::fire_static = false;
 bool ClThreatManager::bomb_static = false;
+bool ClThreatManager::explosion_static = false;
 
 ClThreatManager::ClThreatManager(ClArea *pArea)
 {
@@ -42,7 +43,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(bomb)
     {
         //2.
-        pThreat = new ClThreat(true, false, position, size_threat, bomb_texture, pArea);
+        pThreat = new ClThreat(true, false, position, size_threat, bomb_texture, pArea, pHeatMap);
         threatVector.push_back(pThreat);
         bomb = false;
     }
@@ -51,7 +52,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(fire)
     {
         //2.
-        pThreat = new ClThreat(false, true, position, size_threat, fire_texture, pArea);
+        pThreat = new ClThreat(false, true, position, size_threat, fire_texture, pArea, pHeatMap);
         threatVector.push_back(pThreat);
         fire = false;
     }
@@ -67,7 +68,7 @@ void ClThreatManager::draw(sf::RenderWindow &window)
 }
 
 //called from SimpleGUI (after button check)
-void ClThreatManager::buttonPressed(bool bomb, bool fire)
+void ClThreatManager::buttonPressed(bool bomb, bool fire, bool explosion)
 {
     //set static boolean according to pressed button
     if(bomb)
@@ -77,6 +78,10 @@ void ClThreatManager::buttonPressed(bool bomb, bool fire)
     if(fire)
     {
         fire_static = true;
+    }
+    if(explosion)
+    {
+        explosion_static = true;
     }
 }
 
@@ -91,6 +96,11 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
     //6. check if pressed mouse is contained in the threat (set isMoved accordingly)
     //7. check for isMoved
     //8. if isMoved is true -> move sprite of this threat according to float mouse position
+
+    /// explosion handling :
+    //2.1. check for explosion
+    //2.2. activate all inactive threats
+    // toDo : tell the statistics about activated threats
 
     //1.
     sf::Vector2i mouse = sf::Mouse::getPosition(window);
@@ -125,5 +135,19 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
             //8.
             threatVector[n]->setPosition(mouseFloat.x, mouseFloat.y);
         }
+    }
+
+    // 2.1
+    if (explosion_static)
+    {
+        for(unsigned int n = 0; n < threatVector.size(); n++)
+        {
+            // 2.2
+            if(threatVector[n]->getIsActive()==false)
+            {
+                threatVector[n]->activate();
+            }
+        }
+        explosion_static = false;
     }
 }

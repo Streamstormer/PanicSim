@@ -22,6 +22,9 @@ class ClCrowdManager
         static int *getPeopleCount();
         static void addPeople(int Number);
 
+        // for threats
+        ClHeatMap* getHeatMap();
+
     private:
 
         ClArea *pArea;
