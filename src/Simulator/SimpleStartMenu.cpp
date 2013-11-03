@@ -102,6 +102,7 @@ void ClSimpleStartMenu::createMenu()
 
         //update of paramField
         paramField->update(mouseReleased, window);
+        ClSimulation::setTotalVisitors(paramField->getValue());
         return MENU;
 
     }
