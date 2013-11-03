@@ -26,6 +26,9 @@ protected:
     Gtk::Button *pStartSim;
     Gtk::Button *pClear;
 
+    Gtk::Button *pmouse;
+    Gtk::Button *premove;
+
     Gtk::Button *pBar;
     Gtk::Button *pWC;
     Gtk::Button *pStage;

@@ -5,6 +5,7 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 {
     this->isOpen = false;
     this->SimFile = " ";
+    this->removeObj = false;
 
     level = new ClFileHandler();
 
@@ -29,6 +30,9 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pFence->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Fence_clicked));
     pExit->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Exit_clicked));
 
+    pmouse->signal_clicked().connect(sigc::mem_fun(*this, &Editor::want_mouse));
+    premove->signal_clicked().connect(sigc::mem_fun(*this, &Editor::remove_obj));
+
     pClear->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Clear_clicked));
 
     pAreaColor->signal_changed().connect(sigc::mem_fun(*this, &Editor::change_comboBox));
@@ -42,7 +46,7 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pSizeY->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 500.0, 0.1, 0.1));
     pRot->set_adjustment(Gtk::Adjustment::create(0.0, 0.0, 360.0, 0.1, 0.1));
 
-    pAreaX->set_adjustment(Gtk::Adjustment::create(748.0, 748.0, 40000.0, 1.0, 1.0));
+    pAreaX->set_adjustment(Gtk::Adjustment::create(748.0, 748.0, 4000.0, 1.0, 1.0));
     pAreaY->set_adjustment(Gtk::Adjustment::create(710.0, 710.0, 4000.0, 1.0, 1.0));
 
     pArea = SFMLArea->getArea();
@@ -50,6 +54,17 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     app->run(*pWindow);
 
 
+}
+
+void Editor::want_mouse()
+{
+     SFMLArea->box_clicked();
+     pObjLabel->set_label("");
+}
+
+void Editor::remove_obj()
+{
+    SFMLArea->remove_obj();
 }
 
 void Editor::setColor(sf::Color pColor)
