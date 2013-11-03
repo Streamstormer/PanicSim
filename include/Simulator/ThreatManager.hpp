@@ -21,7 +21,7 @@ public:
     void update(sf::RenderWindow &window, bool mouseReleased);
     void draw(sf::RenderWindow &window);
     void createThreat(bool bomb, bool fire, const sf::Vector2f position);
-    static void buttonPressed(bool bomb, bool fire);
+    static void buttonPressed(bool bomb, bool fire, bool explosion);
 private:
     ClArea *pArea;
     sf::Texture bomb_texture;
@@ -29,7 +29,9 @@ private:
     std::vector<ClThreat *> threatVector;
     static bool fire_static;
     static bool bomb_static;
-    ClThreat *pThreat;
-};
+    static bool explosion_static;
+    ClThreat *pThreat; // why do you need this pointer Melanie ? ( bitte Kommentar hinzufügen / Namen ändern )
+    ClHeatMap *pHeatMap; // for Threats so they can interact with people
 
+};
 #endif // THREATMANAGER_HPP_INCLUDED

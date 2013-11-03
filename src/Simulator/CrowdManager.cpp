@@ -97,3 +97,8 @@ void ClCrowdManager::addPeople(int Number)
 }
 
 int ClCrowdManager::peopleCount = 0;
+
+ClHeatMap* ClCrowdManager::getHeatMap()
+{
+     return pHeatMap;
+}

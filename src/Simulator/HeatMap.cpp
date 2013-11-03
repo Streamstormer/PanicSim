@@ -261,3 +261,38 @@ void ClHeatMap::Vec2DNormalize( sf::Vector2f *NormalizeMe )
         NormalizeMe->y /= helpVar;
     }
 }
+
+// returns the ammount of casualties
+int ClHeatMap::explosion(const sf::Vector2f &here, int explosionRadius)
+{
+    // 1. calculate the cell the explosion is hapenning in
+    // 2. check for casualties in explosion cell and the neighbour cells and kill them ( alive = false )
+    // 3. remove casualties from list ( Crowd cleans them up )
+    // 4. remove number of casualties
+
+    sf::Vector2u explosion;
+    // 1.
+    explosion.x = here.x / cellSize.x;
+    explosion.y = (here.y / cellSize.y )*cellNumber.x;
+
+    //2.
+    // center cell
+    // top-left cell
+    // left cell
+    // bottom-left cell
+    // bottom cell
+    // bottom-right cell
+    // right cell
+    // top right cell
+    // top cell
+}
+
+// returns ammount of casualties (helper function of explosion)
+int ClHeatMap::calculateCasualtiesInCell(const sf::Vector2u &cell, const sf::Vector2f &bombPosition, int explosionRadius)
+{
+    // 1. check wheather casualtie is in range
+    // 2. remove casualties from list ( Crowd cleans them up )
+    // 3. remove number of casualties
+
+
+}

@@ -10,7 +10,7 @@ usecase:    creation of threats, handling mouse action on threats and set new po
 #include <iostream>
 
 //Creation of threats on an area using a specific position, a size and one of the two possible textures (fire or bomb)
-ClThreat::ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea)
+ClThreat::ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap)
 {
 //boolean values for differentiation
     this->bomb = bomb;
@@ -20,6 +20,10 @@ ClThreat::ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, co
     this->position_threat = position_threat;
     this->size_threat = size_threat;
     this->pArea = pArea;
+    this->pHeatMap = pHeatMap;
+
+//threat is not active at the beginning
+    isActive = false;
 
 //Threat gets this position and texture
     sprite_threat.setPosition(position_threat);
@@ -108,4 +112,15 @@ void ClThreat::setPosition(float x_Position, float y_Position)
 bool ClThreat::getIsMoved()
 {
     return isMoved;
+}
+
+bool ClThreat::getIsActive()
+{
+    return isActive;
+}
+
+void ClThreat::activate()
+{
+    isActive = true;
+    std::cerr << "activated " << std::endl;
 }

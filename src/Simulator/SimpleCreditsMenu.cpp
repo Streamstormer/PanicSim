@@ -20,7 +20,6 @@ void ClSimpleCreditsMenu::createMenu()
     {
         // ClSimpleButton(int id, Buttons button, int GameState, const sf::Texture &texture, const sf::Vector2f &newSize, const sf::Vector2f& position, float scale)
 
-
         sf::Vector2f position;
         sf::Vector2f buttonSize;
         sf::Vector2f labelSize(200,220);
@@ -43,8 +42,6 @@ void ClSimpleCreditsMenu::createMenu()
         spaceColor.r = spaceColor.g = spaceColor.b= 255;
         spaceColor.a = 50;
 
-
-
         textSpace.setFillColor(spaceColor);
         text.setPosition(position.x +labelSize.x/4,position.y);
         creditText= "Credits";
@@ -54,19 +51,10 @@ void ClSimpleCreditsMenu::createMenu()
         text.setStyle(sf::Text::Regular);
         text.setString(creditText+"\n Lukas\n Benedikt\n Melanie\n Patrick\n Victor");
 
-
          position.y += labelSize.y;
         pButton = new ClSimpleButton(id, EXITMENU, 0, texture, buttonSize,position, 1.0f);
 
         pButton->setText(sf::String("ZURÜCK"),pFont);
-
-
-
-
-
-
-
-
     }
 
 
