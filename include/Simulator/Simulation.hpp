@@ -18,22 +18,13 @@ class ClSimulation
         bool update(sf::RenderWindow &window, bool mouseReleased);
         void draw(sf::RenderWindow &window);
 
-        void setCurGameState(enum GameStates newGS)
-        {
-            curGameState = newGS;
-        }
+        void setCurGameState(enum GameStates newGS);
+
 
 
         static void updateSpeed(bool pause, bool normal, bool fastForward);
+        static void setTotalVisitors(int number);
     private:
-
-        // FileHandler logic goes here
-        // to read the Level Meta Data
-        // called in the constructor
-        //void readLevelMetaData( );
-        //void setLevelMetaData(sf::Vector2f *pLevelSize, sf::Color *pColor);
-
-        // FileHandler logic goes here
         // this function is called in the constructor
 
         void createObjects();
@@ -56,9 +47,14 @@ class ClSimulation
         // used for scrolling
         sf::View gameView;
         sf::Vector2f currentOffset;
+
+        //Gui Variables
         static int speed;
+        static int totalVisitors;
 
         enum GameStates curGameState;
+
+        bool visitorsSet;
 
         //Background Color
         //sf::Color bgColor;

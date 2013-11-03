@@ -1,8 +1,39 @@
 #include "../../include/Simulator/Simulation.hpp"
 
+
+int ClSimulation::speed = 1;
+int ClSimulation::totalVisitors = 0;
+
+void ClSimulation::updateSpeed(bool pause,bool normal, bool fastForward)
+{
+    if (pause)
+    {
+        ClSimulation::speed = 0;
+    }
+    else if (normal)
+    {
+        speed = 1;
+    }
+    else if (fastForward)
+    {
+        ClSimulation::speed++;
+        if (ClSimulation::speed > 3)
+        {
+            ClSimulation::speed = 1;
+        }
+    }
+}
+
+void ClSimulation::setTotalVisitors(int number)
+{
+    totalVisitors = number;
+}
+
+
 // public:
 ClSimulation::ClSimulation(const sf::VideoMode &Mode)
 {
+    visitorsSet = false;
     this->currentOffset.x = this->currentOffset.y = 0;
     this->Mode = Mode;
 
@@ -17,7 +48,7 @@ ClSimulation::ClSimulation(const sf::VideoMode &Mode)
 
     pCrowdManager = new ClCrowdManager(pArea, pArea->getLevelSize());
 
-    partitionCrowds(1000);
+
     /*
     pCrowdManager->CreateCrowd(sf::Vector2f(600,350),150,100);
     pCrowdManager->CreateCrowd(sf::Vector2f(850,250),150,500);
@@ -81,16 +112,24 @@ void ClSimulation::partitionCrowds(int totalVisitors)
     calculatePriorities(&sum, priority, counter);
     double persons;
     sf::Vector2f sPosition;
+    sf::Vector2f sVector;
+    ClStaticObject *pObject;
     for(int i = 0; i < counter; i++)
     {
         if(priority[i])
         {
             persons = (priority[i] * totalVisitors / sum);
+            pObject = pArea->getObject(i+1);
 
-            sPosition.x = pArea->getPosition(i+1).x + (pArea->getSize(i+1).x / 2);
-            sPosition.y = pArea->getPosition(i+1).y + (pArea->getSize(i+1).y / 2);
+            sPosition = pObject->getCenter();
+            sVector = sf::Vector2f(1.5 * (pObject->getMiddleOfLine().x - sPosition.x), 1.5 * (pObject->getMiddleOfLine().y - sPosition.y));
 
-            pCrowdManager->CreateCrowd(sPosition,5,(int) persons);
+
+/*
+            sPosition.x = pObject->getPosition().x + (pObject->getSize().x / 2);
+            sPosition.y = pObject->getPosition().y + (pObject->getSize().y / 2);
+*/
+            pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),5,(int) persons);
         }
     }
 }
@@ -119,11 +158,22 @@ void ClSimulation::calculatePriorities(int *sum, int *priority, int counter)
             priority[i] = 0;
         }
 
-        priority[i] = priority[i] * sSize.x * sSize.y;
+        priority[i] = priority[i] * sSize.x * sSize.y / 1000;
         *sum += priority[i];
     }
 
+}
 
+void ClSimulation::setCurGameState(enum GameStates newGS)
+{
+    if(!visitorsSet){
+    if (newGS == SIMULATION)
+    {
+        partitionCrowds(totalVisitors);
+        visitorsSet = true;
+    }
+    curGameState = newGS;
+}
 }
 
 
@@ -180,26 +230,3 @@ void ClSimulation::calculateOffset(float frameTime)
         gameView.move(0 ,currentOffset.y);
     }
 }
-
-void ClSimulation::updateSpeed(bool pause,bool normal, bool fastForward)
-{
-    if (pause)
-    {
-        ClSimulation::speed = 0;
-    }
-    else if (normal)
-    {
-        speed = 1;
-    }
-    else if (fastForward)
-    {
-        ClSimulation::speed++;
-        if (ClSimulation::speed > 3)
-        {
-            ClSimulation::speed = 1;
-        }
-    }
-}
-
-int ClSimulation::speed = 1;
-

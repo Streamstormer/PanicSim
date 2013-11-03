@@ -26,6 +26,7 @@ class ClArea
     const sf::Vector2f & getPosition(int id);   // returns position of a StaticObject via id
     const sf::Vector2f & getSize(int id);       // returns size of a StaticObject via id
     float getRotation(int id);                  // returns rotation of a StaticObject via id
+    ClStaticObject  *getObject(int id);
 
     /// not for the editor but for the collision detection / for the pathFinder
 

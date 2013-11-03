@@ -217,3 +217,7 @@ bool ClStaticObject::isValidPath(sf::Vector2f startPoint, sf::Vector2f endPoint)
     return Rect->getGlobalBounds().intersects(testRect);
 }
 
+sf::Vector2f ClStaticObject::getMiddleOfLine()
+{
+    return sf::Vector2f(line.getGlobalBounds().left + (line.getGlobalBounds().width / 2), line.getGlobalBounds().top + (line.getGlobalBounds().height / 2));
+}

@@ -69,6 +69,18 @@
             }
         }
     }
+
+    ClStaticObject * ClArea::getObject(int id)
+    {
+        for (unsigned int n = 0; n < sobjects.size();n++)
+        {
+            if (sobjects[n]->getID() == id)
+            {
+                return sobjects[n];
+            }
+        }
+    }
+
     const sf::Vector2f & ClArea::getSize(int id)
     {
         for (unsigned int n = 0; n < sobjects.size();n++)
