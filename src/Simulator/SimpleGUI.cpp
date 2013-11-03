@@ -32,7 +32,7 @@ enum GameStates ClSimpleGUI::update( sf::RenderWindow &window, bool mouseRelease
     {
         // time to change the Menu
         curState = testState;
-        for ( unsigned int n = 0; n < MenuVector.size(); n++)
+        for ( unsigned int n = 0; n < MenuVector.size(); n++ )
         {
             if(MenuVector[n]->getMyState()==curState)
             {

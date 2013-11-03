@@ -28,6 +28,7 @@ public:
 
     GameStates getGameState() {return curState;}
 
+
 private:
 
 
@@ -38,6 +39,7 @@ private:
     std::vector<ClSimpleMenu *> MenuVector;
     ClSimpleMenu * pCurrentMenu;
     GameStates curState;
+    ClSimpleStartMenu *pStartMenu;
 
     // additional information
     sf::Font labelFont;

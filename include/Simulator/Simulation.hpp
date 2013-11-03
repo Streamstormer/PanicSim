@@ -41,6 +41,9 @@ class ClSimulation
         // called in update
         void calculateOffset(float frameTime);
 
+        void partitionCrowds(int totalVisitors);
+
+
         ClArea *pArea;
         ClCrowdManager *pCrowdManager;
         ClThreatManager *pThreatManager;

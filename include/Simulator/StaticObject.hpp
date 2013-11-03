@@ -1,7 +1,7 @@
-#include <SFML/Graphics.hpp>
 #ifndef C_STATIC_OBJECT_INCLUDE
 #define C_STATIC_OBJECT_INCLUDE
 
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <math.h>
 
