@@ -28,6 +28,8 @@ private:
     void draw();
     void resize();
     sf::Color bgColor;
+
+
 public:
     SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
                    Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot,  Gtk::SpinButton *pAreaSizeX,
@@ -38,6 +40,7 @@ public:
     ClArea *getArea();
     void insertCheck(Gtk::CheckButton *check);
     void box_clicked();
+    void remove_obj();
     void setBgColor(sf::Color pColor){bgColor = pColor;};
 };
 

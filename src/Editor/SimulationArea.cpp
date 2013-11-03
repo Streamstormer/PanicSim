@@ -3,10 +3,10 @@
 SimulationArea::SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
                                Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot, Gtk::SpinButton *pAreaSizeX,
                                Gtk::SpinButton *pAreaSizeY, Gtk::Label *pObjLabel)
-    : SFML_Widget(sf::VideoMode(1024, 756))
+    // hardcode size to 2000x2000 as workaround for the size issues under Windows
+    : SFML_Widget(sf::VideoMode(2000, 2000))
 {
     // add this widget to Area Frame..
-    // Gtk::Container *inFrame = (Gtk::Container*) AreaFrame.get_child();
     AreaWin.add(*this);
     // .. and show it
     show();
@@ -48,9 +48,6 @@ SimulationArea::SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk:
 
 void SimulationArea::animate()
 {
-    sf::VideoMode mode(pAreaSizeX->get_value(), pAreaSizeY->get_value());
-    renderWindow.setSize(sf::Vector2u(mode.width, mode.height));
-    set_size_request(mode.width, mode.height);
     int rightID;
     if(boxChecked) {
         for(unsigned int i = 0; i<CheckButt.size(); i++) {
@@ -127,7 +124,9 @@ void SimulationArea::draw()
 }
 
 void SimulationArea::resize()
-{/*
+{
+    /// This code is not working, but it could be that some part of it can be used...
+    /*
     sf::Event event;
     while(renderWindow.pollEvent(event))
         if(event.type == sf::Event::Resized){
@@ -141,7 +140,7 @@ void SimulationArea::resize()
                              renderWindow.getSize().y);
 
 
-*/
+
     std::cerr<<renderWindow.getSize().x<<std::endl;
     std::cerr<<renderWindow.getSize().y<<std::endl;
     std::cerr<<Port->get_height()<<std::endl;
@@ -168,11 +167,15 @@ void SimulationArea::resize()
 
     sf::View view(sf::FloatRect(0, 0, renderWindow.getSize().x, renderWindow.getSize().y));
     renderWindow.setView(view);
-
+*/
 }
 
 void SimulationArea::setObject(enum staticObjects object, sf::Vector2f position, sf::Vector2f size, float rotation)
 {
+    if(selectedID!=0){
+        boxChecked = true;
+        animate();
+    }
     selectedID = Area->insertStObj(object, size, position, rotation);
     string label;
     switch(object) {
@@ -200,6 +203,9 @@ void SimulationArea::setObject(enum staticObjects object, sf::Vector2f position,
     convert<<selectedID;
     Gtk::CheckButton *checkObj = manage(new Gtk::CheckButton(string("Object Nr. ")  + convert.str() + string(": ") + label));
     ObjectBox->pack_start(*checkObj);
+    checkObj->set_active();
+    //if(boxActive)
+
     checkObj->signal_clicked().connect(sigc::mem_fun(*this, &SimulationArea::box_clicked));
     checkObj->show();
     CheckButt.push_back(checkObj);
@@ -220,6 +226,12 @@ void SimulationArea::clearArea()
         delete tmp;
     }
     renderWindow.clear();
+}
+
+void SimulationArea::remove_obj()
+{
+    box_clicked();
+    Area->removeObj(selectedID);
 }
 
 void SimulationArea::box_clicked()

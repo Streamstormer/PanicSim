@@ -32,6 +32,10 @@ UiLoader::UiLoader(string UiPath)
     builder->get_widget("Clear", pClear);
     builder->get_widget("StartSim", pStartSim);
 
+    // special buttons
+    builder->get_widget("mouse", pmouse);
+    builder->get_widget("remove", premove);
+
     // New static Objects
     builder->get_widget("bar", pBar);
     builder->get_widget("WC", pWC);
@@ -56,10 +60,6 @@ UiLoader::UiLoader(string UiPath)
     builder->get_widget("AreaSize_y", pAreaY);
 
     builder->get_widget("ObjectBox", pBox);
-
-
-
-
 }
 
 

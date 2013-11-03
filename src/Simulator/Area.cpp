@@ -27,7 +27,8 @@
     {
         for(unsigned int n=0; n < sobjects.size(); n++)
         {
-            sobjects[n]->draw(window);
+            if(sobjects[n] != 0)
+                sobjects[n]->draw(window);
 
         }
 
@@ -158,4 +159,20 @@
                 sobjects[n]->setRotation(rotation);
             }
         }
+    }
+
+    /// Remove static Object
+    bool ClArea::removeObj(int id)
+    {
+        for (unsigned int n = 0; n < sobjects.size();n++)
+        {
+            if (sobjects[n]->getID() == id){
+                /// Not supportet at the moment. Need some more thinking..
+                //delete sobjects[n];
+                //sobjects[n] = 0;
+                return true;
+            }
+        }
+        return false;
+
     }

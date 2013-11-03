@@ -70,6 +70,8 @@ class ClArea
 
     bool validPath(sf::Vector2f startPoint, sf::Vector2f endPoint); //returns ture if the neighbour is valid
 
+    bool removeObj(int id);
+
     private:
 
     int id; // used to give StaticObjects a unique id

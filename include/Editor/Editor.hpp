@@ -27,16 +27,22 @@ private:
     void StartSim();
     void SaveTo();
 
+    void want_mouse();
+    void remove_obj();
+
     void setColor(sf::Color pColor);
 
     SimulationArea *SFMLArea;
     ClArea *pArea;
     string SimFile;
     bool isOpen;
+    bool removeObj;
     ClFileHandler *level;
+    int selectedID;
 
 public:
     Editor(string UiPath, Glib::RefPtr<Gtk::Application> app);
+
 };
 
 
