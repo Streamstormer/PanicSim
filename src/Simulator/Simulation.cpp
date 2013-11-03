@@ -17,8 +17,11 @@ ClSimulation::ClSimulation(const sf::VideoMode &Mode)
 
     pCrowdManager = new ClCrowdManager(pArea, pArea->getLevelSize());
 
+    partitionCrowds(1000);
+    /*
     pCrowdManager->CreateCrowd(sf::Vector2f(600,350),150,100);
     pCrowdManager->CreateCrowd(sf::Vector2f(850,250),150,500);
+    */
     //        pCrowdManager->CreateCrowd(sf::Vector2f(800,750),150,500);
 
     pThreatManager = new ClThreatManager(pArea);
@@ -72,36 +75,54 @@ void ClSimulation::draw(sf::RenderWindow &window)
 
 void ClSimulation::partitionCrowds(int totalVisitors)
 {
-
-    //Calculate the priorities to partition the crowds
     int sum = 0;
     int counter = pArea->getNumberOfStaticObjects();
     int priority[counter];
+    calculatePriorities(&sum, priority, counter);
+    double persons;
+    sf::Vector2f sPosition;
+    for(int i = 0; i < counter; i++)
+    {
+        if(priority[i])
+        {
+            persons = (priority[i] * totalVisitors / sum);
+
+            sPosition.x = pArea->getPosition(i+1).x + (pArea->getSize(i+1).x / 2);
+            sPosition.y = pArea->getPosition(i+1).y + (pArea->getSize(i+1).y / 2);
+
+            pCrowdManager->CreateCrowd(sPosition,5,(int) persons);
+        }
+    }
+}
+
+void ClSimulation::calculatePriorities(int *sum, int *priority, int counter)
+{
     sf::Vector2f sSize;
-    unsigned int sType;
+    enum staticObjects sType;
     for(int i = 0; i < counter; i++)
     {
         priority[i] = 0;
-        sType = (int) pArea->getType(i);
-        sSize = pArea->getSize(i);
+        sType = pArea->getType(i+1);
+        sSize = pArea->getSize(i+1);
         switch(sType)
         {
         case 0:
-            priority[i] = 3;
+            priority[i] = STAGE;
             break;
         case 1:
-            priority[i] = 2;
+            priority[i] = BAR;
             break;
         case 2:
-            priority[i] = 1;
+            priority[i] = WC;
             break;
         default:
             priority[i] = 0;
         }
 
         priority[i] = priority[i] * sSize.x * sSize.y;
-        sum += priority[i];
+        *sum += priority[i];
     }
+
 
 }
 

@@ -1,7 +1,7 @@
 #include "../../include/Simulator/StaticObject.hpp"
 #include <math.h>
 
-ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, int Type)
+ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, enum staticObjects Type)
 {
     Rect = Rectconst;
     this->Type = Type;
@@ -47,7 +47,7 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, int Type)
 
 
 }
-int ClStaticObject::getType()
+enum staticObjects ClStaticObject::getType()
 {
     return Type;
 }

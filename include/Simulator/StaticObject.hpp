@@ -11,13 +11,13 @@ const unsigned int MAXSTATICOBJECTTYPES = GATE; // set this enum to the rightmos
 class ClStaticObject
 {
 public:
-    ClStaticObject(sf::RectangleShape *Rectconst, int id, int Type);
+    ClStaticObject(sf::RectangleShape *Rectconst, int id, enum staticObjects Type);
     ~ClStaticObject();
     void draw(sf::RenderWindow& window);
     const sf::Vector2f &getCenter();
     bool Intersects( const sf::Vector2f  &Position); // returns true if Position is inside of the StaticObject
     int getID();
-    int getType();
+    enum staticObjects getType();
     const sf::Vector2f &getPosition();
     const sf::Vector2f &getSize();
 
@@ -32,7 +32,7 @@ private:
     void getTextfromType(int type);
     void settext();
 
-    int Type;
+    enum staticObjects Type;
     sf::RectangleShape *Rect;
     int id; // unique id
     sf::Text text;

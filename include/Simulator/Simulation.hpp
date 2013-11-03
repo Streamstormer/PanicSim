@@ -43,6 +43,8 @@ class ClSimulation
 
         void partitionCrowds(int totalVisitors);
 
+        void calculatePriorities(int *sum, int *priority, int counter);
+
 
         ClArea *pArea;
         ClCrowdManager *pCrowdManager;

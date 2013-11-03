@@ -17,7 +17,7 @@
         tempRe->setRotation(rotAngle);
         if(type == GATE)
             tempRe->setFillColor(sf::Color::Red);
-        ClStaticObject *tempSt = new ClStaticObject(tempRe, id, (int) type);
+        ClStaticObject *tempSt = new ClStaticObject(tempRe, id, type);
         sobjects.push_back(tempSt);
         return id;
     }
@@ -90,7 +90,7 @@
         }
     }
 
-    int ClArea::getType(int id)
+    enum staticObjects ClArea::getType(int id)
     {
         for (unsigned int n = 0; n < sobjects.size();n++)
         {

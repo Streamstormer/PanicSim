@@ -61,7 +61,7 @@ class ClArea
     /// For the FileHandler
     int getNumberOfStaticObjects() {return id;}     // return total number of static objects
                                                     // ids of static objects start at id = 1 !!!
-    int getType(int id);                            // returns Type of a StaticObject via id
+    enum staticObjects getType(int id);                            // returns Type of a StaticObject via id
 
     void setLevelSize(sf::Vector2i pLevelSize){levelSize.x = pLevelSize.x; levelSize.y = pLevelSize.y;};
     void setBgColor(sf::Color pColor){bgColor.r = pColor.r; bgColor.g = pColor.g; bgColor.b = pColor.b;};
