@@ -5,9 +5,10 @@
 #include <vector>
 
 
+
 class ClArea
 {
-    public:
+public:
 
     ClArea() {id = 0;}
     ~ClArea();
@@ -73,9 +74,8 @@ class ClArea
 
     bool removeObj(int id);
 
-    bool attractionWithHigherId(int lId);
-
-    private:
+    bool attractionWithHigherId(int Id);
+private:
 
     int id; // used to give StaticObjects a unique id
     std::vector<ClStaticObject *> sobjects;

@@ -3,17 +3,22 @@
 Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     UiLoader(UiPath)
 {
+    // Do we have a file open?
     this->isOpen = false;
+    // Filename
     this->SimFile = " ";
-    this->removeObj = false;
 
+    // initialize FileHandle
     level = new ClFileHandler();
 
+    // maximize Window
     pWindow->maximize();
 
-
+    // initialize Painting Area
     SFMLArea = new SimulationArea(*pSFMLView, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY, pObjLabel);
 
+
+    /// fill ComboBox with entries
     stringstream convert;
     convert<<GREY<<GREEN<<BROWN;
     string tmp(convert.str());
@@ -22,8 +27,10 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pAreaColor->append(tmp.substr(2,2), "Braun");
     pAreaColor->set_active(1);
 
+    // change background color
     change_comboBox();
 
+    /// Connect Signals to Object Buttons
     pBar->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Bar_clicked));
     pWC->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_WC_clicked));
     pStage->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Stage_clicked));
@@ -31,103 +38,96 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pFence->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Fence_clicked));
     pExit->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Exit_clicked));
 
+    // ..to special buttons
     pmouse->signal_clicked().connect(sigc::mem_fun(*this, &Editor::want_mouse));
     premove->signal_clicked().connect(sigc::mem_fun(*this, &Editor::remove_obj));
-
     pClear->signal_clicked().connect(sigc::mem_fun(*this, &Editor::on_Button_Clear_clicked));
 
+    // To Area Color ComboBox
     pAreaColor->signal_changed().connect(sigc::mem_fun(*this, &Editor::change_comboBox));
 
+    // ..to file related buttons
     pLoadFile->signal_clicked().connect(sigc::mem_fun(*this, &Editor::loadFile));
     pSaveFile->signal_clicked().connect(sigc::mem_fun(*this, &Editor::SaveFile));
     pStartSim->signal_clicked().connect(sigc::mem_fun(*this, &Editor::StartSim));
     pSaveTo->signal_clicked().connect(sigc::mem_fun(*this, &Editor::SaveTo));
 
+    // set adjustment for the size SpinButtons
     pSizeX->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 500.0, 0.1, 0.1));
     pSizeY->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 500.0, 0.1, 0.1));
+    // ..for rotation SpinButtons
     pRot->set_adjustment(Gtk::Adjustment::create(0.0, 0.0, 360.0, 90.0, 90.0));
 
+    // .. for Area Size
     pAreaX->set_adjustment(Gtk::Adjustment::create(2000.0, 2000.0, 2000.0, 1.0, 1.0));
     pAreaY->set_adjustment(Gtk::Adjustment::create(2000.0, 2000.0, 2000.0, 1.0, 1.0));
 
     pArea = SFMLArea->getArea();
 
+    // Start Event handle
     app->run(*pWindow);
 
 
 }
 
+/// Ungrub mouse from object
 void Editor::want_mouse()
 {
      SFMLArea->box_clicked();
      pObjLabel->set_label("");
 }
 
+/// remove Object
 void Editor::remove_obj()
 {
     SFMLArea->remove_obj();
 }
 
+/// set Color of the Area
 void Editor::setColor(sf::Color pColor)
 {
     pArea->setBgColor(pColor);
     SFMLArea->setBgColor(pColor);
 }
 
-void Editor::on_Button_Bar_clicked()
-{
-    pObjLabel->set_label("Bar");
+/// Set an Object on the Area
+void Editor::set_object(string label, enum staticObjects type){
+    pObjLabel->set_label(label);
     pSizeX->set_value(10.0);
     pSizeY->set_value(10.0);
     pRot->set_value(0.0);
-    SFMLArea->setObject(BAR, sf::Vector2<float>(0.0,0.0), sf::Vector2<float>(10.0,10.0), 0.0);
+    SFMLArea->setObject(type, sf::Vector2<float>(0.0,0.0), sf::Vector2<float>(10.0,10.0), 0.0);
+}
+
+/// Button clocked methods
+void Editor::on_Button_Bar_clicked()
+{
+    this->set_object("Bar", BAR);
 }
 
 void Editor::on_Button_Stage_clicked()
 {
-    pObjLabel->set_label("Stage");
-    pSizeX->set_value(10.0);
-    pSizeY->set_value(10.0);
-    pRot->set_value(0.0);
-    SFMLArea->setObject(STAGE, sf::Vector2<float>(0.,0.), sf::Vector2<float>(10.,10.), 0.0);
-
+    this->set_object("Bühne", STAGE);
 }
 
 void Editor::on_Button_WC_clicked()
 {
-    pObjLabel->set_label("WC");
-    pSizeX->set_value(10.0);
-    pSizeY->set_value(10.0);
-    pRot->set_value(0.0);
-    SFMLArea->setObject(WC, sf::Vector2<float>(0.,0.), sf::Vector2<float>(10.,10.), 0.0);
+    this->set_object("WC", WC);
 }
-
 
 void Editor::on_Button_Fence_clicked()
 {
-    pObjLabel->set_label("Fence");
-    pSizeX->set_value(10.0);
-    pSizeY->set_value(10.0);
-    pRot->set_value(0.0);
-    SFMLArea->setObject(FENCE, sf::Vector2<float>(0.,0.), sf::Vector2<float>(10.,10.), 0.0);
+    this->set_object("Zaun", FENCE);
 }
 
 void Editor::on_Button_Wall_clicked()
 {
-    pObjLabel->set_label("Wall");
-    pSizeX->set_value(10.0);
-    pSizeY->set_value(10.0);
-    pRot->set_value(0.0);
-    SFMLArea->setObject(WALL, sf::Vector2<float>(0.,0.), sf::Vector2<float>(10.,10.), 0.0);
+    this->set_object("Mauer", WALL);
 }
 
 void Editor::on_Button_Exit_clicked()
 {
-    pObjLabel->set_label("Exit");
-    pSizeX->set_value(10.0);
-    pSizeY->set_value(10.0);
-    pRot->set_value(0.0);
-    SFMLArea->setObject(GATE, sf::Vector2<float>(0.,0.), sf::Vector2<float>(10.,10.), 0.0);
+    this->set_object("Ausgang", GATE);
 }
 
 void Editor::on_Button_Clear_clicked()
@@ -136,6 +136,7 @@ void Editor::on_Button_Clear_clicked()
     pArea = SFMLArea->getArea();
 }
 
+/// change Color of the Area
 void Editor::change_comboBox()
 {
     string id = pAreaColor->get_active_id();
@@ -144,19 +145,15 @@ void Editor::change_comboBox()
     switch (i)
     {
         case GREY:
-            //pArea->setBgColor(sf::Color(193,205,205));
             this->setColor(sf::Color(193,205,205));
             break;
         case GREEN:
-            //pArea->setBgColor(sf::Color(162,205,90));
             this->setColor(sf::Color(162,205,90));
             break;
         case BROWN:
-            //pArea->setBgColor(sf::Color(205,132, 63));
             this->setColor(sf::Color(205,132, 63));
             break;
         default:
-            std::cerr<<i<<std::endl;
             break;
     }
 }
@@ -186,29 +183,8 @@ void Editor::loadFile()
         pAreaY->set_value(pArea->getLevelSize().y);
 
         for(int i=1; i<=pArea->getNumberOfStaticObjects();i++){
-            int object = pArea->getType(i);
-            string label;
-            switch(object) {
-            case BAR:
-                label = "Bar";
-                break;
-            case STAGE:
-                label = "Stage";
-                break;
-            case WC:
-                label = "WC";
-                break;
-            case WALL:
-                label = "Wall";
-                break;
-            case FENCE:
-                label = "Fence";
-                break;
-            case GATE:
-                label = "Exit";
-                break;
-            }
-
+            enum staticObjects object = pArea->getType(i);
+            string label(SFMLArea->selectLabel(object));
             stringstream convert;
             convert<<i;
             Gtk::CheckButton *checkObj = manage(new Gtk::CheckButton(string("Object Nr. ")  + convert.str() + string(": ") + label));

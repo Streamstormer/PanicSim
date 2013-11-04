@@ -12,6 +12,8 @@ enum BackgroundColor{GREY, BROWN, GREEN};
 class Editor : public UiLoader
 {
 private:
+    void set_object(string label, enum staticObjects type);
+
     void on_Button_Bar_clicked();
     void on_Button_WC_clicked();
     void on_Button_Stage_clicked();

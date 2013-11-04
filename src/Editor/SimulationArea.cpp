@@ -48,7 +48,7 @@ SimulationArea::SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk:
 
 void SimulationArea::animate()
 {
-    int rightID;
+    int rightID = 0;
     if(boxChecked) {
         for(unsigned int i = 0; i<CheckButt.size(); i++) {
             if(CheckButt[i]->get_active()) {
@@ -65,27 +65,8 @@ void SimulationArea::animate()
                     SizeX->set_value(Area->getSize(ID).x);
                     SizeY->set_value(Area->getSize(ID).y);
                     Rot->set_value(Area->getRotation(ID));
-                    string label;
-                    switch(Area->getType(ID)) {
-                        case BAR:
-                            label = "Bar";
-                            break;
-                        case STAGE:
-                            label = "Stage";
-                            break;
-                        case WC:
-                            label = "WC";
-                            break;
-                        case WALL:
-                            label = "Wall";
-                            break;
-                        case FENCE:
-                            label = "Fence";
-                            break;
-                        case GATE:
-                            label = "Exit";
-                            break;
-                    }
+                    string label(this->selectLabel(Area->getType(ID)));
+
                     pObjLabel->set_label(label);
                     rightID = ID;
 
@@ -95,6 +76,8 @@ void SimulationArea::animate()
         }
         selectedID = rightID;
         boxChecked = false;
+        if(!selectedID)
+            pObjLabel->set_label("");
     }
     if(selectedID) {
         Area->setSize(selectedID, sf::Vector2f(SizeX->get_value(), SizeY->get_value()));
@@ -125,8 +108,8 @@ void SimulationArea::draw()
 
 void SimulationArea::resize()
 {
-    /// This code is not working, but it could be that some part of it can be used...
-    /*
+/// This code is not working, but it could be that some part of it can be used...
+#if 0
     sf::Event event;
     while(renderWindow.pollEvent(event))
         if(event.type == sf::Event::Resized){
@@ -134,8 +117,8 @@ void SimulationArea::resize()
                 std::cerr<<"hello"<<std::endl;
         }*/
 
-    /*
-       // Let the View fit the pixels of the window.
+
+    // Let the View fit the pixels of the window.
     sf::Vector2f lower_right(renderWindow.getSize().x,
                              renderWindow.getSize().y);
 
@@ -167,7 +150,7 @@ void SimulationArea::resize()
 
     sf::View view(sf::FloatRect(0, 0, renderWindow.getSize().x, renderWindow.getSize().y));
     renderWindow.setView(view);
-*/
+#endif
 }
 
 void SimulationArea::setObject(enum staticObjects object, sf::Vector2f position, sf::Vector2f size, float rotation)
@@ -177,34 +160,13 @@ void SimulationArea::setObject(enum staticObjects object, sf::Vector2f position,
         animate();
     }
     selectedID = Area->insertStObj(object, size, position, rotation);
-    string label;
-    switch(object) {
-    case BAR:
-        label = "Bar";
-        break;
-    case STAGE:
-        label = "Stage";
-        break;
-    case WC:
-        label = "WC";
-        break;
-    case WALL:
-        label = "Wall";
-        break;
-    case FENCE:
-        label = "Fence";
-        break;
-    case GATE:
-        label = "Exit";
-        break;
-    }
+    string label(this->selectLabel(object));
 
     stringstream convert;
     convert<<selectedID;
-    Gtk::CheckButton *checkObj = manage(new Gtk::CheckButton(string("Object Nr. ")  + convert.str() + string(": ") + label));
+    Gtk::CheckButton *checkObj = manage(new Gtk::CheckButton(string("Objekt Nr. ")  + convert.str() + string(": ") + label));
     ObjectBox->pack_start(*checkObj);
     checkObj->set_active();
-    //if(boxActive)
 
     checkObj->signal_clicked().connect(sigc::mem_fun(*this, &SimulationArea::box_clicked));
     checkObj->show();
@@ -247,4 +209,22 @@ ClArea *SimulationArea::getArea()
 void SimulationArea::insertCheck(Gtk::CheckButton *check)
 {
     this->CheckButt.push_back(check);
+}
+
+string SimulationArea::selectLabel(enum staticObjects type){
+    switch(type) {
+        case BAR:
+            return "Bar";
+        case STAGE:
+            return "Bühne";
+        case WC:
+            return "WC";
+        case WALL:
+            return "Mauer";
+        case FENCE:
+            return "Zaun";
+        case GATE:
+            return "Ausgang";
+    }
+    return "";
 }

@@ -109,7 +109,7 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
       switch(type)
         {
         case STAGE:
-            text.setString("Stage");
+            text.setString(L"Bühne");
             break;
         case BAR:
             text.setString("Bar");
@@ -118,13 +118,13 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
             text.setString("WC");
             break;
         case WALL:
-            text.setString("Wall");
+            text.setString("Mauer");
             break;
         case FENCE:
-            text.setString("Fence");
+            text.setString("Zaun");
             break;
         case GATE:
-            text.setString("Exit");
+            text.setString("Ausgang");
             break;
         }
     }
