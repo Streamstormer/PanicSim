@@ -124,18 +124,13 @@ void ClSimulation::partitionCrowds(int totalVisitors)
             sPosition = pObject->getCenter();
             sVector = sf::Vector2f(1.5 * (pObject->getMiddleOfLine().x - sPosition.x), 1.5 * (pObject->getMiddleOfLine().y - sPosition.y));
 
-
-/*
-            sPosition.x = pObject->getPosition().x + (pObject->getSize().x / 2);
-            sPosition.y = pObject->getPosition().y + (pObject->getSize().y / 2);
-
-*/
-            std::cout << "persons before: " << persons;
+            //std::cout << "persons before: " << persons;
             if(! pArea->attractionWithHigherId(i+2))
+/*******IF THIS IS THE LAST PLACEMENT OF A CROWD, THE INACCURACY FOR TOTAL VISITORS IS CORRECTED*********/
             {
                 persons += (double) (totalVisitors - *(pCrowdManager->getPeopleCount()) - persons);
             }
-            std::cout << "persons after: " << persons;
+            //std::cout << "persons after: " << persons;
 
             pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),5,(int) persons);
         }
