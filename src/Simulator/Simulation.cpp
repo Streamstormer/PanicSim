@@ -128,7 +128,15 @@ void ClSimulation::partitionCrowds(int totalVisitors)
 /*
             sPosition.x = pObject->getPosition().x + (pObject->getSize().x / 2);
             sPosition.y = pObject->getPosition().y + (pObject->getSize().y / 2);
+
 */
+            std::cout << "persons before: " << persons;
+            if(! pArea->attractionWithHigherId(i+2))
+            {
+                persons += (double) (totalVisitors - *(pCrowdManager->getPeopleCount()) - persons);
+            }
+            std::cout << "persons after: " << persons;
+
             pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),5,(int) persons);
         }
     }
