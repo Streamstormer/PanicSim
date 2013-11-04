@@ -114,6 +114,8 @@ void ClSimulation::partitionCrowds(int totalVisitors)
     sf::Vector2f sPosition;
     sf::Vector2f sVector;
     ClStaticObject *pObject;
+    ClPathFinder *pPF = new ClPathFinder(pArea, 20.0, pArea->getLevelSize());
+    ClPath *pPath;
     for(int i = 0; i < counter; i++)
     {
         if(priority[i])
@@ -122,16 +124,27 @@ void ClSimulation::partitionCrowds(int totalVisitors)
             pObject = pArea->getObject(i+1);
 
             sPosition = pObject->getCenter();
-            sVector = sf::Vector2f(1.5 * (pObject->getMiddleOfLine().x - sPosition.x), 1.5 * (pObject->getMiddleOfLine().y - sPosition.y));
+            sVector = sf::Vector2f(2.0 * (pObject->getMiddleOfLine().x - sPosition.x), 1.5 * (pObject->getMiddleOfLine().y - sPosition.y));
 
+            //std::cout << "persons before: " << persons;
+/*******IF THIS IS THE LAST PLACEMENT OF A CROWD, THE INACCURACY FOR TOTAL VISITORS IS CORRECTED*********/
+            if(! pArea->attractionWithHigherId(i+2))
+            {
+                persons += (double) (totalVisitors - *(pCrowdManager->getPeopleCount()) - persons);
+            }
 
-/*
-            sPosition.x = pObject->getPosition().x + (pObject->getSize().x / 2);
-            sPosition.y = pObject->getPosition().y + (pObject->getSize().y / 2);
-*/
-            pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),5,(int) persons);
+            pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
+            while(pPath == NULL)
+            {
+                sVector.x *= 1.1;
+                sVector.y *= 1.1;
+                pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
+            }
+            pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),(int)(persons / 100) + 1,(int) persons);
+
         }
     }
+    delete pPF;
 }
 
 void ClSimulation::calculatePriorities(int *sum, int *priority, int counter)

@@ -8,7 +8,7 @@ usecase:    create an object, then call the function findPath(Vector2f, Vector2f
 #include "../../include/Simulator/PathFinder.hpp"
 
 //creates all Nodes on creation of the PathFinder
-ClPathFinder::ClPathFinder(ClArea *pArea, float nodeDistance, const sf::Vector2f & areaSize)
+ClPathFinder::ClPathFinder(ClArea *pArea, float nodeDistance, const sf::Vector2i & areaSize)
 {
     nodeCounter = 0;
     this->pArea = pArea;

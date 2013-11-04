@@ -73,6 +73,8 @@ class ClArea
 
     bool removeObj(int id);
 
+    bool attractionWithHigherId(int lId);
+
     private:
 
     int id; // used to give StaticObjects a unique id

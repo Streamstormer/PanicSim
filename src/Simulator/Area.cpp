@@ -82,6 +82,26 @@
         }
     }
 
+    bool ClArea::attractionWithHigherId(int lId)
+    {
+        if(getType(lId) <= 2)
+        {
+            return true;
+        }
+        else
+        {
+            if(lId < id)
+            {
+                return this->attractionWithHigherId(lId + 1);
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+
     const sf::Vector2f & ClArea::getSize(int id)
     {
         for (unsigned int n = 0; n < sobjects.size();n++)
