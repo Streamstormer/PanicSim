@@ -4,7 +4,7 @@ SimulationArea::SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk:
                                Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot, Gtk::SpinButton *pAreaSizeX,
                                Gtk::SpinButton *pAreaSizeY, Gtk::Label *pObjLabel)
     // hardcode size to 2000x2000 as workaround for the size issues under Windows
-    : SFML_Widget(sf::VideoMode(800, 800))
+    : SFML_Widget(sf::VideoMode(2000, 2000))
 {
     // add this widget to Area Frame..
     AreaWin.add(*this);

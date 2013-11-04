@@ -46,8 +46,8 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pSizeY->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 500.0, 0.1, 0.1));
     pRot->set_adjustment(Gtk::Adjustment::create(0.0, 0.0, 360.0, 90.0, 90.0));
 
-    pAreaX->set_adjustment(Gtk::Adjustment::create(748.0, 748.0, 4000.0, 1.0, 1.0));
-    pAreaY->set_adjustment(Gtk::Adjustment::create(710.0, 710.0, 4000.0, 1.0, 1.0));
+    pAreaX->set_adjustment(Gtk::Adjustment::create(2000.0, 2000.0, 2000.0, 1.0, 1.0));
+    pAreaY->set_adjustment(Gtk::Adjustment::create(2000.0, 2000.0, 2000.0, 1.0, 1.0));
 
     pArea = SFMLArea->getArea();
 
