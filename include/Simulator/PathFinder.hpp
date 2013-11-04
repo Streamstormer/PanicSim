@@ -18,7 +18,7 @@ usecase:    create an object, then call the function findPath(Vector2f, Vector2f
 class ClPathFinder
 {
     public:
-        ClPathFinder(ClArea *pArea, float nodeDistance, const sf::Vector2f & areaSize);
+        ClPathFinder(ClArea *pArea, float nodeDistance, const sf::Vector2i & areaSize);
         ~ClPathFinder();
         void draw(sf::RenderWindow & window);
         ClPath* findPath(const sf::Vector2f & Start, const sf::Vector2f & Ende);
@@ -41,7 +41,7 @@ class ClPathFinder
         int nodeCounter;
         ClArea *pArea;
         float nodeDistance;
-        sf::Vector2f areaSize;
+        sf::Vector2i areaSize;
 
         std::vector<ClNode *> Nodes;
         std::vector<ClNode *> OpenList;
