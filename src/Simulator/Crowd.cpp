@@ -17,6 +17,8 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
     for (int n = 0; n < numOfPeoples; n++)
     {
         StrPeople *newPerson = new StrPeople;
+        newPerson->alive = true;
+        newPerson->force.x = newPerson->force.y = 0;
         do
         {
             newPerson->position.x = std::rand();
@@ -64,6 +66,15 @@ ClCrowd::~ClCrowd()
 
 void  ClCrowd::Update(float frameTime)
 {
+    // look for casualties
+    for (unsigned int n = 0; n < peoples.size(); n++)
+    {
+        if (peoples[n]->alive == false)
+        {
+            peoples.erase(peoples.begin()+n);
+        }
+    }
+
     float movementFactor = 1.0f;
     if(position == oldPosition)
     {

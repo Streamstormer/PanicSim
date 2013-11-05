@@ -123,6 +123,8 @@ void ClThreat::activate()
 {
     isActive = true;
     std::cerr << "activated " << std::endl;
+    int casualties = pHeatMap->explosion(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2)), 100);
+    std::cerr << "killed :" << casualties << std::endl;
 }
 
 bool ClThreat::getBomb()

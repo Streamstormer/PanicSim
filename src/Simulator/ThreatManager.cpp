@@ -11,8 +11,9 @@ bool ClThreatManager::fire_static = false;
 bool ClThreatManager::bomb_static = false;
 bool ClThreatManager::explosion_static = false;
 
-ClThreatManager::ClThreatManager(ClArea *pArea, ClStatistic *pStatistic)
+ClThreatManager::ClThreatManager(ClArea *pArea, ClStatistic *pStatistic, ClHeatMap *pHeatMap)
 {
+    this->pHeatMap = pHeatMap;
     //assigning the textures to variables
     bomb_texture.loadFromFile("pictures/bomb_tex.png");
     fire_texture.loadFromFile("pictures/fire_tex.png");

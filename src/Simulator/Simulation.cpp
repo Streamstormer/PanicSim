@@ -49,14 +49,13 @@ ClSimulation::ClSimulation(const sf::VideoMode &Mode)
     pStatistic = new ClStatistic();
     pCrowdManager = new ClCrowdManager(pArea, pArea->getLevelSize(), pStatistic);
 
-
     /*
     pCrowdManager->CreateCrowd(sf::Vector2f(600,350),150,100);
     pCrowdManager->CreateCrowd(sf::Vector2f(850,250),150,500);
     */
     //        pCrowdManager->CreateCrowd(sf::Vector2f(800,750),150,500);
 
-    pThreatManager = new ClThreatManager(pArea, pStatistic);
+    pThreatManager = new ClThreatManager(pArea, pStatistic, pCrowdManager->getHeatMap());
 
     elapsedTime.restart();
     curGameState = MENU;

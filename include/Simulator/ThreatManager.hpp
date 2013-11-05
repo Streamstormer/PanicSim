@@ -18,7 +18,7 @@ usecase:    handling threat creation, update and draw
 class ClThreatManager
 {
 public:
-    ClThreatManager(ClArea *pArea, ClStatistic *pStatistic);
+    ClThreatManager(ClArea *pArea, ClStatistic *pStatistic, ClHeatMap *pHeatMap);
     ~ClThreatManager();
     void update(sf::RenderWindow &window, bool mouseReleased);
     void draw(sf::RenderWindow &window);

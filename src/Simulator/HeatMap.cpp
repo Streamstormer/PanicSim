@@ -17,7 +17,7 @@ ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &Map
     pStatistic->planHeatMapStatistic(cellNumber);
 }
 
-ClHeatMap::~ClHeatMap(){}
+ClHeatMap::~ClHeatMap() {}
 
 void ClHeatMap::registerCrowd(const std::vector<StrPeople *> &Crowd)
 {
@@ -64,7 +64,7 @@ void ClHeatMap::draw(sf::RenderWindow& window)
             }
         }
         if(statisticTime>2) pStatistic->rememberLoop();
-    //    if(pStatistic->loopNumber==10) pStatistic->doCalculations();
+        //    if(pStatistic->loopNumber==10) pStatistic->doCalculations();
     }
 }
 
@@ -267,31 +267,80 @@ int ClHeatMap::explosion(const sf::Vector2f &here, int explosionRadius)
     // 1. calculate the cell the explosion is hapenning in
     // 2. check for casualties in explosion cell and the neighbour cells and kill them ( alive = false )
     // 3. remove casualties from list ( Crowd cleans them up )
-    // 4. remove number of casualties
+    // 4. return number of casualties
 
-    sf::Vector2u explosion;
+    sf::Vector2u explosion; // Coordinates of the cell containing the bomb
+    int casualties = 0;
+
     // 1.
     explosion.x = here.x / cellSize.x;
-    explosion.y = (here.y / cellSize.y )*cellNumber.x;
+    explosion.y = (here.y / cellSize.y );
 
     //2.
     // center cell
+    casualties = calculateCasualtiesInCell(explosion, here, explosionRadius);
     // top-left cell
+    explosion.y -= 1;
+    explosion.x -= 1;
+    if (explosion.y >= 0 && explosion.x >= 0)
+        casualties += calculateCasualtiesInCell(explosion, here, explosionRadius);
+
     // left cell
+    explosion.y += 1;
+    if (explosion.x >= 0)
+        casualties += calculateCasualtiesInCell(explosion, here, explosionRadius);
+
     // bottom-left cell
+    explosion.y += 1;
+    if (explosion.y < cellSize.y)
+        casualties += calculateCasualtiesInCell(explosion, here, explosionRadius);
     // bottom cell
+    explosion.x += 1;
+    if (explosion.y < cellSize.y)
+        casualties += calculateCasualtiesInCell(explosion, here, explosionRadius);
     // bottom-right cell
+    explosion.x += 1;
+    if (explosion.y < cellSize.y && explosion.x < cellSize.x)
+        casualties += calculateCasualtiesInCell(explosion, here, explosionRadius);
     // right cell
+    explosion.y -= 1;
+    if ( explosion.x < cellSize.x)
+        casualties += calculateCasualtiesInCell(explosion, here, explosionRadius);
     // top right cell
+    explosion.y -= 1;
+    if(explosion.y >= 0)
+        casualties += calculateCasualtiesInCell(explosion, here, explosionRadius);
     // top cell
+    explosion.x -= 1;
+    if(explosion.y >= 0)
+        casualties += calculateCasualtiesInCell(explosion, here, explosionRadius);
+
+    return casualties;
 }
 
 // returns ammount of casualties (helper function of explosion)
 int ClHeatMap::calculateCasualtiesInCell(const sf::Vector2u &cell, const sf::Vector2f &bombPosition, int explosionRadius)
 {
-    // 1. check wheather casualtie is in range
-    // 2. remove casualties from list ( Crowd cleans them up )
-    // 3. remove number of casualties
+    // 1. check wheather casualties are in range
+    // 2. remove casualties from list ( alive = false -> Crowd cleans them up )
+    // 3. return number of casualties
 
+    int casualties = 0;
+    sf::Vector2f position;
 
+    for ( int n = 0; n < SortedPeoples[cell.x+cell.y*cellNumber.x].size(); n++)
+    {
+        // 1.
+        position = SortedPeoples[cell.x+cell.y*cellNumber.x][n]->position;
+        if (FSquare.getSqrt((position.x - bombPosition.x)*(position.x - bombPosition.x) + (position.y - bombPosition.y)*(position.y - bombPosition.y)) < explosionRadius )
+        {
+            //2.
+            SortedPeoples[cell.x+cell.y*cellNumber.x][n]->alive = false;
+            SortedPeoples[cell.x+cell.y*cellNumber.x].erase(SortedPeoples[cell.x+cell.y*cellNumber.x].begin()+n);
+
+            casualties++;
+        }
+    }
+    //3.
+    return casualties;
 }
