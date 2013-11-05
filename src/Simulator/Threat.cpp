@@ -124,3 +124,14 @@ void ClThreat::activate()
     isActive = true;
     std::cerr << "activated " << std::endl;
 }
+
+bool ClThreat::getBomb()
+{
+    return bomb;
+}
+
+bool ClThreat::getFire()
+{
+    return fire;
+}
+

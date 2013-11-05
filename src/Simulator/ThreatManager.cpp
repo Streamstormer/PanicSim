@@ -11,7 +11,7 @@ bool ClThreatManager::fire_static = false;
 bool ClThreatManager::bomb_static = false;
 bool ClThreatManager::explosion_static = false;
 
-ClThreatManager::ClThreatManager(ClArea *pArea)
+ClThreatManager::ClThreatManager(ClArea *pArea, ClStatistic *pStatistic)
 {
     //assigning the textures to variables
     bomb_texture.loadFromFile("pictures/bomb_tex.png");
@@ -19,6 +19,8 @@ ClThreatManager::ClThreatManager(ClArea *pArea)
 
     //pointer to the original area
     this->pArea = pArea;
+    //pointer to the statistic
+    this->pStatistic = pStatistic;
 }
 
 ClThreatManager::~ClThreatManager()
@@ -43,7 +45,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(bomb)
     {
         //2.
-        pThreat = new ClThreat(true, false, position, size_threat, bomb_texture, pArea, pHeatMap);
+        ClThreat *pThreat = new ClThreat(true, false, position, size_threat, bomb_texture, pArea, pHeatMap);
         threatVector.push_back(pThreat);
         bomb = false;
     }
@@ -52,7 +54,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(fire)
     {
         //2.
-        pThreat = new ClThreat(false, true, position, size_threat, fire_texture, pArea, pHeatMap);
+        ClThreat *pThreat = new ClThreat(false, true, position, size_threat, fire_texture, pArea, pHeatMap);
         threatVector.push_back(pThreat);
         fire = false;
     }
@@ -146,6 +148,7 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
             if(threatVector[n]->getIsActive()==false)
             {
                 threatVector[n]->activate();
+                pStatistic->rememberThreats(threatVector[n]->getBomb(), threatVector[n]->getFire());
             }
         }
         explosion_static = false;

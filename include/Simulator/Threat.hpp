@@ -5,7 +5,6 @@ Support:    Melanie Hammerschmidt
 usecase:    creation of threats, handling mouse action on threats and set new position according to mouse position
 ---------------------------------------------------------------------------------------------------------------------------------------
 */
-
 #ifndef THREAT_HPP_INCLUDED
 #define THREAT_HPP_INCLUDED
 #include <vector>
@@ -24,6 +23,8 @@ public:
     void setPosition(float x_Position, float y_Position);
     bool getIsActive();
     void activate();
+    bool getBomb();
+    bool getFire();
 private:
     ClHeatMap *pHeatMap;
     bool isMoved;

@@ -1,10 +1,11 @@
 #include "../../include/Simulator/HeatMap.hpp"
 
-ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &MapSize, ClArea *pArea)
+ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &MapSize, ClArea *pArea, ClStatistic *pStatistic)
 {
     this->pArea = pArea;
     this->MapSize = MapSize;
     this->cellNumber = cellNumber;
+    this->pStatistic = pStatistic;
     cellSize.x = MapSize.x / cellNumber.x;
     cellSize.y = MapSize.y / cellNumber.y;
     /// create the storage for all peoples in game
@@ -13,13 +14,10 @@ ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &Map
         std::vector<StrPeople *> oneCell;
         SortedPeoples.push_back(oneCell);
     }
-    pStatistic = new ClStatistic(cellNumber);
+    pStatistic->planHeatMapStatistic(cellNumber);
 }
 
-ClHeatMap::~ClHeatMap()
-{
-    delete pStatistic;
-}
+ClHeatMap::~ClHeatMap(){}
 
 void ClHeatMap::registerCrowd(const std::vector<StrPeople *> &Crowd)
 {
@@ -66,6 +64,7 @@ void ClHeatMap::draw(sf::RenderWindow& window)
             }
         }
         if(statisticTime>2) pStatistic->rememberLoop();
+    //    if(pStatistic->loopNumber==10) pStatistic->doCalculations();
     }
 }
 

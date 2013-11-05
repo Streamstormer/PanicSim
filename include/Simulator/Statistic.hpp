@@ -7,16 +7,21 @@
 class ClStatistic
 {
 public:
-    ClStatistic(sf::Vector2i cellNumber);
+    ClStatistic();
     ~ClStatistic();
+    void planHeatMapStatistic(sf::Vector2i cellNumber);
     void rememberCells(int cellX, int cellY, const int numberOfPeople);
     void rememberLoopNumber();
-    void doCalculation();
     void rememberLoop();
+    void rememberThreats(bool bomb, bool fire);
+    void doCalculations();
+    int loopNumber;
 private:
     sf::Vector2i cellNumber;
-    int loopNumber;
+
     int **pAllCells;
+    int numberFire;
+    int numberBomb;
 };
 
 #endif // STATISTIC_HPP_INCLUDED

@@ -46,7 +46,8 @@ ClSimulation::ClSimulation(const sf::VideoMode &Mode)
     gameView.setSize(Mode.width,Mode.height);
     gameView.setCenter(Mode.width/2, Mode.height/2);
 
-    pCrowdManager = new ClCrowdManager(pArea, pArea->getLevelSize());
+    pStatistic = new ClStatistic();
+    pCrowdManager = new ClCrowdManager(pArea, pArea->getLevelSize(), pStatistic);
 
 
     /*
@@ -55,7 +56,7 @@ ClSimulation::ClSimulation(const sf::VideoMode &Mode)
     */
     //        pCrowdManager->CreateCrowd(sf::Vector2f(800,750),150,500);
 
-    pThreatManager = new ClThreatManager(pArea);
+    pThreatManager = new ClThreatManager(pArea, pStatistic);
 
     elapsedTime.restart();
     curGameState = MENU;
@@ -65,6 +66,7 @@ ClSimulation::~ClSimulation()
     delete pArea;
     delete pCrowdManager;
     delete pThreatManager;
+    delete pStatistic;
 }
 
 bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
