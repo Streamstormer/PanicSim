@@ -100,6 +100,8 @@ void ClHeatMap::update(float frameTime)
     // 2. loop through every single people inside
     // 3. loop through to the neibour zones and the zone containing the guy
     // 4. calculate collision detection
+    // 4.1 does the person leave the Area ?
+    // 4.2 is the person hurt by fire ?
     // 1
     sf::Vector2f force;
     sf::Vector2f source;
@@ -151,7 +153,7 @@ void ClHeatMap::update(float frameTime)
                     //SortedPeoples[x+y*cellNumber.x][n]->position += force*frameTime;
 
                     // check collision
-
+                    // 4.
                     force.x*=frameTime;
                     force.y*=frameTime;
 
@@ -162,14 +164,17 @@ void ClHeatMap::update(float frameTime)
                         SortedPeoples[x+y*cellNumber.x][n]->position.x += force.x + SortedPeoples[x+y*cellNumber.x][n]->force.x ;
                         SortedPeoples[x+y*cellNumber.x][n]->position.y += force.y + SortedPeoples[x+y*cellNumber.x][n]->force.y ;
                     }
-                    else // check for GATE
+                    else
                     {
+                        // 4.1
+                        // check for GATE
                         if (pArea->getType(id)==GATE) // collision with exit
                         {
                             SortedPeoples[x+y*cellNumber.x][n]->alive = false;
                             // erase from Heatmap ( crowd does a cleanup immediatly )
                             SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
                         }
+                        // 4.2 check for burning building
                     }
 
                 }

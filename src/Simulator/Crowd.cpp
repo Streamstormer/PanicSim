@@ -71,7 +71,6 @@ void  ClCrowd::Update(float frameTime)
     {
         if (peoples[n]->alive == false)
         {
-            std::cerr << "deleted" << std::endl;
             delete peoples[n]; // free memory
             peoples.erase(peoples.begin()+n);
         }

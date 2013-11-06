@@ -71,13 +71,13 @@ ClSimulation::~ClSimulation()
 bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
 {
     float frameTime = elapsedTime.getElapsedTime().asMilliseconds();
-    float actualFrameTime = frameTime; // not changed by speed variable
+    float actualFrameTime = frameTime; // not changed by speed variable or limiting of frameTime
     frameTime *= speed;
     elapsedTime.restart();
 
-    // CAP FrameTime
+    // limit FrameTime
 
-    if ( frameTime > 80) frameTime = 80;
+    if ( frameTime > 50) frameTime = 50;
 
     if(curGameState==SIMULATION)
     {
