@@ -79,8 +79,8 @@ void ClHeatMap::update(float frameTime)
                 if (SortedPeoples[m][n]->position.x > 0 && SortedPeoples[m][n]->position.y > 0 && SortedPeoples[m][n]->position.x <= MapSize.x && SortedPeoples[m][n]->position.y <= MapSize.y)
                 {
                     SortedPeoples[(int)(SortedPeoples[m][n]->position.x / cellSize.x) + (int)(SortedPeoples[m][n]->position.y / cellSize.y)*cellNumber.x].push_back(SortedPeoples[m][n]);
+                    SortedPeoples[m].erase(SortedPeoples[m].begin()+n);
                 }
-                SortedPeoples[m].erase(SortedPeoples[m].begin()+n);
             }
         }
     }
