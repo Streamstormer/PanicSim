@@ -17,6 +17,8 @@ class ClSimpleStartMenu : public ClSimpleMenu
     private:
     void createMenu();
     ClSimpleParamField* paramField;
+    sf::Texture bg_texture;
+    sf::Sprite bg;
 };
 
 #endif // SIMPLESTARTMENU_HPP

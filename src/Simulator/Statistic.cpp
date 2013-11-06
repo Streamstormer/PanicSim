@@ -1,5 +1,5 @@
 #include "../../include/Simulator/Statistic.hpp"
-bool ClStatistic::doDrawAverage = true;
+bool ClStatistic::doDrawAverage = false;
 
 ClStatistic::ClStatistic()
 {
@@ -83,10 +83,6 @@ void ClStatistic::draw(sf::RenderWindow &window)
             }
         }
     }
-    /*
-        std::cerr<<"activated bombs: "<<numberBomb<<std::endl;
-        std::cerr<<"activated fires: "<<numberFire<<std::endl;
-    */
 }
 
 sf::Color ClStatistic::getColor(int people)
