@@ -2,9 +2,9 @@
 
 SimulationArea::SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
                                Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot, Gtk::SpinButton *pAreaSizeX,
-                               Gtk::SpinButton *pAreaSizeY, Gtk::Label *pObjLabel)
+                               Gtk::SpinButton *pAreaSizeY, Gtk::Label *pObjLabel, Gtk::ScrolledWindow* scrollWin)
     // hardcode size to 2000x2000 as workaround for the size issues under Windows
-    : SFML_Widget(sf::VideoMode(2000, 2000))
+    : SFML_Widget(sf::VideoMode(5000, 5000))
 {
     // add this widget to Area Frame..
     AreaWin.add(*this);
@@ -23,6 +23,10 @@ SimulationArea::SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk:
     this->pAreaSizeX = pAreaSizeX;
     this->pAreaSizeY = pAreaSizeY;
     this->pObjLabel = pObjLabel;
+    this->pView = &AreaWin;
+    this->pscroll = scrollWin;
+
+
 
     // Let the animate method be called every 25ms
     // Note: MovingCircle::animate() doesn't return any value, but signal_timeout() expects
@@ -48,6 +52,39 @@ SimulationArea::SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk:
 
 void SimulationArea::animate()
 {
+    Gtk::Scrollbar* pHScrollBar = pscroll->get_hscrollbar();
+    Gtk::Scrollbar* pVScrollBar = pscroll->get_vscrollbar();
+
+    Glib::RefPtr<Gdk::Window> GtkWin = pView->get_view_window();
+    unsigned int x,y, h, w;
+    pHScrollBar->set_range(0.0, 5000.0);
+    pVScrollBar->set_range(0.0, 5000.0);
+    w = GtkWin->get_width();
+    h = GtkWin->get_height();
+    x = pHScrollBar->get_value();
+    y = pVScrollBar->get_value();
+    static unsigned int sX = 0, sY = 0;
+    if(sX!=x||sY!=y){
+        GtkWin->scroll(x,y);
+        std::cerr<<" "<<x<<" "<<sX<<std::endl;
+        sX = x, sY = y;
+    }
+    //renderWindow.setSize(sf::Vector2u(w,h));
+    //renderWindow.setPosition(sf::Vector2i(renderWindow.getPosition().x+100, renderWindow.getPosition().y+100));
+    std::cerr<<"PositionX: "<<renderWindow.getSize().x<<" PositionY: "<<renderWindow.getPosition().y<<std::endl;
+
+    sf::View view1(sf::FloatRect(x, y, w, h));
+    //std::cerr<<"SizeX: "<<view1.getSize().x<<" CenterX: "<<view1.getCenter().x<<std::endl;
+    renderWindow.setView(view1);
+    //win->get_geometry(x,y,w,h);
+    //x=0;y=0;
+    //win->get_root_origin(x,y);
+    //std::cerr<<"X: "<<x<<"Y: "<<y<<" Width: "<<w<<" Height: "<<h<<std::endl;
+
+    sf::View currentView = renderWindow.getView();
+    //queue_draw_area(x,y,w,h);
+    std::cerr<<"DEFSizeX: "<<currentView.getSize().x<<" DEFCenterX: "<<currentView.getCenter().x<<std::endl;
+
     int rightID = 0;
     if(boxChecked) {
         for(unsigned int i = 0; i<CheckButt.size(); i++) {
@@ -88,7 +125,7 @@ void SimulationArea::animate()
             std::cerr<<pos.x<<" "<<pos.y<<std::endl;
 
             if(pos.x > 0 && pos.y > 0)
-                Area->setPosition(selectedID, sf::Vector2<float>(pos.x, pos.y));
+                Area->setPosition(selectedID, sf::Vector2<float>(pos.x+pHScrollBar->get_value(), pos.y+pVScrollBar->get_value()));
         }
     }
     // make sfmlWidget invalide so that it will be redrawn
@@ -103,6 +140,7 @@ void SimulationArea::draw()
     renderWindow.clear(bgColor);
     //renderWindow.close();
     Area->draw(renderWindow);
+
     display();
 }
 
@@ -151,6 +189,8 @@ void SimulationArea::resize()
     sf::View view(sf::FloatRect(0, 0, renderWindow.getSize().x, renderWindow.getSize().y));
     renderWindow.setView(view);
 #endif
+
+
 }
 
 void SimulationArea::setObject(enum staticObjects object, sf::Vector2f position, sf::Vector2f size, float rotation)

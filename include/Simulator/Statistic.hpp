@@ -17,9 +17,13 @@ public:
     void update();
     void draw(sf::RenderWindow &window);
     int loopNumber;
-//    static void toggleAverageDraw();
+    static void toggleAverageDraw();
     static bool doDrawAverage;
     void rememberKills(int number, bool bomb);
+    int getNumberBomb();
+    int getNumberFire();
+    int getNumberKillsBomb();
+    int getNumberKillsFire();
 private:
     sf::Vector2i cellNumber;
     sf::Vector2f cellSize;

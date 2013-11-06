@@ -98,6 +98,8 @@ void ClSimulation::draw(sf::RenderWindow &window)
     window.setView(gameView);
     // Draw Background
     window.clear(pArea->getBgColor());
+    // Draw Statistic in background
+    pStatistic->draw(window);
     if(curGameState==SIMULATION)
     {
         // Draw Crowds
@@ -107,8 +109,6 @@ void ClSimulation::draw(sf::RenderWindow &window)
     pArea->draw(window);
     // Draw Threats
     pThreatManager->draw(window);
-    // Draw Statistic
-    pStatistic->draw(window);
 }
 // private :
 

@@ -15,7 +15,7 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pWindow->maximize();
 
     // initialize Painting Area
-    SFMLArea = new SimulationArea(*pSFMLView, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY, pObjLabel);
+    SFMLArea = new SimulationArea(*pSFMLView, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY, pObjLabel, pSFMLWindow);
 
 
     /// fill ComboBox with entries
