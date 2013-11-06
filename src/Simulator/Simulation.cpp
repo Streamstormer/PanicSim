@@ -85,6 +85,8 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
         pCrowdManager->Update(frameTime, window);
         // Update Threats
         pThreatManager->update(window, mouseReleased);
+        // Update Statistic
+        pStatistic->update();
     }
     // Update View
     calculateOffset(actualFrameTime);
@@ -105,7 +107,8 @@ void ClSimulation::draw(sf::RenderWindow &window)
     pArea->draw(window);
     // Draw Threats
     pThreatManager->draw(window);
-
+    // Draw Statistic
+    pStatistic->draw(window);
 }
 // private :
 

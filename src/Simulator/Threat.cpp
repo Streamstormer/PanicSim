@@ -10,7 +10,7 @@ usecase:    creation of threats, handling mouse action on threats and set new po
 #include <iostream>
 
 //Creation of threats on an area using a specific position, a size and one of the two possible textures (fire or bomb)
-ClThreat::ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap)
+ClThreat::ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic)
 {
 //boolean values for differentiation
     this->bomb = bomb;
@@ -21,6 +21,7 @@ ClThreat::ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, co
     this->size_threat = size_threat;
     this->pArea = pArea;
     this->pHeatMap = pHeatMap;
+    this->pStatistic = pStatistic;
 
 //threat is not active at the beginning
     isActive = false;
@@ -124,7 +125,7 @@ void ClThreat::activate()
     isActive = true;
     std::cerr << "activated " << std::endl;
     int casualties = pHeatMap->explosion(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2)), 100);
-    std::cerr << "killed :" << casualties << std::endl;
+    pStatistic->rememberKills(casualties, bomb);
 }
 
 bool ClThreat::getBomb()

@@ -15,7 +15,7 @@ usecase:    creation of threats, handling mouse action on threats and set new po
 class ClThreat
 {
 public:
-    ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap);
+    ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic);
     ~ClThreat();
     void draw(sf::RenderWindow &window);
     void recognizeMouse(sf::RenderWindow &window);
@@ -36,6 +36,7 @@ private:
     sf::Sprite sprite_threat;
     sf::IntRect threat;
     ClArea *pArea;
+    ClStatistic *pStatistic;
 };
 
 #endif // THREAT_HPP_INCLUDED

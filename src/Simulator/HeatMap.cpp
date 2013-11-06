@@ -14,7 +14,7 @@ ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &Map
         std::vector<StrPeople *> oneCell;
         SortedPeoples.push_back(oneCell);
     }
-    pStatistic->planHeatMapStatistic(cellNumber);
+    pStatistic->planHeatMapStatistic(cellNumber, cellSize, sw_green, sw_yellow, sw_red);
 }
 
 ClHeatMap::~ClHeatMap() {}

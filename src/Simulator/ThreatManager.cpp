@@ -46,7 +46,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(bomb)
     {
         //2.
-        ClThreat *pThreat = new ClThreat(true, false, position, size_threat, bomb_texture, pArea, pHeatMap);
+        ClThreat *pThreat = new ClThreat(true, false, position, size_threat, bomb_texture, pArea, pHeatMap, pStatistic);
         threatVector.push_back(pThreat);
         bomb = false;
     }
@@ -55,7 +55,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(fire)
     {
         //2.
-        ClThreat *pThreat = new ClThreat(false, true, position, size_threat, fire_texture, pArea, pHeatMap);
+        ClThreat *pThreat = new ClThreat(false, true, position, size_threat, fire_texture, pArea, pHeatMap, pStatistic);
         threatVector.push_back(pThreat);
         fire = false;
     }
@@ -103,7 +103,7 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
     /// explosion handling :
     //2.1. check for explosion
     //2.2. activate all inactive threats
-    // toDo : tell the statistics about activated threats
+    //2.3. tell the statistics about activated threats
 
     //1.
     sf::Vector2i mouse = sf::Mouse::getPosition(window);
@@ -149,6 +149,7 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
             if(threatVector[n]->getIsActive()==false)
             {
                 threatVector[n]->activate();
+                // 2.3
                 pStatistic->rememberThreats(threatVector[n]->getBomb(), threatVector[n]->getFire());
             }
         }
