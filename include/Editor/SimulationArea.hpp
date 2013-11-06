@@ -42,6 +42,7 @@ public:
     void box_clicked();
     void remove_obj();
     void setBgColor(sf::Color pColor){bgColor = pColor;};
+    string selectLabel(enum staticObjects type);
 };
 
 #endif // SIMULATIONAREA_HPP_INCLUDED

@@ -5,6 +5,7 @@ UiLoader::UiLoader(string UiPath)
     this->UiPath = UiPath;
 
     try {
+        // construct the GUI from a xml File
         this->builder = Gtk::Builder::create_from_file(UiPath);
     } catch(const Glib::FileError& ex) {
         std::cerr << "FileError: " << ex.what() << std::endl;
@@ -21,8 +22,6 @@ UiLoader::UiLoader(string UiPath)
     builder->get_widget("EditorWin", pWindow);
 
     // SFML Frame
-    builder->get_widget("SFMLWindow", pSFMLWindow);
-
     builder->get_widget("SFMLView", pSFMLView);
 
     // Main Buttons

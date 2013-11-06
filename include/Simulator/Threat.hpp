@@ -5,7 +5,6 @@ Support:    Melanie Hammerschmidt
 usecase:    creation of threats, handling mouse action on threats and set new position according to mouse position
 ---------------------------------------------------------------------------------------------------------------------------------------
 */
-
 #ifndef THREAT_HPP_INCLUDED
 #define THREAT_HPP_INCLUDED
 #include <vector>
@@ -16,7 +15,7 @@ usecase:    creation of threats, handling mouse action on threats and set new po
 class ClThreat
 {
 public:
-    ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap);
+    ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic);
     ~ClThreat();
     void draw(sf::RenderWindow &window);
     void recognizeMouse(sf::RenderWindow &window);
@@ -24,6 +23,8 @@ public:
     void setPosition(float x_Position, float y_Position);
     bool getIsActive();
     void activate();
+    bool getBomb();
+    bool getFire();
 private:
     ClHeatMap *pHeatMap;
     bool isMoved;
@@ -35,6 +36,7 @@ private:
     sf::Sprite sprite_threat;
     sf::IntRect threat;
     ClArea *pArea;
+    ClStatistic *pStatistic;
 };
 
 #endif // THREAT_HPP_INCLUDED

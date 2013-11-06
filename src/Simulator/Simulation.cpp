@@ -46,8 +46,8 @@ ClSimulation::ClSimulation(const sf::VideoMode &Mode)
     gameView.setSize(Mode.width,Mode.height);
     gameView.setCenter(Mode.width/2, Mode.height/2);
 
-    pCrowdManager = new ClCrowdManager(pArea, pArea->getLevelSize());
-
+    pStatistic = new ClStatistic();
+    pCrowdManager = new ClCrowdManager(pArea, pArea->getLevelSize(), pStatistic);
 
     /*
     pCrowdManager->CreateCrowd(sf::Vector2f(600,350),150,100);
@@ -55,7 +55,7 @@ ClSimulation::ClSimulation(const sf::VideoMode &Mode)
     */
     //        pCrowdManager->CreateCrowd(sf::Vector2f(800,750),150,500);
 
-    pThreatManager = new ClThreatManager(pArea);
+    pThreatManager = new ClThreatManager(pArea, pStatistic, pCrowdManager->getHeatMap());
 
     elapsedTime.restart();
     curGameState = MENU;
@@ -65,14 +65,19 @@ ClSimulation::~ClSimulation()
     delete pArea;
     delete pCrowdManager;
     delete pThreatManager;
+    delete pStatistic;
 }
 
 bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
 {
     float frameTime = elapsedTime.getElapsedTime().asMilliseconds();
-    float actualFrameTime = frameTime; // not changed by speed variable
+    float actualFrameTime = frameTime; // not changed by speed variable or limiting of frameTime
     frameTime *= speed;
     elapsedTime.restart();
+
+    // limit FrameTime
+
+    if ( frameTime > 50) frameTime = 50;
 
     if(curGameState==SIMULATION)
     {
@@ -80,6 +85,8 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
         pCrowdManager->Update(frameTime, window);
         // Update Threats
         pThreatManager->update(window, mouseReleased);
+        // Update Statistic
+        pStatistic->update();
     }
     // Update View
     calculateOffset(actualFrameTime);
@@ -100,7 +107,8 @@ void ClSimulation::draw(sf::RenderWindow &window)
     pArea->draw(window);
     // Draw Threats
     pThreatManager->draw(window);
-
+    // Draw Statistic
+    pStatistic->draw(window);
 }
 // private :
 
