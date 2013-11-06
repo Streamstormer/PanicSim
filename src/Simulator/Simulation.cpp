@@ -98,6 +98,8 @@ void ClSimulation::draw(sf::RenderWindow &window)
     window.setView(gameView);
     // Draw Background
     window.clear(pArea->getBgColor());
+    // Draw Statistic in background
+    pStatistic->draw(window);
     if(curGameState==SIMULATION)
     {
         // Draw Crowds
@@ -107,8 +109,6 @@ void ClSimulation::draw(sf::RenderWindow &window)
     pArea->draw(window);
     // Draw Threats
     pThreatManager->draw(window);
-    // Draw Statistic
-    pStatistic->draw(window);
 }
 // private :
 
@@ -121,9 +121,13 @@ void ClSimulation::partitionCrowds(int totalVisitors)
     double persons;
     sf::Vector2f sPosition;
     sf::Vector2f sVector;
+    sf::Vector2f sUnitVector;
+    int vectorDistance;
+
     ClStaticObject *pObject;
-    ClPathFinder *pPF = new ClPathFinder(pArea, 20.0, pArea->getLevelSize());
+    ClPathFinder *pPF = new ClPathFinder(pArea, 30, pArea->getLevelSize());
     ClPath *pPath;
+
     for(int i = 0; i < counter; i++)
     {
         if(priority[i])
@@ -133,7 +137,15 @@ void ClSimulation::partitionCrowds(int totalVisitors)
 
             sPosition = pObject->getCenter();
             sVector = sf::Vector2f(2.0 * (pObject->getMiddleOfLine().x - sPosition.x), 1.5 * (pObject->getMiddleOfLine().y - sPosition.y));
-
+            vectorDistance = std::sqrt(std::pow(sVector.x,2) + std::pow(sVector.y,2));
+            if(vectorDistance != 0)
+            {
+                sUnitVector.x = sVector.x / vectorDistance;
+                sUnitVector.y = sVector.y / vectorDistance;
+            }else
+            {
+                std::cout << "Division by zero when calculating the Unit vector.";
+            }
             //std::cout << "persons before: " << persons;
 /*******IF THIS IS THE LAST PLACEMENT OF A CROWD, THE INACCURACY FOR TOTAL VISITORS IS CORRECTED*********/
             if(! pArea->attractionWithHigherId(i+2))
@@ -142,16 +154,34 @@ void ClSimulation::partitionCrowds(int totalVisitors)
             }
 
             pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
+
+            int vMaxX = pArea->getLevelSize().x - 5;
+            int vMaxY = pArea->getLevelSize().y - 5;
+
+            int positioningTryGranularity = 5;
+
             while(pPath == NULL)
             {
-                sVector.x *= 1.1;
-                sVector.y *= 1.1;
+                if((sPosition.x + sVector.x + ( positioningTryGranularity * sUnitVector.x)) > 5
+                   && sPosition.x + sVector.x + ( positioningTryGranularity * sUnitVector.x) < vMaxX
+                   && sPosition.y + sVector.y + ( positioningTryGranularity * sUnitVector.y) > 5
+                   && sPosition.y + sVector.y + ( positioningTryGranularity * sUnitVector.y) < vMaxY)
+                {
+                sVector.x += positioningTryGranularity * sUnitVector.x;
+                sVector.y += positioningTryGranularity * sUnitVector.y;
+                delete pPath;
                 pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
+                }
+                else
+                {
+                    std::cout << "Not able to place crowd " << (i + 1);
+                }
             }
-            pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),(int)(persons / 100) + 1,(int) persons);
+            pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),(int)(persons / 50) + 1,(int) persons);
 
         }
     }
+    delete pPath;
     delete pPF;
 }
 

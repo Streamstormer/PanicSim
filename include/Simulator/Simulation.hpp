@@ -7,6 +7,7 @@
 #include "ThreatManager.hpp"
 #include "Statistic.hpp"
 #include "../../include/Common/FileHandler.hpp"
+#include <cmath>
 
 enum GameStates {MENU, SIMULATION, PAUSE, EXITSTATE, CREDITSMENU};
 

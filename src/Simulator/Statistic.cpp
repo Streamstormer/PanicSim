@@ -83,12 +83,6 @@ void ClStatistic::draw(sf::RenderWindow &window)
             }
         }
     }
-    /*
-        std::cerr<<"activated bombs: "<<numberBomb<<std::endl;
-        std::cerr<<"activated fires: "<<numberFire<<std::endl;
-        std::cerr<<"killed by fire:"<<numberKillsFire<< std::endl;
-        std::cerr<<"killed by bomb:"<<numberKillsBomb<< std::endl;
-    */
 }
 
 sf::Color ClStatistic::getColor(int people)
@@ -117,7 +111,7 @@ sf::Color ClStatistic::getColor(int people)
     return background;
 }
 
-/*
+
 void ClStatistic::toggleAverageDraw()
 {
     if (doDrawAverage==true)
@@ -126,7 +120,6 @@ void ClStatistic::toggleAverageDraw()
     }
     else doDrawAverage = true;
 }
-*/
 
 void ClStatistic::update()
 {
@@ -149,4 +142,24 @@ void ClStatistic::rememberKills(int number, bool bomb)
         numberKillsBomb += number;
     }
     else numberKillsFire += number;
+}
+
+int ClStatistic::getNumberBomb()
+{
+    return numberBomb;
+}
+
+int ClStatistic::getNumberFire()
+{
+    return numberFire;
+}
+
+int ClStatistic::getNumberKillsFire()
+{
+    return numberKillsFire;
+}
+
+int ClStatistic::getNumberKillsBomb()
+{
+    return numberKillsBomb;
 }

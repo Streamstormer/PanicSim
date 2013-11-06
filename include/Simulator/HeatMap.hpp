@@ -43,10 +43,6 @@ private:
     const static int sw_yellow = 15;
     //color is (stepwise) red until there are sw_red people above it´s red too
     const static int sw_red = 25;
-
-    // both used for statistic calculations every 2 seconds
-    sf::Clock checkStatClock;
-    float statisticTime;
 };
 
 #endif // HEATMAP_HPP_INCLUDED

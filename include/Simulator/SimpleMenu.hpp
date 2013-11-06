@@ -23,6 +23,8 @@ class ClSimpleMenu
 
         std::vector<ClSimpleButton *> ButtonVector;
         std::vector<ClSimpleLabel *> LabelVector;
+        sf::Texture bg_texture;
+        sf::Sprite bg;
 };
 
 #endif // SIMPLEMENU_HPP
