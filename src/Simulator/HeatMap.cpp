@@ -162,6 +162,15 @@ void ClHeatMap::update(float frameTime)
                         SortedPeoples[x+y*cellNumber.x][n]->position.x += force.x + SortedPeoples[x+y*cellNumber.x][n]->force.x ;
                         SortedPeoples[x+y*cellNumber.x][n]->position.y += force.y + SortedPeoples[x+y*cellNumber.x][n]->force.y ;
                     }
+                    else // check for GATE
+                    {
+                        if (pArea->getType(id)==GATE) // collision with exit
+                        {
+                            SortedPeoples[x+y*cellNumber.x][n]->alive = false;
+                            // erase from Heatmap ( crowd does a cleanup immediatly )
+                            SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
+                        }
+                    }
 
                 }
 

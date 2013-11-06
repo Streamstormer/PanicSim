@@ -75,6 +75,10 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
     frameTime *= speed;
     elapsedTime.restart();
 
+    // CAP FrameTime
+
+    if ( frameTime > 80) frameTime = 80;
+
     if(curGameState==SIMULATION)
     {
         // Update Crowds Pathfinding Statemachine and Heatmap
