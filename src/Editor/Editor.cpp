@@ -81,6 +81,7 @@ void Editor::want_mouse()
 void Editor::remove_obj()
 {
     SFMLArea->remove_obj();
+
 }
 
 /// set Color of the Area
