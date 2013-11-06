@@ -125,7 +125,7 @@ void ClSimulation::partitionCrowds(int totalVisitors)
     int vectorDistance;
 
     ClStaticObject *pObject;
-    ClPathFinder *pPF = new ClPathFinder(pArea, 20, pArea->getLevelSize());
+    ClPathFinder *pPF = new ClPathFinder(pArea, 30, pArea->getLevelSize());
     ClPath *pPath;
 
     for(int i = 0; i < counter; i++)
@@ -142,6 +142,8 @@ void ClSimulation::partitionCrowds(int totalVisitors)
             {
                 sUnitVector.x = sVector.x / vectorDistance;
                 sUnitVector.y = sVector.y / vectorDistance;
+            }else
+            {
                 std::cout << "Division by zero when calculating the Unit vector.";
             }
             //std::cout << "persons before: " << persons;
@@ -167,6 +169,7 @@ void ClSimulation::partitionCrowds(int totalVisitors)
                 {
                 sVector.x += positioningTryGranularity * sUnitVector.x;
                 sVector.y += positioningTryGranularity * sUnitVector.y;
+                delete pPath;
                 pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
                 }
                 else
@@ -174,10 +177,11 @@ void ClSimulation::partitionCrowds(int totalVisitors)
                     std::cout << "Not able to place crowd " << (i + 1);
                 }
             }
-            pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),(int)(persons / 100) + 1,(int) persons);
+            pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),(int)(persons / 50) + 1,(int) persons);
 
         }
     }
+    delete pPath;
     delete pPF;
 }
 
