@@ -11,7 +11,7 @@
 class ClHeatMap
 {
 public:
-    ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &MapSize, ClArea *pArea);
+    ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &MapSize, ClArea *pArea, ClStatistic *pStatistic);
     ~ClHeatMap();
     void registerCrowd(const std::vector<StrPeople *> &Crowd);
     void draw(sf::RenderWindow& window);
@@ -43,9 +43,6 @@ private:
     const static int sw_yellow = 15;
     //color is (stepwise) red until there are sw_red people above it´s red too
     const static int sw_red = 25;
-
-    sf::Clock checkStatClock;
-    float statisticTime;
 };
 
 #endif // HEATMAP_HPP_INCLUDED

@@ -6,12 +6,13 @@
 #include "HeatMap.hpp"
 #include "PathFinder.hpp"
 #include "StateEngine/StateVault.hpp"
+#include "Statistic.hpp"
 #include <vector>
 
 class ClCrowdManager
 {
     public:
-        ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize);
+        ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize, ClStatistic *pStatistic);
         ~ClCrowdManager();
 
         void Update(float frameTime, sf::RenderWindow &window);
@@ -31,6 +32,7 @@ class ClCrowdManager
         ClHeatMap *pHeatMap;
         ClPathFinder *pPathFinder;
         ClStateVault *pStateVault;
+        ClStatistic *pStatistic;
 
         std::vector<ClCrowd *> Crowds;
 

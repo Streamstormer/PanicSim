@@ -90,13 +90,13 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
 
     void ClStaticObject::setPosition(const sf::Vector2f &position)
     {
-                Rect->setPosition(position);
-                settext();
+        Rect->setPosition(position);
+        settext();
     }
     void ClStaticObject::setRotation(float rotation)
     {
         Rect->setRotation(rotation);
-        this->settext();
+        settext();
     }
     void ClStaticObject::setSize(const sf::Vector2f &newSize)
     {
