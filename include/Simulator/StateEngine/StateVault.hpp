@@ -55,6 +55,8 @@ private:
                 StatesVector.push_back(pAddMe);
                 return pAddMe;
             }
+        default:
+            break;
         // To do add more states
         }
     }
