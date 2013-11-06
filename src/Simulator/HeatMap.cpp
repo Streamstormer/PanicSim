@@ -36,36 +36,26 @@ void ClHeatMap::registerCrowd(const std::vector<StrPeople *> &Crowd)
 
 void ClHeatMap::draw(sf::RenderWindow& window)
 {
-    statisticTime = checkStatClock.getElapsedTime().asSeconds();
-    if(doDraw==true || statisticTime>2)
+    for (int x = 0; x < cellNumber.x; x++)
     {
-        for (int x = 0; x < cellNumber.x; x++)
+        for (int y = 0; y < cellNumber.y; y++)
         {
-            for (int y = 0; y < cellNumber.y; y++)
+            int cellCounter = x+y*cellNumber.x;
+            int numberOfPeopleInCell = this->SortedPeoples[cellCounter].size();
+            if(numberOfPeopleInCell >= sw_green)
             {
-                int cellCounter = x+y*cellNumber.x;
-                int numberOfPeopleInCell = this->SortedPeoples[cellCounter].size();
-                if(numberOfPeopleInCell >= sw_green)
+                pStatistic->rememberCells(x, y, numberOfPeopleInCell);
+                if(doDraw==true)
                 {
-                    if(statisticTime>2)
-                    {
-                        pStatistic->rememberCells(x, y, numberOfPeopleInCell);
-                        checkStatClock.restart();
-                    }
-
-                    if(doDraw==true)
-                    {
-                        sf::RectangleShape colorCell(cellSize);
-                        colorCell.setPosition(x*cellSize.x, y*cellSize.y);
-                        colorCell.setFillColor(getColor(numberOfPeopleInCell));
-                        window.draw(colorCell);
-                    }
+                    sf::RectangleShape colorCell(cellSize);
+                    colorCell.setPosition(x*cellSize.x, y*cellSize.y);
+                    colorCell.setFillColor(getColor(numberOfPeopleInCell));
+                    window.draw(colorCell);
                 }
             }
         }
-        if(statisticTime>2) pStatistic->rememberLoop();
-        //    if(pStatistic->loopNumber==10) pStatistic->doCalculations();
     }
+    pStatistic->rememberLoop();
 }
 
 void ClHeatMap::update(float frameTime)
@@ -86,7 +76,7 @@ void ClHeatMap::update(float frameTime)
             // person number n
             if(!Cell.contains(SortedPeoples[m][n]->position))
             {
-                if ( SortedPeoples[m][n]->position.x > 0 && SortedPeoples[m][n]->position.y > 0 && SortedPeoples[m][n]->position.x <= MapSize.x && SortedPeoples[m][n]->position.y <= MapSize.y )
+                if (SortedPeoples[m][n]->position.x > 0 && SortedPeoples[m][n]->position.y > 0 && SortedPeoples[m][n]->position.x <= MapSize.x && SortedPeoples[m][n]->position.y <= MapSize.y)
                 {
                     SortedPeoples[(int)(SortedPeoples[m][n]->position.x / cellSize.x) + (int)(SortedPeoples[m][n]->position.y / cellSize.y)*cellNumber.x].push_back(SortedPeoples[m][n]);
                 }
