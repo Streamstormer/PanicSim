@@ -122,14 +122,22 @@ void ClSimulation::partitionCrowds(int totalVisitors)
     sf::Vector2f sPosition;
     sf::Vector2f sVector;
     sf::Vector2f sUnitVector;
+    sf::Vector2f vCrowdCandidate;
+    sf::Vector2f vCandidateWa;
     double vectorDistance;
 
     int attractionLength;
     int numOfCrowds;
+    int personsPerCrowd;
 
     ClStaticObject *pObject;
     ClPathFinder *pPF = new ClPathFinder(pArea, PATH_TEST_GRANULARITY, pArea->getLevelSize());
-    ClPath *pPath;
+    ClPath *pPath = NULL;
+
+
+    const int vMaxX = pArea->getLevelSize().x - 5;
+    const int vMaxY = pArea->getLevelSize().y - 5;
+
 
     for(int i = 0; i < counter; i++)
     {
@@ -157,45 +165,74 @@ void ClSimulation::partitionCrowds(int totalVisitors)
                 persons += (double) (totalVisitors - *(pCrowdManager->getPeopleCount()) - persons);
             }
 
-            //Check lengh of attraction
-            if(abs(sUnitVector.x) < abs(sUnitVector.y))
-            {
-                attractionLength = pObject->getSize().x;
-            }
-            else
-            {
-                attractionLength = pObject->getSize().y;
-            }
+            // pObject->getSize().x is always the attraction length
+            attractionLength = pObject->getSize().x;
+
 
             numOfCrowds = attractionLength / DIST_CROWDS_PER_ATTR;
-
-            for(int j = 0; j < 1; j++)
+            if(!numOfCrowds)
             {
-                pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
+                numOfCrowds = 1;
+            }
 
-                int vMaxX = pArea->getLevelSize().x - 5;
-                int vMaxY = pArea->getLevelSize().y - 5;
+            /*****Calculation candidate for Crowd positioning*****/
+            vCrowdCandidate.x = sPosition.x + sVector.x + (POS_TRY_GRAN * sUnitVector.x);
+            vCrowdCandidate.y = sPosition.y + sVector.y + (POS_TRY_GRAN * sUnitVector.y);
+            if(abs(sUnitVector.x) < abs(sUnitVector.y))
+            {
+                if(numOfCrowds > 1)
+                {
+                    vCrowdCandidate.x -= numOfCrowds * DIST_CROWDS_PER_ATTR / 2 - DIST_CROWDS_PER_ATTR / 2;
+                }
+            }else
+            {
+                if(numOfCrowds > 1)
+                {
+                    vCrowdCandidate.y -= numOfCrowds * DIST_CROWDS_PER_ATTR / 2 - DIST_CROWDS_PER_ATTR / 2;
+                }
+            }
 
-                int positioningTryGranularity = 5;
 
+            for(int j = 0; j < numOfCrowds; j++)
+            {
+                if(pPath != NULL)
+                {
+                    delete pPath;
+                }
+                pPath = pPF->findPath(vCrowdCandidate,
+                pArea->getClosestExit(vCrowdCandidate));
+
+
+
+                vCandidateWa = vCrowdCandidate;
                 while(pPath == NULL)
                 {
-                    if((sPosition.x + sVector.x + ( positioningTryGranularity * sUnitVector.x)) > 5
-                            && sPosition.x + sVector.x + ( positioningTryGranularity * sUnitVector.x) < vMaxX
-                            && sPosition.y + sVector.y + ( positioningTryGranularity * sUnitVector.y) > 5
-                            && sPosition.y + sVector.y + ( positioningTryGranularity * sUnitVector.y) < vMaxY)
+                    if((vCandidateWa.x + (POS_TRY_GRAN * sUnitVector.x)) > 5
+                            && vCandidateWa.x + (POS_TRY_GRAN * sUnitVector.x) < vMaxX
+                            && vCandidateWa.y + (POS_TRY_GRAN * sUnitVector.y) > 5
+                            && vCandidateWa.y + ( POS_TRY_GRAN * sUnitVector.y) < vMaxY)
                     {
-                        sVector.x += positioningTryGranularity * sUnitVector.x;
-                        sVector.y += positioningTryGranularity * sUnitVector.y;
+                        vCandidateWa.x += POS_TRY_GRAN * sUnitVector.x;
+                        vCandidateWa.y += POS_TRY_GRAN * sUnitVector.y;
                         delete pPath;
                         pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
                     }
                     else
                     {
-                        std::cout << "Not able to place crowd " << (i + 1);
+                        std::cout << "Not able to place crowd with id" << (i + 1);
                     }
                 }
-                pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),(int)(persons / 50) + 1,(int) persons);
+                personsPerCrowd = persons / numOfCrowds;
+                if(j == numOfCrowds - 1)
+                    personsPerCrowd += (persons - personsPerCrowd * numOfCrowds);
+                pCrowdManager->CreateCrowd(vCandidateWa,(int)(persons / 50) + 1, personsPerCrowd);
+                if(abs(sUnitVector.x) < abs(sUnitVector.y))
+                {
+                    vCrowdCandidate.x += DIST_CROWDS_PER_ATTR;
+                }else
+                {
+                    vCrowdCandidate.y += DIST_CROWDS_PER_ATTR;
+                }
             }
         }
     }
