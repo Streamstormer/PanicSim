@@ -25,6 +25,7 @@ class ClSimpleMenu
         std::vector<ClSimpleLabel *> LabelVector;
         sf::Texture bg_texture;
         sf::Sprite bg;
+        sf::RectangleShape bg_color;
 };
 
 #endif // SIMPLEMENU_HPP

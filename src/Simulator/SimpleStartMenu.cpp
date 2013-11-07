@@ -20,8 +20,12 @@ void ClSimpleStartMenu::createMenu()
     buttonSize.x = (float)texture.getSize().x;
     buttonSize.y = (float)texture.getSize().y;
     int id = 0;
-    bg.setPosition(0,0);
+    bg.setPosition((4*screenSize.x/5)-(bg_texture.getSize().x/2), screenSize.y/9);
     bg.setTexture(bg_texture);
+    bg_color.setPosition(0,0);
+    bg_color.setSize(screenSize);
+    sf::Color bgColor(190,190,190);
+    bg_color.setFillColor(bgColor);
 
     // Start Button
     position.x = screenSize.x/3;
@@ -38,13 +42,13 @@ void ClSimpleStartMenu::createMenu()
     // Credits Button
     position.x = 4*screenSize.x/5;
     position.x -= labelSize.x/2;
-    position.y = screenSize.y/3;
+    position.y = screenSize.y/3+labelSize.y/2;
     pButton = new ClSimpleButton(id, CREDITS,0, texture, buttonSize,position, 1.0f);
     pButton->setText(sf::String("Credits"),pFont);
     ButtonVector.push_back(pButton);
 
     // Exit Button
-    position.y += labelSize.y*1.25;
+    position.y = 3*screenSize.y/5;
     pButton = new ClSimpleButton(id,EXIT,0,texture,buttonSize,position,1.0f);
     pButton->setText(sf::String("Exit"),pFont);
     ButtonVector.push_back(pButton);
@@ -56,11 +60,12 @@ ClSimpleStartMenu::ClSimpleStartMenu(enum GameStates myState, sf::Font *pFont, s
     this->pFont = pFont;
     this->screenSize = screenSize;
     texture.loadFromFile("pictures/Button.png");
-    bg_texture.loadFromFile("pictures/menu_bg.png");
+    bg_texture.loadFromFile("pictures/PanicSoft.png");
     createMenu();
 }
 void ClSimpleStartMenu::draw(sf::RenderWindow &window) const
 {
+    window.draw(bg_color);
     window.draw(bg);
     for(int n = 0; n < ButtonVector.size(); n++)
     {

@@ -3,9 +3,11 @@
 
 #include <SFML/Graphics.hpp>
 
+const int PEOPLE_POSITION_MEMORY = 5;
+
 struct StrPeople
 {
-    sf::Vector2f position;
+    sf::Vector2f position[PEOPLE_POSITION_MEMORY];
     sf::Vector2f force;
     bool alive;             // used to make sure pointer on person is deleted everywhere
 };
