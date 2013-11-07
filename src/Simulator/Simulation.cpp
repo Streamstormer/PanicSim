@@ -1,6 +1,6 @@
 #include "../../include/Simulator/Simulation.hpp"
 
-
+bool ClSimulation::stopSim = false;
 int ClSimulation::speed = 1;
 int ClSimulation::totalVisitors = 0;
 
@@ -28,7 +28,6 @@ void ClSimulation::setTotalVisitors(int number)
 {
     totalVisitors = number;
 }
-
 
 // public:
 ClSimulation::ClSimulation(const sf::VideoMode &Mode)
@@ -74,9 +73,7 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
     float actualFrameTime = frameTime; // not changed by speed variable or limiting of frameTime
     frameTime *= speed;
     elapsedTime.restart();
-
     // limit FrameTime
-
     if ( frameTime > 50) frameTime = 50;
 
     if(curGameState==SIMULATION)
@@ -85,6 +82,10 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
         pCrowdManager->Update(frameTime, window);
         // Update Threats
         pThreatManager->update(window, mouseReleased);
+    }
+
+    if(curGameState == STATISTICS)
+    {
         // Update Statistic
         pStatistic->update();
     }
@@ -98,17 +99,20 @@ void ClSimulation::draw(sf::RenderWindow &window)
     window.setView(gameView);
     // Draw Background
     window.clear(pArea->getBgColor());
-    // Draw Statistic in background
-    pStatistic->draw(window);
-    if(curGameState==SIMULATION)
+    if(curGameState==STATISTICS)
+    {
+        // Draw Statistic in background
+        pStatistic->draw(window);
+    }
+    if(curGameState==SIMULATION || curGameState == STATISTICS)
     {
         // Draw Crowds
         pCrowdManager->draw(window);
+        // Draw static / dynamic Objects
+        pArea->draw(window);
+        // Draw Threats
+        pThreatManager->draw(window);
     }
-    // Draw static / dynamic Objects
-    pArea->draw(window);
-    // Draw Threats
-    pThreatManager->draw(window);
 }
 // private :
 
@@ -122,13 +126,10 @@ void ClSimulation::partitionCrowds(int totalVisitors)
     sf::Vector2f sPosition;
     sf::Vector2f sVector;
     sf::Vector2f sUnitVector;
-    double vectorDistance;
-
-    int attractionLength;
-    int numOfCrowds;
+    int vectorDistance;
 
     ClStaticObject *pObject;
-    ClPathFinder *pPF = new ClPathFinder(pArea, PATH_TEST_GRANULARITY, pArea->getLevelSize());
+    ClPathFinder *pPF = new ClPathFinder(pArea, 30, pArea->getLevelSize());
     ClPath *pPath;
 
     for(int i = 0; i < counter; i++)
@@ -145,58 +146,43 @@ void ClSimulation::partitionCrowds(int totalVisitors)
             {
                 sUnitVector.x = sVector.x / vectorDistance;
                 sUnitVector.y = sVector.y / vectorDistance;
-            }
-            else
+            }else
             {
                 std::cout << "Division by zero when calculating the Unit vector.";
             }
             //std::cout << "persons before: " << persons;
-            /*******IF THIS IS THE LAST PLACEMENT OF A CROWD, THE INACCURACY FOR TOTAL VISITORS IS CORRECTED*********/
+/*******IF THIS IS THE LAST PLACEMENT OF A CROWD, THE INACCURACY FOR TOTAL VISITORS IS CORRECTED*********/
             if(! pArea->attractionWithHigherId(i+2))
             {
                 persons += (double) (totalVisitors - *(pCrowdManager->getPeopleCount()) - persons);
             }
 
-            //Check lengh of attraction
-            if(abs(sUnitVector.x) < abs(sUnitVector.y))
+            pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
+
+            int vMaxX = pArea->getLevelSize().x - 5;
+            int vMaxY = pArea->getLevelSize().y - 5;
+
+            int positioningTryGranularity = 5;
+
+            while(pPath == NULL)
             {
-                attractionLength = pObject->getSize().x;
-            }
-            else
-            {
-                attractionLength = pObject->getSize().y;
-            }
-
-            numOfCrowds = attractionLength / DIST_CROWDS_PER_ATTR;
-
-            for(int j = 0; j < 1; j++)
-            {
-                pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
-
-                int vMaxX = pArea->getLevelSize().x - 5;
-                int vMaxY = pArea->getLevelSize().y - 5;
-
-                int positioningTryGranularity = 5;
-
-                while(pPath == NULL)
+                if((sPosition.x + sVector.x + ( positioningTryGranularity * sUnitVector.x)) > 5
+                   && sPosition.x + sVector.x + ( positioningTryGranularity * sUnitVector.x) < vMaxX
+                   && sPosition.y + sVector.y + ( positioningTryGranularity * sUnitVector.y) > 5
+                   && sPosition.y + sVector.y + ( positioningTryGranularity * sUnitVector.y) < vMaxY)
                 {
-                    if((sPosition.x + sVector.x + ( positioningTryGranularity * sUnitVector.x)) > 5
-                            && sPosition.x + sVector.x + ( positioningTryGranularity * sUnitVector.x) < vMaxX
-                            && sPosition.y + sVector.y + ( positioningTryGranularity * sUnitVector.y) > 5
-                            && sPosition.y + sVector.y + ( positioningTryGranularity * sUnitVector.y) < vMaxY)
-                    {
-                        sVector.x += positioningTryGranularity * sUnitVector.x;
-                        sVector.y += positioningTryGranularity * sUnitVector.y;
-                        delete pPath;
-                        pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
-                    }
-                    else
-                    {
-                        std::cout << "Not able to place crowd " << (i + 1);
-                    }
+                sVector.x += positioningTryGranularity * sUnitVector.x;
+                sVector.y += positioningTryGranularity * sUnitVector.y;
+                delete pPath;
+                pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
                 }
-                pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),(int)(persons / 50) + 1,(int) persons);
+                else
+                {
+                    std::cout << "Not able to place crowd " << (i + 1);
+                }
             }
+            pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),(int)(persons / 50) + 1,(int) persons);
+
         }
     }
     delete pPath;
@@ -214,14 +200,14 @@ void ClSimulation::calculatePriorities(int *sum, int *priority, int counter)
         sSize = pArea->getSize(i+1);
         switch(sType)
         {
-        case STAGE:
-            priority[i] = 3;
+        case 0:
+            priority[i] = STAGE;
             break;
-        case BAR:
-            priority[i] = 2;
+        case 1:
+            priority[i] = BAR;
             break;
-        case WC:
-            priority[i] = 5;
+        case 2:
+            priority[i] = WC;
             break;
         default:
             priority[i] = 0;
@@ -235,15 +221,14 @@ void ClSimulation::calculatePriorities(int *sum, int *priority, int counter)
 
 void ClSimulation::setCurGameState(enum GameStates newGS)
 {
-    if(!visitorsSet)
-    {
+    if(!visitorsSet){
         if (newGS == SIMULATION)
         {
             partitionCrowds(totalVisitors);
             visitorsSet = true;
         }
-        curGameState = newGS;
     }
+    curGameState = newGS;
 }
 
 
@@ -291,7 +276,6 @@ void ClSimulation::calculateOffset(float frameTime)
     if (center.x-(this->Mode.width / 2) + currentOffset.x > 0 && center.x + (this->Mode.width / 2) + currentOffset.x <= levelSize.x  )
     {
         gameView.move(currentOffset.x, 0);
-
     }
     // check whether view goes out of bounds in the y direction
     // if ( Top && Bottom )
@@ -299,4 +283,14 @@ void ClSimulation::calculateOffset(float frameTime)
     {
         gameView.move(0 ,currentOffset.y);
     }
+}
+
+void ClSimulation::setStopSim(bool newBool)
+{
+    stopSim = newBool;
+}
+
+bool ClSimulation::getStopSim()
+{
+    return stopSim;
 }

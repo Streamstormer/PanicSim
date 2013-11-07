@@ -3,8 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-enum Buttons {HEATMAP = 0, BOMB, STOP, PLAY, FASTFORWARD, FIRE, START, CREDITS, EXIT, PLUS, MINUS, EXITMENU, EXPLOSION };
-
+enum Buttons {HEATMAP = 0, BOMB, STOP, PLAY, FASTFORWARD, FIRE, START, CREDITS, EXIT, PLUS, MINUS, EXITMENU, EXPLOSION, STATISTIC};
 
 class ClSimpleButton
 {
