@@ -25,7 +25,7 @@ public:
     void activate();
     bool getBomb();
     bool getFire();
-
+    bool getAlive() {return alive;}
 private:
 
     void subrecttoNumber(int number);
@@ -34,6 +34,7 @@ private:
     bool isActive; // bomb explodes fire starts to burn
     bool bomb;
     bool fire;
+    bool alive;
     sf::Vector2f position_threat;
     sf::Vector2f size_threat;
     sf::Sprite sprite_threat;

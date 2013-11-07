@@ -106,6 +106,10 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
     //2.2. activate all inactive threats
     //2.3. tell the statistics about activated threats
 
+    /// look for dead threats
+    // 3.1 look for dead threats
+    // 3.2 delete them
+
     //1.
     sf::Vector2i mouse = sf::Mouse::getPosition(window);
     sf::Vector2f mouseFloat((float)mouse.x,(float)mouse.y);
@@ -157,4 +161,16 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
         }
         explosion_static = false;
     }
+
+    /// look for dead threats
+
+    // 3.1
+    for(unsigned int n = 0; n < threatVector.size(); n++)
+    {
+        if (threatVector[n]->getAlive() == false)
+        {
+            threatVector.erase(threatVector.begin()+n);
+        }
+    }
+
 }

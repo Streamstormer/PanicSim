@@ -23,8 +23,9 @@ ClThreat::ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, co
     this->pHeatMap = pHeatMap;
     this->pStatistic = pStatistic;
 
-//threat is not active at the beginning
+//threat is not active but alive at the beginning
     isActive = false;
+    alive = true;
 
 //Threat gets this position and texture
     sprite_threat.setPosition(position_threat);
@@ -82,7 +83,7 @@ void ClThreat::draw(sf::RenderWindow &window)
         // 2. chose correct picture
         if (bildID >63)
         {
-            bildID=63;//isActive=false;
+            alive = false;
         }
         int time =animationTime.getElapsedTime().asMilliseconds();
         bildID = (int)time/PICTUREDURATION;
@@ -172,13 +173,13 @@ void ClThreat::activate()
 
     if (bomb)
     {
-    std::cerr << "activated " << std::endl;
     int casualties = pHeatMap->explosion(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2)), 100);
     pStatistic->rememberKills(casualties, bomb);
     animationTime.restart();
     }
     else if (fire)
     {
+        alive = false;
         pArea->setOnFire(pArea->getIdByVector(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2))));
     }
     }
