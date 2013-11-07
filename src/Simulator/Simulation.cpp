@@ -145,12 +145,13 @@ void ClSimulation::partitionCrowds(int totalVisitors)
             {
                 sUnitVector.x = sVector.x / vectorDistance;
                 sUnitVector.y = sVector.y / vectorDistance;
-            }else
+            }
+            else
             {
                 std::cout << "Division by zero when calculating the Unit vector.";
             }
             //std::cout << "persons before: " << persons;
-/*******IF THIS IS THE LAST PLACEMENT OF A CROWD, THE INACCURACY FOR TOTAL VISITORS IS CORRECTED*********/
+            /*******IF THIS IS THE LAST PLACEMENT OF A CROWD, THE INACCURACY FOR TOTAL VISITORS IS CORRECTED*********/
             if(! pArea->attractionWithHigherId(i+2))
             {
                 persons += (double) (totalVisitors - *(pCrowdManager->getPeopleCount()) - persons);
@@ -170,31 +171,31 @@ void ClSimulation::partitionCrowds(int totalVisitors)
 
             for(int j = 0; j < 1; j++)
             {
-            pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
-
-            int vMaxX = pArea->getLevelSize().x - 5;
-            int vMaxY = pArea->getLevelSize().y - 5;
-
-            int positioningTryGranularity = 5;
-
-            while(pPath == NULL)
-            {
-                if((sPosition.x + sVector.x + ( positioningTryGranularity * sUnitVector.x)) > 5
-                   && sPosition.x + sVector.x + ( positioningTryGranularity * sUnitVector.x) < vMaxX
-                   && sPosition.y + sVector.y + ( positioningTryGranularity * sUnitVector.y) > 5
-                   && sPosition.y + sVector.y + ( positioningTryGranularity * sUnitVector.y) < vMaxY)
-                {
-                sVector.x += positioningTryGranularity * sUnitVector.x;
-                sVector.y += positioningTryGranularity * sUnitVector.y;
-                delete pPath;
                 pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
-                }
-                else
+
+                int vMaxX = pArea->getLevelSize().x - 5;
+                int vMaxY = pArea->getLevelSize().y - 5;
+
+                int positioningTryGranularity = 5;
+
+                while(pPath == NULL)
                 {
-                    std::cout << "Not able to place crowd " << (i + 1);
+                    if((sPosition.x + sVector.x + ( positioningTryGranularity * sUnitVector.x)) > 5
+                            && sPosition.x + sVector.x + ( positioningTryGranularity * sUnitVector.x) < vMaxX
+                            && sPosition.y + sVector.y + ( positioningTryGranularity * sUnitVector.y) > 5
+                            && sPosition.y + sVector.y + ( positioningTryGranularity * sUnitVector.y) < vMaxY)
+                    {
+                        sVector.x += positioningTryGranularity * sUnitVector.x;
+                        sVector.y += positioningTryGranularity * sUnitVector.y;
+                        delete pPath;
+                        pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
+                    }
+                    else
+                    {
+                        std::cout << "Not able to place crowd " << (i + 1);
+                    }
                 }
-            }
-            pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),(int)(persons / 50) + 1,(int) persons);
+                pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),(int)(persons / 50) + 1,(int) persons);
             }
         }
     }
@@ -234,14 +235,15 @@ void ClSimulation::calculatePriorities(int *sum, int *priority, int counter)
 
 void ClSimulation::setCurGameState(enum GameStates newGS)
 {
-    if(!visitorsSet){
-    if (newGS == SIMULATION)
+    if(!visitorsSet)
     {
-        partitionCrowds(totalVisitors);
-        visitorsSet = true;
+        if (newGS == SIMULATION)
+        {
+            partitionCrowds(totalVisitors);
+            visitorsSet = true;
+        }
+        curGameState = newGS;
     }
-    curGameState = newGS;
-}
 }
 
 
