@@ -125,7 +125,7 @@ void ClSimulation::partitionCrowds(int totalVisitors)
     int vectorDistance;
 
     ClStaticObject *pObject;
-    ClPathFinder *pPF = new ClPathFinder(pArea, 30, pArea->getLevelSize());
+    ClPathFinder *pPF = new ClPathFinder(pArea, 20, pArea->getLevelSize());
     ClPath *pPath;
 
     for(int i = 0; i < counter; i++)
@@ -196,14 +196,14 @@ void ClSimulation::calculatePriorities(int *sum, int *priority, int counter)
         sSize = pArea->getSize(i+1);
         switch(sType)
         {
-        case 0:
-            priority[i] = STAGE;
+        case STAGE:
+            priority[i] = 3;
             break;
-        case 1:
-            priority[i] = BAR;
+        case BAR:
+            priority[i] = 2;
             break;
-        case 2:
-            priority[i] = WC;
+        case WC:
+            priority[i] = 1;
             break;
         default:
             priority[i] = 0;
