@@ -24,6 +24,28 @@ sf::Vector2f ClPath::getNextVector()
     return vectorPath[position-1];
 }
 
+sf::Vector2f ClPath::getNodePosition(int index)
+{
+    return vectorPath[index];
+}
+
+int ClPath::getFirstNodeId()
+{
+    return 1;
+}
+
+bool ClPath::isLast(int index)
+{
+    if( vectorPath[index] == vectorPath[vectorPath.size()-1] )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 void ClPath::addVector(const sf::Vector2f & add)
 {
     this->vectorPath.push_back(add);

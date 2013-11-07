@@ -32,6 +32,7 @@ private:
 
     sf::Texture bomb_texture;
     sf::Texture fire_texture;
+    sf::Texture explosion_texture;
     std::vector<ClThreat *> threatVector;
     static bool fire_static;
     static bool bomb_static;

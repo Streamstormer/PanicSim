@@ -21,20 +21,30 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
         newPerson->force.x = newPerson->force.y = 0;
         do
         {
-            newPerson->position.x = std::rand();
-            newPerson->position.x = (int)newPerson->position.x % (int)(2*radius);
-            newPerson->position.x -= radius;
-        } while (newPerson->position.x < 0);
+            newPerson->position[PEOPLE_POSITION_MEMORY-1].x = std::rand();
+            newPerson->position[PEOPLE_POSITION_MEMORY-1].x = (int)newPerson->position[PEOPLE_POSITION_MEMORY-1].x % (int)(2*radius);
+            newPerson->position[PEOPLE_POSITION_MEMORY-1].x -= radius;
+
+        } while (newPerson->position[(PEOPLE_POSITION_MEMORY - 1)].x < 0);
 
         do
         {
-            newPerson->position.y = std::rand();
-            newPerson->position.y = (int)newPerson->position.y % (int)(2*radius);
-            newPerson->position.y -= radius;
-        } while (newPerson->position.y < 0);
-        newPerson->position.x += position.x ;
-        newPerson->position.y += position.y;
+            newPerson->position[PEOPLE_POSITION_MEMORY-1].y = std::rand();
+            newPerson->position[PEOPLE_POSITION_MEMORY-1].y = (int)newPerson->position[PEOPLE_POSITION_MEMORY-1].y % (int)(2*radius);
+            newPerson->position[PEOPLE_POSITION_MEMORY-1].y -= radius;
 
+        } while (newPerson->position[(PEOPLE_POSITION_MEMORY - 1)].y < 0);
+
+
+        //Add Offset
+        newPerson->position[PEOPLE_POSITION_MEMORY - 1].x += position.x - radius / 2 ;
+        newPerson->position[PEOPLE_POSITION_MEMORY - 1].y += position.y - radius / 2;
+
+        //Copy for history
+        for(int i = 0; i < (PEOPLE_POSITION_MEMORY - 1); i++)
+        {
+            newPerson->position[i] = newPerson->position[PEOPLE_POSITION_MEMORY-1];
+        }
         //newPerson->forceVec.x = newPerson->forceVec.y =0;
         peoples.push_back(newPerson);
 
@@ -79,13 +89,20 @@ void  ClCrowd::Update(float frameTime)
     float movementFactor = 1.0f;
     if(position == oldPosition)
     {
-        movementFactor = 0.75f;
+        movementFactor = 0.3;
     }
     sf::Vector2f force;
      for (unsigned int n = 0; n < peoples.size(); n++)
     {
-        // Center Force
-            force =  Seek( peoples[n]->position, position);
+
+        /*****Center Force****/
+        //Succeed
+        for(int i = 0; i < PEOPLE_POSITION_MEMORY - 1; i++)
+        {
+            peoples[n]->position[i] = peoples[n]->position[i + 1];
+        }
+
+         force =  Seek( peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)], position);
          //   Vec2DNormalize(&force)
          force.x *= frameTime * -0.03;
          force.y *= frameTime * -0.03;
@@ -142,10 +159,24 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
     sf::CircleShape personShape;
 
     personShape.setFillColor(Color);
-    personShape.setRadius(1);
+    personShape.setRadius(5);
+    personShape.setOrigin(2.5,2.5);
+
+    sf::Vector2f avgPosition;
+    int i;
+
     for(unsigned int n = 0; n< peoples.size(); n++)
     {
-        personShape.setPosition(peoples[n]->position);
+        avgPosition.x = 0;
+        avgPosition.y = 0;
+        for(i = 0; i < PEOPLE_POSITION_MEMORY; i++)
+        {
+            avgPosition.x += peoples[n]->position[i].x;
+            avgPosition.y += peoples[n]->position[i].y;
+        }
+        avgPosition.x /= PEOPLE_POSITION_MEMORY;
+        avgPosition.y /= PEOPLE_POSITION_MEMORY;
+        personShape.setPosition(avgPosition);
         window.draw(personShape);
     }
 

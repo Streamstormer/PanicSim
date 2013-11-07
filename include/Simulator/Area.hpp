@@ -52,6 +52,16 @@ public:
         }
         return closestExitPosition;
     }
+    void setOnFire(int id)
+    {
+        for(unsigned int n = 0; n < sobjects.size(); n++)
+        {
+            if (sobjects[n]->getID() == id)
+            {
+                sobjects[n]->startToBurn();
+            }
+        }
+    }
 
     /// Set Methods for StaticObjects attributes via id and new value
     /// for the editor

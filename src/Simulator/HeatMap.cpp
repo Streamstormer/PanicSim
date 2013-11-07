@@ -24,7 +24,7 @@ void ClHeatMap::registerCrowd(const std::vector<StrPeople *> &Crowd)
     // Adds the peoples of a crowd to a local array where they can be managed all together
     for (unsigned int n=0; n<Crowd.size(); n++)
     {
-        sf::Vector2f position = Crowd[n]->position;
+        sf::Vector2f position = Crowd[n]->position[(PEOPLE_POSITION_MEMORY - 1)];
         position.x -= (int)position.x % (int)cellSize.x;
         position.y -= (int)position.y % (int)cellSize.y;
         if ( position.x > 0 && position.y > 0 && position.x <= MapSize.x && position.y <= MapSize.y )
@@ -74,11 +74,16 @@ void ClHeatMap::update(float frameTime)
             // SortedPeoples[m][n]
             // cell number m
             // person number n
-            if(!Cell.contains(SortedPeoples[m][n]->position))
+            if(!Cell.contains(SortedPeoples[m][n]->position[(PEOPLE_POSITION_MEMORY - 1)]))
             {
-                if (SortedPeoples[m][n]->position.x > 0 && SortedPeoples[m][n]->position.y > 0 && SortedPeoples[m][n]->position.x <= MapSize.x && SortedPeoples[m][n]->position.y <= MapSize.y)
+                if (SortedPeoples[m][n]->position[(PEOPLE_POSITION_MEMORY - 1)].x > 0
+                        && SortedPeoples[m][n]->position[(PEOPLE_POSITION_MEMORY - 1)].y > 0
+                        && SortedPeoples[m][n]->position[(PEOPLE_POSITION_MEMORY - 1)].x <= MapSize.x
+                        && SortedPeoples[m][n]->position[(PEOPLE_POSITION_MEMORY - 1)].y <= MapSize.y)
                 {
-                    SortedPeoples[(int)(SortedPeoples[m][n]->position.x / cellSize.x) + (int)(SortedPeoples[m][n]->position.y / cellSize.y)*cellNumber.x].push_back(SortedPeoples[m][n]);
+                    SortedPeoples[(int)(SortedPeoples[m][n]->position[(PEOPLE_POSITION_MEMORY - 1)].x / cellSize.x)
+                                  + (int)(SortedPeoples[m][n]->position[(PEOPLE_POSITION_MEMORY - 1)].y / cellSize.y)
+                                  * cellNumber.x].push_back(SortedPeoples[m][n]);
                     SortedPeoples[m].erase(SortedPeoples[m].begin()+n);
                 }
             }
@@ -147,12 +152,13 @@ void ClHeatMap::update(float frameTime)
                     force.x*=frameTime;
                     force.y*=frameTime;
 
-                    id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position + force + SortedPeoples[x+y*cellNumber.x][n]->force );
+                    id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)]
+                                              + force + SortedPeoples[x+y*cellNumber.x][n]->force );
 
                     if( id == -1)
                     {
-                        SortedPeoples[x+y*cellNumber.x][n]->position.x += force.x + SortedPeoples[x+y*cellNumber.x][n]->force.x ;
-                        SortedPeoples[x+y*cellNumber.x][n]->position.y += force.y + SortedPeoples[x+y*cellNumber.x][n]->force.y ;
+                        SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)].x += force.x + SortedPeoples[x+y*cellNumber.x][n]->force.x ;
+                        SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)].y += force.y + SortedPeoples[x+y*cellNumber.x][n]->force.y ;
                     }
                     else
                     {
@@ -186,8 +192,10 @@ sf::Vector2f ClHeatMap::distanceForce(std::vector<StrPeople *> &cell, StrPeople 
     {
         if ( position != n)
         {
-            delta.x =   (checkMe->position.x-cell[n]->position.x );
-            delta.y =   (checkMe->position.y-cell[n]->position.y );
+            delta.x =   (checkMe->position[(PEOPLE_POSITION_MEMORY - 1)].x
+                         - cell[n]->position[(PEOPLE_POSITION_MEMORY - 1)].x );
+            delta.y =   (checkMe->position[(PEOPLE_POSITION_MEMORY - 1)].y
+                         - cell[n]->position[(PEOPLE_POSITION_MEMORY - 1)].y );
 
             if (((delta.x*delta.x) + (delta.y * delta.y)) < 160) // is in range ?
             {
@@ -273,7 +281,7 @@ int ClHeatMap::explosion(const sf::Vector2f &here, int explosionRadius)
     // 3. remove casualties from list ( Crowd cleans them up )
     // 4. return number of casualties
 
-    sf::Vector2u explosion; // Coordinates of the cell containing the bomb
+    sf::Vector2i explosion; // Coordinates of the cell containing the bomb
     int casualties = 0;
 
     // 1.
@@ -323,7 +331,7 @@ int ClHeatMap::explosion(const sf::Vector2f &here, int explosionRadius)
 }
 
 // returns ammount of casualties (helper function of explosion)
-int ClHeatMap::calculateCasualtiesInCell(const sf::Vector2u &cell, const sf::Vector2f &bombPosition, int explosionRadius)
+int ClHeatMap::calculateCasualtiesInCell(const sf::Vector2i &cell, const sf::Vector2f &bombPosition, int explosionRadius)
 {
     // 1. check wheather casualties are in range
     // 2. remove casualties from list ( alive = false -> Crowd cleans them up )
@@ -335,7 +343,7 @@ int ClHeatMap::calculateCasualtiesInCell(const sf::Vector2u &cell, const sf::Vec
     for ( int n = 0; n < SortedPeoples[cell.x+cell.y*cellNumber.x].size(); n++)
     {
         // 1.
-        position = SortedPeoples[cell.x+cell.y*cellNumber.x][n]->position;
+        position = SortedPeoples[cell.x+cell.y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)];
         if (FSquare.getSqrt((position.x - bombPosition.x)*(position.x - bombPosition.x) + (position.y - bombPosition.y)*(position.y - bombPosition.y)) < explosionRadius )
         {
             //2.

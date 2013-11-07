@@ -9,7 +9,7 @@
 #include "../../include/Common/FileHandler.hpp"
 #include <cmath>
 
-enum GameStates {MENU, SIMULATION, PAUSE, EXITSTATE, CREDITSMENU};
+enum GameStates {MENU, SIMULATION, PAUSE, EXITSTATE, CREDITSMENU, STATISTICS};
 
 class ClSimulation
 {
@@ -26,6 +26,8 @@ class ClSimulation
 
         static void updateSpeed(bool pause, bool normal, bool fastForward);
         static void setTotalVisitors(int number);
+        static void setStopSim(bool newBool);
+        static bool getStopSim();
     private:
         // this function is called in the constructor
 
@@ -38,6 +40,9 @@ class ClSimulation
 
         void calculatePriorities(int *sum, int *priority, int counter);
 
+        static const int PATH_TEST_GRANULARITY = 20;
+        static const int DIST_CROWDS_PER_ATTR = 120;
+        static const int POS_TRY_GRAN = 5;
 
         ClArea *pArea;
         ClCrowdManager *pCrowdManager;
@@ -58,6 +63,7 @@ class ClSimulation
         enum GameStates curGameState;
 
         bool visitorsSet;
+        static bool stopSim;
 
         //Background Color
         //sf::Color bgColor;
