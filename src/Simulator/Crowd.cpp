@@ -24,10 +24,7 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
             newPerson->position[PEOPLE_POSITION_MEMORY-1].x = std::rand();
             newPerson->position[PEOPLE_POSITION_MEMORY-1].x = (int)newPerson->position[PEOPLE_POSITION_MEMORY-1].x % (int)(2*radius);
             newPerson->position[PEOPLE_POSITION_MEMORY-1].x -= radius;
-            for(int i = 0; i < (PEOPLE_POSITION_MEMORY - 1); i++)
-            {
-                newPerson->position[i].x = newPerson->position[PEOPLE_POSITION_MEMORY-1].x;
-            }
+
         } while (newPerson->position[(PEOPLE_POSITION_MEMORY - 1)].x < 0);
 
         do
@@ -35,17 +32,17 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
             newPerson->position[PEOPLE_POSITION_MEMORY-1].y = std::rand();
             newPerson->position[PEOPLE_POSITION_MEMORY-1].y = (int)newPerson->position[PEOPLE_POSITION_MEMORY-1].y % (int)(2*radius);
             newPerson->position[PEOPLE_POSITION_MEMORY-1].y -= radius;
-            for(int i = 0; i < (PEOPLE_POSITION_MEMORY - 1); i++)
-            {
-                newPerson->position[i].y = newPerson->position[PEOPLE_POSITION_MEMORY-1].y;
-            }
+
         } while (newPerson->position[(PEOPLE_POSITION_MEMORY - 1)].y < 0);
 
         //Add Offset
-        for(int i = 0; i < (PEOPLE_POSITION_MEMORY); i++)
+        newPerson->position[PEOPLE_POSITION_MEMORY - 1].x += position.x ;
+        newPerson->position[PEOPLE_POSITION_MEMORY - 1].y += position.y;
+
+        //Copy for history
+        for(int i = 0; i < (PEOPLE_POSITION_MEMORY - 1); i++)
         {
-            newPerson->position[i].x += position.x ;
-            newPerson->position[i].y += position.y;
+            newPerson->position[i] = newPerson->position[PEOPLE_POSITION_MEMORY-1];
         }
         //newPerson->forceVec.x = newPerson->forceVec.y =0;
         peoples.push_back(newPerson);
