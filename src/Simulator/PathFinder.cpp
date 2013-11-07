@@ -48,9 +48,9 @@ void ClPathFinder::createNodes()
     int x, y;
     bool validID[nodeNumber.x*nodeNumber.y]; // enough memory to store wheather it is a valid id or not
 
-    for(y = 0;y<areaSize.y; y+=nodeDistance)
+    for(y = 0;y<areaSize.y; y+=nodeDistance) //nodeDistance only allowed if areaSize.y/nodDistance rest =0
     {
-        for(x=0; x<areaSize.x; x+=nodeDistance)
+        for(x=0; x<areaSize.x; x+=nodeDistance) //nodeDistance only allowed if areaSize.x/nodDistance rest =0
         {
             //1.
             validID[idCounter] = false;
