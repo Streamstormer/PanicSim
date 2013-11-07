@@ -17,6 +17,7 @@ ClThreatManager::ClThreatManager(ClArea *pArea, ClStatistic *pStatistic, ClHeatM
     //assigning the textures to variables
     bomb_texture.loadFromFile("pictures/bomb_tex.png");
     fire_texture.loadFromFile("pictures/fire_tex.png");
+    explosion_texture.loadFromFile("pictures/explosion.png");
 
     //pointer to the original area
     this->pArea = pArea;
@@ -46,7 +47,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(bomb)
     {
         //2.
-        ClThreat *pThreat = new ClThreat(true, false, position, size_threat, bomb_texture, pArea, pHeatMap, pStatistic);
+        ClThreat *pThreat = new ClThreat(true, false, position, size_threat, bomb_texture, pArea, pHeatMap, pStatistic, explosion_texture);
         threatVector.push_back(pThreat);
         bomb = false;
     }
@@ -55,7 +56,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(fire)
     {
         //2.
-        ClThreat *pThreat = new ClThreat(false, true, position, size_threat, fire_texture, pArea, pHeatMap, pStatistic);
+        ClThreat *pThreat = new ClThreat(false, true, position, size_threat, fire_texture, pArea, pHeatMap, pStatistic,explosion_texture);
         threatVector.push_back(pThreat);
         fire = false;
     }
