@@ -55,11 +55,10 @@ void ClSimpleStatisticsMenu::createMenu()
     position.y += labelSize.y + 1;
     pLabel = new ClSimpleLabel(position, labelSize, sf::String("People killed by bombs:"), *pFont, ClStatistic::getNumberKillsBomb());
     LabelVector.push_back(pLabel);
-/*
+
     position.y += labelSize.y + 1;
     pLabel = new ClSimpleLabel(position, labelSize, sf::String("Time for evacuation:"), *pFont, ClStatistic::getTime());
     LabelVector.push_back(pLabel);
-*/
 }
 
 void ClSimpleStatisticsMenu::draw(sf::RenderWindow &window) const

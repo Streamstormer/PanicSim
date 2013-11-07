@@ -1,7 +1,6 @@
 #ifndef CLSIMPLESTATISTICSMENU_HPP_INCLUDED
 #define CLSIMPLESTATISTICSMENU_HPP_INCLUDED
 
-#include "Statistic.hpp"
 #include "SimpleMenu.hpp"
 
 class ClSimpleStatisticsMenu : public ClSimpleMenu

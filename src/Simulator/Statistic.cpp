@@ -1,9 +1,12 @@
 #include "../../include/Simulator/Statistic.hpp"
 bool ClStatistic::doDrawAverage = false;
+bool ClStatistic::setStop = false;
+bool ClStatistic::setStart = false;
 int ClStatistic::numberBomb = 0;
 int ClStatistic::numberFire = 0;
 int ClStatistic::numberKillsFire = 0;
 int ClStatistic::numberKillsBomb = 0;
+int ClStatistic::time = 0;
 
 ClStatistic::ClStatistic(){}
 
@@ -143,6 +146,19 @@ void ClStatistic::update()
             }
         }
     }
+
+    if(setStart==true)
+    {
+        setStart = false;
+        startClock.restart();
+    }
+
+    if(setStop==true)
+    {
+        setStop = false;
+        float startTime = startClock.getElapsedTime().asSeconds();
+        time = (int)startTime;
+    }
 }
 
 void ClStatistic::rememberKills(int number, bool bomb)
@@ -155,6 +171,16 @@ void ClStatistic::rememberKills(int number, bool bomb)
         }
         else numberKillsFire += number;
     }
+}
+
+void ClStatistic::startTimer()
+{
+    setStart = true;
+}
+
+void ClStatistic::rememberTime()
+{
+    setStop = true;
 }
 
 int* ClStatistic::getNumberBomb()
@@ -176,9 +202,8 @@ int* ClStatistic::getNumberKillsBomb()
 {
     return &numberKillsBomb;
 }
-/*
+
 int* ClStatistic::getTime()
 {
     return &time;
 }
-*/
