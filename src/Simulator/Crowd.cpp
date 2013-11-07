@@ -79,17 +79,16 @@ void  ClCrowd::Update(float frameTime)
     float movementFactor = 1.0f;
     if(position == oldPosition)
     {
-        movementFactor = 0.75f;
+        movementFactor = 0.3;
     }
     sf::Vector2f force;
      for (unsigned int n = 0; n < peoples.size(); n++)
     {
         // Center Force
-            force =  Seek( peoples[n]->position, position);
-         //   Vec2DNormalize(&force)
-         force.x *= frameTime * -0.03;
-         force.y *= frameTime * -0.03;
-         peoples[n]->force = force;
+        force =  Seek( peoples[n]->position, position);
+        force.x *= frameTime * -0.03;
+        force.y *= frameTime * -0.03;
+        peoples[n]->force = force;
     }
     oldPosition = position;
 
