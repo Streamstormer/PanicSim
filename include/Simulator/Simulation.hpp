@@ -9,7 +9,7 @@
 #include "../../include/Common/FileHandler.hpp"
 #include <cmath>
 
-enum GameStates {MENU, SIMULATION, PAUSE, EXITSTATE, CREDITSMENU};
+enum GameStates {MENU, SIMULATION, PAUSE, EXITSTATE, CREDITSMENU, STATISTICS};
 
 class ClSimulation
 {
@@ -26,6 +26,8 @@ class ClSimulation
 
         static void updateSpeed(bool pause, bool normal, bool fastForward);
         static void setTotalVisitors(int number);
+        static void setStopSim(bool newBool);
+        static bool getStopSim();
     private:
         // this function is called in the constructor
 
@@ -61,6 +63,7 @@ class ClSimulation
         enum GameStates curGameState;
 
         bool visitorsSet;
+        static bool stopSim;
 
         //Background Color
         //sf::Color bgColor;

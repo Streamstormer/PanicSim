@@ -15,6 +15,6 @@ class ClSimpleSimulationMenu : public ClSimpleMenu
         private:
     void createMenu();
     sf::Texture texture2;
-
+    sf::Texture texture3;
 };
 #endif // SIMPLESIMULATIONMENU_HPP
