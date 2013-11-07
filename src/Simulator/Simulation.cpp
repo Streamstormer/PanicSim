@@ -1,6 +1,6 @@
 #include "../../include/Simulator/Simulation.hpp"
 
-
+bool ClSimulation::stopSim = false;
 int ClSimulation::speed = 1;
 int ClSimulation::totalVisitors = 0;
 
@@ -85,9 +85,14 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
         pCrowdManager->Update(frameTime, window);
         // Update Threats
         pThreatManager->update(window, mouseReleased);
+    }
+
+    if(curGameState==STATISTICS)
+    {
         // Update Statistic
         pStatistic->update();
     }
+
     // Update View
     calculateOffset(actualFrameTime);
     return true;
@@ -98,17 +103,20 @@ void ClSimulation::draw(sf::RenderWindow &window)
     window.setView(gameView);
     // Draw Background
     window.clear(pArea->getBgColor());
-    // Draw Statistic in background
-    pStatistic->draw(window);
-    if(curGameState==SIMULATION)
+   if(curGameState==STATISTICS)
+    {
+        // Draw Statistic in background
+        pStatistic->draw(window);
+    }
+    if(curGameState==SIMULATION || curGameState == STATISTICS)
     {
         // Draw Crowds
         pCrowdManager->draw(window);
+        // Draw static / dynamic Objects
+        pArea->draw(window);
+        // Draw Threats
+        pThreatManager->draw(window);
     }
-    // Draw static / dynamic Objects
-    pArea->draw(window);
-    // Draw Threats
-    pThreatManager->draw(window);
 }
 // private :
 
@@ -279,8 +287,8 @@ void ClSimulation::setCurGameState(enum GameStates newGS)
             partitionCrowds(totalVisitors);
             visitorsSet = true;
         }
-        curGameState = newGS;
     }
+    curGameState = newGS;
 }
 
 
@@ -336,4 +344,14 @@ void ClSimulation::calculateOffset(float frameTime)
     {
         gameView.move(0 ,currentOffset.y);
     }
+}
+
+void ClSimulation::setStopSim(bool newBool)
+{
+    stopSim = newBool;
+}
+
+bool ClSimulation::getStopSim()
+{
+    return stopSim;
 }

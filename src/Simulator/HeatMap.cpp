@@ -281,7 +281,7 @@ int ClHeatMap::explosion(const sf::Vector2f &here, int explosionRadius)
     // 3. remove casualties from list ( Crowd cleans them up )
     // 4. return number of casualties
 
-    sf::Vector2u explosion; // Coordinates of the cell containing the bomb
+    sf::Vector2i explosion; // Coordinates of the cell containing the bomb
     int casualties = 0;
 
     // 1.
@@ -331,7 +331,7 @@ int ClHeatMap::explosion(const sf::Vector2f &here, int explosionRadius)
 }
 
 // returns ammount of casualties (helper function of explosion)
-int ClHeatMap::calculateCasualtiesInCell(const sf::Vector2u &cell, const sf::Vector2f &bombPosition, int explosionRadius)
+int ClHeatMap::calculateCasualtiesInCell(const sf::Vector2i &cell, const sf::Vector2f &bombPosition, int explosionRadius)
 {
     // 1. check wheather casualties are in range
     // 2. remove casualties from list ( alive = false -> Crowd cleans them up )
