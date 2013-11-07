@@ -82,7 +82,7 @@ void ClThreat::draw(sf::RenderWindow &window)
         // 2. chose correct picture
         if (bildID >63)
         {
-            isActive=false;
+            bildID=63;//isActive=false;
         }
         int time =animationTime.getElapsedTime().asMilliseconds();
         bildID = (int)time/PICTUREDURATION;
