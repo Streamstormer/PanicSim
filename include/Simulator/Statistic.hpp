@@ -21,6 +21,8 @@ public:
     static bool getAverageDraw();
     static void startTimer();
     static void rememberTime();
+    static void rememberPause();
+    static void rememberContinue();
     static int* getNumberBomb();
     static int* getNumberFire();
     static int* getNumberKillsBomb();
@@ -28,6 +30,7 @@ public:
     static int* getTime();
 private:
     sf::Clock startClock;
+    sf::Clock pauseClock;
     sf::Vector2i cellNumber;
     sf::Vector2f cellSize;
     int sw_green;
@@ -35,11 +38,15 @@ private:
     int sw_red;
     sf::Color getColor(int people);
     int loopNumber;
+    float startTime;
+    float pauseTime;
     int **pAllCells;
     int **pDrawCells;
 
     static bool setStop;
     static bool setStart;
+    static bool setPause;
+    static bool setContinue;
     static bool doDrawAverage;
     static int numberFire;
     static int numberBomb;

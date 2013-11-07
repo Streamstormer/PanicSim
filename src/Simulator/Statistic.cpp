@@ -2,13 +2,18 @@
 bool ClStatistic::doDrawAverage = false;
 bool ClStatistic::setStop = false;
 bool ClStatistic::setStart = false;
+bool ClStatistic::setPause = false;
+bool ClStatistic::setContinue = false;
 int ClStatistic::numberBomb = 0;
 int ClStatistic::numberFire = 0;
 int ClStatistic::numberKillsFire = 0;
 int ClStatistic::numberKillsBomb = 0;
 int ClStatistic::time = 0;
 
-ClStatistic::ClStatistic(){}
+ClStatistic::ClStatistic()
+{
+    pauseTime = 0;
+}
 
 ClStatistic::~ClStatistic()
 {
@@ -153,11 +158,26 @@ void ClStatistic::update()
         startClock.restart();
     }
 
+    if(setPause == true)
+    {
+        setPause = false;
+        pauseClock.restart();
+    }
+
+    if(setContinue == true)
+    {
+        setContinue = false;
+        pauseTime = pauseClock.getElapsedTime().asSeconds();
+    }
+
     if(setStop==true)
     {
         setStop = false;
-        float startTime = startClock.getElapsedTime().asSeconds();
-        time = (int)startTime;
+        startTime = startClock.getElapsedTime().asSeconds();
+        if(pauseTime>0)
+        {
+            time = (int)(startTime-pauseTime);
+        }else time = (int) startTime;
     }
 }
 
@@ -181,6 +201,16 @@ void ClStatistic::startTimer()
 void ClStatistic::rememberTime()
 {
     setStop = true;
+}
+
+void ClStatistic::rememberPause()
+{
+    setPause = true;
+}
+
+void ClStatistic::rememberContinue()
+{
+    setContinue = true;
 }
 
 int* ClStatistic::getNumberBomb()
