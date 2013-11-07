@@ -88,11 +88,12 @@ void  ClCrowd::Update(float frameTime)
     float movementFactor = 1.0f;
     if(position == oldPosition)
     {
-        movementFactor = 0.75f;
+        movementFactor = 0.3;
     }
     sf::Vector2f force;
      for (unsigned int n = 0; n < peoples.size(); n++)
     {
+
         /*****Center Force****/
         //Succeed
         for(int i = 0; i < PEOPLE_POSITION_MEMORY - 1; i++)
