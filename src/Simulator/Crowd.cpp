@@ -159,7 +159,8 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
     sf::CircleShape personShape;
 
     personShape.setFillColor(Color);
-    personShape.setRadius(1);
+    personShape.setRadius(5);
+    personShape.setOrigin(2.5,2.5);
 
     sf::Vector2f avgPosition;
     int i;
