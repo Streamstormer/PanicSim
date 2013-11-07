@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-const int PEOPLE_POSITION_MEMORY = 5;
+const int PEOPLE_POSITION_MEMORY = 4;
 
 struct StrPeople
 {
