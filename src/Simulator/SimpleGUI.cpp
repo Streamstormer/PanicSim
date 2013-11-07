@@ -2,8 +2,10 @@
 
 ClSimpleGUI::ClSimpleGUI(const sf::Vector2f &ScreenSize)
 {
+
     this->ScreenSize = ScreenSize;
     labelFont.loadFromFile("fonts/LiberationSerif-Regular.ttf");
+
 
     createAllMenus();
     pCurrentMenu = MenuVector.front();
@@ -40,8 +42,8 @@ enum GameStates ClSimpleGUI::update( sf::RenderWindow &window, bool mouseRelease
         }
     }
     return curState;
-}
 
+}
 /*
     void ClSimpleGUI::CreateAllLabels()
     {
@@ -69,7 +71,4 @@ void ClSimpleGUI::createAllMenus()
 
     ClSimpleCreditsMenu *pCreditsMenu = new ClSimpleCreditsMenu(CREDITSMENU,&labelFont,ScreenSize);
     MenuVector.push_back(pCreditsMenu);
-
-    ClSimpleStatisticsMenu *pStatisticsMenu = new ClSimpleStatisticsMenu(STATISTICS,&labelFont,ScreenSize);
-    MenuVector.push_back(pStatisticsMenu);
 }

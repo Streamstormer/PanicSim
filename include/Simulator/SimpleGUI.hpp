@@ -8,13 +8,13 @@
 #include "SimpleLabel.hpp"
 #include "SimpleStartMenu.hpp"
 #include "SimpleSimulationMenu.hpp"
-#include "SimpleStatisticsMenu.hpp"
 
 // get static functions for execute from here
 #include "HeatMap.hpp"
 #include "CrowdManager.hpp"
 #include "Simulation.hpp"
 #include "SimpleCreditsMenu.hpp"
+
 
 
 class ClSimpleGUI

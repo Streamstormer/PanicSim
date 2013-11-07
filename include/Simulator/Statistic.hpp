@@ -17,14 +17,13 @@ public:
     void update();
     void draw(sf::RenderWindow &window);
     int loopNumber;
-    static void setAverageDraw(bool newBool);
-    static bool getAverageDraw();
+    static void toggleAverageDraw();
+    static bool doDrawAverage;
     void rememberKills(int number, bool bomb);
-    static int* getNumberBomb();
-    static int* getNumberFire();
-    static int* getNumberKillsBomb();
-    static int* getNumberKillsFire();
-    static int* getTime();
+    int getNumberBomb();
+    int getNumberFire();
+    int getNumberKillsBomb();
+    int getNumberKillsFire();
 private:
     sf::Vector2i cellNumber;
     sf::Vector2f cellSize;
@@ -35,13 +34,10 @@ private:
 
     int **pAllCells;
     int **pDrawCells;
-    static bool doDrawAverage;
-
-    static int numberFire;
-    static int numberBomb;
-    static int numberKillsBomb;
-    static int numberKillsFire;
-    static int time;
+    int numberFire;
+    int numberBomb;
+    int numberKillsBomb;
+    int numberKillsFire;
 };
 
 #endif // STATISTIC_HPP_INCLUDED

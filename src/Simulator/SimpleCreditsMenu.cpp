@@ -14,6 +14,7 @@ ClSimpleCreditsMenu::ClSimpleCreditsMenu(enum GameStates myState, sf::Font *pFon
 ClSimpleCreditsMenu::~ClSimpleCreditsMenu()
 {
     delete pButton;
+
 }
 
 void ClSimpleCreditsMenu::createMenu()
@@ -59,6 +60,7 @@ void ClSimpleCreditsMenu::createMenu()
     position.x -= labelSize.x/2;
     position.y = screenSize.y/3+labelSize.y/2;
     pButton = new ClSimpleButton(id, EXITMENU, 0, texture, buttonSize,position, 1.0f);
+
     pButton->setText(sf::String("BACK"),pFont);
 }
 

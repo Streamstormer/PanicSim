@@ -1,11 +1,13 @@
 #include "../../include/Simulator/Statistic.hpp"
 bool ClStatistic::doDrawAverage = false;
-int ClStatistic::numberBomb = 0;
-int ClStatistic::numberFire = 0;
-int ClStatistic::numberKillsFire = 0;
-int ClStatistic::numberKillsBomb = 0;
 
-ClStatistic::ClStatistic(){}
+ClStatistic::ClStatistic()
+{
+    numberBomb = 0;
+    numberFire = 0;
+    numberKillsFire = 0;
+    numberKillsBomb = 0;
+}
 
 ClStatistic::~ClStatistic()
 {
@@ -41,33 +43,24 @@ void ClStatistic::planHeatMapStatistic(sf::Vector2i cellNumber, sf::Vector2f cel
 
 void ClStatistic::rememberCells(int cellX, int cellY, const int numberOfPeople)
 {
-    if(doDrawAverage==false)
-    {
-        pAllCells[cellY][cellX] += numberOfPeople;
-    }
+    pAllCells[cellY][cellX] += numberOfPeople;
 }
 
 void ClStatistic::rememberLoop()
 {
-    if(doDrawAverage==false)
-    {
-        loopNumber++;
-    }
+    loopNumber++;
 }
 
 void ClStatistic::rememberThreats(bool bomb, bool fire)
 {
-    if(doDrawAverage==false)
+    if(bomb == true)
     {
-        if(bomb == true)
-        {
-            numberBomb++;
-        }
+        numberBomb++;
+    }
 
-        if(fire == true)
-        {
-            numberFire++;
-        }
+    if(fire == true)
+    {
+        numberFire++;
     }
 }
 
@@ -119,14 +112,13 @@ sf::Color ClStatistic::getColor(int people)
 }
 
 
-void ClStatistic::setAverageDraw(bool newBool)
+void ClStatistic::toggleAverageDraw()
 {
-    doDrawAverage=newBool;
-}
-
-bool ClStatistic::getAverageDraw()
-{
-    return doDrawAverage;
+    if (doDrawAverage==true)
+    {
+        doDrawAverage = false;
+    }
+    else doDrawAverage = true;
 }
 
 void ClStatistic::update()
@@ -145,38 +137,29 @@ void ClStatistic::update()
 
 void ClStatistic::rememberKills(int number, bool bomb)
 {
-    if(doDrawAverage==false)
+    if(bomb)
     {
-        if(bomb)
-        {
-            numberKillsBomb += number;
-        }
-        else numberKillsFire += number;
+        numberKillsBomb += number;
     }
+    else numberKillsFire += number;
 }
 
-int* ClStatistic::getNumberBomb()
+int ClStatistic::getNumberBomb()
 {
-    return &numberBomb;
+    return numberBomb;
 }
 
-int* ClStatistic::getNumberFire()
+int ClStatistic::getNumberFire()
 {
-    return &numberFire;
+    return numberFire;
 }
 
-int* ClStatistic::getNumberKillsFire()
+int ClStatistic::getNumberKillsFire()
 {
-    return &numberKillsFire;
+    return numberKillsFire;
 }
 
-int* ClStatistic::getNumberKillsBomb()
+int ClStatistic::getNumberKillsBomb()
 {
-    return &numberKillsBomb;
+    return numberKillsBomb;
 }
-/*
-int* ClStatistic::getTime()
-{
-    return &time;
-}
-*/

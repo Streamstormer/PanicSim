@@ -21,7 +21,7 @@ public:
     static bool doDraw;
 private:
     sf::Vector2f distanceForce(std::vector<StrPeople *> &cell, StrPeople *checkMe, int position );
-    int calculateCasualtiesInCell(const sf::Vector2u &cell, const sf::Vector2f &bombPosition, int explosionRadius); // returns ammount of casualties (helper function of explosion)
+    int calculateCasualtiesInCell(const sf::Vector2i &cell, const sf::Vector2f &bombPosition, int explosionRadius); // returns ammount of casualties (helper function of explosion)
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );
     float invert(float Max, float Current);
 
