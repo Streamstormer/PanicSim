@@ -15,7 +15,7 @@ usecase:    creation of threats, handling mouse action on threats and set new po
 class ClThreat
 {
 public:
-    ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic);
+    ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic,const sf::Texture &explosion_texture);
     ~ClThreat();
     void draw(sf::RenderWindow &window);
     void recognizeMouse(sf::RenderWindow &window);
@@ -25,7 +25,10 @@ public:
     void activate();
     bool getBomb();
     bool getFire();
+
 private:
+
+    void subrecttoNumber(int number);
     ClHeatMap *pHeatMap;
     bool isMoved;
     bool isActive; // bomb explodes fire starts to burn
@@ -34,9 +37,18 @@ private:
     sf::Vector2f position_threat;
     sf::Vector2f size_threat;
     sf::Sprite sprite_threat;
+    sf::Sprite explosion_sprite;
+    sf::Clock animationTime;
     sf::IntRect threat;
     ClArea *pArea;
     ClStatistic *pStatistic;
+    sf::Rect<int> subrect;
+    int time;
+    int bildID;
+    const static int PICTUREDURATION =25;
+    const static int ANIMATIONSQUARE =8;
+
+
 };
 
 #endif // THREAT_HPP_INCLUDED
