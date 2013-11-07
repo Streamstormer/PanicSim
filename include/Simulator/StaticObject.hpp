@@ -20,6 +20,10 @@ public:
     enum staticObjects getType();
     const sf::Vector2f &getPosition();
     const sf::Vector2f &getSize();
+    void startToBurn()
+    {
+        Rect->setFillColor(sf::Color::Magenta);
+    }
 
     float getRotation();
 

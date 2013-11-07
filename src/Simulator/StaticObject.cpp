@@ -167,7 +167,7 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
 
     }
 
-    if(Type!=FENCE && Type!=WALL)
+    if(Type!=FENCE && Type!=WALL && Type != GATE)
     {
         line.setSize(sf::Vector2f(Rect->getSize().x,3));
         line.setFillColor(sf::Color::Red);
