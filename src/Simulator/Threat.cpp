@@ -10,7 +10,7 @@ usecase:    creation of threats, handling mouse action on threats and set new po
 #include <iostream>
 
 //Creation of threats on an area using a specific position, a size and one of the two possible textures (fire or bomb)
-ClThreat::ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic)
+ClThreat::ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic,const sf::Texture &explosion_texture)
 {
 //boolean values for differentiation
     this->bomb = bomb;
@@ -23,8 +23,9 @@ ClThreat::ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, co
     this->pHeatMap = pHeatMap;
     this->pStatistic = pStatistic;
 
-//threat is not active at the beginning
+//threat is not active but alive at the beginning
     isActive = false;
+    alive = true;
 
 //Threat gets this position and texture
     sprite_threat.setPosition(position_threat);
@@ -42,13 +43,56 @@ ClThreat::ClThreat(bool bomb, bool fire, const sf::Vector2f &position_threat, co
 //set the origin in the middle of the threat
     sf::Vector2f sizeT(sprite_threat.getGlobalBounds().width, sprite_threat.getGlobalBounds().height);
     sprite_threat.setOrigin(sizeT.x/2,sizeT.y/2);
+
+//set explosion texture
+    explosion_sprite.setTexture(explosion_texture);
+    subrect.top=0;
+    subrect.left=0;
+    subrect.width=explosion_texture.getSize().x/8;
+    subrect.height=explosion_texture.getSize().y/8;
+    bildID=0;
+
+
 }
 
 ClThreat::~ClThreat() {}
 
+void ClThreat::subrecttoNumber(int number)
+{
+
+
+    subrect.top = (int)(number/ANIMATIONSQUARE)*subrect.height;
+    subrect.left = (int)(number%ANIMATIONSQUARE)*subrect.width;
+     explosion_sprite.setTextureRect(subrect);
+     explosion_sprite.setPosition(sprite_threat.getPosition());
+     explosion_sprite.setOrigin(subrect.width/2,subrect.height/2);
+
+
+}
+
 void ClThreat::draw(sf::RenderWindow &window)
 {
     window.draw(sprite_threat);
+
+
+
+    if (isActive)
+    {
+
+            // 1. calculate picture number from time
+        // 2. chose correct picture
+        if (bildID >63)
+        {
+            alive = false;
+        }
+        int time =animationTime.getElapsedTime().asMilliseconds();
+        bildID = (int)time/PICTUREDURATION;
+        subrecttoNumber(bildID);
+        window.draw(explosion_sprite);
+
+    }
+
+
 }
 
 //is only called if there is a mouse action (left mouse button released) in main function
@@ -120,12 +164,25 @@ bool ClThreat::getIsActive()
     return isActive;
 }
 
+
 void ClThreat::activate()
 {
+    if(isActive == false)
+    {
     isActive = true;
-    std::cerr << "activated " << std::endl;
+
+    if (bomb)
+    {
     int casualties = pHeatMap->explosion(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2)), 100);
     pStatistic->rememberKills(casualties, bomb);
+    animationTime.restart();
+    }
+    else if (fire)
+    {
+        alive = false;
+        pArea->setOnFire(pArea->getIdByVector(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2))));
+    }
+    }
 }
 
 bool ClThreat::getBomb()

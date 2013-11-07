@@ -17,6 +17,7 @@ ClThreatManager::ClThreatManager(ClArea *pArea, ClStatistic *pStatistic, ClHeatM
     //assigning the textures to variables
     bomb_texture.loadFromFile("pictures/bomb_tex.png");
     fire_texture.loadFromFile("pictures/fire_tex.png");
+    explosion_texture.loadFromFile("pictures/explosion.png");
 
     //pointer to the original area
     this->pArea = pArea;
@@ -46,7 +47,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(bomb)
     {
         //2.
-        ClThreat *pThreat = new ClThreat(true, false, position, size_threat, bomb_texture, pArea, pHeatMap, pStatistic);
+        ClThreat *pThreat = new ClThreat(true, false, position, size_threat, bomb_texture, pArea, pHeatMap, pStatistic, explosion_texture);
         threatVector.push_back(pThreat);
         bomb = false;
     }
@@ -55,7 +56,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(fire)
     {
         //2.
-        ClThreat *pThreat = new ClThreat(false, true, position, size_threat, fire_texture, pArea, pHeatMap, pStatistic);
+        ClThreat *pThreat = new ClThreat(false, true, position, size_threat, fire_texture, pArea, pHeatMap, pStatistic,explosion_texture);
         threatVector.push_back(pThreat);
         fire = false;
     }
@@ -105,6 +106,10 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
     //2.2. activate all inactive threats
     //2.3. tell the statistics about activated threats
 
+    /// look for dead threats
+    // 3.1 look for dead threats
+    // 3.2 delete them
+
     //1.
     sf::Vector2i mouse = sf::Mouse::getPosition(window);
     sf::Vector2f mouseFloat((float)mouse.x,(float)mouse.y);
@@ -140,6 +145,7 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
         }
     }
 
+    /// explosion handling
     // 2.1
     if (explosion_static)
     {
@@ -155,4 +161,16 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
         }
         explosion_static = false;
     }
+
+    /// look for dead threats
+
+    // 3.1
+    for(unsigned int n = 0; n < threatVector.size(); n++)
+    {
+        if (threatVector[n]->getAlive() == false)
+        {
+            threatVector.erase(threatVector.begin()+n);
+        }
+    }
+
 }
