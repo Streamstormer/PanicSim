@@ -122,10 +122,13 @@ void ClSimulation::partitionCrowds(int totalVisitors)
     sf::Vector2f sPosition;
     sf::Vector2f sVector;
     sf::Vector2f sUnitVector;
-    int vectorDistance;
+    double vectorDistance;
+
+    int attractionLength;
+    int numOfCrowds;
 
     ClStaticObject *pObject;
-    ClPathFinder *pPF = new ClPathFinder(pArea, 20, pArea->getLevelSize());
+    ClPathFinder *pPF = new ClPathFinder(pArea, PATH_TEST_GRANULARITY, pArea->getLevelSize());
     ClPath *pPath;
 
     for(int i = 0; i < counter; i++)
@@ -153,6 +156,20 @@ void ClSimulation::partitionCrowds(int totalVisitors)
                 persons += (double) (totalVisitors - *(pCrowdManager->getPeopleCount()) - persons);
             }
 
+            //Check lengh of attraction
+            if(abs(sUnitVector.x) < abs(sUnitVector.y))
+            {
+                attractionLength = pObject->getSize().x;
+            }
+            else
+            {
+                attractionLength = pObject->getSize().y;
+            }
+
+            numOfCrowds = attractionLength / DIST_CROWDS_PER_ATTR;
+
+            for(int j = 0; j < 1; j++)
+            {
             pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
 
             int vMaxX = pArea->getLevelSize().x - 5;
@@ -178,7 +195,7 @@ void ClSimulation::partitionCrowds(int totalVisitors)
                 }
             }
             pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),(int)(persons / 50) + 1,(int) persons);
-
+            }
         }
     }
     delete pPath;
@@ -203,7 +220,7 @@ void ClSimulation::calculatePriorities(int *sum, int *priority, int counter)
             priority[i] = 2;
             break;
         case WC:
-            priority[i] = 1;
+            priority[i] = 5;
             break;
         default:
             priority[i] = 0;

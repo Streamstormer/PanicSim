@@ -38,6 +38,9 @@ class ClSimulation
 
         void calculatePriorities(int *sum, int *priority, int counter);
 
+        static const int PATH_TEST_GRANULARITY = 20;
+
+        static const int DIST_CROWDS_PER_ATTR = 50;
 
         ClArea *pArea;
         ClCrowdManager *pCrowdManager;

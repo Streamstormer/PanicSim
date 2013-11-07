@@ -35,9 +35,10 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
 
         } while (newPerson->position[(PEOPLE_POSITION_MEMORY - 1)].y < 0);
 
+
         //Add Offset
-        newPerson->position[PEOPLE_POSITION_MEMORY - 1].x += position.x ;
-        newPerson->position[PEOPLE_POSITION_MEMORY - 1].y += position.y;
+        newPerson->position[PEOPLE_POSITION_MEMORY - 1].x += position.x - radius / 2 ;
+        newPerson->position[PEOPLE_POSITION_MEMORY - 1].y += position.y - radius / 2;
 
         //Copy for history
         for(int i = 0; i < (PEOPLE_POSITION_MEMORY - 1); i++)
