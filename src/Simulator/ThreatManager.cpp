@@ -140,6 +140,7 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
         }
     }
 
+    /// explosion handling
     // 2.1
     if (explosion_static)
     {

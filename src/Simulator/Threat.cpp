@@ -123,9 +123,16 @@ bool ClThreat::getIsActive()
 void ClThreat::activate()
 {
     isActive = true;
+    if (bomb)
+    {
     std::cerr << "activated " << std::endl;
     int casualties = pHeatMap->explosion(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2)), 100);
     pStatistic->rememberKills(casualties, bomb);
+    }
+    else if (fire)
+    {
+        pArea->setOnFire(pArea->getIdByVector(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2))));
+    }
 }
 
 bool ClThreat::getBomb()
