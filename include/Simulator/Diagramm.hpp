@@ -52,6 +52,7 @@ private:
     void drawBackground(sf::RenderWindow & window);
     void drawXAxis(sf::RenderWindow & window);
     void drawYAxis(sf::RenderWindow & window);
+    void drawText(sf::Text dText, sf::Font dFont, sf::Color dColor, int characterSize, float dPositionX, float dPositionY, sf::String dString, sf::RenderWindow & window );
 
 };
 #endif // DIAGRAMM_HPP_INCLUDED
