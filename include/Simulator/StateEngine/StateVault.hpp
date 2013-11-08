@@ -62,6 +62,13 @@ private:
                 StatesVector.push_back(pAddMe);
                 return pAddMe;
             }
+
+        default:
+            {
+                return NULL;
+            }
+            break;
+
         }
     }
     std::vector<ClAbstractState *> StatesVector;
