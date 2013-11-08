@@ -57,14 +57,14 @@ void ClSimpleStatisticsMenu::createMenu()
     LabelVector.push_back(pLabel);
 
     position.y += labelSize.y + 1;
-    pLabel = new ClSimpleLabel(position, labelSize, sf::String("Time for evacuation:"), *pFont, ClStatistic::getTime());
+    pLabel = new ClSimpleLabel(position, labelSize, sf::String("Evacuation-Time in sec:"), *pFont, ClStatistic::getTime());
     LabelVector.push_back(pLabel);
 }
 
 void ClSimpleStatisticsMenu::draw(sf::RenderWindow &window) const
 {
     window.draw(bg_color);
-    for(int n=0; n<LabelVector.size(); n++)
+    for(unsigned int n=0; n<LabelVector.size(); n++)
     {
         LabelVector[n]->draw(window);
     }
