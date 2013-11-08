@@ -166,10 +166,10 @@ sf::Color ClStatistic::getColor(int people)
     sf::Color background;
     background.b = 0;
 
-    if (people <= sw_green)   // at the end: green 0,255,0
+    if (people == sw_green)   // at the end: green 0,255,0
     {
         background.r = 0;
-        background.g = (int)((people/sw_green)*255);
+        background.g = 255;
         return background;
     }
     else if (people <= sw_yellow)   // at the end: yellow 255,255,0
