@@ -23,6 +23,8 @@ public:
     static void rememberTime();
     static void rememberPause();
     static void rememberContinue();
+    static void rememberFast();
+    static void rememberFaster();
     static int* getNumberBomb();
     static int* getNumberFire();
     static int* getNumberKillsBomb();
@@ -31,6 +33,8 @@ public:
 private:
     sf::Clock startClock;
     sf::Clock pauseClock;
+    sf::Clock fastClock;
+    sf::Clock fasterClock;
     sf::Vector2i cellNumber;
     sf::Vector2f cellSize;
     int sw_green;
@@ -40,6 +44,11 @@ private:
     int loopNumber;
     float startTime;
     float pauseTime;
+    float fastTime;
+    float fasterTime;
+    bool checkPause;
+    bool checkFast;
+    bool checkFaster;
     int **pAllCells;
     int **pDrawCells;
 
@@ -47,6 +56,8 @@ private:
     static bool setStart;
     static bool setPause;
     static bool setContinue;
+    static bool setFast;
+    static bool setFaster;
     static bool doDrawAverage;
     static int numberFire;
     static int numberBomb;

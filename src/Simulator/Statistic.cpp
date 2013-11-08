@@ -4,6 +4,8 @@ bool ClStatistic::setStop = false;
 bool ClStatistic::setStart = false;
 bool ClStatistic::setPause = false;
 bool ClStatistic::setContinue = false;
+bool ClStatistic::setFast = false;
+bool ClStatistic::setFaster = false;
 int ClStatistic::numberBomb = 0;
 int ClStatistic::numberFire = 0;
 int ClStatistic::numberKillsFire = 0;
@@ -12,7 +14,13 @@ int ClStatistic::time = 0;
 
 ClStatistic::ClStatistic()
 {
+    startTime = 0;
     pauseTime = 0;
+    fastTime = 0;
+    fasterTime = 0;
+    checkFast = false;
+    checkFaster = false;
+    checkPause = false;
 }
 
 ClStatistic::~ClStatistic()
@@ -152,32 +160,122 @@ void ClStatistic::update()
         }
     }
 
-    if(setStart==true)
+    if(setStart)
     {
         setStart = false;
         startClock.restart();
     }
 
-    if(setPause == true)
+    if(setPause)
     {
-        setPause = false;
-        pauseClock.restart();
+        if(checkPause==false)
+        {
+            setPause = false;
+            checkPause = true;
+            pauseClock.restart();
+            if(checkFast)
+            {
+                fastTime += fastClock.getElapsedTime().asSeconds();
+                checkFast = false;
+            }
+            if(checkFaster)
+            {
+                fasterTime += fasterClock.getElapsedTime().asSeconds();
+                checkFaster = false;
+            }
+        }
     }
 
-    if(setContinue == true)
+    if(setFast)
+    {
+        setFast = false;
+        checkFast = true;
+        fastClock.restart();
+        if(checkPause)
+        {
+            pauseTime += pauseClock.getElapsedTime().asSeconds();
+            checkPause = false;
+        }
+        if(checkFaster)
+        {
+            fasterTime += fasterClock.getElapsedTime().asSeconds();
+            checkFaster = false;
+        }
+    }
+
+    if(setFaster)
+    {
+        setFaster = false;
+        checkFaster = true;
+        fasterClock.restart();
+        if(checkFast)
+        {
+            fastTime += fastClock.getElapsedTime().asSeconds();
+            checkFast = false;
+        }
+        if(checkPause)
+        {
+            pauseTime += pauseClock.getElapsedTime().asSeconds();
+            checkPause = false;
+        }
+    }
+
+    if(setContinue)
     {
         setContinue = false;
-        pauseTime = pauseClock.getElapsedTime().asSeconds();
+        if(checkPause)
+        {
+            pauseTime += pauseClock.getElapsedTime().asSeconds();
+            checkPause = false;
+        }
+        if(checkFast)
+        {
+            fastTime += fastClock.getElapsedTime().asSeconds();
+            checkFast = false;
+        }
+        if(checkFaster)
+        {
+            fasterTime += fasterClock.getElapsedTime().asSeconds();
+            checkFaster = false;
+        }
     }
 
-    if(setStop==true)
+    if(setStop)
     {
         setStop = false;
         startTime = startClock.getElapsedTime().asSeconds();
-        if(pauseTime>0)
+        if(checkPause)
         {
-            time = (int)(startTime-pauseTime);
-        }else time = (int) startTime;
+            pauseTime += pauseClock.getElapsedTime().asSeconds();
+            checkPause = false;
+        }
+        if(checkFast)
+        {
+            fastTime += fastClock.getElapsedTime().asSeconds();
+            checkFast = false;
+        }
+        if(checkFaster)
+        {
+            fasterTime += fasterClock.getElapsedTime().asSeconds();
+            checkFaster = false;
+        }
+
+        if(pauseTime>0||fastTime>0||fasterTime>0)
+        {
+            if(pauseTime>0)
+            {
+                startTime -= pauseTime;
+            }
+            if(fastTime>0)
+            {
+                startTime += (2*fastTime);
+            }
+            if(fasterTime>0)
+            {
+                startTime += (3*fasterTime);
+            }
+        }
+        time = (int) startTime;
     }
 }
 
@@ -211,6 +309,16 @@ void ClStatistic::rememberPause()
 void ClStatistic::rememberContinue()
 {
     setContinue = true;
+}
+
+void ClStatistic::rememberFast()
+{
+    setFast = true;
+}
+
+void ClStatistic::rememberFaster()
+{
+    setFaster = true;
 }
 
 int* ClStatistic::getNumberBomb()
