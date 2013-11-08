@@ -56,25 +56,18 @@ private:
                 StatesVector.push_back(pAddMe);
                 return pAddMe;
             }
-<<<<<<< HEAD
         case (PANIC):
             {
                 ClPanicState *pAddMe = new ClPanicState(id,&StateMachine,PANIC);
                 StatesVector.push_back(pAddMe);
                 return pAddMe;
-            }
+            }break;
 
         default:
             {
                 return NULL;
             }
-            break;
 
-=======
-        default:
-            break;
-        // To do add more states
->>>>>>> 9e0e99097fdc092d8f72c285041e230554ea61ab
         }
     }
     std::vector<ClAbstractState *> StatesVector;
