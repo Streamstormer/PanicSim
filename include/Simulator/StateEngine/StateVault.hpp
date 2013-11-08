@@ -7,6 +7,7 @@
 // include all the different states here
 #include "NormalState.hpp"
 #include "LeavingState.hpp"
+#include "PanicState.hpp"
 
 class ClStateVault
 {
@@ -55,7 +56,12 @@ private:
                 StatesVector.push_back(pAddMe);
                 return pAddMe;
             }
-        // To do add more states
+        case (PANIC):
+            {
+                ClPanicState *pAddMe = new ClPanicState(id,&StateMachine,PANIC);
+                StatesVector.push_back(pAddMe);
+                return pAddMe;
+            }
         }
     }
     std::vector<ClAbstractState *> StatesVector;

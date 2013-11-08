@@ -1,7 +1,10 @@
 #include "../../../include/Simulator/StateEngine/NormalState.hpp"
-enum STATES ClNormalState::update() const
+enum STATES ClNormalState::update(bool panic) const
 {
-    return LEAVING;
+    if (panic == true)
+    return PANIC;
+
+    return NORMAL;
 }
 
 enum ACTIONS ClNormalState::getNextAction() const

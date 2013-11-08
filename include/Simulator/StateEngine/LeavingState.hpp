@@ -12,7 +12,7 @@ class ClLeavingState : public ClAbstractState
         this->id = id;
         this->pStateMachine = pStateMachine;
     }
-    enum STATES update() const;
+    enum STATES update(bool panic) const;
 
     // what action next ?
     enum ACTIONS getNextAction() const ;

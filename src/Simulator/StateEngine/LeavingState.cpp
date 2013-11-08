@@ -1,5 +1,5 @@
 #include "../../../include/Simulator/StateEngine/LeavingState.hpp"
-enum STATES ClLeavingState::update() const
+enum STATES ClLeavingState::update(bool panic) const
 {
     return LEAVING;
 }

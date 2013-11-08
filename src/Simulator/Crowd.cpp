@@ -3,6 +3,9 @@
 
 ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f position, int numOfPeoples, ClHeatMap *pHeatMap, ClStateVault *pStateVault, ClPathFinder *pPathfinder)
 {
+    // no casualties yet
+    panic = false;
+
     this->position = position;
     oldPosition = position;
     this->Color = Color;
@@ -83,6 +86,8 @@ void  ClCrowd::Update(float frameTime)
     {
         if (peoples[n]->alive == false)
         {
+            // casualties set panic levelt to true
+            panic = true;
             delete peoples[n]; // free memory
             peoples.erase(peoples.begin()+n);
         }
@@ -96,24 +101,15 @@ void  ClCrowd::Update(float frameTime)
     sf::Vector2f force;
      for (unsigned int n = 0; n < peoples.size(); n++)
     {
-
-        /*****Center Force****/
-        //Succeed
         for(int i = 0; i < PEOPLE_POSITION_MEMORY - 1; i++)
         {
             peoples[n]->position[i] = peoples[n]->position[i + 1];
         }
-        /*
-         force =  Seek( peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)], position);
-         //   Vec2DNormalize(&force)
-         force.x *= frameTime * -0.03;
-         force.y *= frameTime * -0.03;
-         peoples[n]->force = force; */
     }
     oldPosition = position;
 
     // update state
-    enum STATES state =  pCurrentState->update();
+    enum STATES state =  pCurrentState->update(panic);
     if(state != pCurrentState->getState())
     {
         // change state
@@ -145,6 +141,19 @@ void  ClCrowd::Update(float frameTime)
 
     switch (curAction)
     {
+        case(NOTHING):
+        {
+            sf::Vector2f force;
+            for(unsigned int n = 0; n < peoples.size(); n++)
+            {
+                // just stand there doing nothing at all
+                force =  Seek( peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)], position);
+                //   Vec2DNormalize(&force)
+                force.x *= frameTime * -0.01;
+                force.y *= frameTime * -0.01;
+                peoples[n]->force = force;
+            }
+        }break;
         case(LEAVETOEXIT):
         {
             sf::Vector2f currentNode;
@@ -166,6 +175,20 @@ void  ClCrowd::Update(float frameTime)
                 peoples[n]->force = force;
             }
         }break;
+        case PANICHARD:
+        {
+            sf::Vector2f force;
+            for(unsigned int n = 0; n < peoples.size(); n++)
+            {
+                // just stand there doing nothing at all
+                force =  Seek( peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)], position);
+                //   Vec2DNormalize(&force)
+                force.x *= frameTime * 0.01;
+                force.y *= frameTime * 0.01;
+                peoples[n]->force = force;
+            }
+
+        }
     }
 }
 void  ClCrowd::Update(sf::Vector2i position,float frameTime)
