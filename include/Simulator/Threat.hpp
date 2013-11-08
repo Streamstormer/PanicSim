@@ -2,9 +2,10 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 Support:    Melanie Hammerschmidt
 ---------------------------------------------------------------------------------------------------------------------------------------
-usecase:    creation of threats, handling mouse action on threats and set new position according to mouse position
+usecase:    abstract class for creation of different threats, handling mouse action on threats and set new position according to mouse position
 ---------------------------------------------------------------------------------------------------------------------------------------
 */
+
 #ifndef THREAT_HPP_INCLUDED
 #define THREAT_HPP_INCLUDED
 #include <vector>
@@ -13,26 +14,27 @@ usecase:    creation of threats, handling mouse action on threats and set new po
 #include "Area.hpp"
 #include "HeatMap.hpp"
 
+enum ThreatType {THBOMB, THFIRE};
+
 class ClThreat
 {
 public:
-    ~ClThreat(){}
-    virtual void recognizeMouse(sf::RenderWindow &window){}
-    void draw(sf::RenderWindow &window);
+    //virtual kann überschrieben werden  -  virtual + const muss
+    virtual ~ClThreat();
+    virtual void recognizeMouse(sf::RenderWindow &window) = 0;
+    virtual void draw(sf::RenderWindow &window) = 0;
     bool getIsMoved();
     void setPosition(float x_Position, float y_Position);
     bool getIsActive();
-    virtual void activate(){}
-    virtual bool getBomb(){}
-    virtual bool getFire(){}
-    bool getAlive() {return alive;}
+    virtual void activate() = 0;
+    enum ThreatType getType();
+    bool getAlive(){return alive;}
 protected:
+    enum ThreatType type;
     void subrecttoNumber(int number);
     ClHeatMap *pHeatMap;
     bool isMoved;
     bool isActive; // bomb explodes fire starts to burn
-    bool bomb;
-    bool fire;
     bool alive;
     sf::Vector2f position_threat;
     sf::Vector2f size_threat;

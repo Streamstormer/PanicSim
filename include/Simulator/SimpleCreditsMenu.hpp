@@ -6,7 +6,7 @@
 
 class ClSimpleCreditsMenu : public ClSimpleMenu
 {
-    public:
+public:
     ~ClSimpleCreditsMenu();
     ClSimpleCreditsMenu(enum GameStates myState, sf::Font *pFont, sf::Vector2f screenSize);
     void draw(sf::RenderWindow &window) const;
@@ -14,7 +14,7 @@ class ClSimpleCreditsMenu : public ClSimpleMenu
 
     //virtual void execute(enum Buttons btn) const = 0;
     virtual enum GameStates update(sf::RenderWindow &window, bool mouseReleased) const;
-    private:
+private:
     void createMenu();
 
     sf::RectangleShape textSpace;

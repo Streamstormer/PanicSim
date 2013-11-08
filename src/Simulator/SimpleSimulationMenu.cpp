@@ -1,7 +1,6 @@
 
 #include "../../include/Simulator/SimpleSimulationMenu.hpp"
 
-
 ClSimpleSimulationMenu::ClSimpleSimulationMenu(enum GameStates myState, sf::Font *pFont, sf::Vector2f screenSize)
 {
     this->myState = myState;

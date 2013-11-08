@@ -4,8 +4,6 @@
 #include "StaticObject.hpp"
 #include <vector>
 
-
-
 class ClArea
 {
 public:

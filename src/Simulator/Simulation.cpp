@@ -122,7 +122,6 @@ void ClSimulation::draw(sf::RenderWindow &window)
     }
 }
 // private :
-
 void ClSimulation::partitionCrowds(int totalVisitors)
 {
     int sum = 0;
@@ -310,7 +309,6 @@ void ClSimulation::calculateOffset(float frameTime)
 {
     // 1. check for keyboard input (arrow keys)
     // 2. check for validity of the new offset
-
 
     currentOffset.x = currentOffset.y = 0;
 

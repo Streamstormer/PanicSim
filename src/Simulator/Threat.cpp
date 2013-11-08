@@ -2,11 +2,13 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 Support:    Melanie Hammerschmidt
 ---------------------------------------------------------------------------------------------------------------------------------------
-usecase:    creation of threats, handling mouse action on threats and set new position according to mouse position
+usecase:    abstract class for creation of different threats, handling mouse action on threats and set new position according to mouse position
 ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include "../../include/Simulator/Threat.hpp"
+
+ClThreat::~ClThreat(){}
 
 void ClThreat::subrecttoNumber(int number)
 {
@@ -15,24 +17,6 @@ void ClThreat::subrecttoNumber(int number)
     explosion_sprite.setTextureRect(subrect);
     explosion_sprite.setPosition(sprite_threat.getPosition());
     explosion_sprite.setOrigin(subrect.width/2,subrect.height/2);
-}
-
-void ClThreat::draw(sf::RenderWindow &window)
-{
-    window.draw(sprite_threat);
-    if (isActive)
-    {
-        // 1. calculate picture number from time
-        // 2. chose correct picture
-        if (bildID >63)
-        {
-            alive = false;
-        }
-        int time =animationTime.getElapsedTime().asMilliseconds();
-        bildID = (int)time/PICTUREDURATION;
-        subrecttoNumber(bildID);
-        window.draw(explosion_sprite);
-    }
 }
 
 //set new threat position
@@ -58,4 +42,10 @@ bool ClThreat::getIsMoved()
 bool ClThreat::getIsActive()
 {
     return isActive;
+}
+
+//getter for type
+enum ThreatType ClThreat::getType()
+{
+    return type;
 }
