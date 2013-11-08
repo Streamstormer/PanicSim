@@ -22,15 +22,12 @@ class ClSimulation
 
         void setCurGameState(enum GameStates newGS);
 
-
-
         static void updateSpeed(bool pause, bool normal, bool fastForward);
         static void setTotalVisitors(int number);
         static void setStopSim(bool newBool);
         static bool getStopSim();
     private:
         // this function is called in the constructor
-
         void createObjects();
         // Calculates the offset to enable scrolling
         // called in update

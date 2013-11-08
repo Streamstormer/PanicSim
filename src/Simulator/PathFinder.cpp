@@ -48,9 +48,9 @@ void ClPathFinder::createNodes()
     int x, y;
     bool validID[nodeNumber.x*nodeNumber.y]; // enough memory to store wheather it is a valid id or not
 
-    for(y = 0;y<areaSize.y; y+=nodeDistance) //nodeDistance only allowed if areaSize.y/nodDistance rest =0
+    for(y = 0;y<=areaSize.y - nodeDistance; y+=nodeDistance)
     {
-        for(x=0; x<areaSize.x; x+=nodeDistance) //nodeDistance only allowed if areaSize.x/nodDistance rest =0
+        for(x=0; x<=areaSize.x - nodeDistance; x+=nodeDistance)
         {
             //1.
             validID[idCounter] = false;
@@ -165,7 +165,7 @@ The function validPoint of ClArea is used to check if the Vector is in a static 
 bool ClPathFinder::tryToAddNode(const sf::Vector2i &here, int id)
 {
     ClNode *pAddMe;
-    if(pArea->validPoint(sf::Vector2f(here.x, here.y)))
+    if(pArea->isInvalidNode(sf::Vector2f(here.x, here.y),nodeDistance)== false)
     {
         pAddMe = new ClNode(sf::Vector2f(here.x,here.y), id);
         Nodes.push_back(pAddMe);

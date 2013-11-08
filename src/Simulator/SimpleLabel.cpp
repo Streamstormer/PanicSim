@@ -1,5 +1,4 @@
 #include "../../include/Simulator/SimpleLabel.hpp"
-#include <sstream>
 
 ClSimpleLabel::ClSimpleLabel(const sf::Vector2f &position, const sf::Vector2f &labelSize, const sf::String &labelText, const sf::Font &font, int *pNumber)
 {
@@ -24,7 +23,6 @@ ClSimpleLabel::ClSimpleLabel(const sf::Vector2f &position, const sf::Vector2f &l
     text.setStyle(sf::Text::Regular);
 
 }
-
 
 void ClSimpleLabel::draw(sf::RenderWindow& window)
 {

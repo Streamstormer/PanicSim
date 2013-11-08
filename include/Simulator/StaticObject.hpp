@@ -16,6 +16,10 @@ public:
     void draw(sf::RenderWindow& window);
     const sf::Vector2f &getCenter();
     bool Intersects( const sf::Vector2f  &Position); // returns true if Position is inside of the StaticObject
+    bool IntersectsRectangle(sf::Rect<float> &testRect)
+    {
+        return this->Rect->getGlobalBounds().intersects(testRect);
+    }
     int getID();
     enum staticObjects getType();
     const sf::Vector2f &getPosition();

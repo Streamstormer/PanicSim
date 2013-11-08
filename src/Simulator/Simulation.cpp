@@ -17,6 +17,14 @@ void ClSimulation::updateSpeed(bool pause,bool normal, bool fastForward)
     else if (fastForward)
     {
         ClSimulation::speed++;
+        if(ClSimulation::speed == 2)
+        {
+            ClStatistic::rememberFast();
+        }
+        if(ClSimulation::speed == 3)
+        {
+            ClStatistic::rememberFaster();
+        }
         if (ClSimulation::speed > 3)
         {
             ClSimulation::speed = 1;
@@ -114,7 +122,6 @@ void ClSimulation::draw(sf::RenderWindow &window)
     }
 }
 // private :
-
 void ClSimulation::partitionCrowds(int totalVisitors)
 {
     int sum = 0;
@@ -302,7 +309,6 @@ void ClSimulation::calculateOffset(float frameTime)
 {
     // 1. check for keyboard input (arrow keys)
     // 2. check for validity of the new offset
-
 
     currentOffset.x = currentOffset.y = 0;
 

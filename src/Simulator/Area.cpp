@@ -199,13 +199,10 @@
         for (unsigned int n = 0; n < sobjects.size();n++)
         {
             if (sobjects[n]->getID() == id){
-                /// Not supportet at the moment. Need some more thinking..
-
                 delete sobjects[n];
                 sobjects.erase(sobjects.begin()+n);
                 return true;
             }
         }
         return false;
-
     }
