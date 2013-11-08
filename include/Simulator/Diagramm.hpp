@@ -30,8 +30,8 @@ private:
     float diagrammSizeX, diagrammSizeY;
     sf::Vector2f position;
     sf::Sprite spriteDiagramm;
-    const int NUMBERBLOCKS = 8;
-    const int OFFSET = 50;
+    static const int NUMBERBLOCKS = 8;
+    static const int OFFSET = 50;
 
     sf::Font font;
 
