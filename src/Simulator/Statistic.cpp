@@ -1,4 +1,13 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Melanie Hammerschmidt
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    handling all statistic calculations (in HeatMap, by creation of threats, time for evacuation, number of casualties)
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
 #include "../../include/Simulator/Statistic.hpp"
+
 bool ClStatistic::doDrawAverage = false;
 bool ClStatistic::setStop = false;
 bool ClStatistic::setStart = false;
@@ -29,9 +38,13 @@ ClStatistic::~ClStatistic()
     delete pDrawCells;
 }
 
-
+//basic ajustment for HeatMap calculations
 void ClStatistic::planHeatMapStatistic(sf::Vector2i cellNumber, sf::Vector2f cellSize, const int sw_green, const int sw_yellow, const int sw_red)
 {
+    //1. initialising of all variables
+    //2. initialising of cells for calculation and for drawing
+
+    //1.
     this->cellNumber = cellNumber;
     this->cellSize  = cellSize;
     this->sw_green = sw_green;
@@ -39,6 +52,7 @@ void ClStatistic::planHeatMapStatistic(sf::Vector2i cellNumber, sf::Vector2f cel
     this->sw_red = sw_red;
     loopNumber = 0;
 
+    //2.
     pAllCells = new int*[cellNumber.y];
     pDrawCells = new int*[cellNumber.y];
     for(int y=0; y < cellNumber.y; y++)
@@ -57,14 +71,18 @@ void ClStatistic::planHeatMapStatistic(sf::Vector2i cellNumber, sf::Vector2f cel
     }
 }
 
+//recognize the cell with more than sw_green people (save in AllCells)
 void ClStatistic::rememberCells(int cellX, int cellY, const int numberOfPeople)
 {
+    //if the averageHeatMap is not drawn
     if(doDrawAverage==false)
     {
+        //count number of people in this cell
         pAllCells[cellY][cellX] += numberOfPeople;
     }
 }
 
+//recognize loops where cells are updated (if the average HeatMap is not drawn)
 void ClStatistic::rememberLoop()
 {
     if(doDrawAverage==false)
@@ -73,6 +91,7 @@ void ClStatistic::rememberLoop()
     }
 }
 
+//if a threat is acivated
 void ClStatistic::rememberThreats(bool bomb, bool fire)
 {
     if(doDrawAverage==false)
@@ -268,11 +287,11 @@ void ClStatistic::update()
             }
             if(fastTime>0)
             {
-                startTime += (2*fastTime);
+                startTime += fastTime;
             }
             if(fasterTime>0)
             {
-                startTime += (3*fasterTime);
+                startTime += 2*fasterTime;
             }
         }
         time = (int) startTime;

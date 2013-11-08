@@ -29,7 +29,7 @@ void ClSimpleStatisticsMenu::createMenu()
     bg_size.y = screenSize.y;
     bg_color.setSize(bg_size);
 
-    sf::Color bgColor(0,0,0, 50);
+    sf::Color bgColor(0,0,0, 70);
     bg_color.setFillColor(bgColor);
 
     position.x = 0.9*screenSize.x;

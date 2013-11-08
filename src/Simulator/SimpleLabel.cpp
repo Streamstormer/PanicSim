@@ -25,7 +25,6 @@ ClSimpleLabel::ClSimpleLabel(const sf::Vector2f &position, const sf::Vector2f &l
 
 }
 
-
 void ClSimpleLabel::draw(sf::RenderWindow& window)
 {
     std::stringstream number_ss;

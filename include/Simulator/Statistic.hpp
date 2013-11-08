@@ -1,3 +1,11 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Melanie Hammerschmidt
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    handling all statistic calculations (in HeatMap, by creation of threats, time for evacuation, number of casualties)
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
 #ifndef STATISTIC_HPP_INCLUDED
 #define STATISTIC_HPP_INCLUDED
 #include <vector>
