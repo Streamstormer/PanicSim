@@ -1,3 +1,11 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Melanie Hammerschmidt
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    handling all statistic calculations (in HeatMap, by creation of threats, time for evacuation, number of casualties)
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
 #ifndef STATISTIC_HPP_INCLUDED
 #define STATISTIC_HPP_INCLUDED
 #include <vector>
@@ -16,27 +24,49 @@ public:
     void rememberThreats(bool bomb, bool fire);
     void update();
     void draw(sf::RenderWindow &window);
-    int loopNumber;
+    void rememberKills(int number, bool bomb);
     static void setAverageDraw(bool newBool);
     static bool getAverageDraw();
-    void rememberKills(int number, bool bomb);
+    static void startTimer();
+    static void rememberTime();
+    static void rememberPause();
+    static void rememberContinue();
+    static void rememberFast();
+    static void rememberFaster();
     static int* getNumberBomb();
     static int* getNumberFire();
     static int* getNumberKillsBomb();
     static int* getNumberKillsFire();
     static int* getTime();
 private:
+    sf::Clock startClock;
+    sf::Clock pauseClock;
+    sf::Clock fastClock;
+    sf::Clock fasterClock;
     sf::Vector2i cellNumber;
     sf::Vector2f cellSize;
     int sw_green;
     int sw_yellow;
     int sw_red;
     sf::Color getColor(int people);
-
+    int loopNumber;
+    float startTime;
+    float pauseTime;
+    float fastTime;
+    float fasterTime;
+    bool checkPause;
+    bool checkFast;
+    bool checkFaster;
     int **pAllCells;
     int **pDrawCells;
-    static bool doDrawAverage;
 
+    static bool setStop;
+    static bool setStart;
+    static bool setPause;
+    static bool setContinue;
+    static bool setFast;
+    static bool setFaster;
+    static bool doDrawAverage;
     static int numberFire;
     static int numberBomb;
     static int numberKillsBomb;

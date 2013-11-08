@@ -63,6 +63,7 @@ ClSimpleStartMenu::ClSimpleStartMenu(enum GameStates myState, sf::Font *pFont, s
     bg_texture.loadFromFile("pictures/PanicSoft.png");
     createMenu();
 }
+
 void ClSimpleStartMenu::draw(sf::RenderWindow &window) const
 {
     window.draw(bg_color);
@@ -73,12 +74,14 @@ void ClSimpleStartMenu::draw(sf::RenderWindow &window) const
     }
     paramField->draw(window);
 }
+
 enum GameStates ClSimpleStartMenu::execute(enum Buttons btn) const
 {
     switch(btn)
     {
     case(START):
         {
+            ClStatistic::startTimer();
             return SIMULATION;
         }
         break;
@@ -96,10 +99,8 @@ enum GameStates ClSimpleStartMenu::execute(enum Buttons btn) const
     return MENU;
 }
 
-
 enum GameStates ClSimpleStartMenu::update(sf::RenderWindow &window, bool mouseReleased) const
 {
-
     for (unsigned int n = 0; n<ButtonVector.size(); n++)
     {
         if (ButtonVector[n]->isPressed(window))
@@ -108,11 +109,8 @@ enum GameStates ClSimpleStartMenu::update(sf::RenderWindow &window, bool mouseRe
                 return execute(ButtonVector[n]->getButtonType());
         }
     }
-
-
     //update of paramField
     paramField->update(mouseReleased, window);
     ClSimulation::setTotalVisitors(paramField->getValue());
     return MENU;
-
 }

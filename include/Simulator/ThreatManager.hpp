@@ -9,8 +9,8 @@ usecase:    handling threat creation, update and draw
 #ifndef THREATMANAGER_HPP_INCLUDED
 #define THREATMANAGER_HPP_INCLUDED
 #include <vector>
-#include "SimpleButton.hpp"
-#include "Threat.hpp"
+#include "Fire.hpp"
+#include "Bomb.hpp"
 #include "Area.hpp"
 #include "HeatMap.hpp"
 #include "Statistic.hpp"
@@ -24,7 +24,6 @@ public:
     void draw(sf::RenderWindow &window);
     void createThreat(bool bomb, bool fire, const sf::Vector2f position);
     static void buttonPressed(bool bomb, bool fire, bool explosion);
-
 private:
     ClArea *pArea;
     ClStatistic *pStatistic;

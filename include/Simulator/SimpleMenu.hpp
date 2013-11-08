@@ -2,6 +2,7 @@
 #define SIMPLEMENU_HPP
 
 #include "Simulation.hpp"
+#include "Statistic.hpp"
 #include "SimpleButton.hpp"
 #include "SimpleLabel.hpp"
 #include <vector>

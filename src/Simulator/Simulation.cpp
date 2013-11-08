@@ -17,6 +17,14 @@ void ClSimulation::updateSpeed(bool pause,bool normal, bool fastForward)
     else if (fastForward)
     {
         ClSimulation::speed++;
+        if(ClSimulation::speed == 2)
+        {
+            ClStatistic::rememberFast();
+        }
+        if(ClSimulation::speed == 3)
+        {
+            ClStatistic::rememberFaster();
+        }
         if (ClSimulation::speed > 3)
         {
             ClSimulation::speed = 1;
@@ -86,13 +94,8 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
         // Update Threats
         pThreatManager->update(window, mouseReleased);
     }
-
-    if(curGameState==STATISTICS)
-    {
-        // Update Statistic
-        pStatistic->update();
-    }
-
+    // Update Statistic
+    pStatistic->update();
     // Update View
     calculateOffset(actualFrameTime);
     return true;
@@ -286,6 +289,7 @@ void ClSimulation::setCurGameState(enum GameStates newGS)
         {
             partitionCrowds(totalVisitors);
             visitorsSet = true;
+     //       pStatistic->startTimer();
         }
     }
     curGameState = newGS;

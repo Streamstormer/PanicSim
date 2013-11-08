@@ -1,7 +1,6 @@
 #ifndef SIMPLESIMULATIONMENU_HPP
 #define SIMPLESIMULATIONMENU_HPP
 #include "SimpleMenu.hpp"
-#include "Statistic.hpp"
 
 class ClSimpleSimulationMenu : public ClSimpleMenu
 {

@@ -41,6 +41,7 @@ enum GameStates ClSimpleSimulationMenu::execute(enum Buttons btn) const
         ClSimulation::updateSpeed(false, true, false);
         ClStatistic::setAverageDraw(false);
         ClSimulation::setStopSim(false);
+        ClStatistic::rememberContinue();
     }
     break;
     case(FASTFORWARD):
@@ -54,6 +55,7 @@ enum GameStates ClSimpleSimulationMenu::execute(enum Buttons btn) const
     {
         ClSimulation::updateSpeed(true,false,false);
         ClStatistic::setAverageDraw(false);
+        ClStatistic::rememberPause();
         ClSimulation::setStopSim(false);
     }
     break;
@@ -82,6 +84,7 @@ enum GameStates ClSimpleSimulationMenu::execute(enum Buttons btn) const
     {
         ClStatistic::setAverageDraw(true);
         ClSimulation::setStopSim(false);
+        ClStatistic::rememberTime();
     }
     break;
     case(EXITMENU):
