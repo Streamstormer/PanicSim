@@ -165,7 +165,7 @@ The function validPoint of ClArea is used to check if the Vector is in a static 
 bool ClPathFinder::tryToAddNode(const sf::Vector2i &here, int id)
 {
     ClNode *pAddMe;
-    if(pArea->validPoint(sf::Vector2f(here.x, here.y)))
+    if(pArea->isInvalidNode(sf::Vector2f(here.x, here.y),nodeDistance)== false)
     {
         pAddMe = new ClNode(sf::Vector2f(here.x,here.y), id);
         Nodes.push_back(pAddMe);

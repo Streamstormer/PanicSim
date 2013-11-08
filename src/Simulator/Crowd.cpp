@@ -205,12 +205,12 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
     personShape.setRadius(5);
     personShape.move(sf::Vector2f(-2.5,-2.5));
     window.draw(personShape);
-
+/*
     if (pPath != NULL)
     {
         pPath->drawPath(window);
     }
-
+*/
     personShape.setPosition(nextNode);
     personShape.setFillColor(sf::Color::Black);
     window.draw(personShape);

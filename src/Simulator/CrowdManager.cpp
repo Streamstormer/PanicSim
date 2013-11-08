@@ -67,7 +67,7 @@ void ClCrowdManager::CreateCrowd(sf::Vector2f position, float radius, int people
     // for debugging puposes: each crowd gets a different color
     if(j==0)
     {
-        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Black,position, people, pHeatMap, pStateVault,pPathFinder);
+        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Cyan,position, people, pHeatMap, pStateVault,pPathFinder);
         Crowds.push_back(Crowd);
     }
     else if (j==1)

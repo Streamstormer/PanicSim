@@ -9,8 +9,6 @@ usecase:    handling threat creation, update and draw
 #ifndef THREATMANAGER_HPP_INCLUDED
 #define THREATMANAGER_HPP_INCLUDED
 #include <vector>
-#include "SimpleButton.hpp"
-#include "Threat.hpp"
 #include "Fire.hpp"
 #include "Bomb.hpp"
 #include "Area.hpp"
