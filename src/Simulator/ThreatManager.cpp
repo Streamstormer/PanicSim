@@ -47,8 +47,8 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(bomb)
     {
         //2.
-        ClThreat *pThreat = new ClThreat(true, false, position, size_threat, bomb_texture, pArea, pHeatMap, pStatistic, explosion_texture);
-        threatVector.push_back(pThreat);
+        ClBomb *pBomb = new ClBomb(position, size_threat, bomb_texture, pArea, pHeatMap, pStatistic, explosion_texture);
+        threatVector.push_back(pBomb);
         bomb = false;
     }
 
@@ -56,8 +56,8 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(fire)
     {
         //2.
-        ClThreat *pThreat = new ClThreat(false, true, position, size_threat, fire_texture, pArea, pHeatMap, pStatistic,explosion_texture);
-        threatVector.push_back(pThreat);
+        ClFire *pFire = new ClFire(position, size_threat, fire_texture, pArea, pHeatMap, pStatistic, explosion_texture);
+        threatVector.push_back(pFire);
         fire = false;
     }
 }
@@ -172,5 +172,4 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
             threatVector.erase(threatVector.begin()+n);
         }
     }
-
 }
