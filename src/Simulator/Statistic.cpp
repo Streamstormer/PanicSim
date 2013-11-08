@@ -82,7 +82,7 @@ void ClStatistic::rememberCells(int cellX, int cellY, const int numberOfPeople)
     }
 }
 
-//recognize loops where cells are updated (if the average HeatMap is not drawn)
+//incrememts number of loops in which cells are updated (if the average HeatMap is not drawn)
 void ClStatistic::rememberLoop()
 {
     if(doDrawAverage==false)
@@ -94,13 +94,14 @@ void ClStatistic::rememberLoop()
 //if a threat is acivated
 void ClStatistic::rememberThreats(bool bomb, bool fire)
 {
+    //if average HeatMap is not drawn
     if(doDrawAverage==false)
     {
+        //differentiation between fire and bombs
         if(bomb == true)
         {
             numberBomb++;
         }
-
         if(fire == true)
         {
             numberFire++;
@@ -108,15 +109,25 @@ void ClStatistic::rememberThreats(bool bomb, bool fire)
     }
 }
 
+//draw average HeatMap
 void ClStatistic::draw(sf::RenderWindow &window)
 {
+    //1. check if doDrawAverage is true
+    //2. loop through all cells
+    //3. get number of people by DrawCells (averaged AllCells)
+    //4. if sw_green is reached -> draw cell
+
+    //1.
     if(doDrawAverage==true)
     {
+        //2.
         for(int m = 0; m<cellNumber.y; m++)
         {
             for(int n=0; n<cellNumber.x; n++)
             {
+                //3.
                 int people = pDrawCells[m][n];
+                //4.
                 if(people >= sw_green)
                 {
                     sf::RectangleShape colorCell(cellSize);
@@ -129,6 +140,7 @@ void ClStatistic::draw(sf::RenderWindow &window)
     }
 }
 
+//calculate right color for drawing cells
 sf::Color ClStatistic::getColor(int people)
 {
     sf::Color background;
@@ -154,7 +166,6 @@ sf::Color ClStatistic::getColor(int people)
     else background.g = 0;
     return background;
 }
-
 
 void ClStatistic::setAverageDraw(bool newBool)
 {
