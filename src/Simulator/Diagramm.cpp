@@ -230,7 +230,6 @@ void ClDiagramm::drawBackground(sf::RenderWindow & window)
         sf::Vector2f backgroundSize (diagrammSizeX+ 2*OFFSET, diagrammSizeY+ 2*OFFSET);
         sf::Color backgroundColor;
         backgroundColor.r = backgroundColor.g = backgroundColor.b = 255;
-        backgroundColor.a = 50;
         background.setPosition(position.x, position.y);
         background.setSize(backgroundSize);
         background.setFillColor(backgroundColor);
