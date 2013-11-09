@@ -46,7 +46,7 @@ ClSimulation::ClSimulation(const sf::VideoMode &Mode)
     this->Mode = Mode;
 
     ClFileHandler fH;
-    fH.openFile("test.csv");
+    fH.openFile("greatLev.csv");
     pArea = fH.getArea();
     levelSize = pArea->getLevelSize();
     //createObjects();
