@@ -35,7 +35,7 @@ int ClFileHandler::writeStaticObjects(ClArea *pArea){
         sOSize = pArea->getSize(i);
         sORotation = pArea->getRotation(i);
         sOType = pArea->getType(i);
-        myFile << i << ";" << (int) sOPosition.x << ";" << (int) sOPosition.y << ";" << sOSize.x << ";" << sOSize.y << ";" << sORotation << ";" << sOType << ";\n";
+        myFile << i << ";" << (int) sOPosition.x << ";" << (int) sOPosition.y << ";" << (int) sOSize.x << ";" << (int) sOSize.y << ";" << sORotation << ";" << sOType << ";\n";
     }
     return 0;
 }
