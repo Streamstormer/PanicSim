@@ -96,8 +96,11 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
         // Update Threats
         pThreatManager->update(window, mouseReleased);
     }
-    // Update Statistic
-    pStatistic->update();
+    if(curGameState==STATISTICS)
+    {
+        // Update Statistic
+        pStatistic->update();
+    }
     // Update View
     calculateOffset(actualFrameTime);
     return true;
@@ -111,11 +114,13 @@ void ClSimulation::draw(sf::RenderWindow &window)
     if(curGameState==STATISTICS)
     {
         // Draw Statistic in background
-        pStatistic->draw(window);
+        pStatistic->drawStatistic(window);
         // Draw Crowds
         pCrowdManager->draw(window);
         // Draw static / dynamic Objects
         pArea->draw(window);
+        // Draw Diagramm in front
+        pStatistic->drawDiagramm(window);
     }
     if(curGameState==SIMULATION)
     {
@@ -348,11 +353,34 @@ void ClSimulation::calculateOffset(float frameTime)
         gameView.move(currentOffset.x, 0);
 
     }
+    else
+    {
+        if(center.x-(this->Mode.width / 2) + currentOffset.x < 0)
+        {
+            gameView.move((this->Mode.width / 2)-center.x, 0);
+        }
+        if(center.x + (this->Mode.width / 2) + currentOffset.x >= levelSize.x )
+        {
+            gameView.move( (levelSize.x - (center.x+this->Mode.width / 2) ) , 0);
+        }
+    }
     // check whether view goes out of bounds in the y direction
     // if ( Top && Bottom )
-    if (center.y-(this->Mode.height/2)+currentOffset.y > 0 && center.y + (this->Mode.height / 2) + currentOffset.y <= levelSize.y )
+    if (center.y-(this->Mode.height / 2) + currentOffset.y > 0 && center.y + (this->Mode.height / 2) + currentOffset.y <= levelSize.y )
     {
         gameView.move(0 ,currentOffset.y);
+    }
+    else
+    {
+        if(center.y-(this->Mode.height / 2) + currentOffset.y < 0 )
+        {
+            gameView.move(0, (this->Mode.height/2)-center.y );
+        }
+        if(center.y + (this->Mode.height / 2) + currentOffset.y >= levelSize.y)
+        {
+            gameView.move(0, (levelSize.y - (center.y+this->Mode.height/2) ) );
+        }
+
     }
 }
 
