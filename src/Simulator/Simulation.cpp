@@ -107,7 +107,7 @@ void ClSimulation::draw(sf::RenderWindow &window)
     window.setView(gameView);
     // Draw Background
     window.clear(pArea->getBgColor());
-   if(curGameState==STATISTICS)
+    if(curGameState==STATISTICS)
     {
         // Draw Statistic in background
         pStatistic->draw(window);
@@ -122,6 +122,7 @@ void ClSimulation::draw(sf::RenderWindow &window)
         pThreatManager->draw(window);
     }
 }
+
 // private :
 void ClSimulation::partitionCrowds(int totalVisitors)
 {

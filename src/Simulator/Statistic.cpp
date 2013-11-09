@@ -32,6 +32,7 @@ ClStatistic::ClStatistic(ClDiagramm *pDiagramm)
     checkFast = false;
     checkFaster = false;
     checkPause = false;
+    waitTimeOver = false;
 }
 
 ClStatistic::~ClStatistic()
@@ -82,7 +83,9 @@ void ClStatistic::rememberCells(int cellX, int cellY, const int numberOfPeople)
 {
     //remember Cells only after the first 3 seconds after start of simulation
     float hMtime = startClock.getElapsedTime().asSeconds();
-    if(hMtime>3)
+    if(hMtime>3) waitTimeOver=true;
+
+    if(waitTimeOver)
     {
         //if the averageHeatMap is not drawn
         if(doDrawAverage==false)
@@ -100,7 +103,11 @@ void ClStatistic::rememberCells(int cellX, int cellY, const int numberOfPeople)
 
 void ClStatistic::rememberRedCell(int x, int y)
 {
-    pRedCells[y][x] += 1;
+    //remember loops only after the first 3 seconds after start of simulation
+    if(doDrawAverage==false)
+    {
+        if(waitTimeOver) pRedCells[y][x] += 1;
+    }
 }
 
 //incrememts number of loops in which cells are updated (if the average HeatMap is not drawn)
@@ -108,23 +115,24 @@ void ClStatistic::rememberLoop()
 {
     if(doDrawAverage==false)
     {
-        loopNumber++;
+        if(waitTimeOver) loopNumber++;
     }
 }
 
 //if a threat is acivated
-void ClStatistic::rememberThreats(bool type_bomb, bool type_fire)
+void ClStatistic::rememberThreats(bool type_bomb, bool type_fire, sf::Vector2f position)
 {
     if(doDrawAverage==false)
     {
         if(type_fire)
         {
             numberFire++;
+            pDiagramm->registerFire();
         }
-
         if(type_bomb)
         {
             numberBomb++;
+            pDiagramm->registerBomb();
         }
     }
 }
@@ -152,10 +160,10 @@ void ClStatistic::draw(sf::RenderWindow &window)
                 {
                     sf::RectangleShape colorCell(cellSize);
                     colorCell.setPosition(n*cellSize.x, m*cellSize.y);
-                    if(pRedCells[m][n]>100)
+                 /*   if(pRedCells[m][n]>100)
                     {
                         colorCell.setFillColor(getColor(sw_red));
-                    } else colorCell.setFillColor(getColor(people));
+                    } else */colorCell.setFillColor(getColor(people));
                     window.draw(colorCell);
                 }
             }
@@ -165,7 +173,7 @@ void ClStatistic::draw(sf::RenderWindow &window)
     if(doDrawDiagramm)
     {
         sf::Vector2f position(0,0);
-        sf::Vector2f di_size(500, 500);
+        sf::Vector2f di_size(1000, 1000);
         pDiagramm->draw(position, di_size.x, di_size.y, window);
     }
 }
@@ -176,7 +184,7 @@ sf::Color ClStatistic::getColor(int people)
     sf::Color background;
     background.b = 0;
 
-    if (people == sw_green)   // green 0,255,0
+    if (people <= sw_green)   // green 0,255,0
     {
         background.r = 0;
         background.g = 255;
@@ -203,22 +211,10 @@ void ClStatistic::setAverageDraw(bool newBool)
     doDrawAverage=newBool;
 }
 
-//getter for doDrawAverage
-bool ClStatistic::getAverageDraw()
-{
-    return doDrawAverage;
-}
-
 //setter for doDrawDiagramm
 void ClStatistic::setDiagrammDraw(bool newBool)
 {
     doDrawDiagramm = newBool;
-}
-
-//getter for doDrawDiagramm
-bool ClStatistic::getDiagrammDraw()
-{
-    return doDrawDiagramm;
 }
 
 void ClStatistic::update()

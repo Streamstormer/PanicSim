@@ -23,20 +23,19 @@ public:
     void rememberRedCell(int x, int y);
     void rememberLoopNumber();
     void rememberLoop();
-    void rememberThreats(bool type_bomb, bool type_fire);
+    void rememberThreats(bool type_bomb, bool type_fire, sf::Vector2f position);
     void update();
     void draw(sf::RenderWindow &window);
     void rememberKills(int number, bool bomb);
     static void setAverageDraw(bool newBool);
-    static bool getAverageDraw();
     static void setDiagrammDraw(bool newBool);
-    static bool getDiagrammDraw();
     static void startTimer();
     static void rememberTime();
     static void rememberPause();
     static void rememberContinue();
     static void rememberFast();
     static void rememberFaster();
+
     static int* getNumberBomb();
     static int* getNumberFire();
     static int* getNumberKillsBomb();
@@ -63,6 +62,7 @@ private:
     bool checkPause;
     bool checkFast;
     bool checkFaster;
+    bool waitTimeOver;
     int **pAllCells;
     int **pDrawCells;
     int **pRedCells;
