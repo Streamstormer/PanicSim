@@ -187,12 +187,12 @@ void  ClCrowd::Update(float frameTime)
         {
 
             sf::Vector2f delta =  Seek( sf::Vector2f(positionMid.x,positionMid.y), position);
-            delta.x*=-10;
-            delta.y*=-10;
+            delta.x*=-0.3;
+            delta.y*=-0.3;
             // check new position
             if(pArea->validPoint(position+delta))
             {
-                position+=delta;
+                position+=delta ;
             }
             sf::Vector2f force;
             for(unsigned int n = 0; n < peoples.size(); n++)
