@@ -76,7 +76,6 @@ void ClCrowdManager::CreateCrowd(sf::Vector2f position, float radius, int people
 
         ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Red,position, people, pHeatMap, pStateVault,pPathFinder);
         Crowds.push_back(Crowd);
-
     }
     else
     {
