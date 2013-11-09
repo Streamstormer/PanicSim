@@ -21,6 +21,7 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
     {
         StrPeople *newPerson = new StrPeople;
         newPerson->alive = true;
+        newPerson->panic = false;
         newPerson->currentNode = -1;
         newPerson->force.x = newPerson->force.y = 0;
 
@@ -40,7 +41,6 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
 
         } while (newPerson->position[(PEOPLE_POSITION_MEMORY - 1)].y < 0);
 
-
         //Add Offset
         newPerson->position[PEOPLE_POSITION_MEMORY - 1].x += position.x - radius / 2 ;
         newPerson->position[PEOPLE_POSITION_MEMORY - 1].y += position.y - radius / 2;
@@ -50,17 +50,13 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
         {
             newPerson->position[i] = newPerson->position[PEOPLE_POSITION_MEMORY-1];
         }
-
         peoples.push_back(newPerson);
-
     }
 
     // register people in the HeatMap
-
     pHeatMap->registerCrowd(peoples);
 
     // get start state
-
     this->pStateVault = pStateVault;
     pCurrentState = pStateVault->requestStartState();
     curAction = pCurrentState->getNextAction();
@@ -83,8 +79,8 @@ void  ClCrowd::Update(float frameTime)
 {
     // look for casualties
     bool firstPanic = !panic;
-
     int casualtieCounter = 0;
+
     for (unsigned int n = 0; n < peoples.size(); n++)
     {
         if (peoples[n]->alive == false)
@@ -97,9 +93,21 @@ void  ClCrowd::Update(float frameTime)
                 positionMid.x += temp.x;
                 positionMid.y += temp.y;
                 panic = true;
+                for(int m = 0; m<peoples.size(); m++)
+                {
+                    peoples[m]->panic = true;
+                }
             }
             delete peoples[n]; // free memory
             peoples.erase(peoples.begin()+n);
+        }
+
+        if (peoples[n]->panic == true)
+        {
+            panic = true;
+            firstPanic = false;
+            positionMid.x = (int)position.x;
+            positionMid.y = (int)position.y;
         }
     }
     if (firstPanic == true && panic == true)
@@ -259,15 +267,12 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
         personShape.setFillColor(sf::Color::Magenta);
         window.draw(personShape);
     }
-
 }
-
 
 float ClCrowd::getRadius()
 {
     return radius;
 }
-
 
 void ClCrowd::Vec2DNormalize( sf::Vector2f *NormalizeMe )
 {
@@ -289,4 +294,3 @@ sf::Vector2f ClCrowd::Seek(sf::Vector2f TargetPos, const sf::Vector2f & Destinat
 
     return (TargetPos );
 }
-

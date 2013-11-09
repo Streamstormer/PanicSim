@@ -45,6 +45,9 @@ private:
     const static int sw_yellow = 15;
     //color is (stepwise) red until there are sw_red people above it´s red too
     const static int sw_red = 25;
+
+    sf::Clock panicClock;
+    float actualTime;
 };
 
 #endif // HEATMAP_HPP_INCLUDED

@@ -16,6 +16,8 @@ ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &Map
         SortedPeoples.push_back(oneCell);
     }
     pStatistic->planHeatMapStatistic(cellNumber, cellSize, sw_green, sw_yellow, sw_red);
+    actualTime = 0;
+    panicClock.restart();
 }
 
 ClHeatMap::~ClHeatMap() {}
@@ -61,6 +63,8 @@ void ClHeatMap::draw(sf::RenderWindow& window)
 
 void ClHeatMap::update(float frameTime)
 {
+    actualTime = panicClock.getElapsedTime().asSeconds();
+    if(actualTime > 3.0) panicClock.restart();
     //loop through the SortedPeople vector to update the colored cells
     sf::Rect<float> Cell;
     for(unsigned int m=0; m<SortedPeoples.size(); m++)
@@ -98,6 +102,7 @@ void ClHeatMap::update(float frameTime)
     // 4. calculate collision detection
     // 4.1 does the person leave the Area ?
     // 4.2 is the person hurt by fire ?
+
     // 1
     sf::Vector2f force;
     sf::Vector2f source;
@@ -206,8 +211,14 @@ sf::Vector2f ClHeatMap::distanceForce(std::vector<StrPeople *> &cell, StrPeople 
                 force.x += delta.x *helpVar;
                 force.y += delta.y *helpVar;
                 NbCount++;
+                if(actualTime > 3.0)
+                {
+                    if(checkMe->panic==true)
+                    {
+                        cell[n]->panic = true;
+                    }
+                }
             }
-
         }
     }
 

@@ -54,8 +54,6 @@ private:
 
     // for debugging puposes : each Crowd does have a unique color
     sf::Color Color;
-
-
 };
 
 #endif // CROWD2_HPP_INCLUDED
