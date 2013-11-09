@@ -171,18 +171,19 @@ void ClSimpleSimulationMenu::createMenu()
     ButtonVector.push_back(pAddMe);
     // add STATISTIC Button
     id++;
-    ButtonSize.x = (float)texture3.getSize().x;
-    ButtonSize.y = (float)texture3.getSize().y;
-    Position.x = 9*screenSize.x/10-ButtonSize.x/2;
-    Position.y = screenSize.y/8;
-    pAddMe = new ClSimpleButton(id, STATISTIC, 0, texture3, ButtonSize, Position, 0.8f);
-    pAddMe->setText(sf::String("Statistic"), pFont);
+    scale = 0.5;
+    ButtonSize.x = texture.getSize().x;
+    ButtonSize.y = texture.getSize().y;
+    ButtonSize.x /=2;
+    ButtonSize.y /=4;
+    Position.x = screenSize.x-2*1.5*ButtonSize.x*scale;
+    Position.y = 0;
+    pAddMe = new ClSimpleButton(id, STATISTIC, 6, texture, ButtonSize, Position, scale);
     ButtonVector.push_back(pAddMe);
     // add MENU Button (exit to menu)
     id++;
-    Position.y += 3*ButtonSize.y/2;
-    pAddMe = new ClSimpleButton(id, EXITMENU, 0, texture3, ButtonSize, Position, 0.8f);
-    pAddMe->setText(sf::String("MENU"),pFont);
+    Position.x += ButtonSize.x*1.5*scale;
+    pAddMe = new ClSimpleButton(id, EXITMENU, 7, texture, ButtonSize, Position, scale);
     ButtonVector.push_back(pAddMe);
 
     // Labels
