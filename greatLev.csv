@@ -1,4 +1,4 @@
-17 StaticObjectId; Position Xf; Position Yf; Size Xf; Size Yf; Rotation f; Type i; Levelsize X; Levelsize Y; BGRed; BGGreen;BGBlue;
+18 StaticObjectId; Position Xf; Position Yf; Size Xf; Size Yf; Rotation f; Type i; Levelsize X; Levelsize Y; BGRed; BGGreen;BGBlue;
 Details;;;;;;;2000;2000;162;205;90;
 1;598;40;100;50;0;0;
 2;1148;35;1000;20;0;4;
@@ -17,3 +17,4 @@ Details;;;;;;;2000;2000;162;205;90;
 15;255;255;100;100;0;2;
 16;270;653;200;50;270;1;
 17;1091;593;100;50;90;1;
+18;1;1137;90;500;0;3;
