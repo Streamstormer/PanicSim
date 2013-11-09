@@ -13,8 +13,9 @@ class ClPanicState : public ClAbstractState
         panicClock.restart();
         this->myState = myState;
         this->id = id;
+        panicState = true;
     }
-    enum STATES update(bool panic) const;
+    enum STATES update(bool panic) ;
     // what action next
     virtual enum ACTIONS getNextAction() const ;
     private:
