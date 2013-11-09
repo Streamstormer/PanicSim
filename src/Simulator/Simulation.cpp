@@ -221,7 +221,7 @@ void ClSimulation::partitionCrowds(int totalVisitors)
                     if((vCandidateWa.x + (POS_TRY_GRAN * sUnitVector.x)) > 5
                             && vCandidateWa.x + (POS_TRY_GRAN * sUnitVector.x) < vMaxX
                             && vCandidateWa.y + (POS_TRY_GRAN * sUnitVector.y) > 5
-                            && vCandidateWa.y + ( POS_TRY_GRAN * sUnitVector.y) < vMaxY)
+                            && vCandidateWa.y + (POS_TRY_GRAN * sUnitVector.y) < vMaxY)
                     {
                         vCandidateWa.x += POS_TRY_GRAN * sUnitVector.x;
                         vCandidateWa.y += POS_TRY_GRAN * sUnitVector.y;

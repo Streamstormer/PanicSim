@@ -42,7 +42,7 @@ class ClSimulation
 
         static const int PATH_TEST_GRANULARITY = 20;
         static const int DIST_CROWDS_PER_ATTR = 120;
-        static const int POS_TRY_GRAN = 5;
+        static const int POS_TRY_GRAN = 30;
 
         ClArea *pArea;
         ClCrowdManager *pCrowdManager;
