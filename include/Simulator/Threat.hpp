@@ -13,6 +13,7 @@ usecase:    abstract class for creation of different threats, handling mouse act
 #include <iostream>
 #include "Area.hpp"
 #include "HeatMap.hpp"
+#include "Diagramm.hpp"
 
 enum ThreatType {THBOMB, THFIRE};
 
@@ -33,6 +34,7 @@ protected:
     enum ThreatType type;
     void subrecttoNumber(int number);
     ClHeatMap *pHeatMap;
+    ClDiagramm *pDiagramm;
     bool isMoved;
     bool isActive; // bomb explodes fire starts to burn
     bool alive;

@@ -7,14 +7,10 @@ usecase:    creates a diagramm which shows the number of casualties and threads 
 */
 #include "../../include/Simulator/Diagramm.hpp"
 
-ClDiagramm::ClDiagramm(const sf::Vector2f & position, float diagrammSizeX, float diagrammSizeY)
+ClDiagramm::ClDiagramm()
     {
     id=0;
     sf::Clock clock;
-    this->position = position;
-    //diagrammSizeX und diagrammSizeY define the size of the diagramm
-    this->diagrammSizeX = diagrammSizeX - 2*OFFSET;
-    this->diagrammSizeY = diagrammSizeY - 2*OFFSET;
     font.loadFromFile("fonts/LiberationSerif-Regular.ttf");
     }
 
@@ -50,8 +46,13 @@ void ClDiagramm::registerCasualties()
     id++;
 }
 
-void ClDiagramm::draw(sf::RenderWindow & window)
+void ClDiagramm::draw(const sf::Vector2f & position, float diagrammSizeX, float diagrammSizeY, sf::RenderWindow & window)
 {
+    this->position = position;
+    //diagrammSizeX und diagrammSizeY define the size of the diagramm
+    this->diagrammSizeX = diagrammSizeX - 2*OFFSET;
+    this->diagrammSizeY = diagrammSizeY - 2*OFFSET;
+
     //in: Vector with events (BOMB,FIRE, CASUALTIES)
     //out: Graph which shows the events on a timescale and in y-direction the number of casualties
 
@@ -60,6 +61,8 @@ void ClDiagramm::draw(sf::RenderWindow & window)
 
     std::vector<event> fire;
     std::vector<event> bomb;
+    sf::Vector2f tempSize;
+    sf::Vector2f zeroPosition (position.x + OFFSET, position.y + diagrammSizeY + OFFSET);
 
     //sets each numberCasualties = 0
     int numberCasualties[NUMBERBLOCKS];
@@ -67,6 +70,8 @@ void ClDiagramm::draw(sf::RenderWindow & window)
     {
         numberCasualties[i]=0;
     }
+    if(eventsVector.size() != 0)
+    {
 
     float timeLastEvent = eventsVector.back().time.asSeconds();
     for (int i=0; i<(int)eventsVector.size(); i++)
@@ -94,6 +99,55 @@ void ClDiagramm::draw(sf::RenderWindow & window)
         }
     }
 
+    //draw fire
+    if(fire.size() != 0)
+    {
+
+    int fireSize = fire.size();
+    sf::RectangleShape fireRect[fireSize];
+    tempSize.y = diagrammSizeY; //top of diagramm
+    for (int j=0; j<(int)fire.size(); j++)
+    {
+        float fireTime = fire[j].time.asSeconds();
+        tempSize.x = zeroPosition.x + (fireTime/timeLastEvent)*diagrammSizeX;
+        fireRect[j].setPosition(tempSize.x, position.y + OFFSET );
+        tempSize.x = 2;//weidth of the fireRect is 2
+        fireRect[j].setSize(tempSize);
+        fireRect[j].setFillColor(sf::Color::Red);
+    }
+    for(int j=0; j<(int)fire.size(); j++)
+    {
+        window.draw(fireRect[j]);
+    }
+
+    }
+
+
+    //draw bomb
+    if(bomb.size() != 0)
+    {
+
+    int bombSize = bomb.size();
+    sf::RectangleShape bombRect[bombSize];
+    tempSize.y = diagrammSizeY; //top of diagramm
+    for (int j=0; j<(int)bomb.size(); j++)
+    {
+        float bombTime = bomb[j].time.asSeconds();
+        tempSize.x = zeroPosition.x + (bombTime/timeLastEvent) * diagrammSizeX;
+        bombRect[j].setPosition(tempSize.x, position.y + OFFSET );
+        tempSize.x = 2;//weidth of the bombRect is 2
+        bombRect[j].setSize(tempSize);
+        bombRect[j].setFillColor(sf::Color::Yellow);
+    }
+    for(int j=0; j<(int)bomb.size(); j++)
+    {
+        window.draw(bombRect[j]);
+    }
+
+    }
+
+    }
+
     drawBackground(window);
 
     drawXAxis(window);
@@ -113,8 +167,8 @@ void ClDiagramm::draw(sf::RenderWindow & window)
 
     //draw rectangles for each block
     sf::RectangleShape block[NUMBERBLOCKS]; //there are 8 blocks
-    sf::Vector2f zeroPosition (position.x + OFFSET, position.y + diagrammSizeY + OFFSET);
-    sf::Vector2f tempSize;
+
+
     tempSize.x = ((float)diagrammSizeX)/NUMBERBLOCKS;
     for(int i=0; i<NUMBERBLOCKS; i++)
     {
@@ -129,42 +183,10 @@ void ClDiagramm::draw(sf::RenderWindow & window)
     }
 
 
-    //draw fire
-    int fireSize = fire.size();
-    sf::RectangleShape fireRect[fireSize];
-    tempSize.y = diagrammSizeY; //top of diagramm
-    for (int j=0; j<(int)fire.size(); j++)
-    {
-        float fireTime = fire[j].time.asSeconds();
-        tempSize.x = zeroPosition.x + (fireTime/timeLastEvent)*diagrammSizeX;
-        fireRect[j].setPosition(tempSize.x, position.y + OFFSET );
-        tempSize.x = 2;//weidth of the fireRect is 2
-        fireRect[j].setSize(tempSize);
-        fireRect[j].setFillColor(sf::Color::Red);
-    }
-    for(int j=0; j<(int)fire.size(); j++)
-    {
-        window.draw(fireRect[j]);
-    }
 
 
-    //draw bomb
-    int bombSize = bomb.size();
-    sf::RectangleShape bombRect[bombSize];
-    tempSize.y = diagrammSizeY; //top of diagramm
-    for (int j=0; j<(int)bomb.size(); j++)
-    {
-        float bombTime = bomb[j].time.asSeconds();
-        tempSize.x = zeroPosition.x + (bombTime/timeLastEvent) * diagrammSizeX;
-        bombRect[j].setPosition(tempSize.x, position.y + OFFSET );
-        tempSize.x = 2;//weidth of the bombRect is 2
-        bombRect[j].setSize(tempSize);
-        bombRect[j].setFillColor(sf::Color::Yellow);
-    }
-    for(int j=0; j<(int)bomb.size(); j++)
-    {
-        window.draw(bombRect[j]);
-    }
+
+
 
     //draw axis legned
     sf::Text textAxisX;

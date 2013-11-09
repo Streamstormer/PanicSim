@@ -9,6 +9,7 @@ usecase:    handling all statistic calculations (in HeatMap, by creation of thre
 #include "../../include/Simulator/Statistic.hpp"
 
 bool ClStatistic::doDrawAverage = false;
+bool ClStatistic::doDrawDiagramm = false;
 bool ClStatistic::setStop = false;
 bool ClStatistic::setStart = false;
 bool ClStatistic::setPause = false;
@@ -21,8 +22,9 @@ int ClStatistic::numberKillsFire = 0;
 int ClStatistic::numberKillsBomb = 0;
 int ClStatistic::time = 0;
 
-ClStatistic::ClStatistic()
+ClStatistic::ClStatistic(ClDiagramm *pDiagramm)
 {
+    this->pDiagramm = pDiagramm;
     startTime = 0;
     pauseTime = 0;
     fastTime = 0;
@@ -36,6 +38,7 @@ ClStatistic::~ClStatistic()
 {
     delete pAllCells;
     delete pDrawCells;
+    delete pRedCells;
 }
 
 //basic ajustment for HeatMap calculations
@@ -135,7 +138,7 @@ void ClStatistic::draw(sf::RenderWindow &window)
     //4. if sw_green is reached -> draw cell
 
     //1.
-    if(doDrawAverage==true)
+    if(doDrawAverage)
     {
         //2.
         for(int m = 0; m<cellNumber.y; m++)
@@ -158,6 +161,13 @@ void ClStatistic::draw(sf::RenderWindow &window)
             }
         }
     }
+
+    if(doDrawDiagramm)
+    {
+        sf::Vector2f position(0,0);
+        sf::Vector2f di_size(500, 500);
+        pDiagramm->draw(position, di_size.x, di_size.y, window);
+    }
 }
 
 //calculate right color for drawing cells according to borders
@@ -166,7 +176,7 @@ sf::Color ClStatistic::getColor(int people)
     sf::Color background;
     background.b = 0;
 
-    if (people == sw_green)   // at the end: green 0,255,0
+    if (people == sw_green)   // green 0,255,0
     {
         background.r = 0;
         background.g = 255;
@@ -197,6 +207,18 @@ void ClStatistic::setAverageDraw(bool newBool)
 bool ClStatistic::getAverageDraw()
 {
     return doDrawAverage;
+}
+
+//setter for doDrawDiagramm
+void ClStatistic::setDiagrammDraw(bool newBool)
+{
+    doDrawDiagramm = newBool;
+}
+
+//getter for doDrawDiagramm
+bool ClStatistic::getDiagrammDraw()
+{
+    return doDrawDiagramm;
 }
 
 void ClStatistic::update()

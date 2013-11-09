@@ -14,11 +14,11 @@ ClSimpleSimulationMenu::ClSimpleSimulationMenu(enum GameStates myState, sf::Font
 
 void ClSimpleSimulationMenu::draw(sf::RenderWindow &window) const
 {
-    for(int n = 0; n < ButtonVector.size(); n++)
+    for(unsigned int n = 0; n < ButtonVector.size(); n++)
     {
         ButtonVector[n]->draw(window);
     }
-    for(int n =0; n< LabelVector.size(); n++)
+    for(unsigned int n =0; n< LabelVector.size(); n++)
     {
         LabelVector[n]->draw(window);
     }
