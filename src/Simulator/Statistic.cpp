@@ -120,7 +120,7 @@ void ClStatistic::rememberLoop()
 }
 
 //if a threat is acivated
-void ClStatistic::rememberThreats(bool type_bomb, bool type_fire, sf::Vector2f position)
+void ClStatistic::rememberThreats(bool type_bomb, bool type_fire)
 {
     if(doDrawAverage==false)
     {
@@ -168,12 +168,13 @@ void ClStatistic::draw(sf::RenderWindow &window)
                 }
             }
         }
+
     }
 
     if(doDrawDiagramm)
     {
         sf::Vector2f position(0,0);
-        sf::Vector2f di_size(1000, 1000);
+        sf::Vector2f di_size(1200, 500);
         pDiagramm->draw(position, di_size.x, di_size.y, window);
     }
 }
@@ -212,9 +213,12 @@ void ClStatistic::setAverageDraw(bool newBool)
 }
 
 //setter for doDrawDiagramm
-void ClStatistic::setDiagrammDraw(bool newBool)
+void ClStatistic::toggleDiagrammDraw()
 {
-    doDrawDiagramm = newBool;
+    if(doDrawDiagramm)
+    {
+        doDrawDiagramm = false;
+    }else doDrawDiagramm = true;
 }
 
 void ClStatistic::update()

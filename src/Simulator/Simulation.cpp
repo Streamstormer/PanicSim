@@ -75,6 +75,7 @@ ClSimulation::~ClSimulation()
     delete pCrowdManager;
     delete pThreatManager;
     delete pStatistic;
+    delete pDiagramm;
 }
 
 bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
@@ -111,8 +112,12 @@ void ClSimulation::draw(sf::RenderWindow &window)
     {
         // Draw Statistic in background
         pStatistic->draw(window);
+        // Draw Crowds
+        pCrowdManager->draw(window);
+        // Draw static / dynamic Objects
+        pArea->draw(window);
     }
-    if(curGameState==SIMULATION || curGameState == STATISTICS)
+    if(curGameState==SIMULATION)
     {
         // Draw Crowds
         pCrowdManager->draw(window);

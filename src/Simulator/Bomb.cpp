@@ -115,6 +115,6 @@ void ClBomb::activate()
         //4.
         animationTime.restart();
         //5.
-        pStatistic->rememberThreats(true, false, position_threat);
+        pStatistic->rememberThreats(true, false);
     }
 }

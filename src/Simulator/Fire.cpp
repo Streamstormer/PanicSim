@@ -96,6 +96,6 @@ void ClFire::activate()
         //3.
         pArea->setOnFire(pArea->getIdByVector(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2))));
         //4.
-        pStatistic->rememberThreats(false, true, position_threat);
+        pStatistic->rememberThreats(false, true);
     }
 }
