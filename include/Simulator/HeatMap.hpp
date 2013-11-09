@@ -19,9 +19,10 @@ public:
     void update(float frameTime);
     int explosion(const sf::Vector2f &here, int explosionRadius); // returns the ammount of casualties
     static void toggleDraw();
-    static bool doDraw;
+
 private:
     sf::Vector2f distanceForce(std::vector<StrPeople *> &cell, StrPeople *checkMe, int position );
+    void additionalCellChecks();
     int calculateCasualtiesInCell(const sf::Vector2i &cell, const sf::Vector2f &bombPosition, int explosionRadius); // returns ammount of casualties (helper function of explosion)
     void Vec2DNormalize( sf::Vector2f *NormalizeMe );
     float invert(float Max, float Current);
@@ -48,6 +49,7 @@ private:
 
     sf::Clock panicClock;
     float actualTime;
+    static bool doDraw;
 };
 
 #endif // HEATMAP_HPP_INCLUDED

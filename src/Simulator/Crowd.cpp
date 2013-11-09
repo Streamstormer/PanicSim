@@ -207,8 +207,8 @@ void  ClCrowd::Update(float frameTime)
             {
                 force =  Seek( peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)], position);
 
-                force.x *= frameTime * -0.03;
-                force.y *= frameTime * -0.03;
+                force.x *= frameTime * -0.1;
+                force.y *= frameTime * -0.1;
                 peoples[n]->force = force;
             }
         }

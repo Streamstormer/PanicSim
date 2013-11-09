@@ -106,7 +106,6 @@ void ClHeatMap::update(float frameTime)
     // 1
     sf::Vector2f force;
     sf::Vector2f source;
-    int id = -1; // used for collision detection
 
     for (int x = 0; x < cellNumber.x ; x++)
     {
@@ -148,23 +147,44 @@ void ClHeatMap::update(float frameTime)
 
 
                     Vec2DNormalize(&force);
-                    force.x *= -0.25;
-                    force.y *= -0.25;
+                    force.x *= -0.25*frameTime;
+                    force.y *= -0.25*frameTime;
+                    SortedPeoples[x+y*cellNumber.x][n]->force += force;
 
-                    //SortedPeoples[x+y*cellNumber.x][n]->position += force*frameTime;
+
+
+                }
+
+            }
+        }
+    }
+    additionalCellChecks();
+}
+
+void ClHeatMap::additionalCellChecks()
+{
+    int id = -1; // used for collision detection
+
+    for (int x = 0; x < cellNumber.x ; x++)
+    {
+        for (int y = 0; y < cellNumber.y; y++)
+        {
+            //2.
+            if(this->SortedPeoples[x+y*cellNumber.x].size() > 0)
+            {
+                for (unsigned int n = 0; n < SortedPeoples[x+y*cellNumber.x].size(); n++)
+                {
 
                     // check collision
                     // 4.
-                    force.x*=frameTime;
-                    force.y*=frameTime;
 
                     id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)]
-                                              + force + SortedPeoples[x+y*cellNumber.x][n]->force );
+                                               + SortedPeoples[x+y*cellNumber.x][n]->force );
 
                     if( id == -1)
                     {
-                        SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)].x += force.x + SortedPeoples[x+y*cellNumber.x][n]->force.x ;
-                        SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)].y += force.y + SortedPeoples[x+y*cellNumber.x][n]->force.y ;
+                        SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)].x +=  SortedPeoples[x+y*cellNumber.x][n]->force.x ;
+                        SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)].y +=  SortedPeoples[x+y*cellNumber.x][n]->force.y ;
                     }
                     else
                     {
@@ -178,9 +198,7 @@ void ClHeatMap::update(float frameTime)
                         }
                         // 4.2 check for burning building
                     }
-
-                }
-
+            }
             }
         }
     }
