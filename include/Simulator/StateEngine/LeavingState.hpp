@@ -11,7 +11,7 @@ class ClLeavingState : public ClAbstractState
         this->myState = myState;
         this->id = id;
     }
-    enum STATES update(bool panic) const;
+    enum STATES update(bool panic) ;
 
     // what action next ?
     enum ACTIONS getNextAction() const ;
