@@ -11,7 +11,7 @@ const unsigned int MAXSTATICOBJECTTYPES = GATE; // set this enum to the rightmos
 class ClStaticObject
 {
 public:
-    ClStaticObject(sf::RectangleShape *Rectconst, int id, enum staticObjects Type,const sf::Texture &texture_fire);
+    ClStaticObject(sf::RectangleShape *Rectconst, int id, enum staticObjects Type);
     ~ClStaticObject();
     void draw(sf::RenderWindow& window);
     const sf::Vector2f &getCenter();
@@ -24,7 +24,10 @@ public:
     enum staticObjects getType();
     const sf::Vector2f &getPosition();
     const sf::Vector2f &getSize();
-    void startToBurn();
+    void startToBurn()
+    {
+        Rect->setFillColor(sf::Color::Magenta);
+    }
 
     float getRotation();
 
@@ -43,16 +46,6 @@ private:
     sf::Text text;
     sf::Font font;
     sf::RectangleShape line;
-    sf::Rect<int> subrectFire;
-    sf::Sprite fire_sprite;
-    sf::Clock fire_clock;
-    void subrecttoNumber(int number);
-    int bildID;
-
-    bool isOnFire;
-    const static int PICTUREDURATION =25;
-    const static int ANIMATIONSQUARE =8;
-
 
 };
 

@@ -9,7 +9,7 @@ class ClArea
 {
 public:
 
-    ClArea();
+    ClArea() {id = 0;}
     ~ClArea();
 
     int insertStObj(enum staticObjects type, const sf::Vector2f & sizeOfRectangle,
@@ -89,8 +89,8 @@ private:
     std::vector<ClStaticObject *> sobjects;
     sf::Vector2i levelSize;
     sf::Color bgColor;
+
     static const int EXIT_POINT_DISTANCE = 50;
-    sf::Texture fire_texture; // for fire texture
 };
 
 #endif // AREA_HPP_INCLUDED

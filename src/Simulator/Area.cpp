@@ -1,13 +1,4 @@
 #include "../../include/Simulator/Area.hpp"
-
-
-    ClArea::ClArea()
-    {
-        id = 0;
-        fire_texture.loadFromFile("pictures/fire.png");
-    }
-
-
     ClArea::~ClArea()
     {
         for(unsigned int n=0; n < sobjects.size(); n++)
@@ -26,7 +17,7 @@
         tempRe->setRotation(rotAngle);
         if(type == GATE)
             tempRe->setFillColor(sf::Color::Red);
-        ClStaticObject *tempSt = new ClStaticObject(tempRe, id, type,fire_texture);
+        ClStaticObject *tempSt = new ClStaticObject(tempRe, id, type);
         sobjects.push_back(tempSt);
         return id;
     }
