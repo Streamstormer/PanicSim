@@ -31,65 +31,50 @@ enum GameStates ClSimpleSimulationMenu::execute(enum Buttons btn) const
     case(HEATMAP):
         {
             ClHeatMap::toggleDraw();
-            ClStatistic::setAverageDraw(false);
-            ClSimulation::setStopSim(false);
         }
         break;
     case(PLAY):
     {
         ClSimulation::updateSpeed(false, true, false);
-        ClStatistic::setAverageDraw(false);
-        ClSimulation::setStopSim(false);
         ClStatistic::rememberContinue();
     }
     break;
     case(FASTFORWARD):
     {
         ClSimulation::updateSpeed(false, false, true);
-        ClStatistic::setAverageDraw(false);
-        ClSimulation::setStopSim(false);
     }
     break;
     case(PAUSE):
     {
         ClSimulation::updateSpeed(true,false,false);
-        ClStatistic::setAverageDraw(false);
         ClStatistic::rememberPause();
-        ClSimulation::setStopSim(false);
     }
     break;
     case(BOMB):
     {
         ClThreatManager::buttonPressed(true, false, false);
-        ClStatistic::setAverageDraw(false);
-        ClSimulation::setStopSim(false);
     }
     break;
     case(FIRE):
     {
         ClThreatManager::buttonPressed(false, true, false);
-        ClStatistic::setAverageDraw(false);
-        ClSimulation::setStopSim(false);
     }
     break;
     case(EXPLOSION):
     {
         ClThreatManager::buttonPressed(false,false,true);
-        ClStatistic::setAverageDraw(false);
-        ClSimulation::setStopSim(false);
     }
     break;
     case(STATISTIC):
     {
         ClStatistic::setAverageDraw(true);
-        ClSimulation::setStopSim(false);
         ClStatistic::rememberTime();
+        return STATISTICS;
     }
     break;
     case(EXITMENU):
     {
-        ClStatistic::setAverageDraw(false);
-        ClSimulation::setStopSim(true);
+        return MENU;
     }
     break;
     }
@@ -105,9 +90,7 @@ enum GameStates ClSimpleSimulationMenu::update(sf::RenderWindow &window, bool mo
         {
             if(mouseReleased == true)
             {
-                execute(ButtonVector[n]->getButtonType());
-                if(ClStatistic::getAverageDraw()==true) return STATISTICS;
-                if(ClSimulation::getStopSim()==true) return MENU;
+                return execute(ButtonVector[n]->getButtonType());
             }
         }
     }

@@ -84,16 +84,18 @@ void ClFire::activate()
     //1. if it´s not active - activate fire
     //2. set fire as "not alive"
     //3. fire up static object around
-    ///4. will come: remember casualties by fire
+    //4. tell the statistics about activated fire
+    /// will come: remember casualties by fire
 
     //1.
     if(isActive == false)
     {
         isActive = true;
-        pDiagramm->registerFire();
         //2.
         alive = false;
         //3.
         pArea->setOnFire(pArea->getIdByVector(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2))));
+        //4.
+        pStatistic->rememberThreats(false, true, position_threat);
     }
 }

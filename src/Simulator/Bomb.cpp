@@ -101,12 +101,12 @@ void ClBomb::activate()
     //2. calculate casualties
     //3. remember casualties in statistic
     //4. activate animationTime clock
+    //5. tell the statistics about activated bomb
 
     //1.
     if(isActive == false)
     {
         isActive = true;
-        pDiagramm->registerBomb();
         //2.
         int casualties = pHeatMap->explosion(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2)), 100);
         //3.
@@ -114,5 +114,7 @@ void ClBomb::activate()
         pStatistic->rememberKills(casualties, true);
         //4.
         animationTime.restart();
+        //5.
+        pStatistic->rememberThreats(true, false, position_threat);
     }
 }
