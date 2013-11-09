@@ -25,7 +25,8 @@ public:
     void rememberLoop();
     void rememberThreats(bool type_bomb, bool type_fire);
     void update();
-    void draw(sf::RenderWindow &window);
+    void drawStatistic(sf::RenderWindow &window);
+    void drawDiagramm(sf::RenderWindow &window);
     void rememberKills(int number, bool bomb);
     static void setDoDrawStatistic(bool newBool);
     static void toggleDiagrammDraw();

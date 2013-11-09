@@ -138,7 +138,7 @@ void ClStatistic::rememberThreats(bool type_bomb, bool type_fire)
 }
 
 //draw average HeatMap
-void ClStatistic::draw(sf::RenderWindow &window)
+void ClStatistic::drawStatistic(sf::RenderWindow &window)
 {
     //1. check if doDrawAverage is true
     //2. loop through all cells
@@ -170,12 +170,24 @@ void ClStatistic::draw(sf::RenderWindow &window)
         }
 
     }
+}
 
+void ClStatistic::drawDiagramm(sf::RenderWindow &window)
+{
     if(doDrawDiagramm)
     {
-        sf::Vector2f position(0,0);
-        sf::Vector2f di_size(1200, 500);
-        pDiagramm->draw(position, di_size.x, di_size.y, window);
+        sf::RectangleShape bg_color;
+        sf::Vector2f bg_position(0,0);
+        sf::Vector2f di_position(70,70);
+        sf::Color bgColor(0,0,0, 90);
+        bg_color.setPosition(bg_position);
+        bg_color.setFillColor(bgColor);
+        sf::Vector2f di_size(700,500);
+        sf::Vector2f bg_size(910,800);
+        bg_color.setSize(bg_size);
+
+        window.draw(bg_color);
+        pDiagramm->draw(di_position, di_size.x, di_size.y, window);
     }
 }
 

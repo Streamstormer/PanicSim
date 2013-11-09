@@ -102,9 +102,9 @@ void ClStaticObject::draw(sf::RenderWindow& window)
         subrecttoNumber(bildID);
         int countFire=0;
 
-        if(Rect->getPosition().x > Rect->getPosition().y)
+        if(Rect->getSize().x > Rect->getSize().y)
         {
-            countFire = (Rect->getSize().x-70)/128;//    /128
+            countFire = (Rect->getSize().x-100)/128;//    /128
             if(countFire==0)
             {
                 fire_sprite.setPosition(Rect->getPosition());
@@ -114,13 +114,27 @@ void ClStaticObject::draw(sf::RenderWindow& window)
             else
             {
                 int i=0;
+                if (Rect->getRotation()==0 ||Rect->getRotation() == 180 || Rect->getRotation() == 360)
+                {
                     while (i<countFire)
                     {
-                        fire_sprite.setPosition(Rect->getGlobalBounds().left+(i*128+70),Rect->getPosition().y);
+                        fire_sprite.setPosition(Rect->getGlobalBounds().left+(i*128+100),Rect->getGlobalBounds().top+Rect->getSize().y/2);
                         fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height/2);
                         window.draw(fire_sprite);
                         i++;
                     }
+                }
+
+                if (Rect->getRotation()==90|| Rect->getRotation()==270)
+                {
+                   while (i<countFire)
+                    {
+                        fire_sprite.setPosition(Rect->getGlobalBounds().left+Rect->getSize().y/2,Rect->getGlobalBounds().top+(i*128+100));
+                        fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height/2);
+                        window.draw(fire_sprite);
+                        i++;
+                    }
+                }
 
 
             }
@@ -136,12 +150,31 @@ void ClStaticObject::draw(sf::RenderWindow& window)
             }
             else
             {
-
+            int i=0;
+                if (Rect->getRotation()==0 ||Rect->getRotation() == 180 || Rect->getRotation() == 360)
+                {
+                    while (i<countFire)
+                    {
+                        fire_sprite.setPosition(Rect->getGlobalBounds().left+(i*128+100),Rect->getGlobalBounds().top+Rect->getSize().y/2);
+                        fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height/2);
+                        window.draw(fire_sprite);
+                        i++;
+                    }
+                }
+                if (Rect->getRotation()==90|| Rect->getRotation()==270)
+                {
+                   while (i<countFire)
+                    {
+                        fire_sprite.setPosition(Rect->getGlobalBounds().left+Rect->getSize().y/2,Rect->getGlobalBounds().top+(i*128+100));
+                        fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height/2);
+                        window.draw(fire_sprite);
+                        i++;
+                    }
             }
         }
 
     }
-
+    }
 }
 bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
     {

@@ -46,12 +46,12 @@ void ClDiagramm::registerCasualties()
     id++;
 }
 
-void ClDiagramm::draw(const sf::Vector2f & position, float diagrammSizeX, float diagrammSizeY, sf::RenderWindow & window)
+void ClDiagramm::draw(const sf::Vector2f & pos, float dSizeX, float dSizeY, sf::RenderWindow & window)
 {
-    this->position = position;
+    this->position = pos;
     //diagrammSizeX und diagrammSizeY define the size of the diagramm
-    this->diagrammSizeX = diagrammSizeX - 2*OFFSET;
-    this->diagrammSizeY = diagrammSizeY - 2*OFFSET;
+    this->diagrammSizeX = dSizeX - 2*OFFSET;
+    this->diagrammSizeY = dSizeY - 2*OFFSET;
 
     //in: Vector with events (BOMB,FIRE, CASUALTIES)
     //out: Graph which shows the events on a timescale and in y-direction the number of casualties
@@ -70,6 +70,12 @@ void ClDiagramm::draw(const sf::Vector2f & position, float diagrammSizeX, float 
     {
         numberCasualties[i]=0;
     }
+
+    drawBackground(window);
+
+    drawXAxis(window);
+
+    drawYAxis(window);
 
     //Bomb and Fire will only be drawn if there were those events
     if(eventsVector.size() > 0)
@@ -99,6 +105,32 @@ void ClDiagramm::draw(const sf::Vector2f & position, float diagrammSizeX, float 
             {
                 bomb.push_back(eventsVector[i]);
             }
+        }
+
+        //calculate maxNumberCasualties (number of the most casualties per block)
+        float maxNumberCasualties=0.0;
+        for (int i=0; i<NUMBERBLOCKS; i++)
+        {
+            if(maxNumberCasualties < numberCasualties[i])
+            {
+                maxNumberCasualties = numberCasualties[i];
+            }
+        }
+
+        //draw rectangles for each block
+        sf::RectangleShape block[NUMBERBLOCKS]; //there are 8 blocks
+
+        tempSize.x = ((float)diagrammSizeX)/NUMBERBLOCKS;
+        for(int i=0; i<NUMBERBLOCKS; i++)
+        {
+            block[i].setPosition( zeroPosition.x + (tempSize.x*i), zeroPosition.y-diagrammSizeY*(numberCasualties[i]/maxNumberCasualties) );
+            tempSize.y = diagrammSizeY*(numberCasualties[i]/maxNumberCasualties); //height is set eacht time according to the numberCasualties of the block
+            block[i].setSize(tempSize);
+            block[i].setFillColor(sf::Color::Blue);
+        }
+        for(int i=0; i<NUMBERBLOCKS; i++)
+        {
+            window.draw(block[i]);
         }
 
         //draw fire
@@ -145,11 +177,7 @@ void ClDiagramm::draw(const sf::Vector2f & position, float diagrammSizeX, float 
         }
     }
 
-    drawBackground(window);
 
-    drawXAxis(window);
-
-    drawYAxis(window);
 
 
     //calculate maxNumberCasualties (number of the most casualties per block)
@@ -230,7 +258,6 @@ void ClDiagramm::drawBackground(sf::RenderWindow & window)
         sf::Vector2f backgroundSize (diagrammSizeX+ 2*OFFSET, diagrammSizeY+ 2*OFFSET);
         sf::Color backgroundColor;
         backgroundColor.r = backgroundColor.g = backgroundColor.b = 255;
-        backgroundColor.a = 50;
         background.setPosition(position.x, position.y);
         background.setSize(backgroundSize);
         background.setFillColor(backgroundColor);
