@@ -7,11 +7,8 @@ ClCrowdManager::ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize, Cl
     //Create HeatMap
     sf::Vector2i numberOfCells(40,40);
     pHeatMap = new ClHeatMap(numberOfCells, ScreenSize, pArea, pStatistic, pDiagramm);
-<<<<<<< HEAD
+
     pPathFinder = new ClPathFinder(pArea, 50,sf::Vector2i(ScreenSize.x,ScreenSize.y));
-=======
-    pPathFinder = new ClPathFinder(pArea, 100,sf::Vector2i(ScreenSize.x,ScreenSize.y));
->>>>>>> f8b68271909ad8f60ce5f48ccb625bcbcd3760bc
     pStateVault = new ClStateVault();
 }
 
