@@ -2,6 +2,7 @@
 #define AREA_HPP_INCLUDED
 
 #include "StaticObject.hpp"
+#include "FastSquareroot.hpp"
 #include <vector>
 #include <cmath>
 
@@ -84,7 +85,7 @@ public:
 
     bool attractionWithHigherId(int Id);
 private:
-
+    std::vector<sf::Vector2f> exitPoints;
     int id; // used to give StaticObjects a unique id
     std::vector<ClStaticObject *> sobjects;
     sf::Vector2i levelSize;

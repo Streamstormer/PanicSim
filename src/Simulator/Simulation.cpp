@@ -124,6 +124,7 @@ void ClSimulation::draw(sf::RenderWindow &window)
 // private :
 void ClSimulation::partitionCrowds(int totalVisitors)
 {
+    ClFastSquareroot fSR;
     int sum = 0;
     int counter = pArea->getNumberOfStaticObjects();
     int priority[counter];
@@ -158,7 +159,7 @@ void ClSimulation::partitionCrowds(int totalVisitors)
 
             sPosition = pObject->getCenter();
             sVector = sf::Vector2f(2.0 * (pObject->getMiddleOfLine().x - sPosition.x), 1.5 * (pObject->getMiddleOfLine().y - sPosition.y));
-            vectorDistance = std::sqrt(std::pow(sVector.x,2) + std::pow(sVector.y,2));
+            vectorDistance = fSR.getSqrt(std::pow(sVector.x,2) + std::pow(sVector.y,2));
             if(vectorDistance != 0)
             {
                 sUnitVector.x = sVector.x / vectorDistance;

@@ -4,7 +4,7 @@
 #include <math.h>
 #include <iostream>
 
-const int NOPCS = 200; // number of previous calculated squareroots
+const int NOPCS = 10000; // number of previous calculated squareroots
 
 class ClFastSquareroot
 {

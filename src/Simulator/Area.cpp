@@ -32,6 +32,20 @@
 
         }
 
+        sf::CircleShape exitPoint;
+
+    exitPoint.setFillColor(sf::Color(255,255,0));
+    exitPoint.setRadius(5);
+    exitPoint.setOrigin(2.5,2.5);
+
+    sf::Vector2f avgPosition;
+
+    for(unsigned int n = 0; n< exitPoints.size(); n++)
+    {
+        exitPoint.setPosition(exitPoints[n]);
+        window.draw(exitPoint);
+    }
+
     }
     bool ClArea::validPoint(sf::Vector2f point)
     {
@@ -123,15 +137,18 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
     }
 
     //Big exit with at minimum two exit points: choose nearest
-    if(false)//closestExit->getSize().x > EXIT_POINT_DISTANCE)
+    if(closestExit->getSize().x > EXIT_POINT_DISTANCE * 1.5)
     {
-        int numOfExitPoints = closestExit->getSize().x / EXIT_POINT_DISTANCE + 1;
+        distance = INFINITY;
+        float testDistance;
+        int numOfExitPoints = closestExit->getSize().x / (EXIT_POINT_DISTANCE + 1);
         sf::Vector2f mainPoint = closestExit->getMiddleOfLine();
         sf::Vector2f centerPoint = closestExit->getCenter();
         sf::Vector2f diffVect = sf::Vector2f(mainPoint.x - centerPoint.x, mainPoint.y - centerPoint.y);
         sf::Vector2f unitVect;
-
-        double vectorDistance = sqrt((diffVect.x) * (diffVect.x) + (diffVect.y) * (diffVect.y));
+        sf::Vector2f attrPosWa;
+        ClFastSquareroot fSR;
+        float vectorDistance = fSR.getSqrt((diffVect.x) * (diffVect.x) + (diffVect.y) * (diffVect.y));
         if(vectorDistance != 0)
         {
             unitVect.x = diffVect.x / vectorDistance;
@@ -151,28 +168,32 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
         {
             mainPoint.y -= numOfExitPoints * EXIT_POINT_DISTANCE / 2 - EXIT_POINT_DISTANCE / 2;
         }
-        float testDistance;
+        attrPosWa = mainPoint;
         for(int i = 0; i < numOfExitPoints; i++)
         {
-            testDistance = (myPosition.x - mainPoint.x)
-            *(myPosition.x - mainPoint.x)
-            +(myPosition.y - mainPoint.y)
-            *(myPosition.x - mainPoint.x);
+            testDistance = (myPosition.x - attrPosWa.x)
+            *(myPosition.x - attrPosWa.x)
+            +(myPosition.y - attrPosWa.y)
+            *(myPosition.x - attrPosWa.x);
             if (testDistance<distance)
             {
+                mainPoint = attrPosWa;
                 closestExitPosition = mainPoint;
                 distance = testDistance;
             }
+            exitPoints.push_back(sf::Vector2f(attrPosWa.x - diffVect.x, attrPosWa.y - diffVect.y));
             if(abs(unitVect.x) < abs(unitVect.y))
             {
-                mainPoint.x += EXIT_POINT_DISTANCE;
+                attrPosWa.x += EXIT_POINT_DISTANCE;
             }
             else
             {
-                mainPoint.y += EXIT_POINT_DISTANCE;
+                attrPosWa.y += EXIT_POINT_DISTANCE;
             }
         }
 
+            closestExitPosition.x -= diffVect.x;
+            closestExitPosition.y -= diffVect.y;
         return closestExitPosition;
     }
     else

@@ -119,15 +119,15 @@ void  ClCrowd::Update(float frameTime)
         {
         case(LEAVETOEXIT):
             {
-                sf::Vector2f exitPosition = pArea->getClosestExit(this->position);
-
+                //sf::Vector2f exitPosition = pArea->getClosestExit(this->position);
+                closestExit = pArea->getClosestExit(this->position);
                 if (pPath != NULL)
                 {
                         delete pPath;
                         pPath = NULL;
                 }
 
-                pPath = pPathFinder->findPath(position,exitPosition);
+                pPath = pPathFinder->findPath(position,closestExit);
                 for (unsigned int n = 0; n < peoples.size(); n++)
                 {
                    peoples[n]->currentNode = pPath->getFirstNodeId();

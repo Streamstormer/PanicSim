@@ -55,7 +55,7 @@ void ClCrowdManager::draw(sf::RenderWindow& window)
     {
         Crowds[n]->Draw(window);
     }
-    //pPathFinder->draw(window);
+    pPathFinder->draw(window);
 }
 
 
