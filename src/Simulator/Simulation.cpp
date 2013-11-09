@@ -237,7 +237,7 @@ void ClSimulation::partitionCrowds(int totalVisitors)
                 personsPerCrowd = persons / numOfCrowds;
                 if(j == numOfCrowds - 1)
                     personsPerCrowd += (persons - personsPerCrowd * numOfCrowds);
-                pCrowdManager->CreateCrowd(vCandidateWa,(int)(persons / 50) + 1, personsPerCrowd);
+                pCrowdManager->CreateCrowd(vCandidateWa,(int)(persons / 50) + 3, personsPerCrowd);
                 if(abs(sUnitVector.x) < abs(sUnitVector.y))
                 {
                     vCrowdCandidate.x += DIST_CROWDS_PER_ATTR;

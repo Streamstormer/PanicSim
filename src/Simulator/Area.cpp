@@ -38,7 +38,7 @@
                 sobjects[n]->draw(window);
 
         }
-
+/*
         sf::CircleShape exitPoint;
 
     exitPoint.setFillColor(sf::Color(255,255,0));
@@ -52,7 +52,7 @@
         exitPoint.setPosition(exitPoints[n]);
         window.draw(exitPoint);
     }
-
+*/
     }
     bool ClArea::validPoint(sf::Vector2f point)
     {
@@ -124,6 +124,7 @@
 
 const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
 {
+    std::cerr << "Call of closestExit \n";
     float distance = INFINITY;
     sf::Vector2f closestExitPosition;
     ClStaticObject *closestExit;
@@ -144,10 +145,10 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
     }
 
     //Big exit with at minimum two exit points: choose nearest
-    if(closestExit->getSize().x > EXIT_POINT_DISTANCE * 1.5)
+    if(false)//closestExit->getSize().x > EXIT_POINT_DISTANCE * 1.5)
     {
         distance = INFINITY;
-        float testDistance;
+        float testDistance = 0;
         int numOfExitPoints = closestExit->getSize().x / (EXIT_POINT_DISTANCE + 1);
         sf::Vector2f mainPoint = closestExit->getMiddleOfLine();
         sf::Vector2f centerPoint = closestExit->getCenter();
@@ -188,7 +189,7 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
                 closestExitPosition = mainPoint;
                 distance = testDistance;
             }
-            exitPoints.push_back(sf::Vector2f(attrPosWa.x - diffVect.x, attrPosWa.y - diffVect.y));
+            //exitPoints.push_back(sf::Vector2f(attrPosWa.x - diffVect.x, attrPosWa.y - diffVect.y));
             if(abs(unitVect.x) < abs(unitVect.y))
             {
                 attrPosWa.x += EXIT_POINT_DISTANCE;
