@@ -67,8 +67,8 @@ enum GameStates ClSimpleSimulationMenu::execute(enum Buttons btn) const
     break;
     case(STATISTIC):
     {
-        ClStatistic::setAverageDraw(true);
-        ClStatistic::rememberTime();
+        ClStatistic::setDoDrawStatistic(true);
+        ClStatistic::rememberStatisticTime();
         return STATISTICS;
     }
     break;

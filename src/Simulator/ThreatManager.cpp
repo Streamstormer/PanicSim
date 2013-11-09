@@ -139,7 +139,7 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
             threatVector[n]->recognizeMouse(window);
         }
         //7.
-        if(threatVector[n]->getIsMoved() == true)
+        if(threatVector[n]->getIsMoved()==true)
         {
             //8.
             threatVector[n]->setPosition(mouseFloat.x, mouseFloat.y);
