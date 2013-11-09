@@ -70,82 +70,79 @@ void ClDiagramm::draw(const sf::Vector2f & position, float diagrammSizeX, float 
     {
         numberCasualties[i]=0;
     }
-    if(eventsVector.size() != 0)
+
+    //Bomb and Fire will only be drawn if there were those events
+    if(eventsVector.size() > 0)
     {
 
-    float timeLastEvent = eventsVector.back().time.asSeconds();
-    for (int i=0; i<(int)eventsVector.size(); i++)
-    {
-        if(eventsVector[i].TYPE == CASUALTIES)
+        float timeLastEvent = eventsVector.back().time.asSeconds();
+        for (int i=0; i<(int)eventsVector.size(); i++)
         {
-            //numberCasualties is set for each block
-            float tempTime = eventsVector[i].time.asSeconds();
-            //check if the event is in the first of eight blocks on the x-axis
-            for( int k = 0; k < NUMBERBLOCKS; k++)
+            if(eventsVector[i].TYPE == CASUALTIES)
             {
-                if(tempTime >= (timeLastEvent/diagrammSizeX)*(k)*(diagrammSizeX/(float)NUMBERBLOCKS) && tempTime < (timeLastEvent/diagrammSizeX)*(k+1)*(diagrammSizeX/(float)NUMBERBLOCKS) )
+                //numberCasualties is set for each block
+                float tempTime = eventsVector[i].time.asSeconds();
+                //check if the event is in the first of eight blocks on the x-axis
+                for( int k = 0; k < NUMBERBLOCKS; k++)
                 {
-                    numberCasualties[k]++;
+                    if(tempTime >= (timeLastEvent/diagrammSizeX)*(k)*(diagrammSizeX/(float)NUMBERBLOCKS) && tempTime < (timeLastEvent/diagrammSizeX)*(k+1)*(diagrammSizeX/(float)NUMBERBLOCKS) )
+                    {
+                        numberCasualties[k]++;
+                    }
                 }
             }
+            if(eventsVector[i].TYPE == FIRE)
+            {
+                fire.push_back(eventsVector[i]);
+            }
+            if(eventsVector[i].TYPE == BOMB)
+            {
+                bomb.push_back(eventsVector[i]);
+            }
         }
-        if(eventsVector[i].TYPE == FIRE)
+
+        //draw fire
+        if(fire.size() > 0)
         {
-            fire.push_back(eventsVector[i]);
+            int fireSize = fire.size();
+            sf::RectangleShape fireRect[fireSize];
+            tempSize.y = diagrammSizeY; //top of diagramm
+            for (int j=0; j<(int)fire.size(); j++)
+            {
+                float fireTime = fire[j].time.asSeconds();
+                tempSize.x = zeroPosition.x + (fireTime/timeLastEvent)*diagrammSizeX;
+                fireRect[j].setPosition(tempSize.x, position.y + OFFSET );
+                tempSize.x = 2;//weidth of the fireRect is 2
+                fireRect[j].setSize(tempSize);
+                fireRect[j].setFillColor(sf::Color::Red);
+            }
+            for(int j=0; j<(int)fire.size(); j++)
+            {
+                window.draw(fireRect[j]);
+            }
+
         }
-        if(eventsVector[i].TYPE == BOMB)
+
+        //draw bomb
+        if(bomb.size() != 0)
         {
-            bomb.push_back(eventsVector[i]);
+            int bombSize = bomb.size();
+            sf::RectangleShape bombRect[bombSize];
+            tempSize.y = diagrammSizeY; //top of diagramm
+            for (int j=0; j<(int)bomb.size(); j++)
+            {
+                float bombTime = bomb[j].time.asSeconds();
+                tempSize.x = zeroPosition.x + (bombTime/timeLastEvent) * diagrammSizeX;
+                bombRect[j].setPosition(tempSize.x, position.y + OFFSET );
+                tempSize.x = 2;//weidth of the bombRect is 2
+                bombRect[j].setSize(tempSize);
+                bombRect[j].setFillColor(sf::Color::Yellow);
+            }
+            for(int j=0; j<(int)bomb.size(); j++)
+            {
+                window.draw(bombRect[j]);
+            }
         }
-    }
-
-    //draw fire
-    if(fire.size() != 0)
-    {
-
-    int fireSize = fire.size();
-    sf::RectangleShape fireRect[fireSize];
-    tempSize.y = diagrammSizeY; //top of diagramm
-    for (int j=0; j<(int)fire.size(); j++)
-    {
-        float fireTime = fire[j].time.asSeconds();
-        tempSize.x = zeroPosition.x + (fireTime/timeLastEvent)*diagrammSizeX;
-        fireRect[j].setPosition(tempSize.x, position.y + OFFSET );
-        tempSize.x = 2;//weidth of the fireRect is 2
-        fireRect[j].setSize(tempSize);
-        fireRect[j].setFillColor(sf::Color::Red);
-    }
-    for(int j=0; j<(int)fire.size(); j++)
-    {
-        window.draw(fireRect[j]);
-    }
-
-    }
-
-
-    //draw bomb
-    if(bomb.size() != 0)
-    {
-
-    int bombSize = bomb.size();
-    sf::RectangleShape bombRect[bombSize];
-    tempSize.y = diagrammSizeY; //top of diagramm
-    for (int j=0; j<(int)bomb.size(); j++)
-    {
-        float bombTime = bomb[j].time.asSeconds();
-        tempSize.x = zeroPosition.x + (bombTime/timeLastEvent) * diagrammSizeX;
-        bombRect[j].setPosition(tempSize.x, position.y + OFFSET );
-        tempSize.x = 2;//weidth of the bombRect is 2
-        bombRect[j].setSize(tempSize);
-        bombRect[j].setFillColor(sf::Color::Yellow);
-    }
-    for(int j=0; j<(int)bomb.size(); j++)
-    {
-        window.draw(bombRect[j]);
-    }
-
-    }
-
     }
 
     drawBackground(window);
