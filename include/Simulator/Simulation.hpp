@@ -9,6 +9,7 @@
 #include "Diagramm.hpp"
 #include "../../include/Common/FileHandler.hpp"
 #include <cmath>
+#include <string>
 
 enum GameStates {MENU, SIMULATION, PAUSE, EXITSTATE, CREDITSMENU, STATISTICS};
 
@@ -16,7 +17,7 @@ class ClSimulation
 {
     public:
 
-        ClSimulation(const sf::VideoMode &Mode);
+        ClSimulation(const sf::VideoMode &Mode, std::string filePath);
         ~ClSimulation();
         bool update(sf::RenderWindow &window, bool mouseReleased);
         void draw(sf::RenderWindow &window);
