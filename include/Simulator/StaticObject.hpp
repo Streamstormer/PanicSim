@@ -33,6 +33,7 @@ public:
     void setSize(const sf::Vector2f &newSize);
     bool isValidPath(sf::Vector2f startPoint, sf::Vector2f endPoint); //used for pathfinding. returns true if there is a static object in the path
     sf::Vector2f getMiddleOfLine();
+    bool getOnFire() {return isOnFire;}
 private:
     void getTextfromType(int type);
     void settext();
