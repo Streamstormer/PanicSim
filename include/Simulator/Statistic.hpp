@@ -19,9 +19,10 @@ public:
     ~ClStatistic();
     void planHeatMapStatistic(sf::Vector2i cellNumber, sf::Vector2f cellSize, const int sw_green, const int sw_yellow, const int sw_red);
     void rememberCells(int cellX, int cellY, const int numberOfPeople);
+    void rememberRedCell(int x, int y);
     void rememberLoopNumber();
     void rememberLoop();
-    void rememberThreats(bool bomb, bool fire);
+    void rememberThreats(bool type_bomb, bool type_fire);
     void update();
     void draw(sf::RenderWindow &window);
     void rememberKills(int number, bool bomb);
@@ -59,6 +60,7 @@ private:
     bool checkFaster;
     int **pAllCells;
     int **pDrawCells;
+    int **pRedCells;
 
     static bool setStop;
     static bool setStart;

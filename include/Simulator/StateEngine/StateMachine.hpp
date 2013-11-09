@@ -7,7 +7,7 @@ public:
     ~ClStateMachine() {}
 
     bool isInDangerByThreat() {return false;}
-    bool isHearThreat() {return true;}
+    bool isHearThreat() {return false;}
 
 private:
 

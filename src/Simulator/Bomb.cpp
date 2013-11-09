@@ -1,3 +1,11 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Melanie Hammerschmidt
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    creation of bombs, handling mouse action on boms and set new position according to mouse position
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
 #include "../../include/Simulator/Bomb.hpp"
 
 ClBomb::ClBomb(const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic, const sf::Texture &explosion_texture)
@@ -34,6 +42,26 @@ ClBomb::ClBomb(const sf::Vector2f &position_threat, const sf::Vector2f &size_thr
     subrect.width=explosion_texture.getSize().x/8;
     subrect.height=explosion_texture.getSize().y/8;
     bildID=0;
+
+    type = THBOMB;
+}
+
+void ClBomb::draw(sf::RenderWindow &window)
+{
+    window.draw(sprite_threat);
+    if (isActive)
+    {
+        // 1. calculate picture number from time
+        // 2. chose correct picture
+        if (bildID >63)
+        {
+            alive = false;
+        }
+        int time =animationTime.getElapsedTime().asMilliseconds();
+        bildID = (int)time/PICTUREDURATION;
+        subrecttoNumber(bildID);
+        window.draw(explosion_sprite);
+    }
 }
 
 void ClBomb::recognizeMouse(sf::RenderWindow &window)
@@ -65,24 +93,24 @@ void ClBomb::recognizeMouse(sf::RenderWindow &window)
     }
 }
 
+//activate bomb
 void ClBomb::activate()
 {
+    //1. if it´s not active - activate bomb
+    //2. calculate casualties
+    //3. remember casualties in statistic
+    //4. activate animationTime clock
+
+    //1.
     if(isActive == false)
     {
         isActive = true;
+        //2.
         int casualties = pHeatMap->explosion(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2)), 100);
-        pStatistic->rememberKills(casualties, bomb);
+        //3.
+        //prototype: rememberKills(int number, bool bomb)
+        pStatistic->rememberKills(casualties, true);
+        //4.
         animationTime.restart();
     }
 }
-
-bool ClBomb::getFire()
-{
-    return false;
-}
-
-bool ClBomb::getBomb()
-{
-    return true;
-}
-

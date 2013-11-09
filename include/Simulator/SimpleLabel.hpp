@@ -2,6 +2,8 @@
 #define SIMPLELABEL_HPP_INCLUDED
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <sstream>
+
 
 class ClSimpleLabel
 {

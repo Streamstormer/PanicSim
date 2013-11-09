@@ -10,11 +10,9 @@ ClSimpleCreditsMenu::ClSimpleCreditsMenu(enum GameStates myState, sf::Font *pFon
     createMenu();
 }
 
-
 ClSimpleCreditsMenu::~ClSimpleCreditsMenu()
 {
     delete pButton;
-
 }
 
 void ClSimpleCreditsMenu::createMenu()
@@ -45,7 +43,6 @@ void ClSimpleCreditsMenu::createMenu()
     spaceColor.a = 50;
 
     textSpace.setFillColor(spaceColor);
-//        text.setPosition(position.x +labelSize.x/4,position.y);
     text.setPosition(screenSize.x/3-labelSize.x/2,screenSize.y/7);
     creditText= "Credits";
     text.setColor(sf::Color::Red);
@@ -54,16 +51,12 @@ void ClSimpleCreditsMenu::createMenu()
     text.setStyle(sf::Text::Regular);
     text.setString(creditText+"\nLukas\nBenedikt\nMelanie\nPatrick\nVictor");
 
-//    position.y = 3*screenSize.y/5;
-    //  position.y += labelSize.y;
     position.x = 4*screenSize.x/5;
     position.x -= labelSize.x/2;
     position.y = screenSize.y/3+labelSize.y/2;
     pButton = new ClSimpleButton(id, EXITMENU, 0, texture, buttonSize,position, 1.0f);
-
     pButton->setText(sf::String("BACK"),pFont);
 }
-
 
 void ClSimpleCreditsMenu::draw(sf::RenderWindow &window) const
 {
@@ -72,8 +65,8 @@ void ClSimpleCreditsMenu::draw(sf::RenderWindow &window) const
     window.draw(textSpace);
     window.draw(text);
     pButton->draw(window);
-
 }
+
 enum GameStates ClSimpleCreditsMenu::execute(enum Buttons btn) const
 {
     switch(btn)
@@ -82,26 +75,19 @@ enum GameStates ClSimpleCreditsMenu::execute(enum Buttons btn) const
         {
             return MENU;
         }
-        }
+    }
     return CREDITSMENU;
 }
 
-
 enum GameStates ClSimpleCreditsMenu::update(sf::RenderWindow &window, bool mouseReleased) const
 {
-
-
     if (pButton->isPressed(window))
     {
         if(mouseReleased)
         {
-
             return MENU;
         }
     }
-
     //update of paramField
-
     return CREDITSMENU;
-
 }

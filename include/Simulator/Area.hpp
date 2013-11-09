@@ -5,8 +5,6 @@
 #include <vector>
 #include <cmath>
 
-
-
 class ClArea
 {
 public:

@@ -55,10 +55,12 @@ void ClStatistic::planHeatMapStatistic(sf::Vector2i cellNumber, sf::Vector2f cel
     //2.
     pAllCells = new int*[cellNumber.y];
     pDrawCells = new int*[cellNumber.y];
+    pRedCells = new int*[cellNumber.y];
     for(int y=0; y < cellNumber.y; y++)
     {
         pAllCells[y] = new int[cellNumber.x];
         pDrawCells[y] = new int[cellNumber.x];
+        pRedCells[y] = new int[cellNumber.x];
     }
 
     for(int y=0; y<cellNumber.y; y++)
@@ -67,6 +69,7 @@ void ClStatistic::planHeatMapStatistic(sf::Vector2i cellNumber, sf::Vector2f cel
         {
             pAllCells[y][x] = 0;
             pDrawCells[y][x] = 0;
+            pRedCells[y][x] = 0;
         }
     }
 }
@@ -74,12 +77,27 @@ void ClStatistic::planHeatMapStatistic(sf::Vector2i cellNumber, sf::Vector2f cel
 //recognize the cell with more than sw_green people (save in AllCells)
 void ClStatistic::rememberCells(int cellX, int cellY, const int numberOfPeople)
 {
-    //if the averageHeatMap is not drawn
-    if(doDrawAverage==false)
+    //remember Cells only after the first 3 seconds after start of simulation
+    float hMtime = startClock.getElapsedTime().asSeconds();
+    if(hMtime>3)
     {
-        //count number of people in this cell
-        pAllCells[cellY][cellX] += numberOfPeople;
+        //if the averageHeatMap is not drawn
+        if(doDrawAverage==false)
+        {
+            //count number of people in this cell
+            pAllCells[cellY][cellX] += numberOfPeople;
+            //if red cell - remember for later statistic
+            if(numberOfPeople>=sw_red)
+            {
+                rememberRedCell(cellX, cellY);
+            }
+        }
     }
+}
+
+void ClStatistic::rememberRedCell(int x, int y)
+{
+    pRedCells[y][x] += 1;
 }
 
 //incrememts number of loops in which cells are updated (if the average HeatMap is not drawn)
@@ -92,19 +110,18 @@ void ClStatistic::rememberLoop()
 }
 
 //if a threat is acivated
-void ClStatistic::rememberThreats(bool bomb, bool fire)
+void ClStatistic::rememberThreats(bool type_bomb, bool type_fire)
 {
-    //if average HeatMap is not drawn
     if(doDrawAverage==false)
     {
-        //differentiation between fire and bombs
-        if(bomb == true)
-        {
-            numberBomb++;
-        }
-        if(fire == true)
+        if(type_fire)
         {
             numberFire++;
+        }
+
+        if(type_bomb)
+        {
+            numberBomb++;
         }
     }
 }
@@ -132,7 +149,10 @@ void ClStatistic::draw(sf::RenderWindow &window)
                 {
                     sf::RectangleShape colorCell(cellSize);
                     colorCell.setPosition(n*cellSize.x, m*cellSize.y);
-                    colorCell.setFillColor(getColor(people));
+                    if(pRedCells[m][n]>100)
+                    {
+                        colorCell.setFillColor(getColor(sw_red));
+                    } else colorCell.setFillColor(getColor(people));
                     window.draw(colorCell);
                 }
             }
@@ -140,16 +160,16 @@ void ClStatistic::draw(sf::RenderWindow &window)
     }
 }
 
-//calculate right color for drawing cells
+//calculate right color for drawing cells according to borders
 sf::Color ClStatistic::getColor(int people)
 {
     sf::Color background;
     background.b = 0;
 
-    if (people <= sw_green)   // at the end: green 0,255,0
+    if (people == sw_green)   // at the end: green 0,255,0
     {
         background.r = 0;
-        background.g = (int)((people/sw_green)*255);
+        background.g = 255;
         return background;
     }
     else if (people <= sw_yellow)   // at the end: yellow 255,255,0
@@ -167,11 +187,13 @@ sf::Color ClStatistic::getColor(int people)
     return background;
 }
 
+//setter for doDrawAverage
 void ClStatistic::setAverageDraw(bool newBool)
 {
     doDrawAverage=newBool;
 }
 
+//getter for doDrawAverage
 bool ClStatistic::getAverageDraw()
 {
     return doDrawAverage;
@@ -179,6 +201,17 @@ bool ClStatistic::getAverageDraw()
 
 void ClStatistic::update()
 {
+    //1. if staistic is to be shown calculate average of allCells in drawCells
+
+    // always check every possible time
+    //2. if start of simulation (start clock)
+    //3. if pause of simulation (pause clock)
+    //4. if faster simulation (fast clock)
+    //5. if (more) faster simulation (faster clock)
+    //6. if continue simulation
+    //7. if stop simulation (calculate real time)
+
+    //1.
     if(doDrawAverage==true)
     {
         for(int m = 0; m<cellNumber.y; m++)
@@ -190,12 +223,14 @@ void ClStatistic::update()
         }
     }
 
+    //2.
     if(setStart)
     {
         setStart = false;
         startClock.restart();
     }
 
+    //3.
     if(setPause)
     {
         if(checkPause==false)
@@ -216,6 +251,7 @@ void ClStatistic::update()
         }
     }
 
+    //4.
     if(setFast)
     {
         setFast = false;
@@ -233,6 +269,7 @@ void ClStatistic::update()
         }
     }
 
+    //5.
     if(setFaster)
     {
         setFaster = false;
@@ -250,6 +287,7 @@ void ClStatistic::update()
         }
     }
 
+    //6.
     if(setContinue)
     {
         setContinue = false;
@@ -270,6 +308,7 @@ void ClStatistic::update()
         }
     }
 
+    //7.
     if(setStop)
     {
         setStop = false;
@@ -309,6 +348,7 @@ void ClStatistic::update()
     }
 }
 
+//recognize all casualties if average draw is not shown (differentiation between bombs and fire)
 void ClStatistic::rememberKills(int number, bool bomb)
 {
     if(doDrawAverage==false)
@@ -321,56 +361,67 @@ void ClStatistic::rememberKills(int number, bool bomb)
     }
 }
 
+//setter for setStart
 void ClStatistic::startTimer()
 {
     setStart = true;
 }
 
+//setter for setStop
 void ClStatistic::rememberTime()
 {
     setStop = true;
 }
 
+//setter for setPause
 void ClStatistic::rememberPause()
 {
     setPause = true;
 }
 
+//setter for setContinue
 void ClStatistic::rememberContinue()
 {
     setContinue = true;
 }
 
+//setter for setFast
 void ClStatistic::rememberFast()
 {
     setFast = true;
 }
 
+//setter for setFaster
 void ClStatistic::rememberFaster()
 {
     setFaster = true;
 }
 
+//getter for number of bombs
 int* ClStatistic::getNumberBomb()
 {
     return &numberBomb;
 }
 
+//getter for number of fire
 int* ClStatistic::getNumberFire()
 {
     return &numberFire;
 }
 
+//getter for number of casualties (fire)
 int* ClStatistic::getNumberKillsFire()
 {
     return &numberKillsFire;
 }
 
+//getter for number of casualties (bomb)
 int* ClStatistic::getNumberKillsBomb()
 {
     return &numberKillsBomb;
 }
 
+//getter for evacuation time
 int* ClStatistic::getTime()
 {
     return &time;

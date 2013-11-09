@@ -56,7 +56,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(fire)
     {
         //2.
-        ClFire *pFire = new ClFire(position, size_threat, fire_texture, pArea, pHeatMap, pStatistic, explosion_texture);
+        ClFire *pFire = new ClFire(position, size_threat, fire_texture, pArea, pHeatMap, pStatistic);
         threatVector.push_back(pFire);
         fire = false;
     }
@@ -156,7 +156,24 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
             {
                 threatVector[n]->activate();
                 // 2.3
-                pStatistic->rememberThreats(threatVector[n]->getBomb(), threatVector[n]->getFire());
+                bool type_bomb;
+                bool type_fire;
+                switch(threatVector[n]->getType())
+                {
+                case(THBOMB):
+                    {
+                        type_bomb = true;
+                        type_fire = false;
+                        break;
+                    }
+                case(THFIRE):
+                    {
+                        type_bomb = false;
+                        type_fire = true;
+                        break;
+                    }
+                }
+                pStatistic->rememberThreats(type_bomb, type_fire);
             }
         }
         explosion_static = false;

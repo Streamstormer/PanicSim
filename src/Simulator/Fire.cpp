@@ -1,6 +1,14 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Melanie Hammerschmidt
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    creation of fire, handling mouse action on fire and set new position according to mouse position
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
 #include "../../include/Simulator/Fire.hpp"
 
-ClFire::ClFire(const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic, const sf::Texture &explosion_texture)
+ClFire::ClFire(const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic)
 {
     this->position_threat = position_threat;
     this->size_threat = size_threat;
@@ -27,14 +35,15 @@ ClFire::ClFire(const sf::Vector2f &position_threat, const sf::Vector2f &size_thr
     sf::Vector2f sizeT(sprite_threat.getGlobalBounds().width, sprite_threat.getGlobalBounds().height);
     sprite_threat.setOrigin(sizeT.x/2,sizeT.y/2);
 
-//set explosion texture
-    explosion_sprite.setTexture(explosion_texture);
-    subrect.top=0;
-    subrect.left=0;
-    subrect.width=explosion_texture.getSize().x/8;
-    subrect.height=explosion_texture.getSize().y/8;
-    bildID=0;
+    type = THFIRE;
 }
+
+//draw fire sprite
+void ClFire::draw(sf::RenderWindow &window)
+{
+    window.draw(sprite_threat);
+}
+
 
 void ClFire::recognizeMouse(sf::RenderWindow &window)
 {
@@ -68,22 +77,21 @@ void ClFire::recognizeMouse(sf::RenderWindow &window)
     }
 }
 
+//activate fire
 void ClFire::activate()
 {
+    //1. if it´s not active - activate fire
+    //2. set fire as "not alive"
+    //3. fire up static object around
+    ///4. will come: remember casualties by fire
+
+    //1.
     if(isActive == false)
     {
         isActive = true;
+        //2.
         alive = false;
+        //3.
         pArea->setOnFire(pArea->getIdByVector(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2))));
     }
-}
-
-bool ClFire::getFire()
-{
-    return true;
-}
-
-bool ClFire::getBomb()
-{
-    return false;
 }
