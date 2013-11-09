@@ -61,8 +61,7 @@ void ClStaticObject::subrecttoNumber(int number)
     subrectFire.top = (int)(number/ANIMATIONSQUARE)*subrectFire.height;
     subrectFire.left = (int)(number%ANIMATIONSQUARE)*subrectFire.width;
      fire_sprite.setTextureRect(subrectFire);
-     fire_sprite.setPosition(Rect->getPosition());
-     fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height/2);
+
 }
 
  void ClStaticObject::startToBurn()
@@ -101,7 +100,45 @@ void ClStaticObject::draw(sf::RenderWindow& window)
         int time =fire_clock.getElapsedTime().asMilliseconds();
         bildID = (int)time/PICTUREDURATION;
         subrecttoNumber(bildID);
-        window.draw(fire_sprite);
+        int countFire=0;
+
+        if(Rect->getPosition().x > Rect->getPosition().y)
+        {
+            countFire = (Rect->getSize().x-70)/128;//    /128
+            if(countFire==0)
+            {
+                fire_sprite.setPosition(Rect->getPosition());
+                fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height/2);
+                window.draw(fire_sprite);
+            }
+            else
+            {
+                int i=0;
+                    while (i<countFire)
+                    {
+                        fire_sprite.setPosition(Rect->getGlobalBounds().left+(i*128+70),Rect->getPosition().y);
+                        fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height/2);
+                        window.draw(fire_sprite);
+                        i++;
+                    }
+
+
+            }
+        }
+        else
+        {
+            countFire = Rect->getSize().y/128;
+            if(countFire==0)
+            {
+            fire_sprite.setPosition(Rect->getPosition());
+            fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height/2);
+            window.draw(fire_sprite);
+            }
+            else
+            {
+
+            }
+        }
 
     }
 
