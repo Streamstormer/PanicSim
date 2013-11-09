@@ -56,14 +56,14 @@ void ClPath::clearVectorPath()
 
 void ClPath::drawPath(sf::RenderWindow & window)
 {
+    sf::CircleShape Node;
+
+    Node.setFillColor(sf::Color::Green);
+    Node.setRadius(4.0f);
+
     for(int paint = 0; paint < (int)vectorPath.size(); paint++)
     {
-        sf::Vector2f position;
-        position = vectorPath[paint];
-        sf::CircleShape Node;
-        Node.setPosition(position);
-        Node.setFillColor(sf::Color::Green);
-        Node.setRadius(4.0f);
+        Node.setPosition(vectorPath[paint]);
         window.draw(Node);
     }
 }
