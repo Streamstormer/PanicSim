@@ -52,15 +52,21 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pStartSim->signal_clicked().connect(sigc::mem_fun(*this, &Editor::StartSim));
     pSaveTo->signal_clicked().connect(sigc::mem_fun(*this, &Editor::SaveTo));
 
+    Gtk::Scrollbar* pscroll = pSFMLWindow->get_vscrollbar();
+
+    pscroll->signal_value_changed().connect(sigc::mem_fun(*SFMLArea, &SimulationArea::by_scrolling));
+    pscroll =  pSFMLWindow->get_hscrollbar();
+    pscroll->signal_value_changed().connect(sigc::mem_fun(*SFMLArea, &SimulationArea::by_scrolling));
+
     // set adjustment for the size SpinButtons
-    pSizeX->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 500.0, 0.1, 0.1));
-    pSizeY->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 500.0, 0.1, 0.1));
+    pSizeX->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 5000.0, 0.1, 0.1));
+    pSizeY->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 5000.0, 0.1, 0.1));
     // ..for rotation SpinButtons
     pRot->set_adjustment(Gtk::Adjustment::create(0.0, 0.0, 360.0, 90.0, 90.0));
 
     // .. for Area Size
-    pAreaX->set_adjustment(Gtk::Adjustment::create(2000.0, 2000.0, 2000.0, 1.0, 1.0));
-    pAreaY->set_adjustment(Gtk::Adjustment::create(2000.0, 2000.0, 2000.0, 1.0, 1.0));
+    pAreaX->set_adjustment(Gtk::Adjustment::create(2000.0, 2000.0, 10000.0, 1.0, 1.0));
+    pAreaY->set_adjustment(Gtk::Adjustment::create(1000.0, 2000.0, 10000.0, 1.0, 1.0));
 
     pArea = SFMLArea->getArea();
 
@@ -73,15 +79,18 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
 /// Ungrub mouse from object
 void Editor::want_mouse()
 {
-     SFMLArea->box_clicked();
-     pObjLabel->set_label("");
+    if(pmouse->get_active()){
+        SFMLArea->box_clicked();
+        pObjLabel->set_label("");
+    }
 }
 
 /// remove Object
 void Editor::remove_obj()
 {
-    SFMLArea->remove_obj();
-
+    if(premove->get_active()){
+        SFMLArea->remove_obj();
+    }
 }
 
 /// set Color of the Area
@@ -103,32 +112,38 @@ void Editor::set_object(string label, enum staticObjects type){
 /// Button clocked methods
 void Editor::on_Button_Bar_clicked()
 {
-    this->set_object("Bar", BAR);
+    if(pBar->get_active())
+        this->set_object("Bar", BAR);
 }
 
 void Editor::on_Button_Stage_clicked()
 {
-    this->set_object("Bühne", STAGE);
+    if(pStage->get_active())
+        this->set_object("Bühne", STAGE);
 }
 
 void Editor::on_Button_WC_clicked()
 {
-    this->set_object("WC", WC);
+    if(pWC->get_active())
+        this->set_object("WC", WC);
 }
 
 void Editor::on_Button_Fence_clicked()
 {
-    this->set_object("Zaun", FENCE);
+    if(pFence->get_active())
+        this->set_object("Zaun", FENCE);
 }
 
 void Editor::on_Button_Wall_clicked()
 {
-    this->set_object("Mauer", WALL);
+    if(pWall->get_active())
+        this->set_object("Mauer", WALL);
 }
 
 void Editor::on_Button_Exit_clicked()
 {
-    this->set_object("Ausgang", GATE);
+    if(pExit->get_active())
+        this->set_object("Ausgang", GATE);
 }
 
 void Editor::on_Button_Clear_clicked()
@@ -236,7 +251,6 @@ void Editor::SaveFile()
             if (level->writeLevel(SimFile, pArea) != 0)
                 exit(EXIT_FAILURE);
             this->SimFile = dialog.get_filename();
-
             break;
 
         case(Gtk::RESPONSE_CANCEL):

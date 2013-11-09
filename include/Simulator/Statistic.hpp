@@ -27,16 +27,15 @@ public:
     void update();
     void draw(sf::RenderWindow &window);
     void rememberKills(int number, bool bomb);
-    static void setAverageDraw(bool newBool);
-    static bool getAverageDraw();
-    static void setDiagrammDraw(bool newBool);
-    static bool getDiagrammDraw();
+    static void setDoDrawStatistic(bool newBool);
+    static void toggleDiagrammDraw();
     static void startTimer();
-    static void rememberTime();
+    static void rememberStatisticTime();
     static void rememberPause();
     static void rememberContinue();
     static void rememberFast();
     static void rememberFaster();
+
     static int* getNumberBomb();
     static int* getNumberFire();
     static int* getNumberKillsBomb();
@@ -63,6 +62,7 @@ private:
     bool checkPause;
     bool checkFast;
     bool checkFaster;
+    bool waitTimeOver;
     int **pAllCells;
     int **pDrawCells;
     int **pRedCells;
@@ -73,7 +73,7 @@ private:
     static bool setContinue;
     static bool setFast;
     static bool setFaster;
-    static bool doDrawAverage;
+    static bool doDrawStatistic;
     static bool doDrawDiagramm;
     static int numberFire;
     static int numberBomb;

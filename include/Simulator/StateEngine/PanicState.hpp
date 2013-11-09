@@ -8,12 +8,11 @@
 class ClPanicState : public ClAbstractState
 {
     public:
-    ClPanicState(int id, ClStateMachine *pStateMachine, enum STATES myState)
+    ClPanicState(int id, enum STATES myState)
     {
         panicClock.restart();
         this->myState = myState;
         this->id = id;
-        this->pStateMachine = pStateMachine;
     }
     enum STATES update(bool panic) const;
     // what action next

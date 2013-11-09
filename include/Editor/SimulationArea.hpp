@@ -45,6 +45,7 @@ public:
     void box_clicked();
     void remove_obj();
     void setBgColor(sf::Color pColor){bgColor = pColor;};
+    void by_scrolling();
     string selectLabel(enum staticObjects type);
 };
 

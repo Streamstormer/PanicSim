@@ -40,7 +40,9 @@ private:
 
     std::vector<StrPeople *> peoples;
     sf::Vector2f position;
-    sf::Vector2f oldPosition;
+    sf::Vector2i positionMid;           // Mid position of all casualties
+
+    sf::Vector2f closestExit;
 
     sf::Vector2f nextNode;
 

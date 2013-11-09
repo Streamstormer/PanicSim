@@ -83,7 +83,7 @@ int ClFileHandler::importStaticObjects(ClArea *pArea){
         char str[1000];
         float props[7];
         int multiplier = 10;
-        int divider = 1;
+        long long divider = 1;
         for(unsigned int i = 0; i < inNrOfObjects; i++){
         inFile.getline(str,1000);
             int j = 0;

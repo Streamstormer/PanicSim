@@ -31,65 +31,50 @@ enum GameStates ClSimpleSimulationMenu::execute(enum Buttons btn) const
     case(HEATMAP):
         {
             ClHeatMap::toggleDraw();
-            ClStatistic::setAverageDraw(false);
-            ClSimulation::setStopSim(false);
         }
         break;
     case(PLAY):
     {
         ClSimulation::updateSpeed(false, true, false);
-        ClStatistic::setAverageDraw(false);
-        ClSimulation::setStopSim(false);
         ClStatistic::rememberContinue();
     }
     break;
     case(FASTFORWARD):
     {
         ClSimulation::updateSpeed(false, false, true);
-        ClStatistic::setAverageDraw(false);
-        ClSimulation::setStopSim(false);
     }
     break;
     case(PAUSE):
     {
         ClSimulation::updateSpeed(true,false,false);
-        ClStatistic::setAverageDraw(false);
         ClStatistic::rememberPause();
-        ClSimulation::setStopSim(false);
     }
     break;
     case(BOMB):
     {
         ClThreatManager::buttonPressed(true, false, false);
-        ClStatistic::setAverageDraw(false);
-        ClSimulation::setStopSim(false);
     }
     break;
     case(FIRE):
     {
         ClThreatManager::buttonPressed(false, true, false);
-        ClStatistic::setAverageDraw(false);
-        ClSimulation::setStopSim(false);
     }
     break;
     case(EXPLOSION):
     {
         ClThreatManager::buttonPressed(false,false,true);
-        ClStatistic::setAverageDraw(false);
-        ClSimulation::setStopSim(false);
     }
     break;
     case(STATISTIC):
     {
-        ClStatistic::setAverageDraw(true);
-        ClSimulation::setStopSim(false);
-        ClStatistic::rememberTime();
+        ClStatistic::setDoDrawStatistic(true);
+        ClStatistic::rememberStatisticTime();
+        return STATISTICS;
     }
     break;
     case(EXITMENU):
     {
-        ClStatistic::setAverageDraw(false);
-        ClSimulation::setStopSim(true);
+        return MENU;
     }
     break;
     }
@@ -105,9 +90,7 @@ enum GameStates ClSimpleSimulationMenu::update(sf::RenderWindow &window, bool mo
         {
             if(mouseReleased == true)
             {
-                execute(ButtonVector[n]->getButtonType());
-                if(ClStatistic::getAverageDraw()==true) return STATISTICS;
-                if(ClSimulation::getStopSim()==true) return MENU;
+                return execute(ButtonVector[n]->getButtonType());
             }
         }
     }
@@ -171,18 +154,19 @@ void ClSimpleSimulationMenu::createMenu()
     ButtonVector.push_back(pAddMe);
     // add STATISTIC Button
     id++;
-    ButtonSize.x = (float)texture3.getSize().x;
-    ButtonSize.y = (float)texture3.getSize().y;
-    Position.x = 9*screenSize.x/10-ButtonSize.x/2;
-    Position.y = screenSize.y/8;
-    pAddMe = new ClSimpleButton(id, STATISTIC, 0, texture3, ButtonSize, Position, 0.8f);
-    pAddMe->setText(sf::String("Statistic"), pFont);
+    scale = 0.5;
+    ButtonSize.x = texture.getSize().x;
+    ButtonSize.y = texture.getSize().y;
+    ButtonSize.x /=2;
+    ButtonSize.y /=4;
+    Position.x = screenSize.x-2*1.5*ButtonSize.x*scale;
+    Position.y = 0;
+    pAddMe = new ClSimpleButton(id, STATISTIC, 6, texture, ButtonSize, Position, scale);
     ButtonVector.push_back(pAddMe);
     // add MENU Button (exit to menu)
     id++;
-    Position.y += 3*ButtonSize.y/2;
-    pAddMe = new ClSimpleButton(id, EXITMENU, 0, texture3, ButtonSize, Position, 0.8f);
-    pAddMe->setText(sf::String("MENU"),pFont);
+    Position.x += ButtonSize.x*1.5*scale;
+    pAddMe = new ClSimpleButton(id, EXITMENU, 7, texture, ButtonSize, Position, scale);
     ButtonVector.push_back(pAddMe);
 
     // Labels
