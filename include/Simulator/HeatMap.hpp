@@ -7,11 +7,12 @@
 #include "FastSquareroot.hpp"
 #include "Area.hpp"
 #include "Statistic.hpp"
+#include "Diagramm.hpp"
 
 class ClHeatMap
 {
 public:
-    ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &MapSize, ClArea *pArea, ClStatistic *pStatistic);
+    ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &MapSize, ClArea *pArea, ClStatistic *pStatistic, ClDiagramm *pDiagramm);
     ~ClHeatMap();
     void registerCrowd(const std::vector<StrPeople *> &Crowd);
     void draw(sf::RenderWindow& window);
@@ -27,6 +28,7 @@ private:
 
     ClArea *pArea;
     ClStatistic *pStatistic;
+    ClDiagramm *pDiagramm;
 
     std::vector<std::vector<StrPeople *> > SortedPeoples ;
     sf::Vector2i cellNumber;

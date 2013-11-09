@@ -8,13 +8,14 @@ usecase:    creation of fire, handling mouse action on fire and set new position
 
 #include "../../include/Simulator/Fire.hpp"
 
-ClFire::ClFire(const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic)
+ClFire::ClFire(const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic, ClDiagramm *pDiagramm)
 {
     this->position_threat = position_threat;
     this->size_threat = size_threat;
     this->pArea = pArea;
     this->pHeatMap = pHeatMap;
     this->pStatistic = pStatistic;
+    this->pDiagramm = pDiagramm;
 
 //threat is movable, not active but alive at the beginning
     isActive = false;
@@ -89,6 +90,7 @@ void ClFire::activate()
     if(isActive == false)
     {
         isActive = true;
+        pDiagramm->registerFire();
         //2.
         alive = false;
         //3.

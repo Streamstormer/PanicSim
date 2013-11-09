@@ -1,7 +1,7 @@
 #include "../../include/Simulator/StaticObject.hpp"
 #include <math.h>
 
-ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, enum staticObjects Type)
+ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, enum staticObjects Type,const sf::Texture &texture_fire)
 {
     Rect = Rectconst;
     this->Type = Type;
@@ -45,8 +45,32 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, enum stati
     }
 
 
+    fire_sprite.setTexture(texture_fire);
+    subrectFire.top=0;
+    subrectFire.left=0;
+    subrectFire.width=texture_fire.getSize().x/8;
+    subrectFire.height=texture_fire.getSize().y/8;
+    isOnFire = false;
+    bildID=0;
+
 
 }
+
+void ClStaticObject::subrecttoNumber(int number)
+{
+    subrectFire.top = (int)(number/ANIMATIONSQUARE)*subrectFire.height;
+    subrectFire.left = (int)(number%ANIMATIONSQUARE)*subrectFire.width;
+     fire_sprite.setTextureRect(subrectFire);
+     fire_sprite.setPosition(Rect->getPosition());
+     fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height/2);
+}
+
+ void ClStaticObject::startToBurn()
+ {
+      isOnFire=true;
+      fire_clock.restart();
+ }
+
 enum staticObjects ClStaticObject::getType()
 {
     return Type;
@@ -64,6 +88,22 @@ void ClStaticObject::draw(sf::RenderWindow& window)
 
     window.draw(line);
     window.draw(text);
+
+     if (isOnFire)
+    {
+
+            // 1. calculate picture number from time
+        // 2. chose correct picture
+        if (bildID >63)
+        {
+            fire_clock.restart();
+        }
+        int time =fire_clock.getElapsedTime().asMilliseconds();
+        bildID = (int)time/PICTUREDURATION;
+        subrecttoNumber(bildID);
+        window.draw(fire_sprite);
+
+    }
 
 }
 bool ClStaticObject::Intersects( const sf::Vector2f  &Position)

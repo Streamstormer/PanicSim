@@ -11,7 +11,7 @@ bool ClThreatManager::fire_static = false;
 bool ClThreatManager::bomb_static = false;
 bool ClThreatManager::explosion_static = false;
 
-ClThreatManager::ClThreatManager(ClArea *pArea, ClStatistic *pStatistic, ClHeatMap *pHeatMap)
+ClThreatManager::ClThreatManager(ClArea *pArea, ClStatistic *pStatistic, ClHeatMap *pHeatMap, ClDiagramm *pDiagramm)
 {
     this->pHeatMap = pHeatMap;
     //assigning the textures to variables
@@ -23,6 +23,8 @@ ClThreatManager::ClThreatManager(ClArea *pArea, ClStatistic *pStatistic, ClHeatM
     this->pArea = pArea;
     //pointer to the statistic
     this->pStatistic = pStatistic;
+    //pointer to the diagramm
+    this->pDiagramm = pDiagramm;
 }
 
 ClThreatManager::~ClThreatManager()
@@ -47,7 +49,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(bomb)
     {
         //2.
-        ClBomb *pBomb = new ClBomb(position, size_threat, bomb_texture, pArea, pHeatMap, pStatistic, explosion_texture);
+        ClBomb *pBomb = new ClBomb(position, size_threat, bomb_texture, pArea, pHeatMap, pStatistic, explosion_texture, pDiagramm);
         threatVector.push_back(pBomb);
         bomb = false;
     }
@@ -56,7 +58,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(fire)
     {
         //2.
-        ClFire *pFire = new ClFire(position, size_threat, fire_texture, pArea, pHeatMap, pStatistic);
+        ClFire *pFire = new ClFire(position, size_threat, fire_texture, pArea, pHeatMap, pStatistic, pDiagramm);
         threatVector.push_back(pFire);
         fire = false;
     }

@@ -26,15 +26,16 @@ protected:
     Gtk::Button *pStartSim;
     Gtk::Button *pClear;
 
-    Gtk::Button *pmouse;
-    Gtk::Button *premove;
+    Gtk::RadioButton *pmouse;
+    Gtk::RadioButton *premove;
 
-    Gtk::Button *pBar;
-    Gtk::Button *pWC;
-    Gtk::Button *pStage;
-    Gtk::Button *pFence;
-    Gtk::Button *pWall;
-    Gtk::Button *pExit;
+    Gtk::RadioButton *pBar;
+    Gtk::RadioButton *pWC;
+    Gtk::RadioButton *pStage;
+    Gtk::RadioButton *pFence;
+    Gtk::RadioButton *pWall;
+    Gtk::RadioButton *pExit;
+    Gtk::RadioButton::Group radioGroup;
 
     Gtk::Frame *pObjFrame;
     Gtk::Label *pObjLabel;

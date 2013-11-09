@@ -1,12 +1,12 @@
 #include "../../include/Simulator/CrowdManager.hpp"
 
-ClCrowdManager::ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize, ClStatistic *pStatistic)
+ClCrowdManager::ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize, ClStatistic *pStatistic, ClDiagramm *pDiagramm)
 {
     this->pArea = pArea;
     this->pStatistic = pStatistic;
     //Create HeatMap
     sf::Vector2i numberOfCells(40,40);
-    pHeatMap = new ClHeatMap(numberOfCells, ScreenSize, pArea, pStatistic);
+    pHeatMap = new ClHeatMap(numberOfCells, ScreenSize, pArea, pStatistic, pDiagramm);
     pPathFinder = new ClPathFinder(pArea, 50,sf::Vector2i(ScreenSize.x,ScreenSize.y));
     pStateVault = new ClStateVault();
 }

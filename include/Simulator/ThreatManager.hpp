@@ -18,7 +18,7 @@ usecase:    handling threat creation, update and draw
 class ClThreatManager
 {
 public:
-    ClThreatManager(ClArea *pArea, ClStatistic *pStatistic, ClHeatMap *pHeatMap);
+    ClThreatManager(ClArea *pArea, ClStatistic *pStatistic, ClHeatMap *pHeatMap, ClDiagramm *pDiagramm);
     ~ClThreatManager();
     void update(sf::RenderWindow &window, bool mouseReleased);
     void draw(sf::RenderWindow &window);
@@ -28,6 +28,7 @@ private:
     ClArea *pArea;
     ClStatistic *pStatistic;
     ClHeatMap *pHeatMap; // for Threats so they can interact with people
+    ClDiagramm *pDiagramm;
 
     sf::Texture bomb_texture;
     sf::Texture fire_texture;

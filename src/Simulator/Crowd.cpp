@@ -86,18 +86,16 @@ void  ClCrowd::Update(float frameTime)
     {
         if (peoples[n]->alive == false)
         {
-            // casualties set panic levelt to true
+            // casualties set panic level to true
             panic = true;
             delete peoples[n]; // free memory
             peoples.erase(peoples.begin()+n);
+
+
         }
     }
 
-    float movementFactor = 1.0f;
-    if(position == oldPosition)
-    {
-        movementFactor = 0.3;
-    }
+
     sf::Vector2f force;
      for (unsigned int n = 0; n < peoples.size(); n++)
     {

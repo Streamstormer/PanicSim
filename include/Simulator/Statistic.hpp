@@ -11,11 +11,12 @@ usecase:    handling all statistic calculations (in HeatMap, by creation of thre
 #include <vector>
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "Diagramm.hpp"
 
 class ClStatistic
 {
 public:
-    ClStatistic();
+    ClStatistic(ClDiagramm *pDiagramm);
     ~ClStatistic();
     void planHeatMapStatistic(sf::Vector2i cellNumber, sf::Vector2f cellSize, const int sw_green, const int sw_yellow, const int sw_red);
     void rememberCells(int cellX, int cellY, const int numberOfPeople);
@@ -28,6 +29,8 @@ public:
     void rememberKills(int number, bool bomb);
     static void setAverageDraw(bool newBool);
     static bool getAverageDraw();
+    static void setDiagrammDraw(bool newBool);
+    static bool getDiagrammDraw();
     static void startTimer();
     static void rememberTime();
     static void rememberPause();
@@ -39,7 +42,9 @@ public:
     static int* getNumberKillsBomb();
     static int* getNumberKillsFire();
     static int* getTime();
+    static void drawDiagramm();
 private:
+    ClDiagramm *pDiagramm;
     sf::Clock startClock;
     sf::Clock pauseClock;
     sf::Clock fastClock;
@@ -69,6 +74,7 @@ private:
     static bool setFast;
     static bool setFaster;
     static bool doDrawAverage;
+    static bool doDrawDiagramm;
     static int numberFire;
     static int numberBomb;
     static int numberKillsBomb;

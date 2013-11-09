@@ -8,13 +8,14 @@ usecase:    creation of bombs, handling mouse action on boms and set new positio
 
 #include "../../include/Simulator/Bomb.hpp"
 
-ClBomb::ClBomb(const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic, const sf::Texture &explosion_texture)
+ClBomb::ClBomb(const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic, const sf::Texture &explosion_texture, ClDiagramm *pDiagramm)
 {
     this->position_threat = position_threat;
     this->size_threat = size_threat;
     this->pArea = pArea;
     this->pHeatMap = pHeatMap;
     this->pStatistic = pStatistic;
+    this->pDiagramm = pDiagramm;
 
 //threat is movable, not active but alive at the beginning
     isActive = false;
@@ -105,6 +106,7 @@ void ClBomb::activate()
     if(isActive == false)
     {
         isActive = true;
+        pDiagramm->registerBomb();
         //2.
         int casualties = pHeatMap->explosion(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2)), 100);
         //3.

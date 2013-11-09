@@ -30,7 +30,6 @@ class ClFastSquareroot
         }
         else
         {
-            std::cerr << "h:" << here << std::endl;
             return sqrt(here);
         }
     }
