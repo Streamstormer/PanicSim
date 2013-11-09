@@ -96,8 +96,11 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
         // Update Threats
         pThreatManager->update(window, mouseReleased);
     }
-    // Update Statistic
-    pStatistic->update();
+    if(curGameState==STATISTICS)
+    {
+        // Update Statistic
+        pStatistic->update();
+    }
     // Update View
     calculateOffset(actualFrameTime);
     return true;
@@ -111,11 +114,13 @@ void ClSimulation::draw(sf::RenderWindow &window)
     if(curGameState==STATISTICS)
     {
         // Draw Statistic in background
-        pStatistic->draw(window);
+        pStatistic->drawStatistic(window);
         // Draw Crowds
         pCrowdManager->draw(window);
         // Draw static / dynamic Objects
         pArea->draw(window);
+        // Draw Diagramm in front
+        pStatistic->drawDiagramm(window);
     }
     if(curGameState==SIMULATION)
     {
