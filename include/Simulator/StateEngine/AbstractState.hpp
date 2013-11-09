@@ -1,7 +1,6 @@
 #ifndef ABSTRACTSTATE_HPP
 #define ABSTRACTSTATE_HPP
 
-#include "StateMachine.hpp"
 
 enum STATES{NORMAL,PANIC,CONFUSED,LEAVING};
 enum ACTIONS{LEAVETOEXIT, PANICHARD, NOTHING};
@@ -20,7 +19,6 @@ public:
 protected:
     int id;
     enum STATES myState;
-    ClStateMachine *pStateMachine;
 };
 
 #endif // ABSTRACTSTATE_HPP

@@ -6,11 +6,10 @@
 class ClLeavingState : public ClAbstractState
 {
     public:
-    ClLeavingState(int id, ClStateMachine *pStateMachine, enum STATES myState)
+    ClLeavingState(int id, enum STATES myState)
     {
         this->myState = myState;
         this->id = id;
-        this->pStateMachine = pStateMachine;
     }
     enum STATES update(bool panic) const;
 
