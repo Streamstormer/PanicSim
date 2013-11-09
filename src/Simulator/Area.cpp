@@ -200,8 +200,8 @@
         {
             if (sobjects[n]->getID() == id){
                 /// Not supportet at the moment. Need some more thinking..
-                //delete sobjects[n];
-                //sobjects[n] = 0;
+                delete sobjects[n];
+                sobjects.erase(sobjects.begin()+n);
                 return true;
             }
         }

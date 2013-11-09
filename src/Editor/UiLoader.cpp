@@ -34,15 +34,23 @@ UiLoader::UiLoader(string UiPath)
 
     // special buttons
     builder->get_widget("mouse", pmouse);
+    pmouse->set_group(radioGroup);
     builder->get_widget("remove", premove);
+    premove->set_group(radioGroup);
 
     // New static Objects
     builder->get_widget("bar", pBar);
+    pBar->set_group(radioGroup);
     builder->get_widget("WC", pWC);
+    pWC->set_group(radioGroup);
     builder->get_widget("Stage", pStage);
+    pStage->set_group(radioGroup);
     builder->get_widget("Fence", pFence);
+    pFence->set_group(radioGroup);
     builder->get_widget("Wall", pWall);
+    pWall->set_group(radioGroup);
     builder->get_widget("Exit", pExit);
+    pExit->set_group(radioGroup);
 
     // Label for selected Objects
     builder->get_widget("ObjectLabel", pObjLabel);
