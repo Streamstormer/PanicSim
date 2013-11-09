@@ -122,7 +122,7 @@ void ClSimpleSimulationMenu::createMenu()
     ButtonSize.x = texture.getSize().x;
     ButtonSize.y = texture.getSize().y;
     ButtonSize.x /=2;
-    ButtonSize.y /=3;
+    ButtonSize.y /=4;
     sf::Vector2f Position;
     Position.x = ButtonSize.x / 2;
     Position.y = this->screenSize.y - ButtonSize.y;
