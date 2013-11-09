@@ -35,7 +35,7 @@ int ClFileHandler::writeStaticObjects(ClArea *pArea){
         sOSize = pArea->getSize(i);
         sORotation = pArea->getRotation(i);
         sOType = pArea->getType(i);
-        myFile << i << ";" << sOPosition.x << ";" << sOPosition.y << ";" << sOSize.x << ";" << sOSize.y << ";" << sORotation << ";" << sOType << ";\n";
+        myFile << i << ";" << (int) sOPosition.x << ";" << (int) sOPosition.y << ";" << sOSize.x << ";" << sOSize.y << ";" << sORotation << ";" << sOType << ";\n";
     }
     return 0;
 }
@@ -93,9 +93,13 @@ int ClFileHandler::importStaticObjects(ClArea *pArea){
                 while(str[j] != ';'){
                     if(str[j] != '.'){
                         if(multiplier == 1)
+                        {
                             divider = divider * 10;
+                        }
                         if(str[j] < 58 && str[j] > 47)
+                        {
                             props[k] = multiplier * props[k] + (str[j] - 48) / divider;
+                        }
                         else{
                             std::cout << "StaticObject numchar not a number.";
                             return 7;
