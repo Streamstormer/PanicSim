@@ -27,10 +27,10 @@ public:
     void update();
     void draw(sf::RenderWindow &window);
     void rememberKills(int number, bool bomb);
-    static void setAverageDraw(bool newBool);
+    static void setDoDrawStatistic(bool newBool);
     static void toggleDiagrammDraw();
     static void startTimer();
-    static void rememberTime();
+    static void rememberStatisticTime();
     static void rememberPause();
     static void rememberContinue();
     static void rememberFast();
@@ -73,7 +73,7 @@ private:
     static bool setContinue;
     static bool setFast;
     static bool setFaster;
-    static bool doDrawAverage;
+    static bool doDrawStatistic;
     static bool doDrawDiagramm;
     static int numberFire;
     static int numberBomb;

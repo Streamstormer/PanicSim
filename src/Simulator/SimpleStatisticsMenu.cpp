@@ -98,6 +98,7 @@ enum GameStates ClSimpleStatisticsMenu::execute(enum Buttons btn) const
     {
     case(EXITMENU):
         {
+            ClStatistic::rememberContinue();
             return SIMULATION;
         }break;
     case(DIAGRAMM):
