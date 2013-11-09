@@ -46,6 +46,10 @@ private:
 
     float radius;
 
+    //panic = false when there were no casualties yet
+    //panic = true when there is at least one casualtie
+    bool panic;
+
     // for debugging puposes : each Crowd does have a unique color
     sf::Color Color;
 

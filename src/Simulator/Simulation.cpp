@@ -1,6 +1,6 @@
 #include "../../include/Simulator/Simulation.hpp"
 
-
+bool ClSimulation::stopSim = false;
 int ClSimulation::speed = 1;
 int ClSimulation::totalVisitors = 0;
 
@@ -17,6 +17,14 @@ void ClSimulation::updateSpeed(bool pause,bool normal, bool fastForward)
     else if (fastForward)
     {
         ClSimulation::speed++;
+        if(ClSimulation::speed == 2)
+        {
+            ClStatistic::rememberFast();
+        }
+        if(ClSimulation::speed == 3)
+        {
+            ClStatistic::rememberFaster();
+        }
         if (ClSimulation::speed > 3)
         {
             ClSimulation::speed = 1;
@@ -46,8 +54,9 @@ ClSimulation::ClSimulation(const sf::VideoMode &Mode)
     gameView.setSize(Mode.width,Mode.height);
     gameView.setCenter(Mode.width/2, Mode.height/2);
 
-    pStatistic = new ClStatistic();
-    pCrowdManager = new ClCrowdManager(pArea, pArea->getLevelSize(), pStatistic);
+    pDiagramm = new ClDiagramm();
+    pStatistic = new ClStatistic(pDiagramm);
+    pCrowdManager = new ClCrowdManager(pArea, pArea->getLevelSize(), pStatistic, pDiagramm);
 
     /*
     pCrowdManager->CreateCrowd(sf::Vector2f(600,350),150,100);
@@ -55,7 +64,7 @@ ClSimulation::ClSimulation(const sf::VideoMode &Mode)
     */
     //        pCrowdManager->CreateCrowd(sf::Vector2f(800,750),150,500);
 
-    pThreatManager = new ClThreatManager(pArea, pStatistic, pCrowdManager->getHeatMap());
+    pThreatManager = new ClThreatManager(pArea, pStatistic, pCrowdManager->getHeatMap(), pDiagramm);
 
     elapsedTime.restart();
     curGameState = MENU;
@@ -85,9 +94,9 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
         pCrowdManager->Update(frameTime, window);
         // Update Threats
         pThreatManager->update(window, mouseReleased);
-        // Update Statistic
-        pStatistic->update();
     }
+    // Update Statistic
+    pStatistic->update();
     // Update View
     calculateOffset(actualFrameTime);
     return true;
@@ -98,20 +107,22 @@ void ClSimulation::draw(sf::RenderWindow &window)
     window.setView(gameView);
     // Draw Background
     window.clear(pArea->getBgColor());
-    // Draw Statistic in background
-    pStatistic->draw(window);
-    if(curGameState==SIMULATION)
+   if(curGameState==STATISTICS)
+    {
+        // Draw Statistic in background
+        pStatistic->draw(window);
+    }
+    if(curGameState==SIMULATION || curGameState == STATISTICS)
     {
         // Draw Crowds
         pCrowdManager->draw(window);
+        // Draw static / dynamic Objects
+        pArea->draw(window);
+        // Draw Threats
+        pThreatManager->draw(window);
     }
-    // Draw static / dynamic Objects
-    pArea->draw(window);
-    // Draw Threats
-    pThreatManager->draw(window);
 }
 // private :
-
 void ClSimulation::partitionCrowds(int totalVisitors)
 {
     int sum = 0;
@@ -121,9 +132,24 @@ void ClSimulation::partitionCrowds(int totalVisitors)
     double persons;
     sf::Vector2f sPosition;
     sf::Vector2f sVector;
+    sf::Vector2f sUnitVector;
+    sf::Vector2f vCrowdCandidate;
+    sf::Vector2f vCandidateWa;
+    double vectorDistance;
+
+    int attractionLength;
+    int numOfCrowds;
+    int personsPerCrowd;
+
     ClStaticObject *pObject;
-    ClPathFinder *pPF = new ClPathFinder(pArea, 20.0, pArea->getLevelSize());
-    ClPath *pPath;
+    ClPathFinder *pPF = new ClPathFinder(pArea, PATH_TEST_GRANULARITY, pArea->getLevelSize());
+    ClPath *pPath = NULL;
+
+
+    const int vMaxX = pArea->getLevelSize().x - 5;
+    const int vMaxY = pArea->getLevelSize().y - 5;
+
+
     for(int i = 0; i < counter; i++)
     {
         if(priority[i])
@@ -133,25 +159,95 @@ void ClSimulation::partitionCrowds(int totalVisitors)
 
             sPosition = pObject->getCenter();
             sVector = sf::Vector2f(2.0 * (pObject->getMiddleOfLine().x - sPosition.x), 1.5 * (pObject->getMiddleOfLine().y - sPosition.y));
-
+            vectorDistance = std::sqrt(std::pow(sVector.x,2) + std::pow(sVector.y,2));
+            if(vectorDistance != 0)
+            {
+                sUnitVector.x = sVector.x / vectorDistance;
+                sUnitVector.y = sVector.y / vectorDistance;
+            }
+            else
+            {
+                std::cout << "Division by zero when calculating the Unit vector.";
+            }
             //std::cout << "persons before: " << persons;
-/*******IF THIS IS THE LAST PLACEMENT OF A CROWD, THE INACCURACY FOR TOTAL VISITORS IS CORRECTED*********/
+            /*******IF THIS IS THE LAST PLACEMENT OF A CROWD, THE INACCURACY FOR TOTAL VISITORS IS CORRECTED*********/
             if(! pArea->attractionWithHigherId(i+2))
             {
                 persons += (double) (totalVisitors - *(pCrowdManager->getPeopleCount()) - persons);
             }
 
-            pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
-            while(pPath == NULL)
-            {
-                sVector.x *= 1.1;
-                sVector.y *= 1.1;
-                pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
-            }
-            pCrowdManager->CreateCrowd(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y),(int)(persons / 100) + 1,(int) persons);
+            // pObject->getSize().x is always the attraction length
+            attractionLength = pObject->getSize().x;
 
+
+            numOfCrowds = attractionLength / DIST_CROWDS_PER_ATTR;
+            if(!numOfCrowds)
+            {
+                numOfCrowds = 1;
+            }
+
+            /*****Calculation candidate for Crowd positioning*****/
+            vCrowdCandidate.x = sPosition.x + sVector.x + (POS_TRY_GRAN * sUnitVector.x);
+            vCrowdCandidate.y = sPosition.y + sVector.y + (POS_TRY_GRAN * sUnitVector.y);
+            if(abs(sUnitVector.x) < abs(sUnitVector.y))
+            {
+                if(numOfCrowds > 1)
+                {
+                    vCrowdCandidate.x -= numOfCrowds * DIST_CROWDS_PER_ATTR / 2 - DIST_CROWDS_PER_ATTR / 2;
+                }
+            }else
+            {
+                if(numOfCrowds > 1)
+                {
+                    vCrowdCandidate.y -= numOfCrowds * DIST_CROWDS_PER_ATTR / 2 - DIST_CROWDS_PER_ATTR / 2;
+                }
+            }
+
+
+            for(int j = 0; j < numOfCrowds; j++)
+            {
+                if(pPath != NULL)
+                {
+                    delete pPath;
+                }
+                pPath = pPF->findPath(vCrowdCandidate,
+                pArea->getClosestExit(vCrowdCandidate));
+
+
+
+                vCandidateWa = vCrowdCandidate;
+                while(pPath == NULL)
+                {
+                    if((vCandidateWa.x + (POS_TRY_GRAN * sUnitVector.x)) > 5
+                            && vCandidateWa.x + (POS_TRY_GRAN * sUnitVector.x) < vMaxX
+                            && vCandidateWa.y + (POS_TRY_GRAN * sUnitVector.y) > 5
+                            && vCandidateWa.y + (POS_TRY_GRAN * sUnitVector.y) < vMaxY)
+                    {
+                        vCandidateWa.x += POS_TRY_GRAN * sUnitVector.x;
+                        vCandidateWa.y += POS_TRY_GRAN * sUnitVector.y;
+                        delete pPath;
+                        pPath = pPF->findPath(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y), pArea->getClosestExit(sf::Vector2f(sPosition.x + sVector.x, sPosition.y + sVector.y)));
+                    }
+                    else
+                    {
+                        std::cout << "Not able to place crowd with id" << (i + 1);
+                    }
+                }
+                personsPerCrowd = persons / numOfCrowds;
+                if(j == numOfCrowds - 1)
+                    personsPerCrowd += (persons - personsPerCrowd * numOfCrowds);
+                pCrowdManager->CreateCrowd(vCandidateWa,(int)(persons / 50) + 1, personsPerCrowd);
+                if(abs(sUnitVector.x) < abs(sUnitVector.y))
+                {
+                    vCrowdCandidate.x += DIST_CROWDS_PER_ATTR;
+                }else
+                {
+                    vCrowdCandidate.y += DIST_CROWDS_PER_ATTR;
+                }
+            }
         }
     }
+    delete pPath;
     delete pPF;
 }
 
@@ -166,14 +262,14 @@ void ClSimulation::calculatePriorities(int *sum, int *priority, int counter)
         sSize = pArea->getSize(i+1);
         switch(sType)
         {
-        case 0:
-            priority[i] = STAGE;
+        case STAGE:
+            priority[i] = 3;
             break;
-        case 1:
-            priority[i] = BAR;
+        case BAR:
+            priority[i] = 2;
             break;
-        case 2:
-            priority[i] = WC;
+        case WC:
+            priority[i] = 5;
             break;
         default:
             priority[i] = 0;
@@ -187,14 +283,16 @@ void ClSimulation::calculatePriorities(int *sum, int *priority, int counter)
 
 void ClSimulation::setCurGameState(enum GameStates newGS)
 {
-    if(!visitorsSet){
-    if (newGS == SIMULATION)
+    if(!visitorsSet)
     {
-        partitionCrowds(totalVisitors);
-        visitorsSet = true;
+        if (newGS == SIMULATION)
+        {
+            partitionCrowds(totalVisitors);
+            visitorsSet = true;
+     //       pStatistic->startTimer();
+        }
     }
     curGameState = newGS;
-}
 }
 
 
@@ -212,7 +310,6 @@ void ClSimulation::calculateOffset(float frameTime)
 {
     // 1. check for keyboard input (arrow keys)
     // 2. check for validity of the new offset
-
 
     currentOffset.x = currentOffset.y = 0;
 
@@ -250,4 +347,14 @@ void ClSimulation::calculateOffset(float frameTime)
     {
         gameView.move(0 ,currentOffset.y);
     }
+}
+
+void ClSimulation::setStopSim(bool newBool)
+{
+    stopSim = newBool;
+}
+
+bool ClSimulation::getStopSim()
+{
+    return stopSim;
 }

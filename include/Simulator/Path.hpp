@@ -18,6 +18,9 @@ public:
     ~ClPath();
 
     sf::Vector2f getNextVector();
+    sf::Vector2f getNodePosition(int index);
+    bool isLast(int index);
+    int getFirstNodeId();
     void addVector(const sf::Vector2f & add);
     int getSize();
     void clearVectorPath ();

@@ -3,6 +3,9 @@
 
 ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f position, int numOfPeoples, ClHeatMap *pHeatMap, ClStateVault *pStateVault, ClPathFinder *pPathfinder)
 {
+    // no casualties yet
+    panic = false;
+
     this->position = position;
     oldPosition = position;
     this->Color = Color;
@@ -18,24 +21,36 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
     {
         StrPeople *newPerson = new StrPeople;
         newPerson->alive = true;
+        newPerson->currentNode = -1;
         newPerson->force.x = newPerson->force.y = 0;
-        do
-        {
-            newPerson->position.x = std::rand();
-            newPerson->position.x = (int)newPerson->position.x % (int)(2*radius);
-            newPerson->position.x -= radius;
-        } while (newPerson->position.x < 0);
 
         do
         {
-            newPerson->position.y = std::rand();
-            newPerson->position.y = (int)newPerson->position.y % (int)(2*radius);
-            newPerson->position.y -= radius;
-        } while (newPerson->position.y < 0);
-        newPerson->position.x += position.x ;
-        newPerson->position.y += position.y;
+            newPerson->position[PEOPLE_POSITION_MEMORY-1].x = std::rand();
+            newPerson->position[PEOPLE_POSITION_MEMORY-1].x = (int)newPerson->position[PEOPLE_POSITION_MEMORY-1].x % (int)(2*radius);
+            newPerson->position[PEOPLE_POSITION_MEMORY-1].x -= radius;
 
-        //newPerson->forceVec.x = newPerson->forceVec.y =0;
+        } while (newPerson->position[(PEOPLE_POSITION_MEMORY - 1)].x < 0);
+
+        do
+        {
+            newPerson->position[PEOPLE_POSITION_MEMORY-1].y = std::rand();
+            newPerson->position[PEOPLE_POSITION_MEMORY-1].y = (int)newPerson->position[PEOPLE_POSITION_MEMORY-1].y % (int)(2*radius);
+            newPerson->position[PEOPLE_POSITION_MEMORY-1].y -= radius;
+
+        } while (newPerson->position[(PEOPLE_POSITION_MEMORY - 1)].y < 0);
+
+
+        //Add Offset
+        newPerson->position[PEOPLE_POSITION_MEMORY - 1].x += position.x - radius / 2 ;
+        newPerson->position[PEOPLE_POSITION_MEMORY - 1].y += position.y - radius / 2;
+
+        //Copy for history
+        for(int i = 0; i < (PEOPLE_POSITION_MEMORY - 1); i++)
+        {
+            newPerson->position[i] = newPerson->position[PEOPLE_POSITION_MEMORY-1];
+        }
+
         peoples.push_back(newPerson);
 
     }
@@ -71,30 +86,28 @@ void  ClCrowd::Update(float frameTime)
     {
         if (peoples[n]->alive == false)
         {
+            // casualties set panic level to true
+            panic = true;
             delete peoples[n]; // free memory
             peoples.erase(peoples.begin()+n);
+
+
         }
     }
 
-    float movementFactor = 1.0f;
-    if(position == oldPosition)
-    {
-        movementFactor = 0.75f;
-    }
+
     sf::Vector2f force;
      for (unsigned int n = 0; n < peoples.size(); n++)
     {
-        // Center Force
-            force =  Seek( peoples[n]->position, position);
-         //   Vec2DNormalize(&force)
-         force.x *= frameTime * -0.03;
-         force.y *= frameTime * -0.03;
-         peoples[n]->force = force;
+        for(int i = 0; i < PEOPLE_POSITION_MEMORY - 1; i++)
+        {
+            peoples[n]->position[i] = peoples[n]->position[i + 1];
+        }
     }
     oldPosition = position;
 
     // update state
-    enum STATES state =  pCurrentState->update();
+    enum STATES state =  pCurrentState->update(panic);
     if(state != pCurrentState->getState())
     {
         // change state
@@ -105,10 +118,18 @@ void  ClCrowd::Update(float frameTime)
         case(LEAVETOEXIT):
             {
                 sf::Vector2f exitPosition = pArea->getClosestExit(this->position);
-                if (pPath != NULL) { delete pPath; pPath = NULL;}
+
+                if (pPath != NULL)
+                {
+                        delete pPath;
+                        pPath = NULL;
+                }
 
                 pPath = pPathFinder->findPath(position,exitPosition);
-                nextNode = pPath->getNextVector();
+                for (unsigned int n = 0; n < peoples.size(); n++)
+                {
+                   peoples[n]->currentNode = pPath->getFirstNodeId();
+                }
             }
         // To Do add more action init logic
         }
@@ -118,17 +139,54 @@ void  ClCrowd::Update(float frameTime)
 
     switch (curAction)
     {
+        case(NOTHING):
+        {
+            sf::Vector2f force;
+            for(unsigned int n = 0; n < peoples.size(); n++)
+            {
+                // just stand there doing nothing at all
+                force =  Seek( peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)], position);
+                //   Vec2DNormalize(&force)
+                force.x *= frameTime * -0.01;
+                force.y *= frameTime * -0.01;
+                peoples[n]->force = force;
+            }
+        }break;
         case(LEAVETOEXIT):
         {
-            if( (position.x - nextNode.x)*(position.x - nextNode.x)+(position.y - nextNode.y)*(position.y - nextNode.y) < 100 && pPath->isLastVector() == false)
+            sf::Vector2f currentNode;
+            for (unsigned int n = 0; n < peoples.size(); n++)
             {
-                nextNode = pPath->getNextVector();
+                currentNode = pPath->getNodePosition(peoples[n]->currentNode);
+                if( pPath->isLast(peoples[n]->currentNode) == false &&
+                   ((peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)].x - currentNode.x)*
+                   (peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)].x - currentNode.x)
+                    +((peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)].y - currentNode.y)*
+                    ((peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)].y - currentNode.y) )))<50)
+                    {
+
+                        peoples[n]->currentNode++;
+                    }
+                sf::Vector2f force = Seek(peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)],currentNode);
+                force.x *= frameTime * -0.05;
+                force.y *= frameTime * -0.05;
+                peoples[n]->force = force;
             }
-            sf::Vector2f force = Seek(nextNode,position);
-            force.x *= frameTime * 0.05;
-            force.y *= frameTime * 0.05;
-            position += force;
         }break;
+        case PANICHARD:
+        {
+            sf::Vector2f force;
+            for(unsigned int n = 0; n < peoples.size(); n++)
+            {
+                // just stand there doing nothing at all
+                force =  Seek( peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)], position);
+                //   Vec2DNormalize(&force)
+                force.x *= frameTime * 0.01;
+                force.y *= frameTime * 0.01;
+                peoples[n]->force = force;
+            }
+
+        }
     }
 }
 void  ClCrowd::Update(sf::Vector2i position,float frameTime)
@@ -142,10 +200,23 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
     sf::CircleShape personShape;
 
     personShape.setFillColor(Color);
-    personShape.setRadius(1);
+    personShape.setRadius(5);
+    personShape.setOrigin(2.5,2.5);
+
+    sf::Vector2f avgPosition;
+
     for(unsigned int n = 0; n< peoples.size(); n++)
     {
-        personShape.setPosition(peoples[n]->position);
+        avgPosition.x = 0;
+        avgPosition.y = 0;
+        for(int i = 0; i < PEOPLE_POSITION_MEMORY; i++)
+        {
+            avgPosition.x += peoples[n]->position[i].x;
+            avgPosition.y += peoples[n]->position[i].y;
+        }
+        avgPosition.x /= PEOPLE_POSITION_MEMORY;
+        avgPosition.y /= PEOPLE_POSITION_MEMORY;
+        personShape.setPosition(avgPosition);
         window.draw(personShape);
     }
 

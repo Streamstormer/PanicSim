@@ -3,14 +3,13 @@
 
 #include "StaticObject.hpp"
 #include <vector>
-
-
+#include <cmath>
 
 class ClArea
 {
 public:
 
-    ClArea() {id = 0;}
+    ClArea() ;
     ~ClArea();
 
     int insertStObj(enum staticObjects type, const sf::Vector2f & sizeOfRectangle,
@@ -31,26 +30,35 @@ public:
 
     /// not for the editor but for the collision detection / for the pathFinder
 
-    const sf::Vector2f & getSource(int id);
-    const sf::Vector2f getClosestExit(const sf::Vector2f & myPosition)
+    bool isInvalidNode(sf::Vector2f node, int nodeDistance) // ensure that there are no nodes close to staticObjects
     {
-        float distance = INFINITY;
-        sf::Vector2f closestExitPosition;
         for(unsigned int n = 0; n < sobjects.size(); n++)
         {
-            if (sobjects[n]->getType() == GATE)
-            {
-                sf::Vector2f position = sobjects[n]->getCenter();
-                float testDistance = (myPosition.x - position.x)*(myPosition.x - position.x)+(myPosition.y - position.y)*(myPosition.x - position.x);
-                if (testDistance<distance)
-                {
-                    closestExitPosition = position;
-                    distance = testDistance;
-                }
+            sf::Rect<float> testRect;
 
+            testRect.top = node.y - nodeDistance/2;
+            testRect.height = nodeDistance;
+            testRect.left = node.x - nodeDistance/2;
+            testRect.width = nodeDistance;
+
+            if(sobjects[n]->IntersectsRectangle(testRect))
+                return true;
+        }
+        return false;
+    }
+    const sf::Vector2f & getSource(int id);
+
+    const sf::Vector2f getClosestExit(const sf::Vector2f & myPosition);
+
+    void setOnFire(int id)
+    {
+        for(unsigned int n = 0; n < sobjects.size(); n++)
+        {
+            if (sobjects[n]->getID() == id)
+            {
+                sobjects[n]->startToBurn();
             }
         }
-        return closestExitPosition;
     }
 
     /// Set Methods for StaticObjects attributes via id and new value
@@ -81,6 +89,9 @@ private:
     std::vector<ClStaticObject *> sobjects;
     sf::Vector2i levelSize;
     sf::Color bgColor;
+    sf::Texture fire_texture;
+
+    static const int EXIT_POINT_DISTANCE = 50;
 };
 
 #endif // AREA_HPP_INCLUDED

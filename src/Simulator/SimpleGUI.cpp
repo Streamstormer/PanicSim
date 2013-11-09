@@ -71,4 +71,7 @@ void ClSimpleGUI::createAllMenus()
 
     ClSimpleCreditsMenu *pCreditsMenu = new ClSimpleCreditsMenu(CREDITSMENU,&labelFont,ScreenSize);
     MenuVector.push_back(pCreditsMenu);
+
+    ClSimpleStatisticsMenu *pStatisticsMenu = new ClSimpleStatisticsMenu(STATISTICS,&labelFont,ScreenSize);
+    MenuVector.push_back(pStatisticsMenu);
 }

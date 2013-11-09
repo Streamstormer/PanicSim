@@ -1,4 +1,11 @@
 #include "../../include/Simulator/Area.hpp"
+
+
+    ClArea::ClArea()
+    {id = 0;
+    fire_texture.loadFromFile("pictures/fire.png");
+    }
+
     ClArea::~ClArea()
     {
         for(unsigned int n=0; n < sobjects.size(); n++)
@@ -17,7 +24,7 @@
         tempRe->setRotation(rotAngle);
         if(type == GATE)
             tempRe->setFillColor(sf::Color::Red);
-        ClStaticObject *tempSt = new ClStaticObject(tempRe, id, type);
+        ClStaticObject *tempSt = new ClStaticObject(tempRe, id, type,fire_texture);
         sobjects.push_back(tempSt);
         return id;
     }
@@ -42,7 +49,7 @@
                 return false;
             }
         }
-         return true;
+        return true;
     }
 
     bool ClArea::validPath(sf::Vector2f startPoint, sf::Vector2f endPoint)
@@ -100,6 +107,87 @@
             }
         }
     }
+
+const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
+{
+    float distance = INFINITY;
+    sf::Vector2f closestExitPosition;
+    ClStaticObject *closestExit;
+    for(unsigned int n = 0; n < sobjects.size(); n++)
+    {
+        if (sobjects[n]->getType() == GATE)
+        {
+            sf::Vector2f position = sobjects[n]->getCenter();
+            float testDistance = (myPosition.x - position.x)*(myPosition.x - position.x)+(myPosition.y - position.y)*(myPosition.x - position.x);
+            if (testDistance<distance)
+            {
+                closestExitPosition = position;
+                distance = testDistance;
+                closestExit = sobjects[n];
+            }
+
+        }
+    }
+
+    //Big exit with at minimum two exit points: choose nearest
+    if(false)//closestExit->getSize().x > EXIT_POINT_DISTANCE)
+    {
+        int numOfExitPoints = closestExit->getSize().x / EXIT_POINT_DISTANCE + 1;
+        sf::Vector2f mainPoint = closestExit->getMiddleOfLine();
+        sf::Vector2f centerPoint = closestExit->getCenter();
+        sf::Vector2f diffVect = sf::Vector2f(mainPoint.x - centerPoint.x, mainPoint.y - centerPoint.y);
+        sf::Vector2f unitVect;
+
+        double vectorDistance = sqrt((diffVect.x) * (diffVect.x) + (diffVect.y) * (diffVect.y));
+        if(vectorDistance != 0)
+        {
+            unitVect.x = diffVect.x / vectorDistance;
+            unitVect.y = diffVect.y / vectorDistance;
+        }
+        else
+        {
+            std::cout << "Division by zero when calculating the Unit vector.";
+        }
+
+
+        if(abs(unitVect.x) < abs(unitVect.y))
+        {
+            mainPoint.x -= numOfExitPoints * EXIT_POINT_DISTANCE / 2 - EXIT_POINT_DISTANCE / 2;
+        }
+        else
+        {
+            mainPoint.y -= numOfExitPoints * EXIT_POINT_DISTANCE / 2 - EXIT_POINT_DISTANCE / 2;
+        }
+        float testDistance;
+        for(int i = 0; i < numOfExitPoints; i++)
+        {
+            testDistance = (myPosition.x - mainPoint.x)
+            *(myPosition.x - mainPoint.x)
+            +(myPosition.y - mainPoint.y)
+            *(myPosition.x - mainPoint.x);
+            if (testDistance<distance)
+            {
+                closestExitPosition = mainPoint;
+                distance = testDistance;
+            }
+            if(abs(unitVect.x) < abs(unitVect.y))
+            {
+                mainPoint.x += EXIT_POINT_DISTANCE;
+            }
+            else
+            {
+                mainPoint.y += EXIT_POINT_DISTANCE;
+            }
+        }
+
+        return closestExitPosition;
+    }
+    else
+    {
+        //Small exit with just one exit point, so no further checks are necessary
+        return closestExitPosition;
+    }
+}
 
 
     const sf::Vector2f & ClArea::getSize(int id)
@@ -199,12 +287,10 @@
         for (unsigned int n = 0; n < sobjects.size();n++)
         {
             if (sobjects[n]->getID() == id){
-                /// Not supportet at the moment. Need some more thinking..
                 delete sobjects[n];
                 sobjects.erase(sobjects.begin()+n);
                 return true;
             }
         }
         return false;
-
     }

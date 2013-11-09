@@ -2,6 +2,7 @@
 #define SIMPLEMENU_HPP
 
 #include "Simulation.hpp"
+#include "Statistic.hpp"
 #include "SimpleButton.hpp"
 #include "SimpleLabel.hpp"
 #include <vector>
@@ -23,6 +24,9 @@ class ClSimpleMenu
 
         std::vector<ClSimpleButton *> ButtonVector;
         std::vector<ClSimpleLabel *> LabelVector;
+        sf::Texture bg_texture;
+        sf::Sprite bg;
+        sf::RectangleShape bg_color;
 };
 
 #endif // SIMPLEMENU_HPP

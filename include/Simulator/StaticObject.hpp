@@ -11,18 +11,23 @@ const unsigned int MAXSTATICOBJECTTYPES = GATE; // set this enum to the rightmos
 class ClStaticObject
 {
 public:
-    ClStaticObject(sf::RectangleShape *Rectconst, int id, enum staticObjects Type);
+    ClStaticObject(sf::RectangleShape *Rectconst, int id, enum staticObjects Type,const sf::Texture &texture_fire);
     ~ClStaticObject();
     void draw(sf::RenderWindow& window);
     const sf::Vector2f &getCenter();
     bool Intersects( const sf::Vector2f  &Position); // returns true if Position is inside of the StaticObject
+    bool IntersectsRectangle(sf::Rect<float> &testRect)
+    {
+        return this->Rect->getGlobalBounds().intersects(testRect);
+    }
     int getID();
     enum staticObjects getType();
     const sf::Vector2f &getPosition();
     const sf::Vector2f &getSize();
 
-    float getRotation();
 
+    float getRotation();
+    void startToBurn();
     void setPosition(const sf::Vector2f &position);
     void setRotation(float rotation);
     void setSize(const sf::Vector2f &newSize);
@@ -38,6 +43,14 @@ private:
     sf::Text text;
     sf::Font font;
     sf::RectangleShape line;
+     sf::Rect<int> subrectFire;
+    sf::Sprite fire_sprite;
+    sf::Clock fire_clock;
+    void subrecttoNumber(int number);
+    int bildID;
+    bool isOnFire;
+    const static int PICTUREDURATION =25;
+    const static int ANIMATIONSQUARE =8;
 
 };
 

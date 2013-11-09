@@ -1,7 +1,6 @@
 #ifndef SIMPLESIMULATIONMENU_HPP
 #define SIMPLESIMULATIONMENU_HPP
 #include "SimpleMenu.hpp"
-#include "Statistic.hpp"
 
 class ClSimpleSimulationMenu : public ClSimpleMenu
 {
@@ -15,6 +14,6 @@ class ClSimpleSimulationMenu : public ClSimpleMenu
         private:
     void createMenu();
     sf::Texture texture2;
-
+    sf::Texture texture3;
 };
 #endif // SIMPLESIMULATIONMENU_HPP

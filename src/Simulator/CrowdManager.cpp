@@ -1,13 +1,13 @@
 #include "../../include/Simulator/CrowdManager.hpp"
 
-ClCrowdManager::ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize, ClStatistic *pStatistic)
+ClCrowdManager::ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize, ClStatistic *pStatistic, ClDiagramm *pDiagramm)
 {
     this->pArea = pArea;
     this->pStatistic = pStatistic;
     //Create HeatMap
     sf::Vector2i numberOfCells(40,40);
-    pHeatMap = new ClHeatMap(numberOfCells, ScreenSize, pArea, pStatistic);
-    pPathFinder = new ClPathFinder(pArea, 100,sf::Vector2i(ScreenSize.x,ScreenSize.y));
+    pHeatMap = new ClHeatMap(numberOfCells, ScreenSize, pArea, pStatistic, pDiagramm);
+    pPathFinder = new ClPathFinder(pArea, 50,sf::Vector2i(ScreenSize.x,ScreenSize.y));
     pStateVault = new ClStateVault();
 }
 
@@ -55,6 +55,7 @@ void ClCrowdManager::draw(sf::RenderWindow& window)
     {
         Crowds[n]->Draw(window);
     }
+    //pPathFinder->draw(window);
 }
 
 
@@ -67,7 +68,7 @@ void ClCrowdManager::CreateCrowd(sf::Vector2f position, float radius, int people
     // for debugging puposes: each crowd gets a different color
     if(j==0)
     {
-        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Black,position, people, pHeatMap, pStateVault,pPathFinder);
+        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Cyan,position, people, pHeatMap, pStateVault,pPathFinder);
         Crowds.push_back(Crowd);
     }
     else if (j==1)
