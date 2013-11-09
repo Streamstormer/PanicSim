@@ -197,7 +197,7 @@ void ClHeatMap::additionalCellChecks()
                             SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
                         }
                         // 4.2 check for burning building
-                        if (pArea->getOnFire(id) && this->actualTime > 3)
+                        if ( this->actualTime > 3 && pArea->getOnFire(id) )
                         {
                              SortedPeoples[x+y*cellNumber.x][n]->alive = false;
                              // erase from Heatmap ( crowd does a cleanup immediatly )
