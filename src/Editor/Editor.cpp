@@ -59,8 +59,8 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     pscroll->signal_value_changed().connect(sigc::mem_fun(*SFMLArea, &SimulationArea::by_scrolling));
 
     // set adjustment for the size SpinButtons
-    pSizeX->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 500.0, 0.1, 0.1));
-    pSizeY->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 500.0, 0.1, 0.1));
+    pSizeX->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 5000.0, 0.1, 0.1));
+    pSizeY->set_adjustment(Gtk::Adjustment::create(10.0, 10.0, 5000.0, 0.1, 0.1));
     // ..for rotation SpinButtons
     pRot->set_adjustment(Gtk::Adjustment::create(0.0, 0.0, 360.0, 90.0, 90.0));
 
