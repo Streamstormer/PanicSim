@@ -5,6 +5,7 @@ Support:    Patrick Senneka
 usecase:    creates a diagramm which shows the number of casualties and threads over the time
 ---------------------------------------------------------------------------------------------------------------------------------------
 */
+
 #ifndef DIAGRAMM_HPP_INCLUDED
 #define DIAGRAMM_HPP_INCLUDED
 
@@ -12,17 +13,15 @@ usecase:    creates a diagramm which shows the number of casualties and threads 
 #include <iostream>
 #include <sstream>
 
-
 class ClDiagramm
 {
 public:
-    ClDiagramm(const sf::Vector2f & position, float diagrammSizeX, float diagrammSizeY);
+    ClDiagramm();
     ~ClDiagramm();
     void registerFire();
     void registerBomb();
     void registerCasualties();
-    void draw(sf::RenderWindow & window);
-
+    void draw(const sf::Vector2f & position, float diagrammSizeX, float diagrammSizeY, sf::RenderWindow & window);
 
 private:
     int id;

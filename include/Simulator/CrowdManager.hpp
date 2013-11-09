@@ -12,7 +12,7 @@
 class ClCrowdManager
 {
     public:
-        ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize, ClStatistic *pStatistic);
+        ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize, ClStatistic *pStatistic, ClDiagramm *pDiagramm);
         ~ClCrowdManager();
 
         void Update(float frameTime, sf::RenderWindow &window);

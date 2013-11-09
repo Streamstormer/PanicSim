@@ -14,7 +14,7 @@ usecase:    creation of fire, handling mouse action on fire and set new position
 class ClFire : public ClThreat
 {
 public:
-    ClFire(const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic);
+    ClFire(const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic, ClDiagramm *pDiagramm);
     void recognizeMouse(sf::RenderWindow &window);
     void activate();
     void draw(sf::RenderWindow &window);

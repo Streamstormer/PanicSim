@@ -6,6 +6,7 @@
 #include "CrowdManager.hpp"
 #include "ThreatManager.hpp"
 #include "Statistic.hpp"
+#include "Diagramm.hpp"
 #include "../../include/Common/FileHandler.hpp"
 #include <cmath>
 
@@ -45,6 +46,7 @@ class ClSimulation
         ClCrowdManager *pCrowdManager;
         ClThreatManager *pThreatManager;
         ClStatistic *pStatistic;
+        ClDiagramm *pDiagramm;
         sf::VideoMode Mode;
         sf::Clock elapsedTime;
         sf::Vector2i levelSize;

@@ -1,11 +1,12 @@
 #include "../../include/Simulator/HeatMap.hpp"
 
-ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &MapSize, ClArea *pArea, ClStatistic *pStatistic)
+ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &MapSize, ClArea *pArea, ClStatistic *pStatistic, ClDiagramm *pDiagramm)
 {
     this->pArea = pArea;
     this->MapSize = MapSize;
     this->cellNumber = cellNumber;
     this->pStatistic = pStatistic;
+    this->pDiagramm = pDiagramm;
     cellSize.x = MapSize.x / cellNumber.x;
     cellSize.y = MapSize.y / cellNumber.y;
     /// create the storage for all peoples in game
@@ -236,7 +237,7 @@ sf::Color ClHeatMap::getColor(int People)
     sf::Color background;
     background.b = 0;
 
-    if (People == sw_green)   // at the end: green 0,255,0
+    if (People == sw_green)   // green 0,255,0
     {
         background.r = 0;
         background.g = 255;
@@ -291,6 +292,7 @@ int ClHeatMap::explosion(const sf::Vector2f &here, int explosionRadius)
     //2.
     // center cell
     casualties = calculateCasualtiesInCell(explosion, here, explosionRadius);
+
     // top-left cell
     explosion.y -= 1;
     explosion.x -= 1;
@@ -351,6 +353,7 @@ int ClHeatMap::calculateCasualtiesInCell(const sf::Vector2i &cell, const sf::Vec
             SortedPeoples[cell.x+cell.y*cellNumber.x].erase(SortedPeoples[cell.x+cell.y*cellNumber.x].begin()+n);
 
             casualties++;
+            pDiagramm->registerCasualties();
         }
     }
     //3.
