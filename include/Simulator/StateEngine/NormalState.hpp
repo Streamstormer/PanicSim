@@ -6,11 +6,10 @@
 class ClNormalState : public ClAbstractState
 {
     public:
-    ClNormalState(int id, ClStateMachine *pStateMachine, enum STATES myState)
+    ClNormalState(int id, enum STATES myState)
     {
         this->myState = myState;
         this->id = id;
-        this->pStateMachine = pStateMachine;
     }
     enum STATES update(bool panic) const;
     // what action next

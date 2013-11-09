@@ -17,20 +17,17 @@ public:
     ClPath(const sf::Vector2f & startVector);
     ~ClPath();
 
-    sf::Vector2f getNextVector();
     sf::Vector2f getNodePosition(int index);
     bool isLast(int index);
     int getFirstNodeId();
     void addVector(const sf::Vector2f & add);
     int getSize();
     void clearVectorPath ();
-    bool isLastVector ();
 
     //test-function
     void drawPath(sf::RenderWindow & window);
 
 private:
-    int position;
     std::vector<sf::Vector2f> vectorPath;
 
 };

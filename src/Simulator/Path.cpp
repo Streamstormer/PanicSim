@@ -10,18 +10,11 @@ usecase:    Path stores the Nodes of the shortest Path in the right order.
 ClPath::ClPath(const sf::Vector2f & startVector)
     {
         this->vectorPath.push_back(startVector);
-        this->position = 0;
     }
 
 ClPath::~ClPath()
 {
     //dtor
-}
-
-sf::Vector2f ClPath::getNextVector()
-{
-    position++;
-    return vectorPath[position-1];
 }
 
 sf::Vector2f ClPath::getNodePosition(int index)
@@ -59,18 +52,6 @@ int ClPath::getSize()
 void ClPath::clearVectorPath()
 {
     vectorPath.clear();
-}
-
-bool ClPath::isLastVector()
-{
-    if( vectorPath[position-1] == vectorPath[vectorPath.size()-1] )
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
 }
 
 void ClPath::drawPath(sf::RenderWindow & window)

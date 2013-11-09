@@ -75,6 +75,7 @@ ClSimulation::~ClSimulation()
     delete pCrowdManager;
     delete pThreatManager;
     delete pStatistic;
+    delete pDiagramm;
 }
 
 bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
@@ -107,12 +108,16 @@ void ClSimulation::draw(sf::RenderWindow &window)
     window.setView(gameView);
     // Draw Background
     window.clear(pArea->getBgColor());
-   if(curGameState==STATISTICS)
+    if(curGameState==STATISTICS)
     {
         // Draw Statistic in background
         pStatistic->draw(window);
+        // Draw Crowds
+        pCrowdManager->draw(window);
+        // Draw static / dynamic Objects
+        pArea->draw(window);
     }
-    if(curGameState==SIMULATION || curGameState == STATISTICS)
+    if(curGameState==SIMULATION)
     {
         // Draw Crowds
         pCrowdManager->draw(window);
@@ -122,9 +127,11 @@ void ClSimulation::draw(sf::RenderWindow &window)
         pThreatManager->draw(window);
     }
 }
+
 // private :
 void ClSimulation::partitionCrowds(int totalVisitors)
 {
+    ClFastSquareroot fSR;
     int sum = 0;
     int counter = pArea->getNumberOfStaticObjects();
     int priority[counter];
@@ -159,7 +166,7 @@ void ClSimulation::partitionCrowds(int totalVisitors)
 
             sPosition = pObject->getCenter();
             sVector = sf::Vector2f(2.0 * (pObject->getMiddleOfLine().x - sPosition.x), 1.5 * (pObject->getMiddleOfLine().y - sPosition.y));
-            vectorDistance = std::sqrt(std::pow(sVector.x,2) + std::pow(sVector.y,2));
+            vectorDistance = fSR.getSqrt(std::pow(sVector.x,2) + std::pow(sVector.y,2));
             if(vectorDistance != 0)
             {
                 sUnitVector.x = sVector.x / vectorDistance;
@@ -236,7 +243,7 @@ void ClSimulation::partitionCrowds(int totalVisitors)
                 personsPerCrowd = persons / numOfCrowds;
                 if(j == numOfCrowds - 1)
                     personsPerCrowd += (persons - personsPerCrowd * numOfCrowds);
-                pCrowdManager->CreateCrowd(vCandidateWa,(int)(persons / 50) + 1, personsPerCrowd);
+                pCrowdManager->CreateCrowd(vCandidateWa,(int)(persons / 50) + 3, personsPerCrowd);
                 if(abs(sUnitVector.x) < abs(sUnitVector.y))
                 {
                     vCrowdCandidate.x += DIST_CROWDS_PER_ATTR;

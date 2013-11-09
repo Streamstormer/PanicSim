@@ -5,57 +5,75 @@ ClSimpleStatisticsMenu::ClSimpleStatisticsMenu(enum GameStates myState, sf::Font
     this->myState= myState;
     this->pFont = pFont;
     this->screenSize = screenSize;
-    texture.loadFromFile("pictures/Button.png");
+ //   texture.loadFromFile("pictures/Button.png");
+    texture.loadFromFile("pictures/ButtonSet1.png");
     createMenu();
 }
 
-ClSimpleStatisticsMenu::~ClSimpleStatisticsMenu()
-{
-    delete pButton;
-}
+ClSimpleStatisticsMenu::~ClSimpleStatisticsMenu(){}
 
 void ClSimpleStatisticsMenu::createMenu()
 {
     // ClSimpleButton(int id, Buttons button, int GameState, const sf::Texture &texture, const sf::Vector2f &newSize, const sf::Vector2f& position, float scale)
-    sf::Vector2f position;
+    sf::Vector2f labelSize;
+    labelSize.x = 400;
+    labelSize.y = 100;
+
     sf::Vector2f buttonSize;
-    sf::Vector2f labelSize(400,100);
-    buttonSize.x = (float)texture.getSize().x;
-    buttonSize.y = (float)texture.getSize().y;
-    bg_color.setPosition(2*screenSize.x/3,0);
+    buttonSize.x = texture.getSize().x;
+    buttonSize.y = texture.getSize().y;
+    buttonSize.x /=2;
+    buttonSize.y /=4;
 
     sf::Vector2f bg_size;
     bg_size.x = screenSize.x/2;
     bg_size.y = screenSize.y;
-    bg_color.setSize(bg_size);
 
     sf::Color bgColor(0,0,0, 70);
+    bg_color.setSize(bg_size);
     bg_color.setFillColor(bgColor);
+    bg_color.setPosition(2*screenSize.x/3,0);
 
+    sf::Vector2f position;
     position.x = 0.9*screenSize.x;
     position.x -= buttonSize.x;
     position.y = 3*screenSize.y/4;
 
-    pButton = new ClSimpleButton(0, EXITMENU, 0, texture, buttonSize, position, 1.0f);
-    pButton->setText(sf::String("MENU"),pFont);
+    float scale = 0.5;
+    int id = 0;
 
+    // add EXITMENU Button
+    pButton = new ClSimpleButton(id, EXITMENU, 7, texture, buttonSize, position, scale);
+    ButtonVector.push_back(pButton);
+
+    // add DIAGRAMM Button
+    id++;
+    position.x += buttonSize.x;
+    pButton = new ClSimpleButton(id, DIAGRAMM, 6, texture, buttonSize, position, scale);
+    ButtonVector.push_back(pButton);
+
+    // add LABEL "Number of Bombs"
     position.x = 2*screenSize.x/3;
     position.y = screenSize.y/20;
     pLabel = new ClSimpleLabel(position, labelSize,sf::String("Number of Bombs:"), *pFont, ClStatistic::getNumberBomb());
     LabelVector.push_back(pLabel);
 
+    // add LABEL "Number of Fire"
     position.y += labelSize.y + 1;
     pLabel = new ClSimpleLabel(position, labelSize, sf::String("Number of Fire:"), *pFont, ClStatistic::getNumberFire());
     LabelVector.push_back(pLabel);
 /*
+    // add LABEL "casualties by fire"
     position.y += labelSize.y + 1;
     pLabel = new ClSimpleLabel(position, labelSize, sf::String("People killed by fire:"), *pFont, ClStatistic::getNumberKillsFire());
     LabelVector.push_back(pLabel);
 */
+    // add LABEL "casualties by bombs"
     position.y += labelSize.y + 1;
     pLabel = new ClSimpleLabel(position, labelSize, sf::String("People killed by bombs:"), *pFont, ClStatistic::getNumberKillsBomb());
     LabelVector.push_back(pLabel);
 
+    // add LABEL "evacuation time"
     position.y += labelSize.y + 1;
     pLabel = new ClSimpleLabel(position, labelSize, sf::String("Evacuation-Time in sec:"), *pFont, ClStatistic::getTime());
     LabelVector.push_back(pLabel);
@@ -68,29 +86,39 @@ void ClSimpleStatisticsMenu::draw(sf::RenderWindow &window) const
     {
         LabelVector[n]->draw(window);
     }
-    pButton->draw(window);
+    for(unsigned int m=0; m<ButtonVector.size(); m++)
+    {
+        ButtonVector[m]->draw(window);
+    }
 }
 
 enum GameStates ClSimpleStatisticsMenu::execute(enum Buttons btn) const
 {
     switch(btn)
     {
-    case(MENU):
+    case(EXITMENU):
         {
-            return MENU;
-        }
+            ClStatistic::rememberContinue();
+            return SIMULATION;
+        }break;
+    case(DIAGRAMM):
+        {
+            ClStatistic::toggleDiagrammDraw();
+        }break;
     }
     return STATISTICS;
 }
 
-
 enum GameStates ClSimpleStatisticsMenu::update(sf::RenderWindow &window, bool mouseReleased) const
 {
-    if (pButton->isPressed(window))
+    for (unsigned int n = 0; n<ButtonVector.size(); n++)
     {
-        if(mouseReleased)
+        if (ButtonVector[n]->isPressed(window))
         {
-            return MENU;
+            if(mouseReleased == true)
+            {
+                return execute(ButtonVector[n]->getButtonType());
+            }
         }
     }
     return STATISTICS;

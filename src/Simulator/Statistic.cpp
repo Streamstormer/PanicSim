@@ -8,7 +8,7 @@ usecase:    handling all statistic calculations (in HeatMap, by creation of thre
 
 #include "../../include/Simulator/Statistic.hpp"
 
-bool ClStatistic::doDrawAverage = false;
+bool ClStatistic::doDrawStatistic = false;
 bool ClStatistic::doDrawDiagramm = false;
 bool ClStatistic::setStop = false;
 bool ClStatistic::setStart = false;
@@ -32,6 +32,7 @@ ClStatistic::ClStatistic(ClDiagramm *pDiagramm)
     checkFast = false;
     checkFaster = false;
     checkPause = false;
+    waitTimeOver = false;
 }
 
 ClStatistic::~ClStatistic()
@@ -82,10 +83,12 @@ void ClStatistic::rememberCells(int cellX, int cellY, const int numberOfPeople)
 {
     //remember Cells only after the first 3 seconds after start of simulation
     float hMtime = startClock.getElapsedTime().asSeconds();
-    if(hMtime>3)
+    if(hMtime>3) waitTimeOver=true;
+
+    if(waitTimeOver)
     {
         //if the averageHeatMap is not drawn
-        if(doDrawAverage==false)
+        if(doDrawStatistic==false)
         {
             //count number of people in this cell
             pAllCells[cellY][cellX] += numberOfPeople;
@@ -100,31 +103,36 @@ void ClStatistic::rememberCells(int cellX, int cellY, const int numberOfPeople)
 
 void ClStatistic::rememberRedCell(int x, int y)
 {
-    pRedCells[y][x] += 1;
+    //remember loops only after the first 3 seconds after start of simulation
+    if(doDrawStatistic==false)
+    {
+        if(waitTimeOver) pRedCells[y][x] += 1;
+    }
 }
 
 //incrememts number of loops in which cells are updated (if the average HeatMap is not drawn)
 void ClStatistic::rememberLoop()
 {
-    if(doDrawAverage==false)
+    if(doDrawStatistic==false)
     {
-        loopNumber++;
+        if(waitTimeOver) loopNumber++;
     }
 }
 
 //if a threat is acivated
 void ClStatistic::rememberThreats(bool type_bomb, bool type_fire)
 {
-    if(doDrawAverage==false)
+    if(doDrawStatistic==false)
     {
         if(type_fire)
         {
             numberFire++;
+            pDiagramm->registerFire();
         }
-
         if(type_bomb)
         {
             numberBomb++;
+            pDiagramm->registerBomb();
         }
     }
 }
@@ -138,7 +146,7 @@ void ClStatistic::draw(sf::RenderWindow &window)
     //4. if sw_green is reached -> draw cell
 
     //1.
-    if(doDrawAverage)
+    if(doDrawStatistic)
     {
         //2.
         for(int m = 0; m<cellNumber.y; m++)
@@ -152,20 +160,21 @@ void ClStatistic::draw(sf::RenderWindow &window)
                 {
                     sf::RectangleShape colorCell(cellSize);
                     colorCell.setPosition(n*cellSize.x, m*cellSize.y);
-                    if(pRedCells[m][n]>100)
+                 /*   if(pRedCells[m][n]>100)
                     {
                         colorCell.setFillColor(getColor(sw_red));
-                    } else colorCell.setFillColor(getColor(people));
+                    } else */colorCell.setFillColor(getColor(people));
                     window.draw(colorCell);
                 }
             }
         }
+
     }
 
     if(doDrawDiagramm)
     {
         sf::Vector2f position(0,0);
-        sf::Vector2f di_size(500, 500);
+        sf::Vector2f di_size(1200, 500);
         pDiagramm->draw(position, di_size.x, di_size.y, window);
     }
 }
@@ -176,7 +185,7 @@ sf::Color ClStatistic::getColor(int people)
     sf::Color background;
     background.b = 0;
 
-    if (people == sw_green)   // green 0,255,0
+    if (people <= sw_green)   // green 0,255,0
     {
         background.r = 0;
         background.g = 255;
@@ -197,28 +206,19 @@ sf::Color ClStatistic::getColor(int people)
     return background;
 }
 
-//setter for doDrawAverage
-void ClStatistic::setAverageDraw(bool newBool)
+//setter for doDrawStatistic
+void ClStatistic::setDoDrawStatistic(bool newBool)
 {
-    doDrawAverage=newBool;
-}
-
-//getter for doDrawAverage
-bool ClStatistic::getAverageDraw()
-{
-    return doDrawAverage;
+    doDrawStatistic=newBool;
 }
 
 //setter for doDrawDiagramm
-void ClStatistic::setDiagrammDraw(bool newBool)
+void ClStatistic::toggleDiagrammDraw()
 {
-    doDrawDiagramm = newBool;
-}
-
-//getter for doDrawDiagramm
-bool ClStatistic::getDiagrammDraw()
-{
-    return doDrawDiagramm;
+    if(doDrawDiagramm)
+    {
+        doDrawDiagramm = false;
+    }else doDrawDiagramm = true;
 }
 
 void ClStatistic::update()
@@ -226,15 +226,15 @@ void ClStatistic::update()
     //1. if staistic is to be shown calculate average of allCells in drawCells
 
     // always check every possible time
-    //2. if start of simulation (start clock)
-    //3. if pause of simulation (pause clock)
-    //4. if faster simulation (fast clock)
-    //5. if (more) faster simulation (faster clock)
-    //6. if continue simulation
-    //7. if stop simulation (calculate real time)
+    //2. if stop simulation (calculate real time)
+    //3. if start of simulation (start clock)
+    //4. if pause of simulation (pause clock)
+    //5. if faster simulation (fast clock)
+    //6. if (more) faster simulation (faster clock)
+    //7. if continue simulation
 
     //1.
-    if(doDrawAverage==true)
+    if(doDrawStatistic)
     {
         for(int m = 0; m<cellNumber.y; m++)
         {
@@ -246,91 +246,6 @@ void ClStatistic::update()
     }
 
     //2.
-    if(setStart)
-    {
-        setStart = false;
-        startClock.restart();
-    }
-
-    //3.
-    if(setPause)
-    {
-        if(checkPause==false)
-        {
-            setPause = false;
-            checkPause = true;
-            pauseClock.restart();
-            if(checkFast)
-            {
-                fastTime += fastClock.getElapsedTime().asSeconds();
-                checkFast = false;
-            }
-            if(checkFaster)
-            {
-                fasterTime += fasterClock.getElapsedTime().asSeconds();
-                checkFaster = false;
-            }
-        }
-    }
-
-    //4.
-    if(setFast)
-    {
-        setFast = false;
-        checkFast = true;
-        fastClock.restart();
-        if(checkPause)
-        {
-            pauseTime += pauseClock.getElapsedTime().asSeconds();
-            checkPause = false;
-        }
-        if(checkFaster)
-        {
-            fasterTime += fasterClock.getElapsedTime().asSeconds();
-            checkFaster = false;
-        }
-    }
-
-    //5.
-    if(setFaster)
-    {
-        setFaster = false;
-        checkFaster = true;
-        fasterClock.restart();
-        if(checkFast)
-        {
-            fastTime += fastClock.getElapsedTime().asSeconds();
-            checkFast = false;
-        }
-        if(checkPause)
-        {
-            pauseTime += pauseClock.getElapsedTime().asSeconds();
-            checkPause = false;
-        }
-    }
-
-    //6.
-    if(setContinue)
-    {
-        setContinue = false;
-        if(checkPause)
-        {
-            pauseTime += pauseClock.getElapsedTime().asSeconds();
-            checkPause = false;
-        }
-        if(checkFast)
-        {
-            fastTime += fastClock.getElapsedTime().asSeconds();
-            checkFast = false;
-        }
-        if(checkFaster)
-        {
-            fasterTime += fasterClock.getElapsedTime().asSeconds();
-            checkFaster = false;
-        }
-    }
-
-    //7.
     if(setStop)
     {
         setStop = false;
@@ -368,12 +283,97 @@ void ClStatistic::update()
         }
         time = (int) startTime;
     }
+
+    //3.
+    if(setStart)
+    {
+        setStart = false;
+        startClock.restart();
+    }
+
+    //4.
+    if(setPause)
+    {
+        if(checkPause==false)
+        {
+            setPause = false;
+            checkPause = true;
+            pauseClock.restart();
+            if(checkFast)
+            {
+                fastTime += fastClock.getElapsedTime().asSeconds();
+                checkFast = false;
+            }
+            if(checkFaster)
+            {
+                fasterTime += fasterClock.getElapsedTime().asSeconds();
+                checkFaster = false;
+            }
+        }
+    }
+
+    //5.
+    if(setFast)
+    {
+        setFast = false;
+        checkFast = true;
+        fastClock.restart();
+        if(checkPause)
+        {
+            pauseTime += pauseClock.getElapsedTime().asSeconds();
+            checkPause = false;
+        }
+        if(checkFaster)
+        {
+            fasterTime += fasterClock.getElapsedTime().asSeconds();
+            checkFaster = false;
+        }
+    }
+
+    //6.
+    if(setFaster)
+    {
+        setFaster = false;
+        checkFaster = true;
+        fasterClock.restart();
+        if(checkFast)
+        {
+            fastTime += fastClock.getElapsedTime().asSeconds();
+            checkFast = false;
+        }
+        if(checkPause)
+        {
+            pauseTime += pauseClock.getElapsedTime().asSeconds();
+            checkPause = false;
+        }
+    }
+
+    //7.
+    if(setContinue)
+    {
+        setContinue = false;
+        if(checkPause)
+        {
+            pauseTime += pauseClock.getElapsedTime().asSeconds();
+            checkPause = false;
+        }
+        if(checkFast)
+        {
+            fastTime += fastClock.getElapsedTime().asSeconds();
+            checkFast = false;
+        }
+        if(checkFaster)
+        {
+            fasterTime += fasterClock.getElapsedTime().asSeconds();
+            checkFaster = false;
+        }
+    }
 }
 
 //recognize all casualties if average draw is not shown (differentiation between bombs and fire)
 void ClStatistic::rememberKills(int number, bool bomb)
 {
-    if(doDrawAverage==false)
+    if(doDrawStatistic==false)
     {
         if(bomb)
         {
@@ -390,9 +390,10 @@ void ClStatistic::startTimer()
 }
 
 //setter for setStop
-void ClStatistic::rememberTime()
+void ClStatistic::rememberStatisticTime()
 {
     setStop = true;
+    setPause = true;
 }
 
 //setter for setPause

@@ -237,7 +237,7 @@ sf::Color ClHeatMap::getColor(int People)
     sf::Color background;
     background.b = 0;
 
-    if (People == sw_green)   // green 0,255,0
+    if (People <= sw_green)   // green 0,255,0
     {
         background.r = 0;
         background.g = 255;

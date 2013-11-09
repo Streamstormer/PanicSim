@@ -106,7 +106,6 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
     /// explosion handling :
     //2.1. check for explosion
     //2.2. activate all inactive threats
-    //2.3. tell the statistics about activated threats
 
     /// look for dead threats
     // 3.1 look for dead threats
@@ -140,7 +139,7 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
             threatVector[n]->recognizeMouse(window);
         }
         //7.
-        if(threatVector[n]->getIsMoved() == true)
+        if(threatVector[n]->getIsMoved()==true)
         {
             //8.
             threatVector[n]->setPosition(mouseFloat.x, mouseFloat.y);
@@ -157,25 +156,6 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
             if(threatVector[n]->getIsActive()==false)
             {
                 threatVector[n]->activate();
-                // 2.3
-                bool type_bomb;
-                bool type_fire;
-                switch(threatVector[n]->getType())
-                {
-                case(THBOMB):
-                    {
-                        type_bomb = true;
-                        type_fire = false;
-                        break;
-                    }
-                case(THFIRE):
-                    {
-                        type_bomb = false;
-                        type_fire = true;
-                        break;
-                    }
-                }
-                pStatistic->rememberThreats(type_bomb, type_fire);
             }
         }
         explosion_static = false;
