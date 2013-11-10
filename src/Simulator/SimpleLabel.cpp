@@ -21,7 +21,6 @@ ClSimpleLabel::ClSimpleLabel(const sf::Vector2f &position, const sf::Vector2f &l
     text.setFont(font);
     text.setCharacterSize(30);
     text.setStyle(sf::Text::Regular);
-
 }
 
 void ClSimpleLabel::draw(sf::RenderWindow& window)
