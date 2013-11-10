@@ -68,6 +68,7 @@ ClSimulation::ClSimulation(const sf::VideoMode &Mode, std::string filePath)
 }
 ClSimulation::~ClSimulation()
 {
+    speed = 1;
     delete pArea;
     delete pCrowdManager;
     delete pThreatManager;

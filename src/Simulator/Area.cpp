@@ -1,10 +1,10 @@
 #include "../../include/Simulator/Area.hpp"
 
-
     ClArea::ClArea()
-    {id = 0;
-    time =0;
-    fire_texture.loadFromFile("pictures/fire.png");
+    {
+        id = 0;
+        time =0;
+        fire_texture.loadFromFile("pictures/fire.png");
     }
 
     ClArea::~ClArea()
@@ -32,8 +32,6 @@
                     }
 
                 sobjects[n]->setIsChecked(true);
-
-
             }
         }
          for (int n=0; n<sobjects.size();n++)
@@ -78,9 +76,7 @@
     {
         for(unsigned int n=0; n < sobjects.size(); n++)
         {
-            if(sobjects[n] != 0)
-                sobjects[n]->draw(window);
-
+            if(sobjects[n] != 0) sobjects[n]->draw(window);
         }
 /*
         sf::CircleShape exitPoint;

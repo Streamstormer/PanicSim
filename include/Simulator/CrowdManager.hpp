@@ -40,6 +40,7 @@ class ClCrowdManager
         std::vector<ClCrowd *> Crowds;
 
         static int peopleCount;
+        static const int CELLNUMBER = 40;
 };
 
 #endif // CROWDMANGER_HPP

@@ -2,3 +2,7 @@
 
 bool ClAbstractState::panicState = false;
 
+void ClAbstractState::clearPanicState()
+{
+    panicState = false;
+}

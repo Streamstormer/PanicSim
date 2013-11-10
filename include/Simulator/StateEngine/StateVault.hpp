@@ -2,7 +2,7 @@
 #define STATEVAULT_HPP
 
 #include <vector>
-
+#include <iostream>
 
 // include all the different states here
 #include "NormalState.hpp"
