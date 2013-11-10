@@ -124,7 +124,7 @@
 
 const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
 {
-    std::cerr << "Call of closestExit \n";
+    std::cerr << "Call of closestExit Y: " << myPosition.x << ", Y: " << myPosition.y << " \n";
     float distance = INFINITY;
     sf::Vector2f closestExitPosition;
     ClStaticObject *closestExit;
