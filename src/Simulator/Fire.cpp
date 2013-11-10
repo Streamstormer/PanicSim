@@ -87,7 +87,7 @@ void ClFire::activate()
     //2. set fire as "not alive"
     //3. fire up static object around
     //4. tell the statistics about activated fire
-    /// will come: remember casualties by fire
+    // remember casualties by fire in HeatMap
 
     //1.
     if(isActive == false)
@@ -98,6 +98,7 @@ void ClFire::activate()
         //3.
         pArea->setOnFire(pArea->getIdByVector(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2))));
         //4.
+        //prototype: rememberThreats(bool type_bomb, bool type_fire)
         pStatistic->rememberThreats(false, true);
     }
 }

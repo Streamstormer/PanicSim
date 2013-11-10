@@ -117,6 +117,7 @@ void ClBomb::activate()
         //4.
         animationTime.restart();
         //5.
+        //prototype: rememberThreats(bool type_bomb, bool type_fire)
         pStatistic->rememberThreats(true, false);
     }
 }

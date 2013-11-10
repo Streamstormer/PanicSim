@@ -16,6 +16,7 @@ int ClStatistic::numberFire = 0;
 int ClStatistic::numberKillsFire = 0;
 int ClStatistic::numberKillsBomb = 0;
 int ClStatistic::timeInSeconds = 0;
+//start speed is normal (1)
 int ClStatistic::speed = 1;
 
 ClStatistic::ClStatistic(ClDiagramm *pDiagramm)
@@ -90,18 +91,15 @@ void ClStatistic::rememberLoop()
 //if a threat is acivated
 void ClStatistic::rememberThreats(bool type_bomb, bool type_fire)
 {
-    if(doDrawStatistic==false)
+    if(type_fire)
     {
-        if(type_fire)
-        {
-            numberFire++;
-            pDiagramm->registerFire();
-        }
-        if(type_bomb)
-        {
-            numberBomb++;
-            pDiagramm->registerBomb();
-        }
+        numberFire++;
+        pDiagramm->registerFire();
+    }
+    if(type_bomb)
+    {
+        numberBomb++;
+        pDiagramm->registerBomb();
     }
 }
 
@@ -231,14 +229,11 @@ void ClStatistic::setInStatistic(bool active)
 //recognize all casualties if average draw is not shown (differentiation between bombs and fire)
 void ClStatistic::rememberKills(int number, bool bomb)
 {
-    if(doDrawStatistic==false)
+    if(bomb)
     {
-        if(bomb)
-        {
-            numberKillsBomb += number;
-        }
-        else numberKillsFire += number;
+        numberKillsBomb += number;
     }
+    else numberKillsFire += number;
 }
 
 void ClStatistic::rememberSpeed(int newSpeed)
