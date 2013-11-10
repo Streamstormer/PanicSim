@@ -7,6 +7,7 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, enum stati
     this->Type = Type;
 
     this->id = id;
+    firstTime = false;
 
     Rect->setOrigin(Rect->getSize().x/2,Rect->getSize().y/2);
     text.setPosition(Rect->getPosition().x,Rect->getPosition().y);
@@ -69,11 +70,17 @@ void ClStaticObject::subrecttoNumber(int number)
  void ClStaticObject::startToBurn()
  {
       isOnFire=true;
+      firstTime=true;
       fire_clock.restart();
  }
 bool ClStaticObject::getIsOnFire()
 {
+    if (firstTime== true)
+    {
+        return false;
+    }
     return isOnFire;
+
 }
 
 bool ClStaticObject::getIsChecked()
@@ -211,6 +218,17 @@ void ClStaticObject::draw(sf::RenderWindow& window)
     }
     }
 }
+
+
+bool ClStaticObject::getfirstTime()
+{
+    return firstTime;
+}
+void ClStaticObject::setfirstTime(bool check)
+{
+    firstTime= check;
+}
+
 bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
     {
         return Rect->getGlobalBounds().contains(Position);
@@ -325,6 +343,7 @@ bool ClStaticObject::Intersects( const sf::Vector2f  &Position)
 bool ClStaticObject::isValidPath(sf::Vector2f startPoint, sf::Vector2f endPoint)
 {
     if(Type==GATE) return false; // no collision with EXITS / GATES
+    if(Type==FENCE) return false; //isValidPath is only called in State Panik --> there FENCE is no collision
     sf::Rect<float> testRect;
     //checks if start node and end node are horizontal or vertical
     if(startPoint.y == endPoint.y)

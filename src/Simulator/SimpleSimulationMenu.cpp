@@ -171,16 +171,19 @@ void ClSimpleSimulationMenu::createMenu()
     ClSimpleLabel*pLabel;
     Position.x=Position.y=0;
     sf::Vector2f labelSize(200,100);
-    pLabel= new ClSimpleLabel(Position, labelSize, sf::String("visitors"),*pFont,ClCrowdManager::getPeopleCount());
+    pLabel= new ClSimpleLabel(Position, labelSize, sf::String("Besucher"),*pFont,ClCrowdManager::getPeopleCount());
+    LabelVector.push_back(pLabel);
+
+    Position.x += labelSize.x;
+    pLabel = new ClSimpleLabel(Position, labelSize, sf::String("Tote"), *pFont, ClStatistic::getNumberCasualties());
     LabelVector.push_back(pLabel);
 
     Position.x = ButtonSize.x / 2;
     Position.y = this->screenSize.y - ButtonSize.y;
-    Position.x +=2*ButtonSize.x*1.5*scale;
-
+    Position.x += 2*ButtonSize.x*1.5*scale;
     labelSize.x = 130;
-    labelSize.y = 100;
+    labelSize.y = 80;
 
-    pLabel = new ClSimpleLabel(Position, labelSize, sf::String("speed"), *pFont, ClStatistic::getSpeed());
+    pLabel = new ClSimpleLabel(Position, labelSize, sf::String("Speed"), *pFont, ClStatistic::getSpeed());
     LabelVector.push_back(pLabel);
 }

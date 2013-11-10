@@ -181,7 +181,7 @@ void ClHeatMap::additionalCellChecks()
                     id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)]
                                                + SortedPeoples[x+y*cellNumber.x][n]->force );
 
-                    if( id == -1)
+                    if( id == -1 || (pArea->getType(id)== FENCE&&SortedPeoples[x+y*cellNumber.x][n]->panic == true) )
                     {
                         SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)].x +=  SortedPeoples[x+y*cellNumber.x][n]->force.x ;
                         SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)].y +=  SortedPeoples[x+y*cellNumber.x][n]->force.y ;

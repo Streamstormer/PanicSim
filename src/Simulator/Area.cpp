@@ -21,6 +21,7 @@
         {
             if(sobjects[n]->getIsOnFire()== true && sobjects[n]->getIsChecked() == false) // looks for obejcts wich are on fire an not yet checked
             {
+
                     for (int m=0; m< sobjects.size(); m++)
                     {
                         if (sobjects[m]->IntersectsRectangle(sobjects[n]->biggerRect())== true&& sobjects[m]->getType() != GATE && sobjects[m]->getType() != FENCE)
@@ -29,11 +30,16 @@
                         }
 
                     }
-                    //break;
+
                 sobjects[n]->setIsChecked(true);
+
 
             }
         }
+         for (int n=0; n<sobjects.size();n++)
+         {
+             sobjects[n]->setfirstTime(false);
+         }
     }
 
     float ClArea::addFrameTime(float frameTime)
@@ -115,6 +121,29 @@
         }
          return true;
     }
+
+    bool ClArea::isInvalidNode(sf::Vector2f node, int nodeDistance) // ensure that there are no nodes close to staticObjects
+    {
+        for(unsigned int n = 0; n < sobjects.size(); n++)
+        {
+            sf::Rect<float> testRect;
+
+            testRect.top = node.y - nodeDistance/2;
+            testRect.height = nodeDistance;
+            testRect.left = node.x - nodeDistance/2;
+            testRect.width = nodeDistance;
+
+            if(sobjects[n]->IntersectsRectangle(testRect) && sobjects[n]->getType() != FENCE)
+                return true;
+        }
+        return false;
+    }
+
+    bool ClArea::isValidId(int id)
+    {
+        if(this->getObject(id) == NULL) return false; return true;
+    }
+
 
 /// Get Methods for static Object attributes via the id
 /// for the editor
