@@ -197,10 +197,8 @@ void ClSimulation::partitionCrowds(int totalVisitors)
             }
 
             /*****Calculation candidate for Crowd positioning*****/
-
-            personsPerCrowd = persons / numOfCrowds;
-            vCrowdCandidate.x = sPosition.x + sVector.x + (fSR.getSqrt(persons) * 2 * sUnitVector.x + 10);
-            vCrowdCandidate.y = sPosition.y + sVector.y + (fSR.getSqrt(persons) * 2 * sUnitVector.y + 10);
+            vCrowdCandidate.x = sPosition.x + sVector.x + (POS_TRY_GRAN * sUnitVector.x);
+            vCrowdCandidate.y = sPosition.y + sVector.y + (POS_TRY_GRAN * sUnitVector.y);
             if(abs(sUnitVector.x) < abs(sUnitVector.y))
             {
                 if(numOfCrowds > 1)
@@ -245,9 +243,10 @@ void ClSimulation::partitionCrowds(int totalVisitors)
                         std::cout << "Not able to place crowd with id" << (i + 1);
                     }
                 }
+                personsPerCrowd = persons / numOfCrowds;
                 if(j == numOfCrowds - 1)
                     personsPerCrowd += (persons - personsPerCrowd * numOfCrowds);
-                pCrowdManager->CreateCrowd(vCandidateWa,(int)(fSR.getSqrt(personsPerCrowd) * 5 + 20), personsPerCrowd);
+                pCrowdManager->CreateCrowd(vCandidateWa,(int)(persons / 50) + 10, personsPerCrowd);
                 if(abs(sUnitVector.x) < abs(sUnitVector.y))
                 {
                     vCrowdCandidate.x += DIST_CROWDS_PER_ATTR;
