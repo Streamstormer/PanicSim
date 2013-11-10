@@ -46,7 +46,7 @@ void ClFire::draw(sf::RenderWindow &window)
 }
 
 
-void ClFire::recognizeMouse(sf::RenderWindow &window)
+void ClFire::recognizeMouse(sf::RenderWindow &window , const sf::Vector2i & mouseOffset)
 {
     //1. take position of mouse
     //2. if mouse is contained in IntRect "threat"
@@ -58,6 +58,8 @@ void ClFire::recognizeMouse(sf::RenderWindow &window)
 
     //1.
     sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+    mousePosition.x += mouseOffset.x;
+    mousePosition.y += mouseOffset.y;
     //2.
     if(threat.contains(mousePosition))
     {

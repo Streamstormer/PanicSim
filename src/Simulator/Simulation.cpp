@@ -45,6 +45,8 @@ ClSimulation::ClSimulation(const sf::VideoMode &Mode, std::string filePath)
     this->currentOffset.x = this->currentOffset.y = 0;
     this->Mode = Mode;
 
+    mouseOffset.x = mouseOffset.y = 0;
+
     ClFileHandler fH;
     if(filePath == "")
         fH.openFile("test.csv");
@@ -98,7 +100,7 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
         // Update Crowds Pathfinding Statemachine and Heatmap
         pCrowdManager->Update(frameTime, window);
         // Update Threats
-        pThreatManager->update(window, mouseReleased);
+        pThreatManager->update(window, mouseReleased , mouseOffset);
     }
     if(curGameState==STATISTICS)
     {
@@ -357,6 +359,7 @@ void ClSimulation::calculateOffset(float frameTime)
     if (center.x-(this->Mode.width / 2) + currentOffset.x > 0 && center.x + (this->Mode.width / 2) + currentOffset.x <= levelSize.x  )
     {
         gameView.move(currentOffset.x, 0);
+        mouseOffset.x += currentOffset.x;
 
     }
     else
@@ -364,10 +367,12 @@ void ClSimulation::calculateOffset(float frameTime)
         if(center.x-(this->Mode.width / 2) + currentOffset.x < 0)
         {
             gameView.move((this->Mode.width / 2)-center.x, 0);
+            mouseOffset.x += ( (this->Mode.width / 2)-center.x );
         }
         if(center.x + (this->Mode.width / 2) + currentOffset.x >= levelSize.x )
         {
             gameView.move( (levelSize.x - (center.x+this->Mode.width / 2) ) , 0);
+            mouseOffset.x += (levelSize.x - (center.x+this->Mode.width / 2) );
         }
     }
     // check whether view goes out of bounds in the y direction
@@ -375,16 +380,19 @@ void ClSimulation::calculateOffset(float frameTime)
     if (center.y-(this->Mode.height / 2) + currentOffset.y > 0 && center.y + (this->Mode.height / 2) + currentOffset.y <= levelSize.y )
     {
         gameView.move(0 ,currentOffset.y);
+        mouseOffset.y += currentOffset.y;
     }
     else
     {
         if(center.y-(this->Mode.height / 2) + currentOffset.y < 0 )
         {
             gameView.move(0, (this->Mode.height/2)-center.y );
+            mouseOffset.y += ( (this->Mode.height/2)-center.y );
         }
         if(center.y + (this->Mode.height / 2) + currentOffset.y >= levelSize.y)
         {
             gameView.move(0, (levelSize.y - (center.y+this->Mode.height/2) ) );
+            mouseOffset.y += (levelSize.y - (center.y+this->Mode.height/2) );
         }
 
     }

@@ -193,6 +193,7 @@ void ClHeatMap::additionalCellChecks()
                         if (pArea->getType(id)==GATE) // collision with exit
                         {
                             SortedPeoples[x+y*cellNumber.x][n]->alive = false;
+                            SortedPeoples[x+y*cellNumber.x][n]->panic = false;
                             // erase from Heatmap ( crowd does a cleanup immediatly )
                             SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
                         }
@@ -200,6 +201,8 @@ void ClHeatMap::additionalCellChecks()
                         if ( this->actualTime > 3 && pArea->getOnFire(id) )
                         {
                              SortedPeoples[x+y*cellNumber.x][n]->alive = false;
+                             SortedPeoples[x+y*cellNumber.x][n]->panic = true;
+
                              // erase from Heatmap ( crowd does a cleanup immediatly )
                              SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
                         }
@@ -385,6 +388,8 @@ int ClHeatMap::calculateCasualtiesInCell(const sf::Vector2i &cell, const sf::Vec
         {
             //2.
             SortedPeoples[cell.x+cell.y*cellNumber.x][n]->alive = false;
+            SortedPeoples[cell.x+cell.y*cellNumber.x][n]->panic = true;
+
             SortedPeoples[cell.x+cell.y*cellNumber.x].erase(SortedPeoples[cell.x+cell.y*cellNumber.x].begin()+n);
 
             casualties++;

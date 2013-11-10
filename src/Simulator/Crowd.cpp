@@ -77,6 +77,58 @@ ClCrowd::~ClCrowd()
 
 void  ClCrowd::Update(float frameTime)
 {
+    bool casualtiesOccured = false;
+    int casualtieCounter = 0;
+    bool firstPanic = !panic;
+    // check casualties
+    for(unsigned int n = 0; n<peoples.size();n++)
+    {
+        if (peoples[n]->alive == false )
+        {
+            if(peoples[n]->panic == true)
+            {
+                casualtiesOccured = true;
+                panic = true;
+                if (firstPanic)
+                {
+                    positionMid.x += peoples[n]->position[PEOPLE_POSITION_MEMORY-1].x;
+                    positionMid.y += peoples[n]->position[PEOPLE_POSITION_MEMORY-1].y;
+                    panic = true;
+                    casualtieCounter++;
+                    for(int m = 0; m<peoples.size(); m++)
+                    {
+                        peoples[m]->panic = true;
+                    }
+                }
+            }
+            delete peoples[n]; // free memory
+            peoples.erase(peoples.begin()+n);
+        }
+    }
+
+    if (casualtiesOccured == true && firstPanic == true)
+    {
+        positionMid.x /= casualtieCounter;
+        positionMid.y /= casualtieCounter;
+    }
+
+    if (panic == false)
+    {
+        // check for nearby panic masses
+        for(unsigned int n = 0; n<peoples.size();n++)
+        {
+            if (peoples[n]->panic == true && peoples[n]->alive == true)
+            {
+                this->panic = true;
+                positionMid.x = position.x;
+                positionMid.y = position.y;
+            }
+        }
+    }
+
+
+
+    /*
     // look for casualties
     bool firstPanic = !panic;
     int casualtieCounter = 0;
@@ -115,6 +167,7 @@ void  ClCrowd::Update(float frameTime)
         positionMid.x /= casualtieCounter;
         positionMid.y /= casualtieCounter;
     }
+    */
     sf::Vector2f force;
      for (unsigned int n = 0; n < peoples.size(); n++)
     {
@@ -207,8 +260,8 @@ void  ClCrowd::Update(float frameTime)
             {
                 force =  Seek( peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)], position);
 
-                force.x *= frameTime * -0.1;
-                force.y *= frameTime * -0.1;
+                force.x *= frameTime * -0.005;
+                force.y *= frameTime * -0.005;
                 peoples[n]->force = force;
             }
         }
