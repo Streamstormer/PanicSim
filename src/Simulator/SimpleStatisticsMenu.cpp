@@ -80,7 +80,7 @@ void ClSimpleStatisticsMenu::createMenu()
 
     // add LABEL "evacuation time"
     position.y += labelSize.y+20;
-    pLabel = new ClSimpleLabel(position, labelSize, sf::String("Zeit für Evakuierung in s"), *pFont, ClStatistic::getTime());
+    pLabel = new ClSimpleLabel(position, labelSize, sf::String("Zeit in Sekunden"), *pFont, ClStatistic::getTime());
     LabelVector.push_back(pLabel);
 }
 

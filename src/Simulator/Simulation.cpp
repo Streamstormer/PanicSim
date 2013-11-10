@@ -29,7 +29,6 @@ void ClSimulation::setTotalVisitors(int number)
     totalVisitors = number;
 }
 
-
 // public:
 ClSimulation::ClSimulation(const sf::VideoMode &Mode, std::string filePath)
 {
@@ -90,8 +89,11 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
 
     if(curGameState==SIMULATION)
     {
-        // Update Crowds Pathfinding Statemachine and Heatmap
-        pCrowdManager->Update(frameTime, window);
+        if(speed != 0)
+        {
+            // Update Crowds Pathfinding Statemachine and Heatmap
+            pCrowdManager->Update(frameTime, window);
+        }
         // Update Threats
         pThreatManager->update(window, mouseReleased , mouseOffset);
     }
@@ -299,7 +301,6 @@ void ClSimulation::setCurGameState(enum GameStates newGS)
         {
             partitionCrowds(totalVisitors);
             visitorsSet = true;
-     //       pStatistic->startTimer();
         }
     }
     curGameState = newGS;
