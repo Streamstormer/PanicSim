@@ -49,6 +49,11 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
         {
             newPerson->position[i] = newPerson->position[PEOPLE_POSITION_MEMORY-1];
         }
+        //positionMemory[] is set to the last position
+        for (int j = 0; j < COLLISION_POSITION_MEMORY; j++)
+        {
+            newPerson->positonMemory[j] = newPerson->position[PEOPLE_POSITION_MEMORY-1];
+        }
         peoples.push_back(newPerson);
     }
 

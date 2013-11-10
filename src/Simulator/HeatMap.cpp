@@ -17,7 +17,8 @@ ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &Map
     }
     pStatistic->planHeatMapStatistic(cellNumber, cellSize, sw_green, sw_yellow, sw_red);
     actualTime = 0;
-    panicClock.restart();
+    positonMemoryPosition =0;
+
 }
 
 ClHeatMap::~ClHeatMap() {}
@@ -63,8 +64,7 @@ void ClHeatMap::draw(sf::RenderWindow& window)
 
 void ClHeatMap::update(float frameTime)
 {
-    actualTime = panicClock.getElapsedTime().asSeconds();
-    if(actualTime > 3.0) panicClock.restart();
+    actualTime += frameTime;
     //loop through the SortedPeople vector to update the colored cells
     sf::Rect<float> Cell;
     for(unsigned int m=0; m<SortedPeoples.size(); m++)
@@ -159,6 +159,7 @@ void ClHeatMap::update(float frameTime)
         }
     }
     additionalCellChecks();
+    if(actualTime > MAX_ACTUALTIME) actualTime=0;
 }
 
 void ClHeatMap::additionalCellChecks()
@@ -198,7 +199,7 @@ void ClHeatMap::additionalCellChecks()
                             SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
                         }
                         // 4.2 check for burning building
-                        if ( this->actualTime > 3 && pArea->getOnFire(id) )
+                        if ( this->actualTime > MAX_ACTUALTIME && pArea->getOnFire(id) )
                         {
                              SortedPeoples[x+y*cellNumber.x][n]->alive = false;
                              SortedPeoples[x+y*cellNumber.x][n]->panic = true;
@@ -209,6 +210,43 @@ void ClHeatMap::additionalCellChecks()
                              SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
                         }
                     }
+                    if(actualTime > MAX_ACTUALTIME)
+                    {
+                        SortedPeoples[x+y*cellNumber.x][n]->positonMemory[positonMemoryPosition] = SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)];
+                        positonMemoryPosition++;
+                        if(positonMemoryPosition > 3)
+                        {
+                            positonMemoryPosition=0;
+                        }
+                        //check if positionMenory 0-3 are nearly the same and panik-mode --> kill them
+                        if(SortedPeoples[x+y*cellNumber.x][n]->panic == true)
+                        {
+                            float sumPositionDistance = 0;
+                            for(int k=1; k<COLLISION_POSITION_MEMORY; k++)
+                            {
+                                float xPositionK = SortedPeoples[x+y*cellNumber.x][n]->positonMemory[k].x;
+                                float xPosition = SortedPeoples[x+y*cellNumber.x][n]->positonMemory[0].x;
+                                sumPositionDistance += abs( (xPosition*xPosition)-(xPositionK*xPositionK) );
+
+                                float yPositionK = SortedPeoples[x+y*cellNumber.x][n]->positonMemory[k].y;
+                                float yPosition = SortedPeoples[x+y*cellNumber.x][n]->positonMemory[0].y;
+                                sumPositionDistance += abs( (yPosition*yPosition)-(yPositionK*yPositionK) );
+                            }
+                            //900 change to const
+                            if(sumPositionDistance < 900)
+                            {
+                                SortedPeoples[x+y*cellNumber.x][n]->alive = false;
+                                //prototype: rememberKills(int number, bool bomb)
+                                pStatistic->rememberKills(1, false);
+
+                                // erase from Heatmap ( crowd does a cleanup immediatly )
+                                SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
+                            }
+
+                        }
+                    }
+
+
             }
             }
         }
@@ -240,7 +278,7 @@ sf::Vector2f ClHeatMap::distanceForce(std::vector<StrPeople *> &cell, StrPeople 
                 force.x += delta.x *helpVar;
                 force.y += delta.y *helpVar;
                 NbCount++;
-                if(actualTime > 3.0)
+                if(actualTime > MAX_ACTUALTIME)
                 {
                     if(checkMe->panic==true)
                     {

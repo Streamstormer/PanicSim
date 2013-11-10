@@ -47,7 +47,10 @@ private:
     //color is (stepwise) red until there are sw_red people above it´s red too
     const static int sw_red = 25;
 
-    sf::Clock panicClock;
+    const static int MAX_ACTUALTIME = 4000;
+
+    int positonMemoryPosition;
+
     float actualTime;
     static bool doDraw;
 };
