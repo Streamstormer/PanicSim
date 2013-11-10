@@ -101,6 +101,7 @@
                 return sobjects[n];
             }
         }
+        return NULL;
     }
 
     bool ClArea::attractionWithHigherId(int lId)
