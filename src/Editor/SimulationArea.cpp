@@ -52,15 +52,13 @@ SimulationArea::SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk:
 
 void SimulationArea::animate()
 {
-
     Gtk::Scrollbar* pHScrollBar = pscroll->get_hscrollbar();
     Gtk::Scrollbar* pVScrollBar = pscroll->get_vscrollbar();
-    pHScrollBar->set_range(0.0, pAreaSizeX->get_value());
-    pVScrollBar->set_range(0.0, pAreaSizeY->get_value());
 
     Glib::RefPtr<Gdk::Window> GtkWin = pView->get_view_window();
     unsigned int x,y, h, w;
-
+    pHScrollBar->set_range(0.0, 5000.0);
+    pVScrollBar->set_range(0.0, 5000.0);
     w = GtkWin->get_width();
     h = GtkWin->get_height();
     x = pHScrollBar->get_value();
@@ -191,25 +189,8 @@ void SimulationArea::resize()
     sf::View view(sf::FloatRect(0, 0, renderWindow.getSize().x, renderWindow.getSize().y));
     renderWindow.setView(view);
 #endif
-}
 
-void SimulationArea::by_scrolling()
-{
-    /*
-    Glib::RefPtr<Gdk::Window> GtkWin = pView->get_view_window();
-    Gtk::Scrollbar* pHScrollBar = pscroll->get_hscrollbar();
-    Gtk::Scrollbar* pVScrollBar = pscroll->get_vscrollbar();
-    unsigned int x,y, h, w;
-    w = GtkWin->get_width();
-    h = GtkWin->get_height();
-    x = pHScrollBar->get_value();
-    y = pVScrollBar->get_value();
-    GtkWin->scroll(x,y);
 
-    sf::View defView = renderWindow.getView();
-    defView.move(x,y);
-    renderWindow.setView(defView);
-    */
 }
 
 void SimulationArea::setObject(enum staticObjects object, sf::Vector2f position, sf::Vector2f size, float rotation)
@@ -253,12 +234,6 @@ void SimulationArea::remove_obj()
 {
     box_clicked();
     Area->removeObj(selectedID);
-    for(unsigned int i=0; i< CheckButt.size();i++){
-        if(CheckButt[i]->get_active()){
-            delete CheckButt[i];
-            CheckButt.erase(CheckButt.begin()+i);
-        }
-    }
 }
 
 void SimulationArea::box_clicked()
