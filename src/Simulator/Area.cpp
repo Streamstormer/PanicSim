@@ -14,6 +14,37 @@
         }
     }
 
+    void ClArea::viewOnStaticObject()
+    {
+        for (int n=0; n<sobjects.size();n++)
+        {
+            if(sobjects[n]->getIsOnFire()== true && sobjects[n]->getIsChecked() == false) // looks for obejcts wich are on fire an not yet checked
+            {
+                for (int m=0; m< sobjects.size(); m++)
+                {
+                    if (sobjects[m]->IntersectsRectangle(sobjects[n]->biggerRect())== true)
+                    {
+                        sobjects[m]->startToBurn();
+                    }
+
+                }
+                sobjects[n]->setIsChecked(false);
+            }
+        }
+    }
+
+
+    void ClArea::update()
+    {
+        // alle Static Objects anschaeun   Area.cpp
+        // prüfen ob sie brennen           Area.cpp
+        //sfClock alle 10 Sekunden              area.cpp
+        // jedes Static Obejct eine bool welche sagt ob sie überprüft wurde staticobject.cpp
+        // funktion um auf nachbarn checken static obejct GlobalBounds (Länge und Höhe maximieren) intersects mit rect
+        //
+        //
+    }
+
     int ClArea::insertStObj(enum staticObjects type, const sf::Vector2f & sizeOfRectangle,
                             const sf::Vector2f & positionOfRectangle, float rotAngle)
     {

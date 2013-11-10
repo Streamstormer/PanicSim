@@ -12,7 +12,7 @@ public:
 
     ClArea() ;
     ~ClArea();
-
+    void update();
     int insertStObj(enum staticObjects type, const sf::Vector2f & sizeOfRectangle,
                     const sf::Vector2f & positionOfRectangle, float rotAngle);
     void draw(sf::RenderWindow& window);
@@ -99,7 +99,7 @@ private:
     sf::Vector2i levelSize;
     sf::Color bgColor;
     sf::Texture fire_texture;
-
+    void viewOnStaticObject();
     static const int EXIT_POINT_DISTANCE = 50;
 };
 
