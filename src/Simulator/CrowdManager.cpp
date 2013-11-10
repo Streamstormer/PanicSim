@@ -62,28 +62,11 @@ void ClCrowdManager::draw(sf::RenderWindow& window)
 
 void ClCrowdManager::CreateCrowd(sf::Vector2f position, float radius, int people)
 {
-    static int j =0;
-    // increment people for SimpleGUI
-    ClCrowdManager::addPeople(people);
+        // increment people for SimpleGUI
+        ClCrowdManager::addPeople(people);
 
-    // for debugging puposes: each crowd gets a different color
-    if(j==0)
-    {
-        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Cyan,position, people, pHeatMap, pStateVault,pPathFinder);
-        Crowds.push_back(Crowd);
-    }
-    else if (j==1)
-    {
-
-        ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Red,position, people, pHeatMap, pStateVault,pPathFinder);
-        Crowds.push_back(Crowd);
-    }
-    else
-    {
         ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Blue,position, people, pHeatMap, pStateVault,pPathFinder);
         Crowds.push_back(Crowd);
-    }
-    j++;
 
 }
 // Static Functions for the Simple Labels
