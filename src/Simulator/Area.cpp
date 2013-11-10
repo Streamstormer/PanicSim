@@ -23,13 +23,13 @@
             {
                     for (int m=0; m< sobjects.size(); m++)
                     {
-                        if (sobjects[m]->IntersectsRectangle(sobjects[n]->biggerRect())== true)
+                        if (sobjects[m]->IntersectsRectangle(sobjects[n]->biggerRect())== true&& sobjects[m]->getType() != GATE && sobjects[m]->getType() != FENCE)
                         {
                             sobjects[m]->startToBurn();
                         }
 
                     }
-                    break;
+                    //break;
                 sobjects[n]->setIsChecked(true);
 
             }

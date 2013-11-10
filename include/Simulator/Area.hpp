@@ -56,6 +56,7 @@ public:
 
     void setOnFire(int id)
     {
+        time=0;
         for(unsigned int n = 0; n < sobjects.size(); n++)
         {
             if (sobjects[n]->getID() == id)
