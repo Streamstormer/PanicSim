@@ -21,6 +21,7 @@
         {
             if(sobjects[n]->getIsOnFire()== true && sobjects[n]->getIsChecked() == false) // looks for obejcts wich are on fire an not yet checked
             {
+
                     for (int m=0; m< sobjects.size(); m++)
                     {
                         if (sobjects[m]->IntersectsRectangle(sobjects[n]->biggerRect())== true&& sobjects[m]->getType() != GATE && sobjects[m]->getType() != FENCE)
@@ -29,11 +30,16 @@
                         }
 
                     }
-                    //break;
+
                 sobjects[n]->setIsChecked(true);
+
 
             }
         }
+         for (int n=0; n<sobjects.size();n++)
+         {
+             sobjects[n]->setfirstTime(false);
+         }
     }
 
     float ClArea::addFrameTime(float frameTime)
