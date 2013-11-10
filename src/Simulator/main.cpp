@@ -24,11 +24,12 @@ int main(int argc, char *argv[])
         }
     }
     sf::VideoMode Mode = sf::VideoMode::getDesktopMode();
-    sf::RenderWindow window(Mode, "Panic Sim!", sf::Style::Fullscreen);
+    sf::RenderWindow window(Mode, "Panic Sim!");
     ClSimulation *pSimulation = new ClSimulation(Mode, filePath);
     ClSimpleGUI *pGUI = new ClSimpleGUI(sf::Vector2f(Mode.width,Mode.height));
     bool mouseReleased = false;
     enum GameStates curState = MENU;
+    enum GameStates lastState = curState;
     while (window.isOpen())
     {
         /// Update
@@ -52,12 +53,18 @@ int main(int argc, char *argv[])
         {
             window.close();
         }
+        if (lastState != curState && curState == MENU)
+        {
+            delete pSimulation;
+            pSimulation = new ClSimulation(Mode, filePath);
+        }
+        lastState = curState;
         pSimulation->setCurGameState(curState);
         ///Render
         window.clear();
         pSimulation->draw(window);
         // Draw GUI
-        // reset View so GUI is drawn at the same position everytime
+        // reset View so GUI is drawn at the same position every time
         window.setView(window.getDefaultView());
         pGUI->draw(window);
         window.display();

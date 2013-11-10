@@ -15,6 +15,7 @@ int ClStatistic::numberBomb = 0;
 int ClStatistic::numberFire = 0;
 int ClStatistic::numberKillsFire = 0;
 int ClStatistic::numberKillsBomb = 0;
+int ClStatistic::numberCasualties = 0;
 int ClStatistic::timeInSeconds = 0;
 //start speed is normal (1)
 int ClStatistic::speed = 1;
@@ -23,7 +24,7 @@ ClStatistic::ClStatistic(ClDiagramm *pDiagramm)
 {
     this->pDiagramm = pDiagramm;
     time = 0;
-    waitTimeOver = false;
+    panic = false;
 }
 
 ClStatistic::~ClStatistic()
@@ -44,7 +45,7 @@ void ClStatistic::planHeatMapStatistic(sf::Vector2i cellNumber, sf::Vector2f cel
     this->sw_green = sw_green;
     this->sw_yellow = sw_yellow;
     this->sw_red = sw_red;
-    loopNumber = 1;
+    loopNumber = 0;
 
     //2.
     pAllCells = new int*[cellNumber.y];
@@ -68,23 +69,20 @@ void ClStatistic::planHeatMapStatistic(sf::Vector2i cellNumber, sf::Vector2f cel
 //recognize the cell with more than sw_green people (save in AllCells)
 void ClStatistic::rememberCells(int cellX, int cellY, const int numberOfPeople)
 {
-    if(waitTimeOver)
+    //if the averageHeatMap is not drawn
+    if(doDrawStatistic==false&&panic==true)
     {
-        //if the averageHeatMap is not drawn
-        if(doDrawStatistic==false)
-        {
-            //count number of people in this cell
-            pAllCells[cellY][cellX] += numberOfPeople;
-        }
+        //count number of people in this cell
+        pAllCells[cellY][cellX] += numberOfPeople;
     }
 }
 
 //incrememts number of loops in which cells are updated (if the average HeatMap is not drawn)
 void ClStatistic::rememberLoop()
 {
-    if(doDrawStatistic==false)
+    if(doDrawStatistic==false&&panic==true)
     {
-        if(waitTimeOver) loopNumber++;
+        loopNumber++;
     }
 }
 
@@ -100,6 +98,11 @@ void ClStatistic::rememberThreats(bool type_bomb, bool type_fire)
     {
         numberBomb++;
         pDiagramm->registerBomb();
+    }
+
+    if(panic==false)
+    {
+        panic=true;
     }
 }
 
@@ -131,7 +134,6 @@ void ClStatistic::drawStatistic(sf::RenderWindow &window)
                 }
             }
         }
-
     }
 }
 
@@ -199,9 +201,6 @@ void ClStatistic::toggleDiagrammDraw()
 void ClStatistic::update(float frameTime)
 {
     this->frameTime = frameTime;
-    //remember Cells only after the first 3 seconds after start of simulation
-    float hMtime = startClock.getElapsedTime().asSeconds();
-    if(hMtime>3) waitTimeOver=true;
 
     //if statistic is to be shown calculate average of allCells in drawCells
     if(doDrawStatistic)
@@ -210,11 +209,12 @@ void ClStatistic::update(float frameTime)
         {
             for(int n=0; n<cellNumber.x; n++)
             {
+                if(!loopNumber>0) loopNumber=1;
                 pDrawCells[m][n] = (int)(pAllCells[m][n] / loopNumber);
             }
         }
     }
-    if(!inStatistic)
+    if(inStatistic==false)
     {
         time += frameTime;
     }
@@ -234,6 +234,8 @@ void ClStatistic::rememberKills(int number, bool bomb)
         numberKillsBomb += number;
     }
     else numberKillsFire += number;
+
+    numberCasualties += number;
 }
 
 void ClStatistic::rememberSpeed(int newSpeed)
@@ -271,7 +273,13 @@ int* ClStatistic::getTime()
     return &timeInSeconds;
 }
 
+//getter for speed
 int* ClStatistic::getSpeed()
 {
     return &speed;
+}
+
+int* ClStatistic::getNumberCasualties()
+{
+    return &numberCasualties;
 }
