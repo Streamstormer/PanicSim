@@ -17,7 +17,7 @@ void ClSimpleStatisticsMenu::createMenu()
     // ClSimpleButton(int id, Buttons button, int GameState, const sf::Texture &texture, const sf::Vector2f &newSize, const sf::Vector2f& position, float scale)
     sf::Vector2f labelSize;
     labelSize.x = 400;
-    labelSize.y = 100;
+    labelSize.y = 80;
 
     sf::Vector2f buttonSize;
     buttonSize.x = texture.getSize().x;
@@ -26,7 +26,7 @@ void ClSimpleStatisticsMenu::createMenu()
     buttonSize.y /=4;
 
     sf::Vector2f bg_size;
-    bg_size.x = screenSize.x/2;
+    bg_size.x = 3*screenSize.x/5;
     bg_size.y = screenSize.y;
 
     sf::Color bgColor(0,0,0, 70);
@@ -37,44 +37,49 @@ void ClSimpleStatisticsMenu::createMenu()
     sf::Vector2f position;
     position.x = 0.9*screenSize.x;
     position.x -= buttonSize.x;
-    position.y = 3*screenSize.y/4;
+    position.y = 4*screenSize.y/5-buttonSize.y/3;
 
     float scale = 0.5;
     int id = 0;
 
-    // add EXITMENU Button
-    pButton = new ClSimpleButton(id, EXITMENU, 7, texture, buttonSize, position, scale);
+    // add DIAGRAMM Button
+    pButton = new ClSimpleButton(id, DIAGRAMM, 6, texture, buttonSize, position, scale);
     ButtonVector.push_back(pButton);
 
-    // add DIAGRAMM Button
+    // add EXITMENU Button
     id++;
     position.x += buttonSize.x;
-    pButton = new ClSimpleButton(id, DIAGRAMM, 6, texture, buttonSize, position, scale);
+    pButton = new ClSimpleButton(id, EXITMENU, 7, texture, buttonSize, position, scale);
     ButtonVector.push_back(pButton);
 
     // add LABEL "Number of Bombs"
     position.x = 2*screenSize.x/3;
-    position.y = screenSize.y/20;
+    position.y = screenSize.y/30;
     pLabel = new ClSimpleLabel(position, labelSize,sf::String("Anzahl an Bomben"), *pFont, ClStatistic::getNumberBomb());
     LabelVector.push_back(pLabel);
 
     // add LABEL "casualties by bombs"
-    position.y += labelSize.y + 1;
+    position.y += labelSize.y;
     pLabel = new ClSimpleLabel(position, labelSize, sf::String("Opfer von Bomben"), *pFont, ClStatistic::getNumberKillsBomb());
     LabelVector.push_back(pLabel);
 
     // add LABEL "Number of Fire"
-    position.y += labelSize.y + 1;
+    position.y += labelSize.y+4;
     pLabel = new ClSimpleLabel(position, labelSize, sf::String("Anzahl an Feuer"), *pFont, ClStatistic::getNumberFire());
     LabelVector.push_back(pLabel);
 
     // add LABEL "casualties by fire"
-    position.y += labelSize.y + 1;
+    position.y += labelSize.y;
     pLabel = new ClSimpleLabel(position, labelSize, sf::String("Opfer von Feuern"), *pFont, ClStatistic::getNumberKillsFire());
     LabelVector.push_back(pLabel);
 
+    // add LABEL "casualties by pressure"
+    position.y += labelSize.y+4;
+    pLabel = new ClSimpleLabel(position, labelSize, sf::String("Opfer von Druck"), *pFont, ClStatistic::getNumberKillsPressure());
+    LabelVector.push_back(pLabel);
+
     // add LABEL "evacuation time"
-    position.y += labelSize.y + 1;
+    position.y += labelSize.y+20;
     pLabel = new ClSimpleLabel(position, labelSize, sf::String("Zeit für Evakuierung in s"), *pFont, ClStatistic::getTime());
     LabelVector.push_back(pLabel);
 }

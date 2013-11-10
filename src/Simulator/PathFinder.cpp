@@ -43,7 +43,7 @@ void ClPathFinder::createNodes()
     // 1. create a list of valid nodes based on pArea->isValidPoint
     // 2. add neighbour ids based on this list
     sf::Vector2f testPos;
-    sf::Vector2i nodeNumber((int)(areaSize.x/nodeDistance), (int)(areaSize.y/nodeDistance));
+    sf::Vector2i nodeNumber((int)(areaSize.y/nodeDistance), (int)(areaSize.x/nodeDistance));
     int idCounter=0;
     int x, y;
     bool validID[nodeNumber.x*nodeNumber.y]; // enough memory to store wheather it is a valid id or not
@@ -186,6 +186,11 @@ weights are assigned
 */
 bool ClPathFinder::findPath(int startID, int endID, ClPath *Path)
 {
+    for(int k=0; k<Nodes.size(); k++)
+    {
+        Nodes[k]->set_weight(INFINITY);
+        Nodes[k]->set_visited(false);
+    }
     if(startID == endID)
         return false;
     else

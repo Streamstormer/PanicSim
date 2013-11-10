@@ -153,31 +153,28 @@ void  ClCrowd::Update(float frameTime)
         // change state
         pCurrentState = pStateVault->requestNewState(state,pCurrentState->getID());
         curAction = pCurrentState->getNextAction();
-        switch (curAction)
+        if(curAction == LEAVETOEXIT)
         {
-        case(LEAVETOEXIT):
-            {
                 //sf::Vector2f exitPosition = pArea->getClosestExit(this->position);
-                closestExit = pArea->getClosestExit(this->position);
-                if (pPath != NULL)
-                {
-                        delete pPath;
-                        pPath = NULL;
-                }
-
-                pPath = pPathFinder->findPath(position,closestExit);
-                for (unsigned int n = 0; n < peoples.size(); n++)
-                {
-                   peoples[n]->currentNode = pPath->getFirstNodeId();
-                }
+            closestExit = pArea->getClosestExit(this->position);
+            std::cerr<<"x,y "<<closestExit.x<<" "<<closestExit.y<<std::endl;
+            if (pPath != NULL)
+            {
+                    delete pPath;
+                    pPath = NULL;
             }
-        // To Do add more action init logic
+            pPath = pPathFinder->findPath(this->position,this->closestExit);
+            for (unsigned int n = 0; n < peoples.size(); n++)
+            {
+                peoples[n]->currentNode = pPath->getFirstNodeId();
+            }
         }
     }
 
     //update logic of crowd
     sf::Vector2f delta;
-    switch (curAction)
+
+    switch(curAction)
     {
         case(NOTHING):
         {

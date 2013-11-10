@@ -15,6 +15,7 @@ int ClStatistic::numberBomb = 0;
 int ClStatistic::numberFire = 0;
 int ClStatistic::numberKillsFire = 0;
 int ClStatistic::numberKillsBomb = 0;
+int ClStatistic::numberKillsPressure = 0;
 int ClStatistic::numberCasualties = 0;
 int ClStatistic::timeInSeconds = 0;
 //start speed is normal (1)
@@ -31,6 +32,11 @@ ClStatistic::~ClStatistic()
 {
     delete pAllCells;
     delete pDrawCells;
+
+    for(unsigned int n=0; n<casualtiePosition.size(); n++)
+    {
+        delete casualtiePosition[n];
+    }
 }
 
 //basic ajustment for HeatMap calculations
@@ -134,6 +140,18 @@ void ClStatistic::drawStatistic(sf::RenderWindow &window)
                 }
             }
         }
+
+        // draw all death people
+        sf::CircleShape deathPoint;
+        deathPoint.setFillColor(sf::Color::Black);
+        deathPoint.setRadius(3);
+        deathPoint.setOrigin(1.5, 1.5);
+
+        for(unsigned int n=0; n<casualtiePosition.size(); n++)
+        {
+            deathPoint.setPosition(*casualtiePosition[n]);
+            window.draw(deathPoint);
+        }
     }
 }
 
@@ -227,13 +245,14 @@ void ClStatistic::setInStatistic(bool active)
 }
 
 //recognize all casualties if average draw is not shown (differentiation between bombs and fire)
-void ClStatistic::rememberKills(int number, bool bomb)
+void ClStatistic::rememberKills(int number, bool bomb, bool fire, bool pressure, sf::Vector2f position)
 {
-    if(bomb)
-    {
-        numberKillsBomb += number;
-    }
-    else numberKillsFire += number;
+    if(bomb) numberKillsBomb += number;
+    if(fire) numberKillsFire += number;
+    if(pressure) numberKillsPressure += number;
+
+    sf::Vector2f *newPosition = new sf::Vector2f(position.x, position.y);
+    casualtiePosition.push_back(newPosition);
 
     numberCasualties += number;
 }
@@ -250,6 +269,7 @@ void ClStatistic::reset()
     numberCasualties = 0;
     numberKillsBomb = 0;
     numberKillsFire = 0;
+    numberKillsPressure = 0;
     timeInSeconds = 0;
     speed = 1;
     inStatistic = false;
@@ -279,6 +299,11 @@ int* ClStatistic::getNumberKillsFire()
 int* ClStatistic::getNumberKillsBomb()
 {
     return &numberKillsBomb;
+}
+
+int* ClStatistic::getNumberKillsPressure()
+{
+    return &numberKillsPressure;
 }
 
 //getter for evacuation time
