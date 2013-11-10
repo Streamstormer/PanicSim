@@ -196,24 +196,17 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
     {
         if (sobjects[n]->getType() == GATE)
         {
-            std::cerr<<"Exit "<< n <<std::endl;
             sf::Vector2f position = sobjects[n]->getCenter();
-            std::cerr<<"Position Exit: "<<position.x<<" "<<position.y<<std::endl;
             float testDistance = (myPosition.x - position.x)*(myPosition.x - position.x)+(myPosition.y - position.y)*(myPosition.y - position.y);
-            std::cerr<<"Position Crowd: "<<myPosition.x<<" "<<myPosition.y<<std::endl;
             testDistance = sqrt(testDistance);
-            std::cerr<<"testDistance"<< testDistance<<std::endl;
             if (testDistance<distance)
             {
                 closestExitPosition = position;
                 distance = testDistance;
                 closestExit = sobjects[n];
             }
-            std::cerr<<" " <<std::endl;
         }
     }
-    std::cerr<<"closest: "<<closestExitPosition.x<<" "<<closestExitPosition.y<<std::endl;
-    //return closestExitPosition;
 
    // std::cerr << "Exit middle: " << closestExitPosition.x << ", " << closestExitPosition.y << "\n";
     int numOfExitPoints = closestExit->getSize().x / (EXIT_POINT_DISTANCE + 1);
