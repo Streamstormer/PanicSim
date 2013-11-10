@@ -65,7 +65,7 @@ void ClBomb::draw(sf::RenderWindow &window)
     }
 }
 
-void ClBomb::recognizeMouse(sf::RenderWindow &window)
+void ClBomb::recognizeMouse(sf::RenderWindow &window , const sf::Vector2i & mouseOffset)
 {
     //1. take position of mouse
     //2. if mouse is contained in IntRect "threat"
@@ -76,6 +76,8 @@ void ClBomb::recognizeMouse(sf::RenderWindow &window)
 
     //1.
     sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+    mousePosition.x += mouseOffset.x;
+    mousePosition.y += mouseOffset.y;
     //2.
     if(threat.contains(mousePosition))
     {
@@ -115,6 +117,7 @@ void ClBomb::activate()
         //4.
         animationTime.restart();
         //5.
+        //prototype: rememberThreats(bool type_bomb, bool type_fire)
         pStatistic->rememberThreats(true, false);
     }
 }

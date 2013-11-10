@@ -46,7 +46,7 @@ void ClFire::draw(sf::RenderWindow &window)
 }
 
 
-void ClFire::recognizeMouse(sf::RenderWindow &window)
+void ClFire::recognizeMouse(sf::RenderWindow &window , const sf::Vector2i & mouseOffset)
 {
     //1. take position of mouse
     //2. if mouse is contained in IntRect "threat"
@@ -58,6 +58,8 @@ void ClFire::recognizeMouse(sf::RenderWindow &window)
 
     //1.
     sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+    mousePosition.x += mouseOffset.x;
+    mousePosition.y += mouseOffset.y;
     //2.
     if(threat.contains(mousePosition))
     {
@@ -85,7 +87,7 @@ void ClFire::activate()
     //2. set fire as "not alive"
     //3. fire up static object around
     //4. tell the statistics about activated fire
-    /// will come: remember casualties by fire
+    // remember casualties by fire in HeatMap
 
     //1.
     if(isActive == false)
@@ -96,6 +98,7 @@ void ClFire::activate()
         //3.
         pArea->setOnFire(pArea->getIdByVector(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2))));
         //4.
+        //prototype: rememberThreats(bool type_bomb, bool type_fire)
         pStatistic->rememberThreats(false, true);
     }
 }

@@ -36,7 +36,6 @@ enum GameStates ClSimpleSimulationMenu::execute(enum Buttons btn) const
     case(PLAY):
     {
         ClSimulation::updateSpeed(false, true, false);
-        ClStatistic::rememberContinue();
     }
     break;
     case(FASTFORWARD):
@@ -47,7 +46,6 @@ enum GameStates ClSimpleSimulationMenu::execute(enum Buttons btn) const
     case(PAUSE):
     {
         ClSimulation::updateSpeed(true,false,false);
-        ClStatistic::rememberPause();
     }
     break;
     case(BOMB):
@@ -68,7 +66,7 @@ enum GameStates ClSimpleSimulationMenu::execute(enum Buttons btn) const
     case(STATISTIC):
     {
         ClStatistic::setDoDrawStatistic(true);
-        ClStatistic::rememberStatisticTime();
+        ClStatistic::setInStatistic(true);
         return STATISTICS;
     }
     break;
@@ -172,6 +170,20 @@ void ClSimpleSimulationMenu::createMenu()
     // Labels
     ClSimpleLabel*pLabel;
     Position.x=Position.y=0;
-    pLabel= new ClSimpleLabel(Position, sf::Vector2f(200,100), sf::String("Besucher"),*pFont,ClCrowdManager::getPeopleCount());
+    sf::Vector2f labelSize(200,100);
+    pLabel= new ClSimpleLabel(Position, labelSize, sf::String("Besucher"),*pFont,ClCrowdManager::getPeopleCount());
+    LabelVector.push_back(pLabel);
+
+    Position.x += labelSize.x;
+    pLabel = new ClSimpleLabel(Position, labelSize, sf::String("Tote"), *pFont, ClStatistic::getNumberCasualties());
+    LabelVector.push_back(pLabel);
+
+    Position.x = ButtonSize.x / 2;
+    Position.y = this->screenSize.y - ButtonSize.y;
+    Position.x += 2*ButtonSize.x*1.5*scale;
+    labelSize.x = 130;
+    labelSize.y = 80;
+
+    pLabel = new ClSimpleLabel(Position, labelSize, sf::String("Speed"), *pFont, ClStatistic::getSpeed());
     LabelVector.push_back(pLabel);
 }

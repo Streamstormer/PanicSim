@@ -12,7 +12,7 @@ public:
 
     ClArea() ;
     ~ClArea();
-    void update();
+    void update(float frameTime);
     int insertStObj(enum staticObjects type, const sf::Vector2f & sizeOfRectangle,
                     const sf::Vector2f & positionOfRectangle, float rotAngle);
     void draw(sf::RenderWindow& window);
@@ -31,24 +31,9 @@ public:
 
     /// not for the editor but for the collision detection / for the pathFinder
 
-    bool isInvalidNode(sf::Vector2f node, int nodeDistance) // ensure that there are no nodes close to staticObjects
-    {
-        for(unsigned int n = 0; n < sobjects.size(); n++)
-        {
-            sf::Rect<float> testRect;
+    bool isInvalidNode(sf::Vector2f node, int nodeDistance); // ensure that there are no nodes close to staticObjects
 
-            testRect.top = node.y - nodeDistance/2;
-            testRect.height = nodeDistance;
-            testRect.left = node.x - nodeDistance/2;
-            testRect.width = nodeDistance;
-
-            if(sobjects[n]->IntersectsRectangle(testRect))
-                return true;
-        }
-        return false;
-    }
-
-    bool isValidId(int id){if(this->getObject(id) == NULL) return false; return true;}
+    bool isValidId(int id);
 
     const sf::Vector2f & getSource(int id);
 
@@ -56,6 +41,7 @@ public:
 
     void setOnFire(int id)
     {
+        time=0;
         for(unsigned int n = 0; n < sobjects.size(); n++)
         {
             if (sobjects[n]->getID() == id)
@@ -101,6 +87,9 @@ private:
     sf::Texture fire_texture;
     void viewOnStaticObject();
     static const int EXIT_POINT_DISTANCE = 50;
+    sf::Clock fireTime;
+    float addFrameTime(float frameTime);
+    float time;
 };
 
 #endif // AREA_HPP_INCLUDED

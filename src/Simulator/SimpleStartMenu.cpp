@@ -81,7 +81,7 @@ enum GameStates ClSimpleStartMenu::execute(enum Buttons btn) const
     {
     case(START):
         {
-            ClStatistic::startTimer();
+            ClStatistic::reset();
             return SIMULATION;
         }
         break;

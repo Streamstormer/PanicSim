@@ -20,7 +20,7 @@ class ClThreatManager
 public:
     ClThreatManager(ClArea *pArea, ClStatistic *pStatistic, ClHeatMap *pHeatMap, ClDiagramm *pDiagramm);
     ~ClThreatManager();
-    void update(sf::RenderWindow &window, bool mouseReleased);
+    void update(sf::RenderWindow &window, bool mouseReleased , const sf::Vector2i & mouseOffset);
     void draw(sf::RenderWindow &window);
     void createThreat(bool bomb, bool fire, const sf::Vector2f position);
     static void buttonPressed(bool bomb, bool fire, bool explosion);

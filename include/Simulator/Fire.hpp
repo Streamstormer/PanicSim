@@ -15,7 +15,7 @@ class ClFire : public ClThreat
 {
 public:
     ClFire(const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic, ClDiagramm *pDiagramm);
-    void recognizeMouse(sf::RenderWindow &window);
+    void recognizeMouse(sf::RenderWindow &window , const sf::Vector2i & mouseOffset);
     void activate();
     void draw(sf::RenderWindow &window);
 };

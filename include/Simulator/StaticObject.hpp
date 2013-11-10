@@ -34,6 +34,8 @@ public:
     void setIsChecked(bool check);
     sf::Rect<float> &biggerRect(); // makes the Rect bigger and gives it too Area
     bool getOnFire() {return isOnFire;}
+    bool getfirstTime();
+    void setfirstTime(bool check);
 private:
     void getTextfromType(int type);
     void settext();
@@ -54,6 +56,7 @@ private:
     const static int ANIMATIONSQUARE =8;
     bool isChecked;
     sf::Rect<float> bigRect;
+    bool firstTime;
 
 };
 

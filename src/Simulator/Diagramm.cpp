@@ -168,7 +168,7 @@ void ClDiagramm::draw(const sf::Vector2f & pos, float dSizeX, float dSizeY, sf::
                 bombRect[j].setPosition(tempSize.x, position.y + OFFSET );
                 tempSize.x = 2;//weidth of the bombRect is 2
                 bombRect[j].setSize(tempSize);
-                bombRect[j].setFillColor(sf::Color::Yellow);
+                bombRect[j].setFillColor(sf::Color::Green);
             }
             for(int j=0; j<(int)bomb.size(); j++)
             {
@@ -177,48 +177,12 @@ void ClDiagramm::draw(const sf::Vector2f & pos, float dSizeX, float dSizeY, sf::
         }
     }
 
-
-
-
-    //calculate maxNumberCasualties (number of the most casualties per block)
-    float maxNumberCasualties=0.0;
-    for (int i=0; i<NUMBERBLOCKS; i++)
-    {
-        if(maxNumberCasualties < numberCasualties[i])
-        {
-            maxNumberCasualties = numberCasualties[i];
-        }
-    }
-
-    //draw rectangles for each block
-    sf::RectangleShape block[NUMBERBLOCKS]; //there are 8 blocks
-
-
-    tempSize.x = ((float)diagrammSizeX)/NUMBERBLOCKS;
-    for(int i=0; i<NUMBERBLOCKS; i++)
-    {
-        block[i].setPosition( zeroPosition.x + (tempSize.x*i), zeroPosition.y-diagrammSizeY*(numberCasualties[i]/maxNumberCasualties) );
-        tempSize.y = diagrammSizeY*(numberCasualties[i]/maxNumberCasualties); //height is set eacht time according to the numberCasualties of the block
-        block[i].setSize(tempSize);
-        block[i].setFillColor(sf::Color::Blue);
-    }
-    for(int i=0; i<NUMBERBLOCKS; i++)
-    {
-        window.draw(block[i]);
-    }
-
-
-
-
-
-
-
     //draw axis legned
     sf::Text textAxisX;
     drawText(textAxisX, font, sf::Color::Black, 10, (position.x + diagrammSizeX + 1.5*OFFSET+5), (position.y + diagrammSizeY +OFFSET+1), sf::String("Time"), window);
 
     sf::Text textAxisY;
-    drawText(textAxisY, font, sf::Color::Black, 10, (position.x + 0.5*OFFSET), (position.y + 0.3*OFFSET), sf::String("Casulties"), window);
+    drawText(textAxisY, font, sf::Color::Black, 10, (position.x + 0.5*OFFSET), (position.y + 0.3*OFFSET), sf::String("Casualties"), window);
 
     //draw legend
     sf::Text textLegend;
@@ -228,7 +192,10 @@ void ClDiagramm::draw(const sf::Vector2f & pos, float dSizeX, float dSizeY, sf::
     drawText(textLegend1, font, sf::Color::Red, 30, (position.x + 4*OFFSET), (position.y + diagrammSizeY+OFFSET +5), sf::String("Fire |"), window);
 
     sf::Text textLegend2;
-    drawText(textLegend2, font, sf::Color::Yellow, 30, (position.x + 6*OFFSET), (position.y + diagrammSizeY+OFFSET +5), sf::String("Bomb |"), window);
+    drawText(textLegend2, font, sf::Color::Green, 30, (position.x + 6*OFFSET), (position.y + diagrammSizeY+OFFSET +5), sf::String("Bomb |"), window);
+
+    sf::Text textLegend3;
+    drawText(textLegend3, font, sf::Color::Blue, 30, (position.x + 8*OFFSET), (position.y + diagrammSizeY+OFFSET +5), sf::String("Casualties"), window);
 
     //draw numberC (8)
     sf::Text textCasualties[NUMBERBLOCKS];
@@ -253,7 +220,7 @@ void ClDiagramm::draw(const sf::Vector2f & pos, float dSizeX, float dSizeY, sf::
 
 void ClDiagramm::drawBackground(sf::RenderWindow & window)
 {
-    //draw transparent background
+    //draw background
         sf::RectangleShape background;
         sf::Vector2f backgroundSize (diagrammSizeX+ 2*OFFSET, diagrammSizeY+ 2*OFFSET);
         sf::Color backgroundColor;

@@ -55,27 +55,27 @@ void ClSimpleStatisticsMenu::createMenu()
     // add LABEL "Number of Bombs"
     position.x = 2*screenSize.x/3;
     position.y = screenSize.y/20;
-    pLabel = new ClSimpleLabel(position, labelSize,sf::String("Number of Bombs:"), *pFont, ClStatistic::getNumberBomb());
+    pLabel = new ClSimpleLabel(position, labelSize,sf::String("Anzahl an Bomben"), *pFont, ClStatistic::getNumberBomb());
+    LabelVector.push_back(pLabel);
+
+    // add LABEL "casualties by bombs"
+    position.y += labelSize.y + 1;
+    pLabel = new ClSimpleLabel(position, labelSize, sf::String("Opfer von Bomben"), *pFont, ClStatistic::getNumberKillsBomb());
     LabelVector.push_back(pLabel);
 
     // add LABEL "Number of Fire"
     position.y += labelSize.y + 1;
-    pLabel = new ClSimpleLabel(position, labelSize, sf::String("Number of Fire:"), *pFont, ClStatistic::getNumberFire());
+    pLabel = new ClSimpleLabel(position, labelSize, sf::String("Anzahl an Feuer"), *pFont, ClStatistic::getNumberFire());
     LabelVector.push_back(pLabel);
-/*
+
     // add LABEL "casualties by fire"
     position.y += labelSize.y + 1;
-    pLabel = new ClSimpleLabel(position, labelSize, sf::String("People killed by fire:"), *pFont, ClStatistic::getNumberKillsFire());
-    LabelVector.push_back(pLabel);
-*/
-    // add LABEL "casualties by bombs"
-    position.y += labelSize.y + 1;
-    pLabel = new ClSimpleLabel(position, labelSize, sf::String("People killed by bombs:"), *pFont, ClStatistic::getNumberKillsBomb());
+    pLabel = new ClSimpleLabel(position, labelSize, sf::String("Opfer von Feuern"), *pFont, ClStatistic::getNumberKillsFire());
     LabelVector.push_back(pLabel);
 
     // add LABEL "evacuation time"
     position.y += labelSize.y + 1;
-    pLabel = new ClSimpleLabel(position, labelSize, sf::String("Evacuation-Time in sec:"), *pFont, ClStatistic::getTime());
+    pLabel = new ClSimpleLabel(position, labelSize, sf::String("Zeit für Evakuierung in s"), *pFont, ClStatistic::getTime());
     LabelVector.push_back(pLabel);
 }
 
@@ -98,7 +98,8 @@ enum GameStates ClSimpleStatisticsMenu::execute(enum Buttons btn) const
     {
     case(EXITMENU):
         {
-            ClStatistic::rememberContinue();
+            ClStatistic::setInStatistic(false);
+            ClStatistic::setDoDrawStatistic(false);
             return SIMULATION;
         }break;
     case(DIAGRAMM):

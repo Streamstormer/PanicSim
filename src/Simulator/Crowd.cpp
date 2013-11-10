@@ -77,44 +77,55 @@ ClCrowd::~ClCrowd()
 
 void  ClCrowd::Update(float frameTime)
 {
-    // look for casualties
-    bool firstPanic = !panic;
+    bool casualtiesOccured = false;
     int casualtieCounter = 0;
-
-    for (unsigned int n = 0; n < peoples.size(); n++)
+    bool firstPanic = !panic;
+    // check casualties
+    for(unsigned int n = 0; n<peoples.size();n++)
     {
-        if (peoples[n]->alive == false)
+        if (peoples[n]->alive == false )
         {
-            casualtieCounter++;
-            // casualties set panic level to true
-            if ( panic == false || firstPanic == true )
+            if(peoples[n]->panic == true)
             {
-                sf::Vector2f temp = peoples[n]->position[PEOPLE_POSITION_MEMORY-1];
-                positionMid.x += temp.x;
-                positionMid.y += temp.y;
+                casualtiesOccured = true;
                 panic = true;
-                for(int m = 0; m<peoples.size(); m++)
+                if (firstPanic)
                 {
-                    peoples[m]->panic = true;
+                    positionMid.x += peoples[n]->position[PEOPLE_POSITION_MEMORY-1].x;
+                    positionMid.y += peoples[n]->position[PEOPLE_POSITION_MEMORY-1].y;
+                    panic = true;
+                    casualtieCounter++;
+                    for(int m = 0; m<peoples.size(); m++)
+                    {
+                        peoples[m]->panic = true;
+                    }
                 }
             }
             delete peoples[n]; // free memory
             peoples.erase(peoples.begin()+n);
         }
-
-        if (peoples[n]->panic == true)
-        {
-            panic = true;
-            firstPanic = false;
-            positionMid.x = (int)position.x;
-            positionMid.y = (int)position.y;
-        }
     }
-    if (firstPanic == true && panic == true)
+
+    if (casualtiesOccured == true && firstPanic == true)
     {
         positionMid.x /= casualtieCounter;
         positionMid.y /= casualtieCounter;
     }
+
+    if (panic == false)
+    {
+        // check for nearby panic masses
+        for(unsigned int n = 0; n<peoples.size();n++)
+        {
+            if (peoples[n]->panic == true && peoples[n]->alive == true)
+            {
+                this->panic = true;
+                positionMid.x = -1;
+                positionMid.y = -1;
+            }
+        }
+    }
+
     sf::Vector2f force;
      for (unsigned int n = 0; n < peoples.size(); n++)
     {
@@ -154,7 +165,7 @@ void  ClCrowd::Update(float frameTime)
     }
 
     //update logic of crowd
-
+    sf::Vector2f delta;
     switch (curAction)
     {
         case(NOTHING):
@@ -172,6 +183,7 @@ void  ClCrowd::Update(float frameTime)
         }break;
         case(LEAVETOEXIT):
         {
+            int reach = 90;
             sf::Vector2f currentNode;
             for (unsigned int n = 0; n < peoples.size(); n++)
             {
@@ -180,7 +192,7 @@ void  ClCrowd::Update(float frameTime)
                    ((peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)].x - currentNode.x)*
                    (peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)].x - currentNode.x)
                     +((peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)].y - currentNode.y)*
-                    ((peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)].y - currentNode.y) )))<50)
+                    ((peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)].y - currentNode.y) )))<reach)
                     {
 
                         peoples[n]->currentNode++;
@@ -193,8 +205,13 @@ void  ClCrowd::Update(float frameTime)
         }break;
         case PANICHARD:
         {
-
-            sf::Vector2f delta =  Seek( sf::Vector2f(positionMid.x,positionMid.y), position);
+            if (positionMid.x != -1 &&positionMid.y != -1)
+            delta =  Seek( sf::Vector2f(positionMid.x,positionMid.y), position);
+            else
+            {
+                delta.x = delta.y = 0;
+            }
+            Vec2DNormalize(&delta);
             delta.x*=-0.3;
             delta.y*=-0.3;
             // check new position
@@ -206,10 +223,18 @@ void  ClCrowd::Update(float frameTime)
             for(unsigned int n = 0; n < peoples.size(); n++)
             {
                 force =  Seek( peoples[n]->position[(PEOPLE_POSITION_MEMORY - 1)], position);
-
-                force.x *= frameTime * -0.1;
-                force.y *= frameTime * -0.1;
-                peoples[n]->force = force;
+                if (positionMid.x != positionMid.y != -1)
+                {
+                    force.x *= frameTime * -0.01;
+                    force.y *= frameTime * -0.01;
+                    peoples[n]->force = force;
+                }
+                else
+                {
+                    force.x *= frameTime * -0.005;
+                    force.y *= frameTime * -0.005;
+                    peoples[n]->force = force;
+                }
             }
         }
     }
@@ -257,9 +282,6 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
         pPath->drawPath(window);
     }
 */
-    personShape.setPosition(nextNode);
-    personShape.setFillColor(sf::Color::Black);
-    window.draw(personShape);
 
     if (panic)
     {

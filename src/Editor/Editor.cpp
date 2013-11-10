@@ -12,7 +12,7 @@ Editor::Editor(string UiPath, Glib::RefPtr<Gtk::Application> app) :
     level = new ClFileHandler();
 
     // maximize Window
-    pWindow->maximize();
+    pWindow->set_resizable(false);
 
     // initialize Painting Area
     SFMLArea = new SimulationArea(*pSFMLView, *pBox, pSizeX, pSizeY, pRot, pAreaX, pAreaY, pObjLabel, pSFMLWindow);
