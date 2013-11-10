@@ -143,9 +143,9 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
 
         }
     }
-
+    std::cerr << "Exit middle: " << closestExitPosition.x << ", " << closestExitPosition.y << "\n";
     //Big exit with at minimum two exit points: choose nearest
-    if(false)//closestExit->getSize().x > EXIT_POINT_DISTANCE * 1.5)
+    if(closestExit->getSize().x > EXIT_POINT_DISTANCE * 1.5)
     {
         distance = INFINITY;
         float testDistance = 0;
@@ -166,7 +166,7 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
         {
             std::cout << "Division by zero when calculating the Unit vector.";
         }
-
+        std::cerr << "UnitVect: X: " << unitVect.x << ", Y: " << unitVect.y << "\n";
 
         if(abs(unitVect.x) < abs(unitVect.y))
         {
@@ -176,6 +176,7 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
         {
             mainPoint.y -= numOfExitPoints * EXIT_POINT_DISTANCE / 2 - EXIT_POINT_DISTANCE / 2;
         }
+
         attrPosWa = mainPoint;
         for(int i = 0; i < numOfExitPoints; i++)
         {
@@ -198,10 +199,12 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
             {
                 attrPosWa.y += EXIT_POINT_DISTANCE;
             }
+            std::cerr << "Iteration: " << i << "; X: " << closestExitPosition.x << ", Y:" << closestExitPosition.y << "\n";
         }
 
             closestExitPosition.x -= diffVect.x;
             closestExitPosition.y -= diffVect.y;
+        std::cerr << "Returned value: " << closestExitPosition.x << ", " << closestExitPosition.y << "\n";
         return closestExitPosition;
     }
     else
