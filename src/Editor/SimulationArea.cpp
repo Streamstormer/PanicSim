@@ -115,8 +115,8 @@ void SimulationArea::animate()
         }
         selectedID = rightID;
         boxChecked = false;
-        if(!selectedID)
-            pObjLabel->set_label("");
+       // if(!selectedID)
+           // pObjLabel->set_label("");
     }
     if(selectedID) {
         Area->setSize(selectedID, sf::Vector2f(SizeX->get_value(), SizeY->get_value()));
