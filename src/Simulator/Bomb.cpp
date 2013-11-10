@@ -101,9 +101,9 @@ void ClBomb::activate()
 {
     //1. if it´s not active - activate bomb
     //2. calculate casualties
-    //3. remember casualties in statistic
-    //4. activate animationTime clock
-    //5. tell the statistics about activated bomb
+    //3. activate animationTime clock
+    //4. tell the statistics about activated bomb
+    // remember casualties by bomb in HeatMap
 
     //1.
     if(isActive == false)
@@ -112,11 +112,8 @@ void ClBomb::activate()
         //2.
         int casualties = pHeatMap->explosion(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2)), 100);
         //3.
-        //prototype: rememberKills(int number, bool bomb, bool fire, bool pressure)
-        pStatistic->rememberKills(casualties, true, false, false);
-        //4.
         animationTime.restart();
-        //5.
+        //4.
         //prototype: rememberThreats(bool type_bomb, bool type_fire)
         pStatistic->rememberThreats(true, false);
     }

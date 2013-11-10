@@ -26,7 +26,7 @@ public:
     void update(float frameTime);
     void drawStatistic(sf::RenderWindow &window);
     void drawDiagramm(sf::RenderWindow &window);
-    void rememberKills(int number, bool bomb, bool fire, bool pressure);
+    void rememberKills(int number, bool bomb, bool fire, bool pressure, sf::Vector2f position);
     static void setDoDrawStatistic(bool newBool);
     static void toggleDiagrammDraw();
     static void setInStatistic(bool active);
@@ -68,6 +68,8 @@ private:
     static int numberCasualties;
     static int timeInSeconds;
     static int speed;
+
+    std::vector<sf::Vector2f *> casualtiePosition;
 };
 
 #endif // STATISTIC_HPP_INCLUDED

@@ -150,11 +150,7 @@ void ClHeatMap::update(float frameTime)
                     force.x *= -0.25*frameTime;
                     force.y *= -0.25*frameTime;
                     SortedPeoples[x+y*cellNumber.x][n]->force += force;
-
-
-
                 }
-
             }
         }
     }
@@ -203,8 +199,9 @@ void ClHeatMap::additionalCellChecks()
                         {
                              SortedPeoples[x+y*cellNumber.x][n]->alive = false;
                              SortedPeoples[x+y*cellNumber.x][n]->panic = true;
+                             ///remember casualties by fire
                              //prototype: rememberKills(int number, bool bomb, bool fire, bool pressure)
-                             pStatistic->rememberKills(1, false, true, false);
+                             pStatistic->rememberKills(1, false, true, false, SortedPeoples[x+y*cellNumber.x][n]->position[PEOPLE_POSITION_MEMORY-1]);
                              pDiagramm->registerCasualties();
                              // erase from Heatmap ( crowd does a cleanup immediatly )
                              SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
@@ -236,8 +233,9 @@ void ClHeatMap::additionalCellChecks()
                             if(sumPositionDistance < 900)
                             {
                                 SortedPeoples[x+y*cellNumber.x][n]->alive = false;
+                                ///remember casualties by pressure
                                 //prototype: rememberKills(int number, bool bomb, bool fire, bool pressure)
-                                pStatistic->rememberKills(1, false, false, true);
+                                pStatistic->rememberKills(1, false, false, true, SortedPeoples[x+y*cellNumber.x][n]->position[PEOPLE_POSITION_MEMORY-1]);
                                 pDiagramm->registerCasualties();
                                 // erase from Heatmap ( crowd does a cleanup immediatly )
                                 SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
@@ -245,9 +243,7 @@ void ClHeatMap::additionalCellChecks()
 
                         }
                     }
-
-
-            }
+                }
             }
         }
     }
@@ -345,7 +341,6 @@ void ClHeatMap::Vec2DNormalize( sf::Vector2f *NormalizeMe )
 {
     if (NormalizeMe->x != 0 && NormalizeMe->y != 0)
     {
-
         float helpVar = fabs(NormalizeMe->x) + fabs(NormalizeMe->y);
         NormalizeMe->x /= helpVar;
         NormalizeMe->y /= helpVar;
@@ -420,7 +415,7 @@ int ClHeatMap::calculateCasualtiesInCell(const sf::Vector2i &cell, const sf::Vec
     int casualties = 0;
     sf::Vector2f position;
 
-    for ( int n = 0; n < SortedPeoples[cell.x+cell.y*cellNumber.x].size(); n++)
+    for ( unsigned int n = 0; n < SortedPeoples[cell.x+cell.y*cellNumber.x].size(); n++)
     {
         // 1.
         position = SortedPeoples[cell.x+cell.y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)];
@@ -429,7 +424,8 @@ int ClHeatMap::calculateCasualtiesInCell(const sf::Vector2i &cell, const sf::Vec
             //2.
             SortedPeoples[cell.x+cell.y*cellNumber.x][n]->alive = false;
             SortedPeoples[cell.x+cell.y*cellNumber.x][n]->panic = true;
-
+            ///remember casualties by bombs
+            pStatistic->rememberKills(1, true, false, false, SortedPeoples[cell.x+cell.y*cellNumber.x][n]->position[PEOPLE_POSITION_MEMORY-1]);
             SortedPeoples[cell.x+cell.y*cellNumber.x].erase(SortedPeoples[cell.x+cell.y*cellNumber.x].begin()+n);
 
             casualties++;
