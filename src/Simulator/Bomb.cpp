@@ -112,8 +112,8 @@ void ClBomb::activate()
         //2.
         int casualties = pHeatMap->explosion(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2)), 100);
         //3.
-        //prototype: rememberKills(int number, bool bomb)
-        pStatistic->rememberKills(casualties, true);
+        //prototype: rememberKills(int number, bool bomb, bool fire, bool pressure)
+        pStatistic->rememberKills(casualties, true, false, false);
         //4.
         animationTime.restart();
         //5.

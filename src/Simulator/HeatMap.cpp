@@ -203,8 +203,8 @@ void ClHeatMap::additionalCellChecks()
                         {
                              SortedPeoples[x+y*cellNumber.x][n]->alive = false;
                              SortedPeoples[x+y*cellNumber.x][n]->panic = true;
-                             //prototype: rememberKills(int number, bool bomb)
-                             pStatistic->rememberKills(1, false);
+                             //prototype: rememberKills(int number, bool bomb, bool fire, bool pressure)
+                             pStatistic->rememberKills(1, false, true, false);
                              pDiagramm->registerCasualties();
                              // erase from Heatmap ( crowd does a cleanup immediatly )
                              SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
@@ -236,8 +236,8 @@ void ClHeatMap::additionalCellChecks()
                             if(sumPositionDistance < 900)
                             {
                                 SortedPeoples[x+y*cellNumber.x][n]->alive = false;
-                                //prototype: rememberKills(int number, bool bomb)
-                                pStatistic->rememberKills(1, false);
+                                //prototype: rememberKills(int number, bool bomb, bool fire, bool pressure)
+                                pStatistic->rememberKills(1, false, false, true);
                                 pDiagramm->registerCasualties();
                                 // erase from Heatmap ( crowd does a cleanup immediatly )
                                 SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
