@@ -191,6 +191,7 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
     //std::cerr << "Call of closestExit Y: " << myPosition.x << ", Y: " << myPosition.y << " \n";
     float distance = INFINITY;
     sf::Vector2f closestExitPosition;
+    ClStaticObject *closestExit;
     for(unsigned int n = 0; n < sobjects.size(); n++)
     {
         if (sobjects[n]->getType() == GATE)
@@ -206,14 +207,14 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
             {
                 closestExitPosition = position;
                 distance = testDistance;
-     //           closestExit = sobjects[n];
+                closestExit = sobjects[n];
             }
             std::cerr<<" " <<std::endl;
         }
     }
     std::cerr<<"closest: "<<closestExitPosition.x<<" "<<closestExitPosition.y<<std::endl;
-    return closestExitPosition;
-/*
+    //return closestExitPosition;
+
    // std::cerr << "Exit middle: " << closestExitPosition.x << ", " << closestExitPosition.y << "\n";
     int numOfExitPoints = closestExit->getSize().x / (EXIT_POINT_DISTANCE + 1);
 
@@ -285,7 +286,7 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
         //Small exit with just one exit point, so no further checks are necessary
         return closestExitPosition;
     }
-    */
+
 }
 
 
