@@ -273,16 +273,22 @@ void ClDiagramm::drawXAxis(sf::RenderWindow & window)
         sf::Vertex(sf::Vector2f(position.x + OFFSET, position.y + diagrammSizeY +OFFSET+1)),
         sf::Vertex(sf::Vector2f(position.x + diagrammSizeX + 1.5*OFFSET, position.y + diagrammSizeY +OFFSET+1))
         };
+        xAxis[0].color = sf::Color::Black;
+        xAxis[1].color = sf::Color::Black;
         sf::Vertex arrowX1[] =
         {
         sf::Vertex(sf::Vector2f(position.x + diagrammSizeX +1.5*OFFSET -8, position.y + diagrammSizeY +OFFSET+1 -8)),
         sf::Vertex(sf::Vector2f(position.x + diagrammSizeX + 1.5*OFFSET, position.y + diagrammSizeY +OFFSET+1))
         };
+        arrowX1[0].color = sf::Color::Black;
+        arrowX1[1].color = sf::Color::Black;
         sf::Vertex arrowX2[] =
         {
         sf::Vertex(sf::Vector2f(position.x + diagrammSizeX +1.5*OFFSET -8, position.y + diagrammSizeY +OFFSET+1 +8)),
         sf::Vertex(sf::Vector2f(position.x + diagrammSizeX + 1.5*OFFSET, position.y + diagrammSizeY +OFFSET+1))
         };
+        arrowX2[0].color = sf::Color::Black;
+        arrowX2[1].color = sf::Color::Black;
 
         window.draw(xAxis, 2, sf::Lines);
         window.draw(arrowX1, 2, sf::Lines);
@@ -296,16 +302,22 @@ void ClDiagramm::drawYAxis(sf::RenderWindow & window)
             sf::Vertex(sf::Vector2f(position.x + OFFSET-1, position.y + 0.5*OFFSET)),
             sf::Vertex(sf::Vector2f(position.x + OFFSET-1, position.y + diagrammSizeY + OFFSET))
             };
+            yAxis[0].color = sf::Color::Black;
+            yAxis[1].color = sf::Color::Black;
             sf::Vertex arrowY1[] =
             {
             sf::Vertex(sf::Vector2f(position.x + OFFSET-1 -8, position.y + 0.5*OFFSET +8)),
             sf::Vertex(sf::Vector2f(position.x + OFFSET-1, position.y + 0.5*OFFSET))
             };
+            arrowY1[0].color = sf::Color::Black;
+            arrowY1[1].color = sf::Color::Black;
             sf::Vertex arrowY2[] =
             {
             sf::Vertex(sf::Vector2f(position.x + OFFSET-1 +8, position.y + 0.5*OFFSET +8)),
             sf::Vertex(sf::Vector2f(position.x + OFFSET-1, position.y + 0.5*OFFSET))
             };
+            arrowY2[0].color = sf::Color::Black;
+            arrowY2[1].color = sf::Color::Black;
 
             window.draw(yAxis, 2, sf::Lines);
             window.draw(arrowY1, 2, sf::Lines);
