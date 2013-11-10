@@ -310,9 +310,6 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
         pPath->drawPath(window);
     }
 */
-    personShape.setPosition(nextNode);
-    personShape.setFillColor(sf::Color::Black);
-    window.draw(personShape);
 
     if (panic)
     {
