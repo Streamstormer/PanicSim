@@ -22,6 +22,8 @@ class ClSimulation
         bool update(sf::RenderWindow &window, bool mouseReleased);
         void draw(sf::RenderWindow &window);
 
+
+
         void setCurGameState(enum GameStates newGS);
 
         static void updateSpeed(bool pause, bool normal, bool fastForward);

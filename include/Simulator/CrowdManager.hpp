@@ -19,6 +19,9 @@ class ClCrowdManager
         void draw(sf::RenderWindow& window);
         void CreateCrowd(sf::Vector2f position, float radius, int people);
 
+        // deletes all crowds ready for a new start
+        void clean();
+
         // for lable showing the total ammount of people
         static int *getPeopleCount();
         static void addPeople(int Number);

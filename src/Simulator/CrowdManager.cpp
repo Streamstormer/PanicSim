@@ -20,6 +20,14 @@ ClCrowdManager::~ClCrowdManager()
     }
 }
 
+void ClCrowdManager::clean()
+{
+    for(unsigned int n = 0; n < Crowds.size(); n++)
+    {
+        delete Crowds[n];
+    }
+}
+
 void ClCrowdManager::Update(float frameTime, sf::RenderWindow &window)
 {
 
