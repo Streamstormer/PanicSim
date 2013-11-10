@@ -16,6 +16,8 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, enum stati
     text.setCharacterSize(60);
     text.setColor(sf::Color::Black);
 
+    isChecked = false;
+
 
     text.setOrigin(text.getLocalBounds().width/2,text.getLocalBounds().height);
 
@@ -69,6 +71,39 @@ void ClStaticObject::subrecttoNumber(int number)
       isOnFire=true;
       fire_clock.restart();
  }
+bool ClStaticObject::getIsOnFire()
+{
+    return isOnFire;
+}
+
+bool ClStaticObject::getIsChecked()
+{
+    return isChecked;
+}
+
+void ClStaticObject::setIsChecked(bool check)
+{
+    isChecked = check;
+}
+
+sf::Rect<float> &ClStaticObject::biggerRect()
+{
+    bigRect= Rect->getGlobalBounds();
+    //bigRect.setPosition(Rect->getPosition());
+    bigRect.top= bigRect.top-100;
+    bigRect.left= bigRect.left-100;
+    bigRect.width= bigRect.width+ 2*100;
+    bigRect.height= bigRect.height+ 2*100; // vergrößter das Recheck
+
+    return bigRect;
+
+}
+bool ClStaticObject::IntersectsRectangle(sf::Rect<float> &testRect)
+{
+     return this->Rect->getGlobalBounds().intersects(testRect);
+}
+
+
 
 enum staticObjects ClStaticObject::getType()
 {

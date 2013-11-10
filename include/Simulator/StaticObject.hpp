@@ -16,15 +16,12 @@ public:
     void draw(sf::RenderWindow& window);
     const sf::Vector2f &getCenter();
     bool Intersects( const sf::Vector2f  &Position); // returns true if Position is inside of the StaticObject
-    bool IntersectsRectangle(sf::Rect<float> &testRect)
-    {
-        return this->Rect->getGlobalBounds().intersects(testRect);
-    }
+    bool IntersectsRectangle(sf::Rect<float> &testRect);
     int getID();
     enum staticObjects getType();
     const sf::Vector2f &getPosition();
     const sf::Vector2f &getSize();
-
+    bool getIsOnFire();
 
     float getRotation();
     void startToBurn();
@@ -33,6 +30,9 @@ public:
     void setSize(const sf::Vector2f &newSize);
     bool isValidPath(sf::Vector2f startPoint, sf::Vector2f endPoint); //used for pathfinding. returns true if there is a static object in the path
     sf::Vector2f getMiddleOfLine();
+    bool getIsChecked();
+    void setIsChecked(bool check);
+    sf::Rect<float> &biggerRect(); // makes the Rect bigger and gives it too Area
 private:
     void getTextfromType(int type);
     void settext();
@@ -49,8 +49,10 @@ private:
     void subrecttoNumber(int number);
     int bildID;
     bool isOnFire;
-    const static int PICTUREDURATION =25;
+    const static int PICTUREDURATION =50;
     const static int ANIMATIONSQUARE =8;
+    bool isChecked;
+    sf::Rect<float> bigRect;
 
 };
 
