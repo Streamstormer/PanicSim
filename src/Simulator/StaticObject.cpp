@@ -143,7 +143,7 @@ void ClStaticObject::draw(sf::RenderWindow& window)
             if(countFire==0)
             {
                 fire_sprite.setPosition(Rect->getPosition());
-                fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height/2);
+                fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height*2/3);
                 window.draw(fire_sprite);
             }
             else
@@ -180,7 +180,7 @@ void ClStaticObject::draw(sf::RenderWindow& window)
             if(countFire==0)
             {
             fire_sprite.setPosition(Rect->getPosition());
-            fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height/2);
+            fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height*2/3);
             window.draw(fire_sprite);
             }
             else
@@ -191,7 +191,7 @@ void ClStaticObject::draw(sf::RenderWindow& window)
                     while (i<countFire)
                     {
                         fire_sprite.setPosition(Rect->getGlobalBounds().left+(i*128+100),Rect->getGlobalBounds().top+Rect->getSize().y/2);
-                        fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height/2);
+                        fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height*2/3);
                         window.draw(fire_sprite);
                         i++;
                     }
@@ -201,7 +201,7 @@ void ClStaticObject::draw(sf::RenderWindow& window)
                    while (i<countFire)
                     {
                         fire_sprite.setPosition(Rect->getGlobalBounds().left+Rect->getSize().y/2,Rect->getGlobalBounds().top+(i*128+100));
-                        fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height/2);
+                        fire_sprite.setOrigin(subrectFire.width/2,subrectFire.height*2/3);
                         window.draw(fire_sprite);
                         i++;
                     }
