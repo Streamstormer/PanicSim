@@ -238,7 +238,7 @@ void ClHeatMap::additionalCellChecks()
                                 SortedPeoples[x+y*cellNumber.x][n]->alive = false;
                                 //prototype: rememberKills(int number, bool bomb)
                                 pStatistic->rememberKills(1, false);
-
+                                pDiagramm->registerCasualties();
                                 // erase from Heatmap ( crowd does a cleanup immediatly )
                                 SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
                             }
