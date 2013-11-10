@@ -243,6 +243,20 @@ void ClStatistic::rememberSpeed(int newSpeed)
     speed = newSpeed;
 }
 
+void ClStatistic::reset()
+{
+    numberBomb = 0;
+    numberFire = 0;
+    numberCasualties = 0;
+    numberKillsBomb = 0;
+    numberKillsFire = 0;
+    timeInSeconds = 0;
+    speed = 1;
+    inStatistic = false;
+    doDrawDiagramm = false;
+    doDrawStatistic = false;
+}
+
 //getter for number of bombs
 int* ClStatistic::getNumberBomb()
 {

@@ -81,10 +81,7 @@ enum GameStates ClSimpleStartMenu::execute(enum Buttons btn) const
     {
     case(START):
         {
-            /*
-            ///switch to where panic starts !!
-            ClStatistic::startTimer();
-            */
+            ClStatistic::reset();
             return SIMULATION;
         }
         break;

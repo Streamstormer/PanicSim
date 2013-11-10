@@ -40,6 +40,7 @@ public:
     static int* getSpeed();
     static int* getNumberCasualties();
     static void drawDiagramm();
+    static void reset();
 private:
     ClDiagramm *pDiagramm;
     sf::Clock startClock;

@@ -104,8 +104,6 @@ enum GameStates ClSimpleStatisticsMenu::execute(enum Buttons btn) const
         }break;
     case(DIAGRAMM):
         {
-            ClStatistic::setInStatistic(false);
-            ClStatistic::setDoDrawStatistic(false);
             ClStatistic::toggleDiagrammDraw();
         }break;
     }
