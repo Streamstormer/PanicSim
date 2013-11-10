@@ -62,6 +62,11 @@ public:
         }
     }
 
+    bool getOnFire(int id)
+    {
+        return getObject(id)->getOnFire();
+    }
+
     /// Set Methods for StaticObjects attributes via id and new value
     /// for the editor
 

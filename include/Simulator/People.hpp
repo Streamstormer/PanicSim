@@ -11,6 +11,7 @@ struct StrPeople
     sf::Vector2f position[PEOPLE_POSITION_MEMORY];
     sf::Vector2f force;
     bool alive;             // used to make sure pointer on person is deleted everywhere
+    bool panic;             // used to ensure that people can get infected by panic
     int currentNode;        // used to seek for the next node
 };
 

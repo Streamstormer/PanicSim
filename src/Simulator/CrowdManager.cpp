@@ -7,7 +7,8 @@ ClCrowdManager::ClCrowdManager(ClArea *pArea, const sf::Vector2i &ScreenSize, Cl
     //Create HeatMap
     sf::Vector2i numberOfCells(40,40);
     pHeatMap = new ClHeatMap(numberOfCells, ScreenSize, pArea, pStatistic, pDiagramm);
-    pPathFinder = new ClPathFinder(pArea, 200,sf::Vector2i(ScreenSize.x,ScreenSize.y));
+
+    pPathFinder = new ClPathFinder(pArea, 50,sf::Vector2i(ScreenSize.x,ScreenSize.y));
     pStateVault = new ClStateVault();
 }
 
@@ -76,7 +77,6 @@ void ClCrowdManager::CreateCrowd(sf::Vector2f position, float radius, int people
 
         ClCrowd *Crowd = new ClCrowd(radius, pArea,sf::Color::Red,position, people, pHeatMap, pStateVault,pPathFinder);
         Crowds.push_back(Crowd);
-
     }
     else
     {

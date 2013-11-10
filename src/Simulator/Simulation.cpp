@@ -39,14 +39,17 @@ void ClSimulation::setTotalVisitors(int number)
 
 
 // public:
-ClSimulation::ClSimulation(const sf::VideoMode &Mode)
+ClSimulation::ClSimulation(const sf::VideoMode &Mode, std::string filePath)
 {
     visitorsSet = false;
     this->currentOffset.x = this->currentOffset.y = 0;
     this->Mode = Mode;
 
     ClFileHandler fH;
-    fH.openFile("greatLev.csv");
+    if(filePath == "")
+        fH.openFile("test.csv");
+    else
+        fH.openFile(filePath);
     pArea = fH.getArea();
     levelSize = pArea->getLevelSize();
     //createObjects();

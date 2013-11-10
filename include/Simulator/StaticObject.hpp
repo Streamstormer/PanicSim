@@ -33,6 +33,7 @@ public:
     bool getIsChecked();
     void setIsChecked(bool check);
     sf::Rect<float> &biggerRect(); // makes the Rect bigger and gives it too Area
+    bool getOnFire() {return isOnFire;}
 private:
     void getTextfromType(int type);
     void settext();

@@ -16,6 +16,8 @@ ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &Map
         SortedPeoples.push_back(oneCell);
     }
     pStatistic->planHeatMapStatistic(cellNumber, cellSize, sw_green, sw_yellow, sw_red);
+    actualTime = 0;
+    panicClock.restart();
 }
 
 ClHeatMap::~ClHeatMap() {}
@@ -61,6 +63,8 @@ void ClHeatMap::draw(sf::RenderWindow& window)
 
 void ClHeatMap::update(float frameTime)
 {
+    actualTime = panicClock.getElapsedTime().asSeconds();
+    if(actualTime > 3.0) panicClock.restart();
     //loop through the SortedPeople vector to update the colored cells
     sf::Rect<float> Cell;
     for(unsigned int m=0; m<SortedPeoples.size(); m++)
@@ -98,10 +102,10 @@ void ClHeatMap::update(float frameTime)
     // 4. calculate collision detection
     // 4.1 does the person leave the Area ?
     // 4.2 is the person hurt by fire ?
+
     // 1
     sf::Vector2f force;
     sf::Vector2f source;
-    int id = -1; // used for collision detection
 
     for (int x = 0; x < cellNumber.x ; x++)
     {
@@ -143,23 +147,44 @@ void ClHeatMap::update(float frameTime)
 
 
                     Vec2DNormalize(&force);
-                    force.x *= -0.25;
-                    force.y *= -0.25;
+                    force.x *= -0.25*frameTime;
+                    force.y *= -0.25*frameTime;
+                    SortedPeoples[x+y*cellNumber.x][n]->force += force;
 
-                    //SortedPeoples[x+y*cellNumber.x][n]->position += force*frameTime;
+
+
+                }
+
+            }
+        }
+    }
+    additionalCellChecks();
+}
+
+void ClHeatMap::additionalCellChecks()
+{
+    int id = -1; // used for collision detection
+
+    for (int x = 0; x < cellNumber.x ; x++)
+    {
+        for (int y = 0; y < cellNumber.y; y++)
+        {
+            //2.
+            if(this->SortedPeoples[x+y*cellNumber.x].size() > 0)
+            {
+                for (unsigned int n = 0; n < SortedPeoples[x+y*cellNumber.x].size(); n++)
+                {
 
                     // check collision
                     // 4.
-                    force.x*=frameTime;
-                    force.y*=frameTime;
 
                     id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)]
-                                              + force + SortedPeoples[x+y*cellNumber.x][n]->force );
+                                               + SortedPeoples[x+y*cellNumber.x][n]->force );
 
                     if( id == -1)
                     {
-                        SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)].x += force.x + SortedPeoples[x+y*cellNumber.x][n]->force.x ;
-                        SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)].y += force.y + SortedPeoples[x+y*cellNumber.x][n]->force.y ;
+                        SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)].x +=  SortedPeoples[x+y*cellNumber.x][n]->force.x ;
+                        SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)].y +=  SortedPeoples[x+y*cellNumber.x][n]->force.y ;
                     }
                     else
                     {
@@ -172,10 +197,14 @@ void ClHeatMap::update(float frameTime)
                             SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
                         }
                         // 4.2 check for burning building
+                        if ( this->actualTime > 3 && pArea->getOnFire(id) )
+                        {
+                             SortedPeoples[x+y*cellNumber.x][n]->alive = false;
+                             // erase from Heatmap ( crowd does a cleanup immediatly )
+                             SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
+                        }
                     }
-
-                }
-
+            }
             }
         }
     }
@@ -206,8 +235,14 @@ sf::Vector2f ClHeatMap::distanceForce(std::vector<StrPeople *> &cell, StrPeople 
                 force.x += delta.x *helpVar;
                 force.y += delta.y *helpVar;
                 NbCount++;
+                if(actualTime > 3.0)
+                {
+                    if(checkMe->panic==true)
+                    {
+                        cell[n]->panic = true;
+                    }
+                }
             }
-
         }
     }
 

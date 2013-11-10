@@ -10,10 +10,11 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     int opts;
+    string filePath = "";
     while((opts = getopt(argc, argv, "f:")) != -1){
         switch(opts){
             case 'f': {
-                string filePath(optarg);
+                filePath = optarg;
                 break;
             }
             default: {
@@ -24,7 +25,7 @@ int main(int argc, char *argv[])
     }
     sf::VideoMode Mode = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(Mode, "Panic Sim!");
-    ClSimulation *pSimulation = new ClSimulation(Mode);
+    ClSimulation *pSimulation = new ClSimulation(Mode, filePath);
     ClSimpleGUI *pGUI = new ClSimpleGUI(sf::Vector2f(Mode.width,Mode.height));
     bool mouseReleased = false;
     enum GameStates curState = MENU;
