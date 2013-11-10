@@ -222,9 +222,18 @@ void  ClCrowd::Update(float frameTime)
             delta.x*=-0.3;
             delta.y*=-0.3;
             // check new position
-            if(pArea->validPoint(position+delta))
+            sf::Vector2f testPos = position+delta;
+            if(pArea->validPoint(position+delta) && ( (testPos.x-positionMid.x)*(testPos.x-positionMid.x) + (testPos.y-positionMid.y)*(testPos.y-positionMid.y) )<=15000)
             {
-                position+=delta ;
+                if(testPos.x <0 || testPos.y<0 || testPos.x>this->pArea->getLevelSize().x || testPos.y>this->pArea->getLevelSize().y)
+                {
+                    testPos.x = positionMid.x;
+                    testPos.y = positionMid.y;
+                }
+                else
+                {
+                    position = testPos;
+                }
             }
             sf::Vector2f force;
             for(unsigned int n = 0; n < peoples.size(); n++)
