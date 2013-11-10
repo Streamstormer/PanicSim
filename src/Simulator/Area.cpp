@@ -217,7 +217,7 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
             testDistance = (myPosition.x - attrPosWa.x)
             *(myPosition.x - attrPosWa.x)
             +(myPosition.y - attrPosWa.y)
-            *(myPosition.x - attrPosWa.x);
+            *(myPosition.y - attrPosWa.y);
             if (testDistance<distance)
             {
                 mainPoint = attrPosWa;
