@@ -382,14 +382,8 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
         for (unsigned int n = 0; n < sobjects.size();n++)
         {
             if (sobjects[n]->getID() == id){
-<<<<<<< HEAD
                 delete sobjects[n];
                 sobjects.erase(sobjects.begin()+n);
-=======
-                /// Not supportet at the moment. Need some more thinking..
-                //delete sobjects[n];
-                //sobjects[n] = 0;
->>>>>>> parent of 2351b69... Make Editor DIN ISO 9291 conform and activate remove of objects
                 return true;
             }
         }
