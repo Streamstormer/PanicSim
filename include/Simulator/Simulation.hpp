@@ -65,6 +65,8 @@ class ClSimulation
         bool visitorsSet;
         static bool stopSim;
 
+        sf::Vector2i mouseOffset;
+
         //Background Color
         //sf::Color bgColor;
 };

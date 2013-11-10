@@ -15,7 +15,7 @@ class ClBomb : public ClThreat
 {
 public:
     ClBomb(const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic,const sf::Texture &explosion_texture, ClDiagramm *pDiagramm);
-    void recognizeMouse(sf::RenderWindow &window);
+    void recognizeMouse(sf::RenderWindow &window , const sf::Vector2i & mouseOffset);
     void activate();
     void draw(sf::RenderWindow &window);
 };

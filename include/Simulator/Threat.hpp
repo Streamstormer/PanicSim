@@ -22,7 +22,7 @@ class ClThreat
 public:
     //virtual kann überschrieben werden  -  virtual + const muss
     virtual ~ClThreat();
-    virtual void recognizeMouse(sf::RenderWindow &window) = 0;
+    virtual void recognizeMouse(sf::RenderWindow &window , const sf::Vector2i & mouseOffset) = 0;
     virtual void draw(sf::RenderWindow &window) = 0;
     bool getIsMoved();
     void setPosition(float x_Position, float y_Position);

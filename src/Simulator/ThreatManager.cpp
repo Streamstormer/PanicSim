@@ -92,7 +92,7 @@ void ClThreatManager::buttonPressed(bool bomb, bool fire, bool explosion)
 }
 
 //called in Simulation to update all threats (position) and create threats according to buttonPressed
-void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
+void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased , const sf::Vector2i & mouseOffset)
 {
     //1. calculate mouse position as float vector
     //2. check for new threats (are static boolean set or not)
@@ -113,7 +113,7 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
 
     //1.
     sf::Vector2i mouse = sf::Mouse::getPosition(window);
-    sf::Vector2f mouseFloat((float)mouse.x,(float)mouse.y);
+    sf::Vector2f mouseFloat((float)(mouse.x + mouseOffset.x),(float)(mouse.y + mouseOffset.y) );
 
     //2.
     if(bomb_static)
@@ -136,7 +136,7 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased)
         if(mouseReleased)
         {
             //6.
-            threatVector[n]->recognizeMouse(window);
+            threatVector[n]->recognizeMouse(window , mouseOffset);
         }
         //7.
         if(threatVector[n]->getIsMoved()==true)
