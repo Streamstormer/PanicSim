@@ -38,6 +38,7 @@ public:
     static int* getNumberKillsFire();
     static int* getTime();
     static int* getSpeed();
+    static int* getNumberCasualties();
     static void drawDiagramm();
 private:
     ClDiagramm *pDiagramm;
@@ -52,7 +53,7 @@ private:
     int sw_yellow;
     int sw_red;
     int loopNumber;
-    bool waitTimeOver;
+    bool panic;
     int **pAllCells;
     int **pDrawCells;
     float frameTime;
@@ -65,6 +66,7 @@ private:
     static int numberBomb;
     static int numberKillsBomb;
     static int numberKillsFire;
+    static int numberCasualties;
     static int timeInSeconds;
     static int speed;
 };

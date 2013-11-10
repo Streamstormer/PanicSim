@@ -65,7 +65,6 @@ class ClSimulation
         enum GameStates curGameState;
 
         bool visitorsSet;
-        static bool stopSim;
 
         sf::Vector2i mouseOffset;
 

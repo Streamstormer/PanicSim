@@ -1,6 +1,5 @@
 #include "../../include/Simulator/Simulation.hpp"
 
-bool ClSimulation::stopSim = false;
 int ClSimulation::speed = 1;
 int ClSimulation::totalVisitors = 0;
 
@@ -386,14 +385,4 @@ void ClSimulation::calculateOffset(float frameTime)
         }
 
     }
-}
-
-void ClSimulation::setStopSim(bool newBool)
-{
-    stopSim = newBool;
-}
-
-bool ClSimulation::getStopSim()
-{
-    return stopSim;
 }
