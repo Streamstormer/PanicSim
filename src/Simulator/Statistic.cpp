@@ -15,6 +15,7 @@ int ClStatistic::numberBomb = 0;
 int ClStatistic::numberFire = 0;
 int ClStatistic::numberKillsFire = 0;
 int ClStatistic::numberKillsBomb = 0;
+int ClStatistic::numberKillsPressure = 0;
 int ClStatistic::numberCasualties = 0;
 int ClStatistic::timeInSeconds = 0;
 //start speed is normal (1)
@@ -227,13 +228,11 @@ void ClStatistic::setInStatistic(bool active)
 }
 
 //recognize all casualties if average draw is not shown (differentiation between bombs and fire)
-void ClStatistic::rememberKills(int number, bool bomb)
+void ClStatistic::rememberKills(int number, bool bomb, bool fire, bool pressure)
 {
-    if(bomb)
-    {
-        numberKillsBomb += number;
-    }
-    else numberKillsFire += number;
+    if(bomb) numberKillsBomb += number;
+    if(fire) numberKillsFire += number;
+    if(pressure) numberKillsPressure += number;
 
     numberCasualties += number;
 }
@@ -250,6 +249,7 @@ void ClStatistic::reset()
     numberCasualties = 0;
     numberKillsBomb = 0;
     numberKillsFire = 0;
+    numberKillsPressure = 0;
     timeInSeconds = 0;
     speed = 1;
     inStatistic = false;
@@ -279,6 +279,11 @@ int* ClStatistic::getNumberKillsFire()
 int* ClStatistic::getNumberKillsBomb()
 {
     return &numberKillsBomb;
+}
+
+int* ClStatistic::getNumberKillsPressure()
+{
+    return &numberKillsPressure;
 }
 
 //getter for evacuation time

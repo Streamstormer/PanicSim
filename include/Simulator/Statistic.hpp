@@ -26,7 +26,7 @@ public:
     void update(float frameTime);
     void drawStatistic(sf::RenderWindow &window);
     void drawDiagramm(sf::RenderWindow &window);
-    void rememberKills(int number, bool bomb);
+    void rememberKills(int number, bool bomb, bool fire, bool pressure);
     static void setDoDrawStatistic(bool newBool);
     static void toggleDiagrammDraw();
     static void setInStatistic(bool active);
@@ -36,6 +36,7 @@ public:
     static int* getNumberFire();
     static int* getNumberKillsBomb();
     static int* getNumberKillsFire();
+    static int* getNumberKillsPressure();
     static int* getTime();
     static int* getSpeed();
     static int* getNumberCasualties();
@@ -43,10 +44,6 @@ public:
     static void reset();
 private:
     ClDiagramm *pDiagramm;
-    sf::Clock startClock;
-    sf::Clock pauseClock;
-    sf::Clock fastClock;
-    sf::Clock fasterClock;
     sf::Vector2i cellNumber;
     sf::Vector2f cellSize;
     sf::Color getColor(int people);
@@ -67,6 +64,7 @@ private:
     static int numberBomb;
     static int numberKillsBomb;
     static int numberKillsFire;
+    static int numberKillsPressure;
     static int numberCasualties;
     static int timeInSeconds;
     static int speed;

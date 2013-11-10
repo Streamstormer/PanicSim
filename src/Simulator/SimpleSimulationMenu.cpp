@@ -158,9 +158,10 @@ void ClSimpleSimulationMenu::createMenu()
     ButtonSize.x /=2;
     ButtonSize.y /=4;
     Position.x = screenSize.x-2*1.5*ButtonSize.x*scale;
-    Position.y = 0;
+    Position.y = 50;
     pAddMe = new ClSimpleButton(id, STATISTIC, 6, texture, ButtonSize, Position, scale);
     ButtonVector.push_back(pAddMe);
+
     // add MENU Button (exit to menu)
     id++;
     Position.x += ButtonSize.x*1.5*scale;
