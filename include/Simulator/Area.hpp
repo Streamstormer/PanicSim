@@ -47,6 +47,9 @@ public:
         }
         return false;
     }
+
+    bool isValidId(int id){if(this->getObject(id) == NULL) return false; return true;}
+
     const sf::Vector2f & getSource(int id);
 
     const sf::Vector2f getClosestExit(const sf::Vector2f & myPosition);

@@ -43,7 +43,7 @@ void ClPathFinder::createNodes()
     // 1. create a list of valid nodes based on pArea->isValidPoint
     // 2. add neighbour ids based on this list
     sf::Vector2f testPos;
-    sf::Vector2i nodeNumber((int)(areaSize.y/nodeDistance), (int)(areaSize.x/nodeDistance));
+    sf::Vector2i nodeNumber((int)(areaSize.x/nodeDistance), (int)(areaSize.y/nodeDistance));
     int idCounter=0;
     int x, y;
     bool validID[nodeNumber.x*nodeNumber.y]; // enough memory to store wheather it is a valid id or not
@@ -272,23 +272,46 @@ bool ClPathFinder::createPath(int startID, int endID, ClPath *Path)
     while (nextNode != endID)
     {
         counter ++;
+        //the if-else does not prefer a hozontal or vertical path (with a low nodeDistance it looks like diagonals)
+        if(counter%2)
+        {
+            if(getNodeByID(nextNode)->get_neighbour_id_left() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_left(), & tempWeight, & tempNext);
+            }
+            if(getNodeByID(nextNode)->get_neighbour_id_right() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_right(), & tempWeight, & tempNext);
+            }
+            if(getNodeByID(nextNode)->get_neighbour_id_below() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_below(), & tempWeight, & tempNext);
+            }
+            if(getNodeByID(nextNode)->get_neighbour_id_top() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_top(), & tempWeight, & tempNext);
+            }
+        }
+        else
+        {
+            if(getNodeByID(nextNode)->get_neighbour_id_below() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_below(), & tempWeight, & tempNext);
+            }
+            if(getNodeByID(nextNode)->get_neighbour_id_top() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_top(), & tempWeight, & tempNext);
+            }
+            if(getNodeByID(nextNode)->get_neighbour_id_left() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_left(), & tempWeight, & tempNext);
+            }
+            if(getNodeByID(nextNode)->get_neighbour_id_right() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_right(), & tempWeight, & tempNext);
+            }
+        }
 
-        if(getNodeByID(nextNode)->get_neighbour_id_left() != -1)
-        {
-            getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_left(), & tempWeight, & tempNext);
-        }
-        if(getNodeByID(nextNode)->get_neighbour_id_right() != -1)
-        {
-            getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_right(), & tempWeight, & tempNext);
-        }
-        if(getNodeByID(nextNode)->get_neighbour_id_below() != -1)
-        {
-            getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_below(), & tempWeight, & tempNext);
-        }
-        if(getNodeByID(nextNode)->get_neighbour_id_top() != -1)
-        {
-            getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_top(), & tempWeight, & tempNext);
-        }
         Path->addVector(getNodeByID(nextNode)->getPosition());
         nextNode = tempNext;
         if(nextNode == endID)
