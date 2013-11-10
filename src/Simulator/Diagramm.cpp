@@ -179,23 +179,23 @@ void ClDiagramm::draw(const sf::Vector2f & pos, float dSizeX, float dSizeY, sf::
 
     //draw axis legned
     sf::Text textAxisX;
-    drawText(textAxisX, font, sf::Color::Black, TEXTSIZE_SMALL, (position.x + diagrammSizeX + 1.5*OFFSET+5), (position.y + diagrammSizeY +OFFSET+1), sf::String("Time"), window);
+    drawText(textAxisX, font, sf::Color::Black, TEXTSIZE_SMALL, (position.x + diagrammSizeX + 1.5*OFFSET+5), (position.y + diagrammSizeY +OFFSET+1), sf::String("Zeit"), window);
 
     sf::Text textAxisY;
-    drawText(textAxisY, font, sf::Color::Black, TEXTSIZE_SMALL, (position.x + 0.5*OFFSET), (position.y + 0.3*OFFSET), sf::String("Casualties"), window);
+    drawText(textAxisY, font, sf::Color::Black, TEXTSIZE_SMALL, (position.x + 0.5*OFFSET), (position.y + 0.3*OFFSET), sf::String("Opfer"), window);
 
     //draw legend
     sf::Text textLegend;
-    drawText(textLegend, font, sf::Color::Black, TEXTSIZE_NORM, (position.x + 1*OFFSET), (position.y + diagrammSizeY+OFFSET +5), sf::String("Legende"), window);
+    drawText(textLegend, font, sf::Color::Black, TEXTSIZE_NORM, (position.x + 1*OFFSET), (position.y + diagrammSizeY+OFFSET +5), sf::String("Legende:"), window);
 
     sf::Text textLegend1;
-    drawText(textLegend1, font, sf::Color::Red, TEXTSIZE_NORM, (position.x + 4*OFFSET), (position.y + diagrammSizeY+OFFSET +5), sf::String("Fire |"), window);
+    drawText(textLegend1, font, sf::Color::Red, TEXTSIZE_NORM, (position.x + 4*OFFSET), (position.y + diagrammSizeY+OFFSET +5), sf::String("Feuer |"), window);
 
     sf::Text textLegend2;
-    drawText(textLegend2, font, sf::Color::Green, TEXTSIZE_NORM, (position.x + 6*OFFSET), (position.y + diagrammSizeY+OFFSET +5), sf::String("Bomb |"), window);
+    drawText(textLegend2, font, sf::Color::Green, TEXTSIZE_NORM, (position.x + 6*OFFSET), (position.y + diagrammSizeY+OFFSET +5), sf::String("Bombe |"), window);
 
     sf::Text textLegend3;
-    drawText(textLegend3, font, sf::Color::Blue, TEXTSIZE_NORM, (position.x + 8*OFFSET), (position.y + diagrammSizeY+OFFSET +5), sf::String("Casualties"), window);
+    drawText(textLegend3, font, sf::Color::Blue, TEXTSIZE_NORM, (position.x + 9*OFFSET), (position.y + diagrammSizeY+OFFSET +5), sf::String("Opfer"), window);
 
     //draw numberC (8)
     sf::Text textCasualties[NUMBERBLOCKS];

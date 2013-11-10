@@ -73,7 +73,7 @@ void SimulationArea::animate()
     }
     //renderWindow.setSize(sf::Vector2u(w,h));
     //renderWindow.setPosition(sf::Vector2i(renderWindow.getPosition().x+100, renderWindow.getPosition().y+100));
-    std::cerr<<"PositionX: "<<renderWindow.getSize().x<<" PositionY: "<<renderWindow.getPosition().y<<std::endl;
+   // std::cerr<<"PositionX: "<<renderWindow.getSize().x<<" PositionY: "<<renderWindow.getPosition().y<<std::endl;
 
     sf::View view1(sf::FloatRect(x, y, w, h));
     //std::cerr<<"SizeX: "<<view1.getSize().x<<" CenterX: "<<view1.getCenter().x<<std::endl;
@@ -85,7 +85,7 @@ void SimulationArea::animate()
 
     sf::View currentView = renderWindow.getView();
     //queue_draw_area(x,y,w,h);
-    std::cerr<<"DEFSizeX: "<<currentView.getSize().x<<" DEFCenterX: "<<currentView.getCenter().x<<std::endl;
+   // std::cerr<<"DEFSizeX: "<<currentView.getSize().x<<" DEFCenterX: "<<currentView.getCenter().x<<std::endl;
 
     int rightID = 0;
     if(boxChecked) {
