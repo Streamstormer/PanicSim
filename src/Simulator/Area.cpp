@@ -3,6 +3,7 @@
 
     ClArea::ClArea()
     {id = 0;
+    time =0;
     fire_texture.loadFromFile("pictures/fire.png");
     }
 
@@ -20,29 +21,35 @@
         {
             if(sobjects[n]->getIsOnFire()== true && sobjects[n]->getIsChecked() == false) // looks for obejcts wich are on fire an not yet checked
             {
-                for (int m=0; m< sobjects.size(); m++)
-                {
-                    if (sobjects[m]->IntersectsRectangle(sobjects[n]->biggerRect())== true)
+                    for (int m=0; m< sobjects.size(); m++)
                     {
-                        sobjects[m]->startToBurn();
-                    }
+                        if (sobjects[m]->IntersectsRectangle(sobjects[n]->biggerRect())== true)
+                        {
+                            sobjects[m]->startToBurn();
+                        }
 
-                }
-                sobjects[n]->setIsChecked(false);
+                    }
+                    break;
+                sobjects[n]->setIsChecked(true);
+
             }
         }
     }
 
-
-    void ClArea::update()
+    float ClArea::addFrameTime(float frameTime)
     {
-        // alle Static Objects anschaeun   Area.cpp
-        // prüfen ob sie brennen           Area.cpp
-        //sfClock alle 10 Sekunden              area.cpp
-        // jedes Static Obejct eine bool welche sagt ob sie überprüft wurde staticobject.cpp
-        // funktion um auf nachbarn checken static obejct GlobalBounds (Länge und Höhe maximieren) intersects mit rect
-        //
-        //
+        time = time+frameTime;
+        return time;
+    }
+
+
+    void ClArea::update(float frameTime)
+    {
+       if (addFrameTime(frameTime)>  10000 )
+       {
+           viewOnStaticObject();
+           time =0; // to reset the counter
+       }
     }
 
     int ClArea::insertStObj(enum staticObjects type, const sf::Vector2f & sizeOfRectangle,

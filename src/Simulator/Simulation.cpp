@@ -88,6 +88,7 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
     frameTime *= speed;
     elapsedTime.restart();
 
+
     // limit FrameTime
 
     if ( frameTime > 50) frameTime = 50;
@@ -106,7 +107,9 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
     }
     // Update View
     calculateOffset(actualFrameTime);
+    pArea->update(frameTime);
     return true;
+
 }
 
 void ClSimulation::draw(sf::RenderWindow &window)
