@@ -305,7 +305,8 @@ void Editor::StartSim()
         return;
     else {
         string start("PanicSim -f " + SimFile);
-        cout<<system(start.c_str());
+        cerr<<start;
+        cerr<<system(start.c_str());
     }
 
 }

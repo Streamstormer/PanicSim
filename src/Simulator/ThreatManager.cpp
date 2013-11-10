@@ -34,6 +34,10 @@ ClThreatManager::~ClThreatManager()
     {
         delete threatVector[n];
     }
+
+    fire_static = false;
+    bomb_static = false;
+    explosion_static = false;
 }
 
 void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f position)

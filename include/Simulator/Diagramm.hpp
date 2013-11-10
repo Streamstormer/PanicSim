@@ -31,6 +31,8 @@ private:
     sf::Sprite spriteDiagramm;
     static const int NUMBERBLOCKS = 8;
     static const int OFFSET = 50;
+    static const int TEXTSIZE_SMALL = 12;
+    static const int TEXTSIZE_NORM = 30;
 
     sf::Font font;
 

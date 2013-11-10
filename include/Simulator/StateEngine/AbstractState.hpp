@@ -16,6 +16,7 @@ public:
     virtual enum ACTIONS getNextAction() const = 0;
     int getID() {return id;}
     enum STATES getState() {return myState;};
+    static void clearPanicState();
 protected:
     static bool panicState; // true if at least one crowd has been in panic state
     int id;

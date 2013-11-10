@@ -6,10 +6,12 @@
     //Cleanup remaining states
     ClStateVault::~ClStateVault()
     {
+        std::cerr<<"stop"<<std::endl;
         for ( unsigned int n = 0; n < StatesVector.size();n++)
         {
             delete StatesVector[n];
         }
+        ClAbstractState::clearPanicState();
     }
 ClAbstractState* ClStateVault::requestStartState()
     {
