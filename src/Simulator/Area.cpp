@@ -176,12 +176,14 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
         }
     }
     std::cerr << "Exit middle: " << closestExitPosition.x << ", " << closestExitPosition.y << "\n";
+    int numOfExitPoints = closestExit->getSize().x / (EXIT_POINT_DISTANCE + 1);
+
     //Big exit with at minimum two exit points: choose nearest
-    if(closestExit->getSize().x > EXIT_POINT_DISTANCE * 1.5)
+    if(numOfExitPoints > 1)
     {
         distance = INFINITY;
         float testDistance = 0;
-        int numOfExitPoints = closestExit->getSize().x / (EXIT_POINT_DISTANCE + 1);
+
         sf::Vector2f mainPoint = closestExit->getMiddleOfLine();
         sf::Vector2f centerPoint = closestExit->getCenter();
         sf::Vector2f diffVect = sf::Vector2f(mainPoint.x - centerPoint.x, mainPoint.y - centerPoint.y);
