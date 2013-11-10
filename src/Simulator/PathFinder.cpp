@@ -272,23 +272,46 @@ bool ClPathFinder::createPath(int startID, int endID, ClPath *Path)
     while (nextNode != endID)
     {
         counter ++;
+        //the if-else does not prefer a hozontal or vertical path (with a low nodeDistance it looks like diagonals)
+        if(counter%2)
+        {
+            if(getNodeByID(nextNode)->get_neighbour_id_left() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_left(), & tempWeight, & tempNext);
+            }
+            if(getNodeByID(nextNode)->get_neighbour_id_right() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_right(), & tempWeight, & tempNext);
+            }
+            if(getNodeByID(nextNode)->get_neighbour_id_below() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_below(), & tempWeight, & tempNext);
+            }
+            if(getNodeByID(nextNode)->get_neighbour_id_top() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_top(), & tempWeight, & tempNext);
+            }
+        }
+        else
+        {
+            if(getNodeByID(nextNode)->get_neighbour_id_below() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_below(), & tempWeight, & tempNext);
+            }
+            if(getNodeByID(nextNode)->get_neighbour_id_top() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_top(), & tempWeight, & tempNext);
+            }
+            if(getNodeByID(nextNode)->get_neighbour_id_left() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_left(), & tempWeight, & tempNext);
+            }
+            if(getNodeByID(nextNode)->get_neighbour_id_right() != -1)
+            {
+                getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_right(), & tempWeight, & tempNext);
+            }
+        }
 
-        if(getNodeByID(nextNode)->get_neighbour_id_left() != -1)
-        {
-            getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_left(), & tempWeight, & tempNext);
-        }
-        if(getNodeByID(nextNode)->get_neighbour_id_right() != -1)
-        {
-            getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_right(), & tempWeight, & tempNext);
-        }
-        if(getNodeByID(nextNode)->get_neighbour_id_below() != -1)
-        {
-            getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_below(), & tempWeight, & tempNext);
-        }
-        if(getNodeByID(nextNode)->get_neighbour_id_top() != -1)
-        {
-            getTempNextNode(getNodeByID(nextNode)->get_neighbour_id_top(), & tempWeight, & tempNext);
-        }
         Path->addVector(getNodeByID(nextNode)->getPosition());
         nextNode = tempNext;
         if(nextNode == endID)
