@@ -388,3 +388,9 @@ void ClSimulation::calculateOffset(float frameTime)
 
     }
 }
+
+int *ClSimulation::getTotalVisitors()
+{
+    return &totalVisitors;
+}
+

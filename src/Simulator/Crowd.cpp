@@ -292,24 +292,24 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
     }
 
     // debugging information
-    personShape.setPosition(position);
+   /* personShape.setPosition(position);
     personShape.setFillColor(sf::Color::Red);
     personShape.setRadius(5);
     personShape.move(sf::Vector2f(-2.5,-2.5));
     window.draw(personShape);
 
- /*   if (pPath != NULL)
+    if (pPath != NULL)
     {
         pPath->drawPath(window);
     }
-*/
+
 
     if (panic)
     {
         personShape.setPosition(sf::Vector2f(positionMid.x,positionMid.y));
         personShape.setFillColor(sf::Color::Magenta);
         window.draw(personShape);
-    }
+    } */
 }
 
 float ClCrowd::getRadius()
