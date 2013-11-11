@@ -54,7 +54,7 @@ void ClBomb::draw(sf::RenderWindow &window)
     {
         // 1. calculate picture number from time
         // 2. chose correct picture
-        if (bildID >63)
+        if (bildID >62)
         {
             alive = false;
         }
@@ -101,8 +101,7 @@ void ClBomb::activate()
 {
     //1. if it´s not active - activate bomb
     //2. calculate casualties
-    //3. activate animationTime clock
-    //4. tell the statistics about activated bomb
+    //3. tell the statistics about activated bomb
     // remember casualties by bomb in HeatMap
 
     //1.
@@ -111,9 +110,9 @@ void ClBomb::activate()
         isActive = true;
         //2.
         int casualties = pHeatMap->explosion(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2)), 100);
-        //3.
+
         animationTime.restart();
-        //4.
+        //3.
         //prototype: rememberThreats(bool type_bomb, bool type_fire)
         pStatistic->rememberThreats(true, false);
     }

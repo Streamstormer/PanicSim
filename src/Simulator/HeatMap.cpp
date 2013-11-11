@@ -174,6 +174,12 @@ void ClHeatMap::additionalCellChecks()
 
                     // check collision
                     // 4.
+                    // security check :
+                    if (abs(SortedPeoples[x+y*cellNumber.x][n]->force.x) + abs(SortedPeoples[x+y*cellNumber.x][n]->force.y) > 100.0)
+                    {
+                        SortedPeoples[x+y*cellNumber.x][n]->force.x *= 0.1;
+                        SortedPeoples[x+y*cellNumber.x][n]->force.y *= 0.1;
+                    }
 
                     id = pArea->getIdByVector(SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)]
                                                + SortedPeoples[x+y*cellNumber.x][n]->force );
@@ -207,6 +213,7 @@ void ClHeatMap::additionalCellChecks()
                              SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
                         }
                     }
+                    // pressure victims
                     if(actualTime > MAX_ACTUALTIME)
                     {
                         SortedPeoples[x+y*cellNumber.x][n]->positonMemory[positonMemoryPosition] = SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)];

@@ -96,7 +96,6 @@ void ClStaticObject::setIsChecked(bool check)
 sf::Rect<float> &ClStaticObject::biggerRect()
 {
     bigRect= Rect->getGlobalBounds();
-    //bigRect.setPosition(Rect->getPosition());
     bigRect.top= bigRect.top-100;
     bigRect.left= bigRect.left-100;
     bigRect.width= bigRect.width+ 2*100;
@@ -135,12 +134,14 @@ void ClStaticObject::draw(sf::RenderWindow& window)
 
             // 1. calculate picture number from time
         // 2. chose correct picture
+
+        int time =fire_clock.getElapsedTime().asMilliseconds();
+        bildID = (int)time/PICTUREDURATION;
         if (bildID >62)
         {
             fire_clock.restart();
+            bildID = 0;
         }
-        int time =fire_clock.getElapsedTime().asMilliseconds();
-        bildID = (int)time/PICTUREDURATION;
         subrecttoNumber(bildID);
         int countFire=0;
 

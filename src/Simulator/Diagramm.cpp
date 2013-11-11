@@ -48,6 +48,8 @@ void ClDiagramm::registerCasualties()
 
 void ClDiagramm::draw(const sf::Vector2f & pos, float dSizeX, float dSizeY, sf::RenderWindow & window)
 {
+    sf::View temp = window.getView();
+    window.setView(window.getDefaultView());
     this->position = pos;
     //diagrammSizeX und diagrammSizeY define the size of the diagramm
     this->diagrammSizeX = dSizeX - 2*OFFSET;
@@ -216,11 +218,23 @@ void ClDiagramm::draw(const sf::Vector2f & pos, float dSizeX, float dSizeY, sf::
         textCasualties[i].setString(number);
         window.draw(textCasualties[i]);
     }
+    window.setView(temp);
 }
 
 void ClDiagramm::drawBackground(sf::RenderWindow & window)
 {
     //draw background
+
+        sf::RectangleShape bg_color;
+        sf::Vector2f bg_position(0,0);
+        sf::Color bgColor(0,0,0, 70);
+        bg_color.setPosition(bg_position);
+        bg_color.setFillColor(bgColor);
+        sf::Vector2f bg_size(910,800);
+        bg_color.setSize(bg_size);
+
+        window.draw(bg_color);
+
         sf::RectangleShape background;
         sf::Vector2f backgroundSize (diagrammSizeX+ 2*OFFSET, diagrammSizeY+ 2*OFFSET);
         sf::Color backgroundColor;

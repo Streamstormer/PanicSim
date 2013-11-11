@@ -28,6 +28,8 @@ class ClSimulation
 
         static void updateSpeed(bool pause, bool normal, bool fastForward);
         static void setTotalVisitors(int number);
+        static int *getTotalVisitors();
+
     private:
         // this function is called in the constructor
         void createObjects();

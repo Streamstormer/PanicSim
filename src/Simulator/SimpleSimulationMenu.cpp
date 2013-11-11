@@ -172,7 +172,7 @@ void ClSimpleSimulationMenu::createMenu()
     ClSimpleLabel*pLabel;
     Position.x=Position.y=0;
     sf::Vector2f labelSize(200,100);
-    pLabel= new ClSimpleLabel(Position, labelSize, sf::String("Besucher"),*pFont,ClCrowdManager::getPeopleCount());
+    pLabel= new ClSimpleLabel(Position, labelSize, sf::String("Besucher"),*pFont,ClSimulation::getTotalVisitors());
     LabelVector.push_back(pLabel);
 
     Position.x += labelSize.x;

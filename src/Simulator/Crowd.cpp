@@ -157,17 +157,22 @@ void  ClCrowd::Update(float frameTime)
         {
                 //sf::Vector2f exitPosition = pArea->getClosestExit(this->position);
             closestExit = pArea->getClosestExit(this->position);
-            std::cerr<<"x,y "<<closestExit.x<<" "<<closestExit.y<<std::endl;
+
             if (pPath != NULL)
             {
                     delete pPath;
                     pPath = NULL;
             }
             pPath = pPathFinder->findPath(this->position,this->closestExit);
+            if (pPath == NULL) {std::cerr << "o.O" << std::endl;}
             for (unsigned int n = 0; n < peoples.size(); n++)
             {
                 peoples[n]->currentNode = pPath->getFirstNodeId();
             }
+        }
+        for(unsigned int m = 0; m<peoples.size(); m++)
+        {
+                peoples[m]->panic = true;
         }
     }
 
@@ -219,11 +224,11 @@ void  ClCrowd::Update(float frameTime)
                 delta.x = delta.y = 0;
             }
             Vec2DNormalize(&delta);
-            delta.x*=-0.3;
-            delta.y*=-0.3;
+            delta.x*=-0.6;
+            delta.y*=-0.6;
             // check new position
             sf::Vector2f testPos = position+delta;
-            if(pArea->validPoint(position+delta) && ( (testPos.x-positionMid.x)*(testPos.x-positionMid.x) + (testPos.y-positionMid.y)*(testPos.y-positionMid.y) )<=15000)
+            if(pArea->validPoint(position+delta) && ( (testPos.x-positionMid.x)*(testPos.x-positionMid.x) + (testPos.y-positionMid.y)*(testPos.y-positionMid.y) )<=25000)
             {
                 if(testPos.x <0 || testPos.y<0 || testPos.x>this->pArea->getLevelSize().x || testPos.y>this->pArea->getLevelSize().y)
                 {
@@ -287,24 +292,24 @@ void  ClCrowd::Draw(sf::RenderWindow& window)
     }
 
     // debugging information
-    personShape.setPosition(position);
+   /* personShape.setPosition(position);
     personShape.setFillColor(sf::Color::Red);
     personShape.setRadius(5);
     personShape.move(sf::Vector2f(-2.5,-2.5));
     window.draw(personShape);
 
- /*   if (pPath != NULL)
+    if (pPath != NULL)
     {
         pPath->drawPath(window);
     }
-*/
+
 
     if (panic)
     {
         personShape.setPosition(sf::Vector2f(positionMid.x,positionMid.y));
         personShape.setFillColor(sf::Color::Magenta);
         window.draw(personShape);
-    }
+    } */
 }
 
 float ClCrowd::getRadius()
