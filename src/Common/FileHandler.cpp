@@ -41,7 +41,10 @@ int ClFileHandler::writeStaticObjects(ClArea *pArea)
             sOSize = pArea->getSize(i);
             sORotation = pArea->getRotation(i);
             sOType = pArea->getType(i);
-            myFile << i << ";" << (int) sOPosition.x << ";" << (int) sOPosition.y << ";" << (int) sOSize.x << ";" << (int) sOSize.y << ";" << sORotation << ";" << sOType << ";\n";
+            myFile << i << ";"
+            << (int) sOPosition.x << ";" << (int) sOPosition.y << ";"
+            << (int) sOSize.x << ";" << (int) sOSize.y << ";"
+            << (int) sORotation << ";" << (int) sOType << ";\n";
         }
     }
     return 0;
@@ -98,9 +101,11 @@ int ClFileHandler::importStaticObjects(ClArea *pArea)
     float props[7];
     int multiplier = 10;
     int divider = 1;
-    for(unsigned int i = 0; i < inNrOfObjects; i++)
+    inFile.getline(str,1000);
+    while(std::strcmp(str,""))
     {
-        inFile.getline(str,1000);
+        int i = 0;
+        //inFile.getline(str,1000);
         int j = 0;
         for(int k = 0; k<7; k++)
         {
@@ -146,8 +151,8 @@ int ClFileHandler::importStaticObjects(ClArea *pArea)
             returnCode = 3;
         }
         pArea->insertStObj((enum staticObjects)type,objectSize,position,props[5]);
-
-
+    inFile.getline(str,1000);
+    i++;
     }
     return returnCode;
 }
