@@ -232,7 +232,7 @@ void ClStatistic::update(float frameTime)
             }
         }
     }
-    if(inStatistic==false)
+    if(inStatistic==false && panic == true)
     {
         time += frameTime;
     }
