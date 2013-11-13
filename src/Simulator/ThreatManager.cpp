@@ -35,6 +35,7 @@ ClThreatManager::~ClThreatManager()
         delete threatVector[n];
     }
 
+    //initialize boolean values
     fire_static = false;
     bomb_static = false;
     explosion_static = false;
@@ -42,9 +43,6 @@ ClThreatManager::~ClThreatManager()
 
 void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f position)
 {
-    //default threat size
-    sf::Vector2f size_threat(40,40);
-
     //1. differentiation between fire or bomb
     //2. create new threat with position, size and according texture (give area for later calculations)
     //   push_back to threatVector
@@ -53,7 +51,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(bomb)
     {
         //2.
-        ClBomb *pBomb = new ClBomb(position, size_threat, bomb_texture, pArea, pHeatMap, pStatistic, explosion_texture, pDiagramm);
+        ClBomb *pBomb = new ClBomb(position, bomb_texture, pArea, pHeatMap, pStatistic, explosion_texture, pDiagramm);
         threatVector.push_back(pBomb);
         bomb = false;
     }
@@ -62,7 +60,7 @@ void ClThreatManager::createThreat(bool bomb, bool fire, const sf::Vector2f posi
     if(fire)
     {
         //2.
-        ClFire *pFire = new ClFire(position, size_threat, fire_texture, pArea, pHeatMap, pStatistic, pDiagramm);
+        ClFire *pFire = new ClFire(position, fire_texture, pArea, pHeatMap, pStatistic, pDiagramm);
         threatVector.push_back(pFire);
         fire = false;
     }

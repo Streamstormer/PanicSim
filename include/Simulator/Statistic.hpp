@@ -29,7 +29,6 @@ public:
     void rememberKills(int number, bool bomb, bool fire, bool pressure, sf::Vector2f position);
     static void setDoDrawStatistic(bool newBool);
     static void toggleDiagrammDraw();
-    static void setInStatistic(bool active);
     static void rememberSpeed(int newSpeed);
 
     static int* getNumberBomb();
@@ -59,7 +58,6 @@ private:
 
     static bool doDrawStatistic;
     static bool doDrawDiagramm;
-    static bool inStatistic;
     static int numberFire;
     static int numberBomb;
     static int numberKillsBomb;
@@ -70,6 +68,9 @@ private:
     static int speed;
 
     std::vector<sf::Vector2f *> casualtiePosition;
+    const static int DI_POSITION = 70;
+    const static int DI_SIZE_X = 700;
+    const static int DI_SIZE_Y = 500;
 };
 
 #endif // STATISTIC_HPP_INCLUDED

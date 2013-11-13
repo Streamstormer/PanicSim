@@ -39,7 +39,6 @@ protected:
     bool isActive; // bomb explodes fire starts to burn
     bool alive;
     sf::Vector2f position_threat;
-    sf::Vector2f size_threat;
     sf::Sprite sprite_threat;
     sf::Sprite explosion_sprite;
     sf::Clock animationTime;
@@ -49,6 +48,7 @@ protected:
     sf::Rect<int> subrect;
     int time;
     int bildID;
+    const static int MAX_BILD_ID = 62;
     const static int PICTUREDURATION =25;
     const static int ANIMATIONSQUARE =8;
 };

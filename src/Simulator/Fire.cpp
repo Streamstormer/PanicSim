@@ -2,16 +2,15 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 Support:    Melanie Hammerschmidt
 ---------------------------------------------------------------------------------------------------------------------------------------
-usecase:    creation of fire, handling mouse action on fire and set new position according to mouse position
+usecase:    creation of fire, handling mouse action on fire and set new position according to mouse position, activation
 ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include "../../include/Simulator/Fire.hpp"
 
-ClFire::ClFire(const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic, ClDiagramm *pDiagramm)
+ClFire::ClFire(const sf::Vector2f &position_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic, ClDiagramm *pDiagramm)
 {
     this->position_threat = position_threat;
-    this->size_threat = size_threat;
     this->pArea = pArea;
     this->pHeatMap = pHeatMap;
     this->pStatistic = pStatistic;
@@ -45,7 +44,6 @@ void ClFire::draw(sf::RenderWindow &window)
     window.draw(sprite_threat);
 }
 
-
 void ClFire::recognizeMouse(sf::RenderWindow &window , const sf::Vector2i & mouseOffset)
 {
     //1. take position of mouse
@@ -54,7 +52,7 @@ void ClFire::recognizeMouse(sf::RenderWindow &window , const sf::Vector2i & mous
     //3.1       if threat is not moving - click causes start of move
     //3.2       if threat is moving -> 4.
     //4  check if mouse (as float vector) is set on a valid point (on a buidling in area)
-    //5. if valid point stop moving otherwise continue moving with mouse
+    //5. if valid point: stop moving otherwise continue moving with mouse
 
     //1.
     sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
