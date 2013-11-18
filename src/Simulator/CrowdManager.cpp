@@ -37,10 +37,12 @@ void ClCrowdManager::Update(float frameTime, sf::RenderWindow &window)
     // Update Crowds
 
     unsigned int n;
+
     for(n=0; n<Crowds.size(); n++)
     {
         Crowds[n]->Update(frameTime);
     }
+
     // Update HeatMap
     pHeatMap->update(frameTime);
 }

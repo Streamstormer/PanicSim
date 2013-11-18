@@ -64,6 +64,7 @@ void ClHeatMap::draw(sf::RenderWindow& window)
 
 void ClHeatMap::update(float frameTime)
 {
+
     actualTime += frameTime;
     //loop through the SortedPeople vector to update the colored cells
     sf::Rect<float> Cell;
@@ -154,14 +155,16 @@ void ClHeatMap::update(float frameTime)
             }
         }
     }
+
     additionalCellChecks();
     if(actualTime > MAX_ACTUALTIME) actualTime=0;
+
+
 }
 
 void ClHeatMap::additionalCellChecks()
 {
     int id = -1; // used for collision detection
-
     for (int x = 0; x < cellNumber.x ; x++)
     {
         for (int y = 0; y < cellNumber.y; y++)
@@ -171,6 +174,7 @@ void ClHeatMap::additionalCellChecks()
             {
                 for (unsigned int n = 0; n < SortedPeoples[x+y*cellNumber.x].size(); n++)
                 {
+                    bool skip = false;
 
                     // check collision
                     // 4.
@@ -199,6 +203,7 @@ void ClHeatMap::additionalCellChecks()
                             SortedPeoples[x+y*cellNumber.x][n]->panic = false;
                             // erase from Heatmap ( crowd does a cleanup immediatly )
                             SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
+                            skip = true;
                         }
                         // 4.2 check for burning building
                         if ( this->actualTime > MAX_ACTUALTIME && pArea->getOnFire(id) )
@@ -206,14 +211,18 @@ void ClHeatMap::additionalCellChecks()
                              SortedPeoples[x+y*cellNumber.x][n]->alive = false;
                              SortedPeoples[x+y*cellNumber.x][n]->panic = true;
                              ///remember casualties by fire
-                             //prototype: rememberKills(int number, bool bomb, bool fire, bool pressure)
+                             //prototype: rememberKills(int number, bool bomb, bool fire, bool pressure, sf::Vector2f position)
                              pStatistic->rememberKills(1, false, true, false, SortedPeoples[x+y*cellNumber.x][n]->position[PEOPLE_POSITION_MEMORY-1]);
                              pDiagramm->registerCasualties();
                              // erase from Heatmap ( crowd does a cleanup immediatly )
                              SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
+                             skip = true;
                         }
                     }
                     // pressure victims
+                    if ( skip == false)
+                    {
+
                     if(actualTime > MAX_ACTUALTIME)
                     {
                         SortedPeoples[x+y*cellNumber.x][n]->positonMemory[positonMemoryPosition] = SortedPeoples[x+y*cellNumber.x][n]->position[(PEOPLE_POSITION_MEMORY - 1)];
@@ -239,17 +248,19 @@ void ClHeatMap::additionalCellChecks()
                             //900 change to const
                             if(sumPositionDistance < 900)
                             {
-                                SortedPeoples[x+y*cellNumber.x][n]->alive = false;
                                 ///remember casualties by pressure
                                 //prototype: rememberKills(int number, bool bomb, bool fire, bool pressure)
                                 pStatistic->rememberKills(1, false, false, true, SortedPeoples[x+y*cellNumber.x][n]->position[PEOPLE_POSITION_MEMORY-1]);
                                 pDiagramm->registerCasualties();
                                 // erase from Heatmap ( crowd does a cleanup immediatly )
+                                SortedPeoples[x+y*cellNumber.x][n]->alive = false;
                                 SortedPeoples[x+y*cellNumber.x].erase(SortedPeoples[x+y*cellNumber.x].begin()+n);
+
                             }
 
                         }
                     }
+                }
                 }
             }
         }

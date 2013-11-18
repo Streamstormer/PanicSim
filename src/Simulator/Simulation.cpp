@@ -91,9 +91,12 @@ bool ClSimulation::update(sf::RenderWindow &window, bool mouseReleased)
     {
         if(speed != 0)
         {
+
             // Update Crowds Pathfinding Statemachine and Heatmap
             pCrowdManager->Update(frameTime, window);
         }
+
+
         // Update Threats
         pThreatManager->update(window, mouseReleased , mouseOffset);
     }

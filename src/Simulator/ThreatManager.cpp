@@ -172,6 +172,7 @@ void ClThreatManager::update(sf::RenderWindow &window, bool mouseReleased , cons
     {
         if (threatVector[n]->getAlive() == false)
         {
+            delete threatVector[n];
             threatVector.erase(threatVector.begin()+n);
         }
     }
