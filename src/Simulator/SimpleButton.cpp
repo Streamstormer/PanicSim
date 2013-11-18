@@ -4,7 +4,6 @@
 //public:
 ClSimpleButton::ClSimpleButton(int id, Buttons button, int PictureID , const sf::Texture &texture, const sf::Vector2f &newSize, const sf::Vector2f& position, float scale)
 {
-    //
     this->scale = scale;
     this->ButtonType = button;
     this->id = id;

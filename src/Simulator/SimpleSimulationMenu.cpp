@@ -66,7 +66,6 @@ enum GameStates ClSimpleSimulationMenu::execute(enum Buttons btn) const
     case(STATISTIC):
     {
         ClStatistic::setDoDrawStatistic(true);
-        ClStatistic::setInStatistic(true);
         return STATISTICS;
     }
     break;

@@ -10,7 +10,6 @@ usecase:    handling all statistic calculations (in HeatMap, by creation of thre
 
 bool ClStatistic::doDrawStatistic = false;
 bool ClStatistic::doDrawDiagramm = false;
-bool ClStatistic::inStatistic = false;
 int ClStatistic::numberBomb = 0;
 int ClStatistic::numberFire = 0;
 int ClStatistic::numberKillsFire = 0;
@@ -43,7 +42,7 @@ ClStatistic::~ClStatistic()
 void ClStatistic::planHeatMapStatistic(sf::Vector2i cellNumber, sf::Vector2f cellSize, const int sw_green, const int sw_yellow, const int sw_red)
 {
     //1. initialising of all variables
-    //2. initialising of cells for calculation and for drawing
+    //2. initialising of cells for calculation and for drawing and set all cells to 0
 
     //1.
     this->cellNumber = cellNumber;
@@ -141,7 +140,7 @@ void ClStatistic::drawStatistic(sf::RenderWindow &window)
             }
         }
 
-        // draw all death people
+        // draw all death people and set every where a black point
         sf::CircleShape deathPoint;
         deathPoint.setFillColor(sf::Color::Black);
         deathPoint.setRadius(3);
@@ -159,10 +158,10 @@ void ClStatistic::drawDiagramm(sf::RenderWindow &window)
 {
     if(doDrawDiagramm)
     {
-
-        sf::Vector2f di_position(70,70);
-        sf::Vector2f di_size(700,500);
-
+        //set position and size of diagramm
+        sf::Vector2f di_position(DI_POSITION, DI_POSITION);
+        sf::Vector2f di_size(DI_SIZE_X, DI_SIZE_Y);
+        //draw diagramm at this position
         pDiagramm->draw(di_position, di_size.x, di_size.y, window);
     }
 }
@@ -173,7 +172,7 @@ sf::Color ClStatistic::getColor(int people)
     sf::Color background;
     background.b = 0;
 
-    if (people <= sw_green)   // green 0,255,0
+    if (people == sw_green)   // green 0,255,0
     {
         background.r = 0;
         background.g = 255;
@@ -212,7 +211,6 @@ void ClStatistic::toggleDiagrammDraw()
 void ClStatistic::update(float frameTime)
 {
     this->frameTime = frameTime;
-
     //if statistic is to be shown calculate average of allCells in drawCells
     if(doDrawStatistic)
     {
@@ -225,16 +223,13 @@ void ClStatistic::update(float frameTime)
             }
         }
     }
-    if(inStatistic==false && panic == true)
+    //if statistic is not drawn and panic has started - start timer
+    if(doDrawStatistic==false && panic == true)
     {
         time += frameTime;
     }
+    //calculate time as seconds
     timeInSeconds = time/1000;
-}
-
-void ClStatistic::setInStatistic(bool active)
-{
-    inStatistic = active;
 }
 
 //recognize all casualties if average draw is not shown (differentiation between bombs and fire)
@@ -247,6 +242,7 @@ void ClStatistic::rememberKills(int number, bool bomb, bool fire, bool pressure,
     sf::Vector2f *newPosition = new sf::Vector2f(position.x, position.y);
     casualtiePosition.push_back(newPosition);
 
+    // all casualties
     numberCasualties += number;
 }
 
@@ -265,7 +261,6 @@ void ClStatistic::reset()
     numberKillsPressure = 0;
     timeInSeconds = 0;
     speed = 1;
-    inStatistic = false;
     doDrawDiagramm = false;
     doDrawStatistic = false;
 }
@@ -294,6 +289,7 @@ int* ClStatistic::getNumberKillsBomb()
     return &numberKillsBomb;
 }
 
+//getter for number of casualties (pressure)
 int* ClStatistic::getNumberKillsPressure()
 {
     return &numberKillsPressure;
@@ -311,6 +307,7 @@ int* ClStatistic::getSpeed()
     return &speed;
 }
 
+//getter for number of casualties
 int* ClStatistic::getNumberCasualties()
 {
     return &numberCasualties;

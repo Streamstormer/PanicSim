@@ -249,7 +249,7 @@ void ClHeatMap::additionalCellChecks()
                             if(sumPositionDistance < 900)
                             {
                                 ///remember casualties by pressure
-                                //prototype: rememberKills(int number, bool bomb, bool fire, bool pressure)
+                                //prototype: rememberKills(int number, bool bomb, bool fire, bool pressure, sf::Vector2f position)
                                 pStatistic->rememberKills(1, false, false, true, SortedPeoples[x+y*cellNumber.x][n]->position[PEOPLE_POSITION_MEMORY-1]);
                                 pDiagramm->registerCasualties();
                                 // erase from Heatmap ( crowd does a cleanup immediatly )
@@ -329,7 +329,7 @@ sf::Color ClHeatMap::getColor(int People)
     sf::Color background;
     background.b = 0;
 
-    if (People <= sw_green)   // green 0,255,0
+    if (People == sw_green)   // green 0,255,0
     {
         background.r = 0;
         background.g = 255;
@@ -368,7 +368,7 @@ void ClHeatMap::Vec2DNormalize( sf::Vector2f *NormalizeMe )
 // returns the ammount of casualties
 int ClHeatMap::explosion(const sf::Vector2f &here, int explosionRadius)
 {
-    // 1. calculate the cell the explosion is hapenning in
+    // 1. calculate the cell the explosion is happening in
     // 2. check for casualties in explosion cell and the neighbour cells and kill them ( alive = false )
     // 3. remove casualties from list ( Crowd cleans them up )
     // 4. return number of casualties
@@ -442,11 +442,12 @@ int ClHeatMap::calculateCasualtiesInCell(const sf::Vector2i &cell, const sf::Vec
             //2.
             SortedPeoples[cell.x+cell.y*cellNumber.x][n]->alive = false;
             SortedPeoples[cell.x+cell.y*cellNumber.x][n]->panic = true;
-            ///remember casualties by bombs
-            pStatistic->rememberKills(1, true, false, false, SortedPeoples[cell.x+cell.y*cellNumber.x][n]->position[PEOPLE_POSITION_MEMORY-1]);
             SortedPeoples[cell.x+cell.y*cellNumber.x].erase(SortedPeoples[cell.x+cell.y*cellNumber.x].begin()+n);
 
             casualties++;
+            ///remember casualties by bombs
+            //prototype: rememberKills(int number, bool bomb, bool fire, bool pressure, sf::Vector2f position)
+            pStatistic->rememberKills(1, true, false, false, SortedPeoples[cell.x+cell.y*cellNumber.x][n]->position[PEOPLE_POSITION_MEMORY-1]);
             pDiagramm->registerCasualties();
         }
     }
