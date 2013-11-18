@@ -1,3 +1,12 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Lukas
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    Handles the different StaticObjects
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+
 #ifndef AREA_HPP_INCLUDED
 #define AREA_HPP_INCLUDED
 
@@ -39,22 +48,9 @@ public:
 
     const sf::Vector2f getClosestExit(const sf::Vector2f & myPosition);
 
-    void setOnFire(int id)
-    {
-        time=0;
-        for(unsigned int n = 0; n < sobjects.size(); n++)
-        {
-            if (sobjects[n]->getID() == id)
-            {
-                sobjects[n]->startToBurn();
-            }
-        }
-    }
+    void setOnFire(int id);
 
-    bool getOnFire(int id)
-    {
-        return getObject(id)->getOnFire();
-    }
+    bool getOnFire(int id);
 
     /// Set Methods for StaticObjects attributes via id and new value
     /// for the editor

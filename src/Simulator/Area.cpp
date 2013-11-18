@@ -78,21 +78,7 @@
         {
             if(sobjects[n] != 0) sobjects[n]->draw(window);
         }
-/*
-        sf::CircleShape exitPoint;
 
-    exitPoint.setFillColor(sf::Color(255,255,0));
-    exitPoint.setRadius(5);
-    exitPoint.setOrigin(2.5,2.5);
-
-    sf::Vector2f avgPosition;
-
-    for(unsigned int n = 0; n< exitPoints.size(); n++)
-    {
-        exitPoint.setPosition(exitPoints[n]);
-        window.draw(exitPoint);
-    }
-*/
     }
     bool ClArea::validPoint(sf::Vector2f point)
     {
@@ -138,6 +124,23 @@
     bool ClArea::isValidId(int id)
     {
         if(this->getObject(id) == NULL) return false; return true;
+    }
+
+    bool ClArea::getOnFire(int id)
+    {
+        return getObject(id)->getOnFire();
+    }
+
+    void ClArea::setOnFire(int id)
+    {
+        time=0;
+        for(unsigned int n = 0; n < sobjects.size(); n++)
+        {
+            if (sobjects[n]->getID() == id)
+            {
+                sobjects[n]->startToBurn();
+            }
+        }
     }
 
 
