@@ -75,6 +75,7 @@ enum GameStates ClSimpleCreditsMenu::execute(enum Buttons btn) const
         {
             return MENU;
         }
+    default: break;
     }
     return CREDITSMENU;
 }

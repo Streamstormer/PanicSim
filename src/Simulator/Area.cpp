@@ -305,6 +305,7 @@ const sf::Vector2f ClArea::getClosestExit(const sf::Vector2f & myPosition)
                 return sobjects[n]->getRotation();
             }
         }
+        return -1;
     }
 
     enum staticObjects ClArea::getType(int id)

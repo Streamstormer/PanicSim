@@ -74,6 +74,8 @@ enum GameStates ClSimpleSimulationMenu::execute(enum Buttons btn) const
         return MENU;
     }
     break;
+
+    default: break;
     }
     return SIMULATION;
 }
