@@ -1,3 +1,15 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Manuel Stampp
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    Read:
+            Reads file, returns either a complete Area or parts of it
+
+            Write:
+            Creates file and writes Levelsize, Backgroundcolor and all objects of an area to the file
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
 #ifndef FILEHANDLER_H
 #define FILEHANDLER_H
 
@@ -13,11 +25,19 @@ class ClFileHandler
     public:
         ClFileHandler();
         ~ClFileHandler();
+
+        //Creates a new file and writes all important details of the given Area
+        //into that file
         int writeLevel(std::string fileName, ClArea *pArea);
-        //int writeLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor);
+
+        //Reads a level file and initialises/overwrites the details
+        //and staticObjects the given area
         int readLevel(std::string fileName, ClArea *pArea);
-        //int readLevel(std::string fileName, ClArea *pArea, sf::Vector2f *levelSize, sf::Color *bgColor);
+
+        //Reads a level file and initialises the ClArea class variable myArea
         int openFile(std::string fileName);
+
+        //returns the actually opened Area. May only be called after openFile.
         ClArea * getArea(){return myArea;};
 
         /********************************************************
@@ -61,13 +81,13 @@ class ClFileHandler
         //if file exists it will be deleted, creates new file, ending required, optimized for ".csv"
         int createFile(const char *fileName);
 
-        /*ONLY TO CALL WITHIN writeLevel(), FOR REQUIREMENTS
+        /*ONLY TO CALL WITHIN writeLevel(), TO FULFILL REQUIREMENTS
         */
         int writeHeader(ClArea *pArea);
-        /*ONLY TO CALL WITHIN writeLevel(), FOR REQUIREMENTS
+        /*ONLY TO CALL WITHIN writeLevel(), TO FULFILL REQUIREMENTS
         */
         int writeLevelDetails(ClArea *pArea);
-        /*ONLY TO CALL WITHIN writeLevel(), FOR REQUIREMENTS
+        /*ONLY TO CALL WITHIN writeLevel(), TO FULFILL REQUIREMENTS
         Writes static objects within the given Area object into the opened myFile.
         */
         int writeStaticObjects(ClArea *pArea);

@@ -1,3 +1,5 @@
+//Please look for the description in the header file
+
 #include "../../include/Simulator/ExitPointSelection.hpp"
 
 ClExitPointSelection::ClExitPointSelection()
