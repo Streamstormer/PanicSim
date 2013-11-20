@@ -23,6 +23,10 @@ ClCrowd::ClCrowd(float radius, ClArea * pArea, sf::Color Color, sf::Vector2f pos
         newPerson->panic = false;
         newPerson->currentNode = -1;
         newPerson->force.x = newPerson->force.y = 0;
+        for ( int i = 0 ; i < COLLISION_POSITION_MEMORY; i++)
+        {
+            newPerson->positonMemory[i] = sf::Vector2f(0,0);
+        }
 
         do
         {

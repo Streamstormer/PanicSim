@@ -68,7 +68,7 @@ void ClSimpleStartMenu::draw(sf::RenderWindow &window) const
 {
     window.draw(bg_color);
     window.draw(bg);
-    for(int n = 0; n < ButtonVector.size(); n++)
+    for(unsigned int n = 0; n < ButtonVector.size(); n++)
     {
         ButtonVector[n]->draw(window);
     }

@@ -1,10 +1,19 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Lukas
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    Simple Class that preCalculates the most important squareroots
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+
 #ifndef FASTSQUAREROOT_HPP
 #define FASTSQUAREROOT_HPP
 
 #include <math.h>
 #include <iostream>
 
-const int NOPCS = 10000; // number of previous calculated squareroots
+const int NOPCS = 300; // number of previous calculated squareroots
 
 class ClFastSquareroot
 {

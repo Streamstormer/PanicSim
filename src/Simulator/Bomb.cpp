@@ -2,16 +2,15 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 Support:    Melanie Hammerschmidt
 ---------------------------------------------------------------------------------------------------------------------------------------
-usecase:    creation of bombs, handling mouse action on boms and set new position according to mouse position
+usecase:    creation of bombs, handling mouse action on bombs and set new position according to mouse position, activation
 ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include "../../include/Simulator/Bomb.hpp"
 
-ClBomb::ClBomb(const sf::Vector2f &position_threat, const sf::Vector2f &size_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic, const sf::Texture &explosion_texture, ClDiagramm *pDiagramm)
+ClBomb::ClBomb(const sf::Vector2f &position_threat, const sf::Texture &texture_threat, ClArea *pArea, ClHeatMap *pHeatMap, ClStatistic *pStatistic, const sf::Texture &explosion_texture, ClDiagramm *pDiagramm)
 {
     this->position_threat = position_threat;
-    this->size_threat = size_threat;
     this->pArea = pArea;
     this->pHeatMap = pHeatMap;
     this->pStatistic = pStatistic;
@@ -49,23 +48,25 @@ ClBomb::ClBomb(const sf::Vector2f &position_threat, const sf::Vector2f &size_thr
 
 void ClBomb::draw(sf::RenderWindow &window)
 {
+    //draw the bomb
     window.draw(sprite_threat);
+    //if the bomb has been activated
     if (isActive)
     {
         // 1. calculate picture number from time
         // 2. chose correct picture
-        if (bildID >62)
+        if (bildID > MAX_BILD_ID)
         {
             alive = false;
         }
-        int time =animationTime.getElapsedTime().asMilliseconds();
+        int time = animationTime.getElapsedTime().asMilliseconds();
         bildID = (int)time/PICTUREDURATION;
         subrecttoNumber(bildID);
         window.draw(explosion_sprite);
     }
 }
 
-void ClBomb::recognizeMouse(sf::RenderWindow &window , const sf::Vector2i & mouseOffset)
+void ClBomb::recognizeMouse(sf::RenderWindow &window , const sf::Vector2i &mouseOffset)
 {
     //1. take position of mouse
     //2. if mouse is contained in IntRect "threat"
@@ -100,9 +101,9 @@ void ClBomb::recognizeMouse(sf::RenderWindow &window , const sf::Vector2i & mous
 void ClBomb::activate()
 {
     //1. if it´s not active - activate bomb
-    //2. calculate casualties
-    //3. tell the statistics about activated bomb
-    // remember casualties by bomb in HeatMap
+    //2. remember casualties by bomb in HeatMap (statistic and diagramm)
+    //3. restart clock for bomb activation
+    //4. tell the statistics about activated bomb
 
     //1.
     if(isActive == false)
@@ -110,9 +111,9 @@ void ClBomb::activate()
         isActive = true;
         //2.
         int casualties = pHeatMap->explosion(sf::Vector2f(threat.left + (threat.width / 2), threat.top + (threat.height/2)), 100);
-
-        animationTime.restart();
         //3.
+        animationTime.restart();
+        //4.
         //prototype: rememberThreats(bool type_bomb, bool type_fire)
         pStatistic->rememberThreats(true, false);
     }
