@@ -319,7 +319,7 @@ void ClSimulation::createObjects()
 
 }
 
-
+//changed by Patrick with adaptions of Bomb, Fire, Thread and Threadmanager.
 void ClSimulation::calculateOffset(float frameTime)
 {
     // 1. check for keyboard input (arrow keys)

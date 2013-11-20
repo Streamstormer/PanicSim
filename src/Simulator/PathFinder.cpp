@@ -186,7 +186,7 @@ weights are assigned
 */
 bool ClPathFinder::findPath(int startID, int endID, ClPath *Path)
 {
-    for(int k=0; k<Nodes.size(); k++)
+    for(int k=0; k<(int)Nodes.size(); k++)
     {
         Nodes[k]->set_weight(INFINITY);
         Nodes[k]->set_visited(false);

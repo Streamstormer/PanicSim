@@ -103,7 +103,7 @@
         }
          return true;
     }
-
+//changed by Patrick (addaption for Pathfinding, to allow to walk over a Fence in Panik-mode)
     bool ClArea::isInvalidNode(sf::Vector2f node, int nodeDistance) // ensure that there are no nodes close to staticObjects
     {
         for(unsigned int n = 0; n < sobjects.size(); n++)
