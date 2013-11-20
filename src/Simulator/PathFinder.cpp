@@ -186,6 +186,7 @@ weights are assigned
 */
 bool ClPathFinder::findPath(int startID, int endID, ClPath *Path)
 {
+    //the node weight and the visited state have to be reseted for creating a new path
     for(int k=0; k<(int)Nodes.size(); k++)
     {
         Nodes[k]->set_weight(INFINITY);
@@ -195,12 +196,14 @@ bool ClPathFinder::findPath(int startID, int endID, ClPath *Path)
         return false;
     else
     {
+        //the end node is assigned the weight 0
         getNodeByID(endID)->set_visited(true);
         getNodeByID(endID)->set_weight(0);
         OpenList.push_back(getNodeByID(endID));
     }
     while(OpenList.size() > 0)
     {
+        //if the neighbour-nodes exist and they are not visited they are assigned a weight (parentweight + 1)
         int index = OpenList[0]->getID();
 
         if ( getNodeByID(index)->get_neighbour_id_top() != -1 )
@@ -277,7 +280,7 @@ bool ClPathFinder::createPath(int startID, int endID, ClPath *Path)
     while (nextNode != endID)
     {
         counter ++;
-        //the if-else does not prefer a hozontal or vertical path (with a low nodeDistance it looks like diagonals)
+        //the if-else does not prefer a hozontal or vertical path
         if(counter%2)
         {
             if(getNodeByID(nextNode)->get_neighbour_id_left() != -1)
