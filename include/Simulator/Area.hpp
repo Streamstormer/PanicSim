@@ -12,6 +12,7 @@ usecase:    Handles the different StaticObjects
 
 #include "StaticObject.hpp"
 #include "FastSquareroot.hpp"
+#include "ExitPointSelection.hpp"
 #include <vector>
 #include <cmath>
 
@@ -82,7 +83,6 @@ private:
     sf::Color bgColor;
     sf::Texture fire_texture;
     void viewOnStaticObject();
-    static const int EXIT_POINT_DISTANCE = 50;
     sf::Clock fireTime;
     float addFrameTime(float frameTime);
     float time;
