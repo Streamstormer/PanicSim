@@ -1,14 +1,11 @@
-
 /*
 ---------------------------------------------------------------------------------------------------------------------------------------
-Support:    Lukas / Melanie
+Support:    Lukas Rust, Melanie Hammerschmidt
 ---------------------------------------------------------------------------------------------------------------------------------------
-usecase:    used for fast person - person force calculation
-            && for collision detection
+usecase:    draw heatmap, register crowds in cells with update, remember cells in statistic, handle casualties after explosion
+            used for fast person - person force calculation && for collision detection
 ---------------------------------------------------------------------------------------------------------------------------------------
 */
-
-
 
 #ifndef HEATMAP_HPP_INCLUDED
 #define HEATMAP_HPP_INCLUDED

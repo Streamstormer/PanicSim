@@ -1,4 +1,12 @@
 #include "../../include/Simulator/HeatMap.hpp"
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Lukas Rust, Melanie Hammerschmidt
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    draw heatmap, register crowds in cells with update, remember cells in statistic, handle casualties after explosion
+            used for fast person - person force calculation && for collision detection
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
 
 ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &MapSize, ClArea *pArea, ClStatistic *pStatistic, ClDiagramm *pDiagramm)
 {
@@ -15,10 +23,10 @@ ClHeatMap::ClHeatMap(const sf::Vector2<int> &cellNumber, const sf::Vector2i &Map
         std::vector<StrPeople *> oneCell;
         SortedPeoples.push_back(oneCell);
     }
+    //create storage in statistic
     pStatistic->planHeatMapStatistic(cellNumber, cellSize, sw_green, sw_yellow, sw_red);
     actualTime = 0;
     positonMemoryPosition =0;
-
 }
 
 ClHeatMap::~ClHeatMap() {}
@@ -40,15 +48,27 @@ void ClHeatMap::registerCrowd(const std::vector<StrPeople *> &Crowd)
 
 void ClHeatMap::draw(sf::RenderWindow& window)
 {
+    //1. loop through all cells
+    //2. calculate cellNumber
+    //3. calculate number of people in cell
+    //4. if number is greater than border -> remember cells in statistic
+    //5. if(doDraw): draw heatmap (color of cells is calculated in an other function -> getColor())
+    //6. after each loop -> remember loop
+
+    //1.
     for (int x = 0; x < cellNumber.x; x++)
     {
         for (int y = 0; y < cellNumber.y; y++)
         {
+            //2.
             int cellCounter = x+y*cellNumber.x;
+            //3.
             int numberOfPeopleInCell = this->SortedPeoples[cellCounter].size();
             if(numberOfPeopleInCell >= sw_green)
             {
+                //4.
                 pStatistic->rememberCells(x, y, numberOfPeopleInCell);
+                //5.
                 if(doDraw==true)
                 {
                     sf::RectangleShape colorCell(cellSize);
@@ -59,7 +79,46 @@ void ClHeatMap::draw(sf::RenderWindow& window)
             }
         }
     }
+    //6.
     pStatistic->rememberLoop();
+}
+
+void ClHeatMap::toggleDraw()
+{
+    if (doDraw)
+    {
+        doDraw = false;
+    }
+    else doDraw = true;
+}
+
+//Calculates the Color that fits to the number of people in the current Cell
+bool ClHeatMap::doDraw = false;
+
+sf::Color ClHeatMap::getColor(int People)
+{
+    sf::Color background;
+    background.b = 0;
+
+    if (People == sw_green)   // green 0,255,0
+    {
+        background.r = 0;
+        background.g = 255;
+        return background;
+    }
+    else if (People <= sw_yellow)   // at the end: yellow 255,255,0
+    {
+        background.r = (int)(((People-sw_green)/(sw_yellow-sw_green))*255);
+        background.g = 255;
+        return background;
+    }
+    background.r = 225;   // at the end: red 255,0,0
+    if(People <= sw_red)
+    {
+        background.g = (int)(255-(((People-sw_yellow)/(sw_red-sw_yellow))*255));
+    }
+    else background.g = 0;
+    return background;
 }
 
 void ClHeatMap::update(float frameTime)
@@ -310,44 +369,6 @@ sf::Vector2f ClHeatMap::distanceForce(std::vector<StrPeople *> &cell, StrPeople 
     }
 
     return -force;
-}
-
-void ClHeatMap::toggleDraw()
-{
-    if (doDraw)
-    {
-        doDraw = false;
-    }
-    else doDraw = true;
-}
-
-//Calculates the Color that fits to the number of people in the current Cell
-bool ClHeatMap::doDraw = false;
-
-sf::Color ClHeatMap::getColor(int People)
-{
-    sf::Color background;
-    background.b = 0;
-
-    if (People == sw_green)   // green 0,255,0
-    {
-        background.r = 0;
-        background.g = 255;
-        return background;
-    }
-    else if (People <= sw_yellow)   // at the end: yellow 255,255,0
-    {
-        background.r = (int)(((People-sw_green)/(sw_yellow-sw_green))*255);
-        background.g = 255;
-        return background;
-    }
-    background.r = 225;   // at the end: red 255,0,0
-    if(People <= sw_red)
-    {
-        background.g = (int)(255-(((People-sw_yellow)/(sw_red-sw_yellow))*255));
-    }
-    else background.g = 0;
-    return background;
 }
 
 float ClHeatMap::invert(float Max, float Current)
