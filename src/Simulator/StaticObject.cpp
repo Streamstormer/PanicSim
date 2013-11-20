@@ -9,20 +9,20 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, enum stati
     this->id = id;
     firstTime = false;
 
-    Rect->setOrigin(Rect->getSize().x/2,Rect->getSize().y/2);
-    text.setPosition(Rect->getPosition().x,Rect->getPosition().y);
-    getTextfromType(Type);
-    font.loadFromFile("fonts/LiberationSerif-Regular.ttf");
+    Rect->setOrigin(Rect->getSize().x/2,Rect->getSize().y/2);  // sets the point where the Rect will be rotatet into the middle
+    text.setPosition(Rect->getPosition().x,Rect->getPosition().y); //sets Position of the Static Object
+    getTextfromType(Type);                                          //sets Text on the Object
+    font.loadFromFile("fonts/LiberationSerif-Regular.ttf");         //loads the font
     text.setFont(font);
     text.setCharacterSize(60);
     text.setColor(sf::Color::Black);
 
-    isChecked = false;
+    isChecked = false;                                  // is used to expand the fire
 
 
-    text.setOrigin(text.getLocalBounds().width/2,text.getLocalBounds().height);
+    text.setOrigin(text.getLocalBounds().width/2,text.getLocalBounds().height); // sets the text on the middle of the Object
 
-    if(Rect->getRotation()>90 && Rect->getRotation()<271)
+    if(Rect->getRotation()>90 && Rect->getRotation()<271)       //Proofes that the text
         {
         text.setRotation(Rect->getRotation()-180);
         }
@@ -33,6 +33,7 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, enum stati
 
     while((Rect->getSize().x<text.getLocalBounds().width || Rect->getSize().y< text.getLocalBounds().height) && text.getCharacterSize()> 30)
     {
+        // if the Size of the Static Object is smaller than the Text, the text size will be minimized
             text.setCharacterSize(text.getCharacterSize()-1);
             text.setOrigin(text.getLocalBounds().width/2,text.getLocalBounds().height);
 
@@ -45,6 +46,7 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, enum stati
         line.setPosition(Rect->getPosition());
         line.setOrigin(Rect->getSize().x/2,-Rect->getSize().y/2+line.getSize().y);
         line.setRotation(Rect->getRotation());
+        //draws a red line, where the front of the Object is
     }
 
 
@@ -61,6 +63,7 @@ ClStaticObject::ClStaticObject(sf::RectangleShape *Rectconst, int id, enum stati
 
 void ClStaticObject::subrecttoNumber(int number)
 {
+    //calculates the picture wich is used for the fire
     subrectFire.top = (int)(number/ANIMATIONSQUARE)*subrectFire.height;
     subrectFire.left = (int)(number%ANIMATIONSQUARE)*subrectFire.width;
      fire_sprite.setTextureRect(subrectFire);
@@ -95,11 +98,11 @@ void ClStaticObject::setIsChecked(bool check)
 
 sf::Rect<float> &ClStaticObject::biggerRect()
 {
-    bigRect= Rect->getGlobalBounds();
+    bigRect= Rect->getGlobalBounds();  // checks if there are Object near the actual one and let them burn
     bigRect.top= bigRect.top-100;
     bigRect.left= bigRect.left-100;
     bigRect.width= bigRect.width+ 2*100;
-    bigRect.height= bigRect.height+ 2*100; // vergrößter das Recheck
+    bigRect.height= bigRect.height+ 2*100;
 
     return bigRect;
 
@@ -145,7 +148,7 @@ void ClStaticObject::draw(sf::RenderWindow& window)
         subrecttoNumber(bildID);
         int countFire=0;
 
-        if(Rect->getSize().x > Rect->getSize().y)
+        if(Rect->getSize().x > Rect->getSize().y)  //looks for close neighbours and sets them to fire
         {
             countFire = (Rect->getSize().x-100)/128;//    /128
             if(countFire==0)
