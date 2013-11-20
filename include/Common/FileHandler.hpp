@@ -35,6 +35,7 @@ class ClFileHandler
         int readLevel(std::string fileName, ClArea *pArea);
 
         //Reads a level file and initialises the ClArea class variable myArea
+        //CAUTION: previously created Area will be deleted
         int openFile(std::string fileName);
 
         //returns the actually opened Area. May only be called after openFile.

@@ -21,6 +21,8 @@ class ClExitPointSelection
     public:
         ClExitPointSelection();
         virtual ~ClExitPointSelection();
+        //Partitions the exit into more attraction points,
+        //returns the posítion vector of the nearest of these to the parameter myPosition
         const sf::Vector2f getClosestExitPoint(ClStaticObject *closestExit, const sf::Vector2f myPosition, int numOfExitPoints);
     protected:
     private:

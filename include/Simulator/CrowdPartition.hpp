@@ -18,9 +18,12 @@ class ClCrowdPartition
     public:
         ClCrowdPartition();
         virtual ~ClCrowdPartition();
+        //man functionality, see class description
         void partitionCrowds(int totalVisitors, ClArea *pArea, ClCrowdManager *pCrowdManager);
     protected:
     private:
+
+        //Calculates relative share of people per attraction (STAGE, BAR, WC)
         void calculatePriorities(int *sum, int *priority, int counter);
 
 
