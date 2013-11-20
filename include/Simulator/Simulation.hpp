@@ -17,6 +17,7 @@ usecase:    Class containing everything but SimpleGUI
 #include "ThreatManager.hpp"
 #include "Statistic.hpp"
 #include "Diagramm.hpp"
+#include "CrowdPartition.hpp"
 #include "../../include/Common/FileHandler.hpp"
 #include <cmath>
 #include <string>
@@ -49,11 +50,7 @@ class ClSimulation
 
         void partitionCrowds(int totalVisitors);
 
-        void calculatePriorities(int *sum, int *priority, int counter);
 
-        static const int PATH_TEST_GRANULARITY = 20;
-        static const int DIST_CROWDS_PER_ATTR = 120;
-        static const int POS_TRY_GRAN = 30;
 
         ClArea *pArea;
         ClCrowdManager *pCrowdManager;
