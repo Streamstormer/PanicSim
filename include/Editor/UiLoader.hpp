@@ -1,3 +1,11 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Benedikt Klotz
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    Loads the Design for the Editor from a XML file. See SimEditor.glade
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
 #ifndef UILOADER_HPP_INCLUDED
 #define UILOADER_HPP_INCLUDED
 
@@ -9,7 +17,7 @@
 using namespace std;
 
 
-class UiLoader : public Gtk::Window
+class ClUiLoader : public Gtk::Window
 {
 private:
    Glib::RefPtr<Gtk::Builder> builder;
@@ -26,16 +34,15 @@ protected:
     Gtk::Button *pStartSim;
     Gtk::Button *pClear;
 
-    Gtk::RadioButton *pmouse;
-    Gtk::RadioButton *premove;
+    Gtk::Button *pmouse;
+    Gtk::Button *premove;
 
-    Gtk::RadioButton *pBar;
-    Gtk::RadioButton *pWC;
-    Gtk::RadioButton *pStage;
-    Gtk::RadioButton *pFence;
-    Gtk::RadioButton *pWall;
-    Gtk::RadioButton *pExit;
-    Gtk::RadioButton::Group radioGroup;
+    Gtk::Button *pBar;
+    Gtk::Button *pWC;
+    Gtk::Button *pStage;
+    Gtk::Button *pFence;
+    Gtk::Button *pWall;
+    Gtk::Button *pExit;
 
     Gtk::Frame *pObjFrame;
     Gtk::Label *pObjLabel;
@@ -49,7 +56,7 @@ protected:
     Gtk::ComboBoxText *pAreaColor;
 
     Gtk::Box *pBox;
-    UiLoader(string UiPath);
+    ClUiLoader(string UiPath);
 
 
 };

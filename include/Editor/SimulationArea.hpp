@@ -1,3 +1,11 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Benedikt Klotz
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    Represents the Simulation Area, where Object are drawn on.
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
 #ifndef SIMULATIONAREA_HPP_INCLUDED
 #define SIMULATIONAREA_HPP_INCLUDED
 
@@ -8,7 +16,7 @@
 
 using namespace std;
 
-class SimulationArea : public SFML_Widget
+class ClSimulationArea : public ClSFML_Widget
 {
 private:
     ClArea *Area;
@@ -34,7 +42,7 @@ private:
 
 
 public:
-    SimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
+    ClSimulationArea(Gtk::Viewport& AreaWin, Gtk::Box& ObjectBox, Gtk::SpinButton *SizeX,
                    Gtk::SpinButton *SizeY, Gtk::SpinButton *Rot,  Gtk::SpinButton *pAreaSizeX,
                    Gtk::SpinButton *pAreaSizeY, Gtk::Label *pObjLabel, Gtk::ScrolledWindow* scrollWin);
     void clearArea();

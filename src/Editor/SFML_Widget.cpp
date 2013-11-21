@@ -1,21 +1,18 @@
 #include "../../include/Editor/SFML_Widget.hpp"
 
-SFML_Widget::SFML_Widget(sf::VideoMode mode)
+ClSFML_Widget::ClSFML_Widget()
 {
-  /*  if(size_request<=0)
-        size_request = std::max<int>(1, std::min<int>(mode.width, mode.height) / 2);
-*/
     set_size_request();
 //    set_default_size();
 
     set_has_window(false); // Makes this behave like an interal object rather then a parent window.
 }
 
-SFML_Widget::~SFML_Widget()
+ClSFML_Widget::~ClSFML_Widget()
 {
 }
 
-void SFML_Widget::on_size_allocate(Gtk::Allocation& allocation)
+void ClSFML_Widget::on_size_allocate(Gtk::Allocation& allocation)
 {
     //Do something with the space that we have actually been given:
     //(We will not be given heights or widths less than we have requested, though
@@ -34,7 +31,7 @@ void SFML_Widget::on_size_allocate(Gtk::Allocation& allocation)
     }
 }
 
-void SFML_Widget::on_realize()
+void ClSFML_Widget::on_realize()
 {
     Gtk::Widget::on_realize();
 
@@ -78,7 +75,7 @@ void SFML_Widget::on_realize()
     }
 }
 
-void SFML_Widget::on_unrealize()
+void ClSFML_Widget::on_unrealize()
 {
   m_refGdkWindow.clear();
 
@@ -86,7 +83,7 @@ void SFML_Widget::on_unrealize()
   Gtk::Widget::on_unrealize();
 }
 
-void SFML_Widget::display()
+void ClSFML_Widget::display()
 {
     if(m_refGdkWindow)
     {
@@ -94,7 +91,7 @@ void SFML_Widget::display()
     }
 }
 
-void SFML_Widget::invalidate()
+void ClSFML_Widget::invalidate()
 {
     if(m_refGdkWindow)
     {

@@ -1,3 +1,11 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Benedikt Klotz
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    A Object that represents the ClEditor
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
 #ifndef EDITOR_HPP_INCLUDED
 #define EDITOR_HPP_INCLUDED
 
@@ -9,32 +17,31 @@
 
 enum BackgroundColor{GREY, BROWN, GREEN};
 
-class Editor : public UiLoader
+class ClEditor : public ClUiLoader
 {
 private:
-    void set_object(string label, enum staticObjects type);
+    void set_object(enum staticObjects type);
 
-    void on_Button_Bar_clicked();
-    void on_Button_WC_clicked();
-    void on_Button_Stage_clicked();
-    void on_Button_Wall_clicked();
-    void on_Button_Fence_clicked();
+    // Clear Area
     void on_Button_Clear_clicked();
-    void on_Button_Exit_clicked();
-
+    // Change Background Color
     void change_comboBox();
 
+    // File related Methods
     void loadFile();
     void SaveFile();
-    void StartSim();
     void SaveTo();
+    // Start Simulation
+    void StartSim();
 
+
+    // Grab mouse
     void want_mouse();
     void remove_obj();
 
     void setColor(sf::Color pColor);
 
-    SimulationArea *SFMLArea;
+    ClSimulationArea *SFMLArea;
     ClArea *pArea;
     string SimFile;
     bool isOpen;
@@ -42,8 +49,14 @@ private:
     ClFileHandler *level;
     int selectedID;
 
+    // Constants for Size Adjustments
+    static constexpr float STEP = 1;
+    static constexpr float SIZE = 1000;
+    static constexpr float MIN_SIZE = 10;
+    static constexpr float ROTATION = 90;
+
 public:
-    Editor(string UiPath, Glib::RefPtr<Gtk::Application> app);
+    ClEditor(string UiPath, Glib::RefPtr<Gtk::Application> app);
 
 };
 

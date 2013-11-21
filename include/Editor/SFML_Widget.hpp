@@ -1,3 +1,12 @@
+/*
+---------------------------------------------------------------------------------------------------------------------------------------
+Support:    Benedikt Klotz
+---------------------------------------------------------------------------------------------------------------------------------------
+usecase:    A low level Bridge between SFML and GTKmm.
+---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+
 #ifndef SFML_WIDGET_HPP_INCLUDED
 #define SFML_WIDGET_HPP_INCLUDED
 
@@ -25,7 +34,7 @@
 
 #endif
 
-class SFML_Widget : public Gtk::Widget
+class ClSFML_Widget : public Gtk::Widget
 {
 protected:
     sf::VideoMode m_vMode;
@@ -37,8 +46,8 @@ protected:
 
     Glib::RefPtr<Gdk::Window> m_refGdkWindow;
 public:
-    SFML_Widget(sf::VideoMode mode);
-    virtual ~SFML_Widget();
+    ClSFML_Widget();
+    virtual ~ClSFML_Widget();
 
     void invalidate();
     void display();
